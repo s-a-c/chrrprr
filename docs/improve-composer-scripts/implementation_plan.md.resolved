@@ -1,0 +1,47 @@
+# Composer Scripts Improvement Plan
+
+Reorganize and consolidate the [composer.json](file:///Users/s-a-c/Herd/chrrprr/composer.json) scripts for better developer experience and consistency.
+
+## Proposed Changes
+
+### [composer.json](file:///Users/s-a-c/Herd/chrrprr/composer.json)
+
+- **Consolidate & Reorder**: Group scripts into logical sections (Lifecycle, Development, Quality, Analysis, Testing, Generation, Maintenance).
+- **Deduplicate**: Remove the duplicate `dev` and `test` entries.
+- **Documentation**: Add `scripts-descriptions` section to provide metadata for each script.
+- **Standardize Banners**: Ensure consistent use of `figlet` banners across major script groups.
+- **Logical Naming**: Use a consistent naming convention (e.g., `lint:fix` instead of `lint:fix:mago` when it's just one tool, or grouping tools under a main command).
+- **New Scripts**:
+    - `help`: A consolidated script to list all available scripts and their descriptions.
+    - `analyze`: Main entry point for all static analysis tools (PHPStan, Psalm, Mago).
+    - `format`: Alias for `lint:fix` or a specific formatter command.
+    - `test:all`: Run the full suite including mutation and browser tests.
+
+#### Planned Structure:
+
+1.  **Lifecycle Hooks**: `post-autoload-dump`, `post-update-cmd`, etc.
+2.  **General**: `setup`, `dev`, `solo`, `help`.
+3.  **Quality Control**:
+    - `lint`: Runs all non-destructive checks.
+    - `lint:fix`: Runs all auto-fixers.
+    - `analyze`: Static analysis (PHPStan, Psalm, Mago).
+    - `arch`: Architectural checks.
+4.  **Testing**:
+    - `test`: Standard unit/feature tests + lint.
+    - `test:unit`: Fast unit/feature tests.
+    - `test:browser`: Playwright/Pest browser tests.
+    - `test:mutation`: Infection tests.
+    - `test:coverage`: Coverage reports.
+5.  **Tools**: `generate:blueprint`, `generate:ide-helper`, `security:audit`.
+6.  **Maintenance**: `update:reqs`.
+
+## Verification Plan
+
+### Automated Tests
+- Run `composer help` to verify the new documentation script.
+- Run `composer lint` and `composer analyze` to ensure tools are still correctly invoked.
+- Run `composer test:unit` to verify the test suite entry point.
+
+### Manual Verification
+- Visually inspect the [composer.json](file:///Users/s-a-c/Herd/chrrprr/composer.json) for logical grouping and lack of duplication.
+- Verify `figlet` banners (if available) display correctly by running `composer dev --help` or similar (though `dev` runs long, I can test a shorter one like `lint`).

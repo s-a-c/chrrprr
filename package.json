@@ -3,21 +3,49 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite"
+        "build": "vite build 2>&1",
+        "dev": "bun --bun vite",
+        "lint": "bun run lint:js",
+        "lint:fix": "bun run lint:js:fix",
+        "lint:js": "bunx prettier --check resources/ 2>&1",
+        "lint:js:fix": "bunx prettier --write resources/ 2>&1",
+        "playwright:install": "bunx playwright install --with-deps 2>&1",
+        "preview": "vite preview 2>&1",
+        "test:browser": "bunx playwright test 2>&1"
     },
     "dependencies": {
-        "@tailwindcss/vite": "^4.1.11",
-        "autoprefixer": "^10.4.20",
-        "axios": "^1.7.4",
-        "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^2.0",
-        "tailwindcss": "^4.0.7",
-        "vite": "^7.0.4"
+        "autoprefixer": "^10.4.23",
+        "axios": "^1.13.2"
     },
+    "devDependencies": {
+        "@catppuccin/tailwindcss": "^1.0.0",
+        "@codecov/rollup-plugin": "^1.9.1",
+        "@codecov/vite-plugin": "^1.9.1",
+        "@tailwindcss/vite": "^4.1.18",
+        "bun-git-hooks": "^0.3.1",
+        "bun-plugin-tailwind": "^0.1.2",
+        "concurrently": "^9.2.1",
+        "glob": "^13.0.0",
+        "jsdom": "^27.3.0",
+        "laravel-vite-plugin": "^2.0.1",
+        "npm-check-updates": "^19.2.0",
+        "playwright": "^1.57.0",
+        "prettier": "^3.7.4",
+        "prettier-plugin-organize-imports": "^4.3.0",
+        "prettier-plugin-packagejson": "^2.5.20",
+        "prettier-plugin-tailwindcss": "^0.7.2",
+        "rolldown-vite": "^7.3.0",
+        "tailwindcss": "^4.1.18",
+        "vite": "^7.3.0"
+    },
+    "engines": {
+        "bun": ">=1.1.0",
+        "node": ">=24"
+    },
+    "packageManager": "bun@latest",
     "optionalDependencies": {
-        "@rollup/rollup-linux-x64-gnu": "4.9.5",
-        "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
-        "lightningcss-linux-x64-gnu": "^1.29.1"
+        "@rollup/rollup-linux-x64-gnu": "4.54.0",
+        "@tailwindcss/oxide-linux-x64-gnu": "^4.1.18",
+        "lightningcss-linux-x64-gnu": "^1.30.2"
     }
 }

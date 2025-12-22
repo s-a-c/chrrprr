@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+public/build/
+public/hot/
+dist/
+
+# Cache directories
+.tmp/
+.cache/
+tmp/
+
+# IDE directories
+.idea/
+.vscode/
+.fleet/
+.zed/
+
+# Trunk directory (contains plugin tests that shouldn't be formatted)
+.trunk/
+
+# Other project-specific ignores
+.ai/
+*.log

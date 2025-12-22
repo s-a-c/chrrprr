@@ -1,0 +1,33 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    - phpstan-baseline.neon
+
+parameters:
+
+    paths:
+        - app
+        - bootstrap
+        # - config
+        - database
+        - public
+        - resources
+        - routes
+        - tests
+
+    excludePaths:
+        - vendor
+        - storage
+        - tmp
+        - node_modules
+        - bootstrap/cache
+        - tests/Pest.php
+
+    level: max
+
+    tmpDir: tmp/phpstan
+
+    # Allow empty baseline and unmatched ignored errors
+    # Set to false to suppress warnings about baseline entries that no longer match any errors
+    reportUnmatchedIgnoredErrors: false
+
+    ignoreErrors:

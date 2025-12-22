@@ -1,0 +1,119 @@
+# Welcome to Mago!
+# For full documentation, see https://mago.carthage.software/tools/overview
+
+# Compliant with project's standard tool configuration pattern
+# See: docs/nandq/TOOL_CONFIGURATION_STANDARD.md
+
+# Global options
+php-version = "8.5"
+threads = 8
+stack-size = 8388608  # 8 MB
+
+# Source configuration
+[source]
+# Standard paths (consistent with PHPStan, Rector, Psalm, Pint)
+paths = [
+    "app",
+    "bootstrap",
+    "config",
+    "database",
+    "database/migrations",
+    "public",
+    "resources",
+    "routes",
+    "tests",
+]
+
+# Dependencies to parse for symbols/types but not analyze/lint/format
+includes = ["vendor"]
+
+# Standard exclusions (consistent with other tools)
+excludes = [
+    "storage",
+    "tmp",
+    "node_modules",
+    "bootstrap/cache",
+]
+
+# File extensions to treat as PHP
+extensions = ["php"]
+
+# Formatter configuration
+[formatter]
+print-width = 100
+use-tabs = false  # Use spaces (consistent with Pint/Laravel style)
+indent-size = 4
+
+# Linter configuration
+[linter]
+# Enable all linter rules by default
+# Individual rules can be disabled if needed
+
+integrations = ["laravel", "phpunit"]
+
+[linter.rules]
+ambiguous-function-call = { enabled = false }
+literal-named-argument = { enabled = false }
+halstead = { effort-threshold = 7000 }
+
+# Analyzer configuration
+[analyzer]
+# Analyzer-specific settings
+# Cache directory (following standard pattern: tmp/{tool-name})
+cache-dir = "tmp/mago"
+
+# Guard configuration
+# Architectural rules consistent with `pest --testsuite=Arch`
+# Enforces code structure and dependency rules
+[guard]
+
+# Perimeter rules: Control namespace dependencies
+# These rules ensure proper layer separation and dependency management
+[[guard.perimeter.rules]]
+namespace = "App\\Http\\Controllers\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Http\\Requests\\",
+    "App\\Http\\Resources\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+reason = "Controllers should only depend on Models, Requests, Resources, and Laravel framework classes."
+
+[[guard.perimeter.rules]]
+namespace = "App\\Models\\"
+permit = [
+    "@self",
+    "@native",
+    "Illuminate\\Database\\",
+    "Illuminate\\Support\\",
+    "Laravel\\",
+]
+reason = "Models should only depend on Eloquent and Laravel framework classes."
+
+[[guard.perimeter.rules]]
+namespace = "App\\Providers\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+reason = "Service providers can depend on application and framework classes."
+
+# Structural rules: Enforce code structure
+# These rules ensure classes follow architectural patterns
+[[guard.structural.rules]]
+on = "App\\Http\\Controllers\\**"
+target = "class"
+must-be-final = true
+reason = "Controllers should be final to prevent extension and maintain clear boundaries."
+
+[[guard.structural.rules]]
+on = "App\\Http\\Controllers\\**"
+target = "class"
+must-extend = "App\\Http\\Controllers\\Controller"
+reason = "Controllers must extend the base Controller class."

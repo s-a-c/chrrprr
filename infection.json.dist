@@ -1,0 +1,32 @@
+{
+    "$schema": "https://raw.githubusercontent.com/infection/infection/0.31.9/resources/schema.json",
+    "source": {
+        "directories": [
+            "app"
+        ],
+        "excludes": [
+            "vendor",
+            "storage",
+            "tmp",
+            "node_modules",
+            "bootstrap/cache"
+        ]
+    },
+    "logs": {
+        "text": "php://stderr",
+        "html": "infection.html",
+        "summary": "infection-summary.log"
+    },
+    "mutators": {
+        "@default": true
+    },
+    "phpUnit": {
+        "configDir": ".",
+        "customPath": "bin/pest-infection"
+    },
+    "tmpDir": "tmp/infection",
+    "timeout": 10,
+    "minMsi": 90,
+    "minCoveredMsi": 90,
+    "threads": 4
+}

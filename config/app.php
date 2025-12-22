@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -122,5 +124,26 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Editor Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the editor that will be used to open the source code
+    | files in the debug mode. The default is "code" which is the VS Code editor.
+    |
+    | ResolveDumpSource trait is used to resolve the source code file and line number
+    | for the debug mode.
+    |
+    | Supported editors: $editorHrefs array keys
+    |   "antigravity", "atom", "cursor", "emacs", "fleet", "idea", "kiro", "macvim",
+    |   "neovim", "netbeans", "nova", "phpstorm", "sublime", "textmate", "trae",
+    |   "vscode", "vscode-insiders", "vscode-insiders-remote", "vscode-remote",
+    | "vscodium", "windsurf", "xdebug", "zed"
+    |
+    */
+
+    'editor' => env('APP_EDITOR', 'code'),
 
 ];

@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="1"
+    resolveFromConfigFile="true"
+    strictBinaryOperands="true"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="true"
+    findUnusedVariablesAndParams="true"
+    findUnusedPsalmSuppress="true"
+    checkForThrowsDocblock="true"
+    checkForThrowsInGlobalScope="true"
+    rememberPropertyAssignmentsAfterCall="true"
+    usePhpDocMethodsWithoutMagicCall="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    errorBaseline="psalm-baseline.xml"
+>
+    <projectFiles>
+        <directory name="app" />
+        <directory name="bootstrap" />
+        <directory name="config" />
+        <directory name="database" />
+        <directory name="public" />
+        <directory name="resources" />
+        <directory name="routes" />
+        <directory name="tests" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="storage" />
+            <directory name="tmp" />
+            <directory name="node_modules" />
+            <directory name="bootstrap/cache" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <!-- Enforce explicit return types -->
+        <MissingReturnType errorLevel="error" />
+        <MissingPropertyType errorLevel="error" />
+        <MissingClosureReturnType errorLevel="error" />
+        <MissingParamType errorLevel="error" />
+
+        <!-- Prevent unsafe mixed type usage -->
+        <MixedAssignment errorLevel="error" />
+        <MixedArgument errorLevel="error" />
+        <MixedPropertyFetch errorLevel="error" />
+        <MixedMethodCall errorLevel="error" />
+        <MixedReturnStatement errorLevel="error" />
+        <MixedArrayAccess errorLevel="error" />
+        <MixedArrayOffset errorLevel="error" />
+
+        <!-- Null safety (works well with Laravel plugin) -->
+        <PossiblyNullArgument errorLevel="error" />
+        <PossiblyNullPropertyFetch errorLevel="error" />
+        <PossiblyNullReference errorLevel="error" />
+        <NullArgument errorLevel="error" />
+
+        <!-- Enforce type annotations -->
+        <UndefinedDocblockClass errorLevel="error" />
+        <InvalidDocblock errorLevel="error" />
+
+        <!-- Encourage strict comparisons -->
+        <ImplicitToStringCast errorLevel="info" />
+        <RedundantCondition errorLevel="info" />
+        <RedundantCast errorLevel="info" />
+
+        <!-- Code quality improvements -->
+        <UnusedVariable errorLevel="info" />
+        <UnusedClosureParam errorLevel="info" />
+        <UnusedMethodCall errorLevel="info" />
+    </issueHandlers>
+
+    <!-- Plugin configuration -->
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin" />
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin" />
+        <pluginClass class="Psalm\MockeryPlugin\Plugin" />
+    </plugins>
+</psalm>
