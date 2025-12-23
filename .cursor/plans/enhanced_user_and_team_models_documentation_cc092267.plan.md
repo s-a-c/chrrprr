@@ -1702,9 +1702,3 @@ jobs:
           files: ./coverage/lcov.info
           flags: javascript
 ```
-
-**Additional Workflows**:
-
-- `.github/workflows/static-analysis.yml` - PHPStan, ESLint
-- `.github/workflows/behat.yml` - Behat BDD tests
-- `.github/workflows/quality-gates.yml` - Quality checks and reporting

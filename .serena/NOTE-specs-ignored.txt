@@ -1,0 +1,1 @@
+The `specs/` directory is currently ignored by Serena tools in this workspace, so automated agents cannot write spec files directly there. When using Speckit-related commands, create or update specs via the project's own scripts (e.g. `.specify/scripts/bash/create-new-feature.sh`) or by editing files manually in the editor, rather than via Serena's create_text_file tool.
