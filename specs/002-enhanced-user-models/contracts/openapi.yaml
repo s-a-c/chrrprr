@@ -1,0 +1,731 @@
+openapi: 3.1.0
+info:
+  title: Enhanced User and Team Models API
+  version: 1.0.0
+  description: |
+    API for managing enhanced User and Team models with multi-tenancy,
+    hierarchical teams, translatable attributes, and state management.
+
+    **Tenant Identification**: All requests must include tenant context via subdomain
+    pattern `{enterprise-slug}.example.com` or `X-Tenant-ID` header.
+
+    **Authentication**: Bearer token authentication required for all endpoints.
+
+    **Context Scoping**: Team-related endpoints are automatically scoped to user's
+    current context (organisation/division/department) unless bypassed by
+    privileged users.
+
+servers:
+  - url: https://{enterprise-slug}.example.com/api/v1
+    description: Tenant-specific API endpoint
+    variables:
+      enterprise-slug:
+        description: Enterprise slug identifier
+        default: acme
+
+paths:
+  /users:
+    get:
+      summary: List users
+      description: Get paginated list of users in current tenant context
+      operationId: listUsers
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/State'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      summary: Create user
+      description: Create a new user in current tenant
+      operationId: createUser
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /users/{id}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      summary: Get user
+      description: Get user by ULID or integer ID
+      operationId: getUser
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update user
+      description: Update user details
+      operationId: updateUser
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      summary: Delete user
+      description: Soft delete user (requires reassignment of teams if executive/deputy)
+      operationId: deleteUser
+      tags:
+        - Users
+      responses:
+        '204':
+          description: User deleted successfully
+        '409':
+          description: User cannot be deleted (is executive/deputy of teams)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{id}/context:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    put:
+      summary: Switch user context
+      description: Update user's current context (organisation/division/department)
+      operationId: switchUserContext
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContextUpdate'
+      responses:
+        '200':
+          description: Context updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /teams:
+    get:
+      summary: List teams
+      description: Get paginated list of teams in current context
+      operationId: listTeams
+      tags:
+        - Teams
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Type'
+        - $ref: '#/components/parameters/State'
+        - name: parent_id
+          in: query
+          description: Filter by parent team ID
+          schema:
+            type: string
+        - name: without_context
+          in: query
+          description: Bypass context scoping (requires permission)
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamCollection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      summary: Create team
+      description: Create a new team in current tenant
+      operationId: createTeam
+      tags:
+        - Teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamCreate'
+      responses:
+        '201':
+          description: Team created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /teams/{id}:
+    parameters:
+      - $ref: '#/components/parameters/TeamId'
+    get:
+      summary: Get team
+      description: Get team by ULID or integer ID
+      operationId: getTeam
+      tags:
+        - Teams
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update team
+      description: Update team details
+      operationId: updateTeam
+      tags:
+        - Teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamUpdate'
+      responses:
+        '200':
+          description: Team updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '409':
+          description: Concurrent modification conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      summary: Delete team
+      description: Soft delete team (cascades to children)
+      operationId: deleteTeam
+      tags:
+        - Teams
+      responses:
+        '204':
+          description: Team deleted successfully
+        '409':
+          description: Team cannot be deleted (has children or constraints)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /teams/{id}/state:
+    parameters:
+      - $ref: '#/components/parameters/TeamId'
+    put:
+      summary: Transition team state
+      description: Transition team to new state (requires permission)
+      operationId: transitionTeamState
+      tags:
+        - Teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - state
+              properties:
+                state:
+                  $ref: '#/components/schemas/TeamState'
+      responses:
+        '200':
+          description: State transitioned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          description: Invalid state transition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  parameters:
+    UserId:
+      name: id
+      in: path
+      required: true
+      description: User ULID or integer ID
+      schema:
+        type: string
+        pattern: '^[0-9A-HJKMNP-TV-Z]{26}$|^[0-9]+$'
+    TeamId:
+      name: id
+      in: path
+      required: true
+      description: Team ULID or integer ID
+      schema:
+        type: string
+        pattern: '^[0-9A-HJKMNP-TV-Z]{26}$|^[0-9]+$'
+    Page:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 15
+    Search:
+      name: search
+      in: query
+      description: Search query
+      schema:
+        type: string
+    Type:
+      name: type
+      in: query
+      description: Filter by team type
+      schema:
+        $ref: '#/components/schemas/TeamType'
+    State:
+      name: state
+      in: query
+      description: Filter by state
+      schema:
+        type: string
+
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - ulid
+        - name
+        - email
+        - state
+        - tenant_id
+      properties:
+        id:
+          type: integer
+        ulid:
+          type: string
+          pattern: '^[0-9A-HJKMNP-TV-Z]{26}$'
+        name:
+          type: object
+          description: Translatable name (keyed by locale)
+          additionalProperties:
+            type: string
+        email:
+          type: string
+          format: email
+        slug:
+          type: object
+          description: Translatable slug (keyed by locale)
+          additionalProperties:
+            type: string
+        state:
+          $ref: '#/components/schemas/UserState'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        tenant_id:
+          type: integer
+        current_organisation_id:
+          type: integer
+          nullable: true
+        current_division_id:
+          type: integer
+          nullable: true
+        current_department_id:
+          type: integer
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    UserCreate:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: object
+          description: Translatable name (keyed by locale)
+          additionalProperties:
+            type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        tenant_id:
+          type: integer
+        state:
+          $ref: '#/components/schemas/UserState'
+
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: object
+          description: Translatable name (keyed by locale)
+          additionalProperties:
+            type: string
+        email:
+          type: string
+          format: email
+        state:
+          $ref: '#/components/schemas/UserState'
+        status:
+          $ref: '#/components/schemas/UserStatus'
+
+    ContextUpdate:
+      type: object
+      properties:
+        organisation_id:
+          type: integer
+          nullable: true
+        division_id:
+          type: integer
+          nullable: true
+        department_id:
+          type: integer
+          nullable: true
+
+    Team:
+      type: object
+      required:
+        - id
+        - ulid
+        - type
+        - name
+        - slug
+        - executive_id
+        - tenant_id
+        - state
+      properties:
+        id:
+          type: integer
+        ulid:
+          type: string
+          pattern: '^[0-9A-HJKMNP-TV-Z]{26}$'
+        type:
+          $ref: '#/components/schemas/TeamType'
+        name:
+          type: object
+          description: Translatable name (keyed by locale)
+          additionalProperties:
+            type: string
+        description:
+          type: object
+          description: Translatable description (keyed by locale)
+          additionalProperties:
+            type: string
+        slug:
+          type: object
+          description: Translatable hierarchical slug (keyed by locale)
+          additionalProperties:
+            type: string
+        parent_id:
+          type: integer
+          nullable: true
+        executive_id:
+          type: integer
+        deputy_id:
+          type: integer
+          nullable: true
+        tenant_id:
+          type: integer
+        state:
+          $ref: '#/components/schemas/TeamState'
+        status:
+          $ref: '#/components/schemas/TeamStatus'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    TeamCreate:
+      type: object
+      required:
+        - type
+        - name
+        - executive_id
+      properties:
+        type:
+          $ref: '#/components/schemas/TeamType'
+        name:
+          type: object
+          description: Translatable name (keyed by locale)
+          additionalProperties:
+            type: string
+        description:
+          type: object
+          description: Translatable description (keyed by locale)
+          additionalProperties:
+            type: string
+        parent_id:
+          type: integer
+          nullable: true
+        executive_id:
+          type: integer
+        deputy_id:
+          type: integer
+          nullable: true
+
+    TeamUpdate:
+      type: object
+      properties:
+        name:
+          type: object
+          description: Translatable name (keyed by locale)
+          additionalProperties:
+            type: string
+        description:
+          type: object
+          description: Translatable description (keyed by locale)
+          additionalProperties:
+            type: string
+        parent_id:
+          type: integer
+          nullable: true
+        executive_id:
+          type: integer
+        deputy_id:
+          type: integer
+          nullable: true
+        state:
+          $ref: '#/components/schemas/TeamState'
+        status:
+          $ref: '#/components/schemas/TeamStatus'
+
+    UserCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+
+    TeamCollection:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+
+    PaginationMeta:
+      type: object
+      properties:
+        current_page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+        last_page:
+          type: integer
+
+    PaginationLinks:
+      type: object
+      properties:
+        first:
+          type: string
+        last:
+          type: string
+        prev:
+          type: string
+          nullable: true
+        next:
+          type: string
+          nullable: true
+
+    UserState:
+      type: string
+      enum:
+        - draft
+        - pending
+        - active
+        - suspended
+        - archived
+
+    UserStatus:
+      type: string
+      enum:
+        - online
+        - offline
+        - away
+        - busy
+
+    TeamType:
+      type: string
+      enum:
+        - enterprise
+        - organisation
+        - division
+        - department
+        - project
+
+    TeamState:
+      type: string
+      enum:
+        - draft
+        - active
+        - inactive
+        - archived
+
+    TeamStatus:
+      type: string
+      enum:
+        - operational
+        - under_review
+        - merging
+        - splitting
+
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          description: Validation errors (keyed by field)
+          additionalProperties:
+            type: array
+            items:
+              type: string
+
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/Error'
+        - type: object
+          properties:
+            conflict:
+              type: object
+              description: Conflict details
+              properties:
+                current_version:
+                  type: string
+                message:
+                  type: string
+
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
