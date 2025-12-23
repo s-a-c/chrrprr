@@ -1,0 +1,29 @@
+# chrrprr Development Guidelines
+
+Auto-generated from all feature plans. Last updated: 2025-12-22
+
+## Active Technologies
+
+- PHP 8.5.1 + Laravel 12, Livewire 4, Flux UI (Free), Laravel Folio, Laravel Fortify, stancl/tenancy, Parental (STI), Spatie packages (translatable, permissions, media, activity log), Filament plugins (002-enhanced-user-models)
+
+## Project Structure
+
+```text
+src/
+tests/
+```
+
+## Commands
+
+# Add commands for PHP 8.5.1
+
+## Code Style
+
+PHP 8.5.1: Follow standard conventions
+
+## Recent Changes
+
+- 002-enhanced-user-models: Added PHP 8.5.1 + Laravel 12, Livewire 4, Flux UI (Free), Laravel Folio, Laravel Fortify, stancl/tenancy, Parental (STI), Spatie packages (translatable, permissions, media, activity log), Filament plugins
+
+<!-- MANUAL ADDITIONS START -->
+<!-- MANUAL ADDITIONS END -->
