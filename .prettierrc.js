@@ -65,13 +65,6 @@ export default {
     // Override configurations for specific file patterns
     overrides: [
         {
-            files: "*.blade.php",
-            options: {
-                parser: "html",
-                htmlWhitespaceSensitivity: "ignore",
-            },
-        },
-        {
             files: ["*.yml", "*.yaml"],
             options: {
                 tabWidth: 4,

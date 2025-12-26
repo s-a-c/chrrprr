@@ -24,3 +24,6 @@ tmp/
 # Other project-specific ignores
 .ai/
 *.log
+
+# Blade templates - PHP code should be formatted by Pint/Mago, not Prettier
+*.blade.php

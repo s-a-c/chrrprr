@@ -7,7 +7,7 @@ use App\Models\User;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
-it('can render the chrrps page', function () {
+it('can render the chrrps page', function (): void {
     actingAs($user = User::factory()->create());
 
     $response = get('/chrrps');

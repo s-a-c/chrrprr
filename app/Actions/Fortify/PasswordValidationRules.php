@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Fortify;
 
 use Illuminate\Validation\Rules\Password;
@@ -9,7 +11,9 @@ trait PasswordValidationRules
     /**
      * Get the validation rules used to validate passwords.
      *
-     * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
+     * @return (Password|string)[]
+     *
+     * @psalm-return list{'required', 'string', Password, 'confirmed'}
      */
     protected function passwordRules(): array
     {

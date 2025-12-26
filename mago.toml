@@ -1,249 +1,179 @@
-# Welcome to Mago!
-# For full documentation, see https://mago.carthage.software/tools/overview
-
-# Global options
-php-version = "8.5"
-threads = 8
-stack-size = 8388608  # 8 MB
+php_version = "8.2"
+stack_size = 64
+allow_unsupported_php_version = true
+threads = 1
 
 [source]
-workspace = "."
-paths = [
-    "app",
-    "bootstrap",
-    "database",
-    "public",
-    "resources",
-    "routes",
-    "tests",
-]
-# Vendor is included for type checking but excluded from analysis/linting/formatting
-# This allows Mago to understand Laravel framework types without analyzing vendor code
-includes = ["vendor", "config",]
+includes = ["vendor"]
+paths = ["app", "bootstrap", "config", "database", "public", "resources", "routes", "tests"]
 excludes = [
     "storage",
     "tmp",
     "node_modules",
     "bootstrap/cache",
 ]
-# File extensions to treat as PHP
 extensions = ["php"]
 
-[formatter]
-print-width = 120
-tab-width = 4
-use-tabs = false
-
-# Linter configuration
 [linter]
-# Enable all linter rules by default
-# Individual rules can be disabled if needed
+# Configure linter rules
+plugins = ["consistency", "naming"]
 
-# Exclude test files from password checks (test passwords are expected)
-excludes = ["vendor"]
+[[linter.rules]]
+name = "security/no-literal-password"
+enabled = false
 
-integrations = ["laravel", "pest", "phpunit"]
+[[linter.rules]]
+name = "prefer-anonymous-migration"
+enabled = false
 
-baseline = "mago-lint-baseline.toml"
-baseline-variant = "loose"  # or "strict"
+[[linter.rules]]
+name = "consistency/class-name"
+enabled = false
 
-[linter.rules]
-# ambiguous-function-call = { enabled = false }
-# literal-named-argument = { enabled = false }
-# halstead = { effort-threshold = 7000 }
+[[linter.rules]]
+name = "analysis/undefined-function-or-method"
+enabled = false
 
-# Disable no-literal-password rule - it produces false positives for:
-# 1. Cast type identifiers (e.g., 'hashed', 'string' in model casts)
-# 2. Test passwords (which are expected in test files)
-no-literal-password = { enabled = false }
+[[linter.rules]]
+name = "best-practices/literal-named-argument"
+enabled = false
 
-# Disable prefer-anonymous-migration rule - false positive
-# Migrations already use anonymous classes (return new class extends Migration)
-prefer-anonymous-migration = { enabled = false }
+[format]
+print_width = 120
+use_tabs = false
 
-# Disable class-name rule - conflicts with Laravel conventions
-# Laravel base classes (Controller, TestCase) follow framework naming conventions
-class-name = { enabled = false }
-
-[analyzer]
-# Vendor is excluded from analysis but should still be available for type resolution
-# Note: Some "non-existent-class-like" errors for Laravel classes may appear as false positives
-# if Mago cannot properly index vendor classes. These can be safely ignored.
-#
-# Alternative: Remove vendor from excludes to fix false positives, but this will:
-# - Significantly slow down analysis (5-6x slower, analyzing 348MB of vendor code)
-# - Produce UTF-8 warnings from vendor files
-# - Generate errors/warnings from vendor code we don't control
-excludes = ["vendor"]
-
-baseline = "mago-analysis-baseline.toml"
-baseline-variant = "loose"  # or "strict"
-
-# Enable all checks
-find-unused-expressions = true
-find-unused-definitions = true
-analyze-dead-code = true
-check-throws = true
-perform-heuristic-checks = true
-check-missing-type-hints = true
-check-closure-missing-type-hints = true
-check-arrow-function-missing-type-hints = true
-
-# Enable strict checks
-strict-list-index-checks = true
-no-boolean-literal-comparison = true
-
-# Disable lenient behaviors
-allow-possibly-undefined-array-keys = false
-trust-existence-checks = false
-
-# Guard configuration
-# Architectural rules consistent with `pest --testsuite=Arch`
+# Guard/Architectural rules (documented here, though guard subcommand is missing in 0.26.1)
 # Enforces code structure and dependency rules
-[guard]
-
-# Exclude framework-level directories from guard checks
-# These directories contain Laravel configuration, routes, bootstrap files, and tests
-# that follow framework conventions and don't need strict architectural rules
-excludes = [
-    "config",
-    "routes",
-    "bootstrap",
-    "public",
-    "tests",
-    "database/migrations",
-    "database/seeders",
-    "database/factories",
-    "vendor",
-]
+# [guard]
+# excludes = ["database", "tests", "resources/views", "routes", "bootstrap"]
 
 # Perimeter rules: Control namespace dependencies
 # These rules ensure proper layer separation and dependency management
 
-# Root namespace: Config files, routes, bootstrap, public files
-# These files need full access to Laravel framework and PHP native functions
-[[guard.perimeter.rules]]
-namespace = "@global"
-permit = [
-    "@self",
-    "@native",
-    "App\\",
-    "Database\\",
-    "Tests\\",
-    "Illuminate\\",
-    "Laravel\\",
-    "Monolog\\",
-    "Pest\\",
-    "PHPUnit\\",
-    "Spatie\\",
-    "Symfony\\",
-    "Pdo\\",
-]
+# Routes files (global namespace) can use Laravel framework, Livewire, and all vendor packages
+# [[guard.perimeter.rules]]
+# namespace = "@global"
+# permit = [
+#     "@self",
+#     "@native",
+#     "App\\",
+#     "Illuminate\\",
+#     "Laravel\\",
+#     "Livewire\\",
+#     "Spatie\\",
+#     "Stancl\\",
+#     "Parental\\",
+#     "Symfony\\",
+#     "Cviebrock\\",
+#     "Stevebauman\\",
+#     "Database\\",
+# ]
 
-# App Controllers
-[[guard.perimeter.rules]]
-namespace = "App\\Http\\Controllers\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\Models\\",
-    "App\\Http\\Requests\\",
-    "App\\Http\\Resources\\",
-    "Illuminate\\",
-    "Laravel\\",
-]
+# Exception classes can extend PHP core Exception classes and use Laravel framework
+# [[guard.perimeter.rules]]
+# namespace = "App\\Exceptions\\"
+# permit = [
+#     "@self",
+#     "@native",
+#     "Illuminate\\",
+#     "Laravel\\",
+# ]
 
-# App Models
-[[guard.perimeter.rules]]
-namespace = "App\\Models\\"
-permit = [
-    "@self",
-    "@native",
-    "Database\\Factories\\",
-    "Illuminate\\Database\\",
-    "Illuminate\\Support\\",
-    "Illuminate\\Foundation\\Auth\\",
-    "Illuminate\\Notifications\\",
-    "Laravel\\",
-]
+# Controllers should only depend on Models, Requests, Resources, and Laravel framework classes
+# [[guard.perimeter.rules]]
+# namespace = "App\\Http\\Controllers\\"
+# permit = [
+#     "@self",
+#     "@native",
+#     "App\\Models\\",
+#     "App\\Http\\Requests\\",
+#     "App\\Http\\Resources\\",
+#     "Illuminate\\",
+#     "Laravel\\",
+# ]
 
-# App Providers
-[[guard.perimeter.rules]]
-namespace = "App\\Providers\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\",
-    "Illuminate\\",
-    "Laravel\\",
-]
+# Models can use Eloquent, Laravel framework, and third-party model packages
+# [[guard.perimeter.rules]]
+# namespace = "App\\Models\\"
+# permit = [
+#     "@self",
+#     "@native",
+#     "App\\",
+#     "Illuminate\\",
+#     "Laravel\\",
+#     "Spatie\\",
+#     "Parental\\",
+#     "Symfony\\",
+#     "Cviebrock\\",
+#     "Stevebauman\\",
+#     "Stancl\\",
+#     "Database\\",
+# ]
 
-# App Console Commands
-[[guard.perimeter.rules]]
-namespace = "App\\Console\\Commands\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\",
-    "Illuminate\\",
-    "Illuminate\\Console\\",
-    "Illuminate\\Support\\Facades\\",
-    "Symfony\\Component\\Process\\",
-    "Laravel\\",
-    "Exception",
-]
+# Service providers can depend on application, framework, and all vendor packages
+# [[guard.perimeter.rules]]
+# namespace = "App\\Providers\\"
+# permit = [
+#     "@self",
+#     "@native",
+#     "App\\",
+#     "Illuminate\\",
+#     "Laravel\\",
+#     "Spatie\\",
+#     "Stancl\\",
+#     "Parental\\",
+#     "Symfony\\",
+#     "Cviebrock\\",
+#     "Stevebauman\\",
+# ]
 
-# Database Seeders
-[[guard.perimeter.rules]]
-namespace = "Database\\Seeders\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\",
-    "Illuminate\\Database\\",
-    "Illuminate\\",
-    "Laravel\\",
-]
+# Livewire components can use models, requests, and framework classes
+# [[guard.perimeter.rules]]
+# namespace = "App\\Livewire\\"
+# permit = [
+#     "@self",
+#     "@native",
+#     "App\\Models\\",
+#     "App\\Http\\Requests\\",
+#     "Illuminate\\",
+#     "Laravel\\",
+#     "Livewire\\",
+# ]
 
-# Database Factories
-[[guard.perimeter.rules]]
-namespace = "Database\\Factories\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\",
-    "Illuminate\\Database\\Eloquent\\Factories\\",
-    "Illuminate\\Support\\",
-    "Illuminate\\Support\\Facades\\",
-    "Laravel\\",
-]
+# Actions (Fortify, etc.) can use models, requests, and framework classes
+# [[guard.perimeter.rules]]
+# namespace = "App\\Actions\\"
+# permit = [
+#     "@self",
+#     "@native",
+#     "App\\Models\\",
+#     "App\\Http\\Requests\\",
+#     "Illuminate\\",
+#     "Laravel\\",
+#     "Override",
+# ]
 
-# Tests namespace
-[[guard.perimeter.rules]]
-namespace = "Tests\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\",
-    "Database\\",
-    "Illuminate\\",
-    "Laravel\\",
-    "Pest\\",
-    "PHPUnit\\",
-]
+# Form Requests can use enums, validation rules, and framework classes
+# [[guard.perimeter.rules]]
+# namespace = "App\\Http\\Requests\\"
+# permit = [
+#     "@self",
+#     "@native",
+#     "App\\Enums\\",
+#     "App\\Models\\",
+#     "Illuminate\\",
+#     "Laravel\\",
+# ]
 
-# Structural rules: Enforce code structure
-# These rules ensure classes follow architectural patterns
-# Controllers should be final (excluding the base abstract Controller)
-[[guard.structural.rules]]
-on = "App\\Http\\Controllers\\**"
-not-on = "App\\Http\\Controllers\\Controller"
-target = "class"
-must-be-final = true
-
-# Controllers must extend the base Controller (excluding the base Controller itself)
-[[guard.structural.rules]]
-on = "App\\Http\\Controllers\\**"
-not-on = "App\\Http\\Controllers\\Controller"
-target = "class"
-must-extend = "App\\Http\\Controllers\\Controller"
+# State classes can use Spatie ModelStates and other framework classes
+# [[guard.perimeter.rules]]
+# namespace = "App\\States\\"
+# permit = [
+#     "@self",
+#     "@native",
+#     "App\\",
+#     "Spatie\\",
+#     "Illuminate\\",
+#     "Laravel\\",
+#     "Override",
+# ]

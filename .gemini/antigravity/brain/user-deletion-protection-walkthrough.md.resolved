@@ -1,0 +1,73 @@
+# User Deletion Protection Walkthrough
+
+## Goal
+Prevent the deletion of users who are assigned key roles (Executive, Deputy) within the organization structure, ensuring business integrity.
+
+## Implementation
+
+### 1. Custom Exception
+Created `App\Exceptions\CannotDeleteKeyUserException` to handle the error logic for both JSON (API) and Web requests.
+
+```php
+// app/Exceptions/CannotDeleteKeyUserException.php
+class CannotDeleteKeyUserException extends Exception
+{
+    public function render(Request $request): JsonResponse|RedirectResponse
+    {
+        $message = 'You cannot delete a user holding a key role (e.g., Executive, Deputy).';
+        // ... handles 422 JSON or Redirect back with errors
+    }
+}
+```
+
+### 2. Protection Logic in Model
+Added [isProtectable()](file:///Users/s-a-c/Herd/chrrprr/app/Models/User.php#91-107) method to [User](file:///Users/s-a-c/Herd/chrrprr/app/Models/User.php#19-108) model. This uses a direct database query to ensure it finds role assignments regardless of Eloquent scopes or caching, and checks the database directly.
+
+```php
+// app/Models/User.php
+public function isProtectable(): bool
+{
+    $pivotTable = config('permission.table_names.model_has_roles');
+    // ... direct DB join query to check for restricted roles
+}
+```
+
+### 3. Trait for Event Precedence
+Created `App\Models\Concerns\ProtectsKeyRoles` trait to register the [deleting](file:///Users/s-a-c/Herd/chrrprr/app/Observers/UserObserver.php#12-22) event listener.
+**Crucial:** This trait must be used *before* Spatie's [HasRoles](file:///Users/s-a-c/Herd/chrrprr/vendor/spatie/laravel-permission/src/Traits/HasRoles.php#21-37) trait in the [User](file:///Users/s-a-c/Herd/chrrprr/app/Models/User.php#19-108) model. This ensures our protection logic runs **before** Spatie detaches the roles!
+
+```php
+// app/Models/Concerns/ProtectsKeyRoles.php
+trait ProtectsKeyRoles
+{
+    public static function bootProtectsKeyRoles(): void
+    {
+        static::deleting(function ($user) {
+            if ($user->isProtectable()) {
+                throw new CannotDeleteKeyUserException();
+            }
+        });
+    }
+}
+```
+
+### 4. User Model Integration
+Updated [User](file:///Users/s-a-c/Herd/chrrprr/app/Models/User.php#19-108) model to use the trait in the correct order.
+
+```php
+// app/Models/User.php
+class User extends Authenticatable
+{
+    use ProtectsKeyRoles; // <--- REGISTERED FIRST = RUNS FIRST
+    use HasRoles; 
+    // ...
+}
+```
+
+## Verification
+`UserDeletionConstraintTest` passes all checks:
+- [x] Cannot delete a user who is an executive
+- [x] Cannot delete a user who is a deputy
+- [x] Can delete a user after roles are removed
+
+The test expects [CannotDeleteKeyUserException](file:///Users/s-a-c/Herd/chrrprr/app/Exceptions/CannotDeleteKeyUserException.php#10-42) which is now correctly thrown.

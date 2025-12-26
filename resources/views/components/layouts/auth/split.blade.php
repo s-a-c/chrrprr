@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
@@ -14,9 +16,7 @@
                     {{ config('app.name', 'Laravel') }}
                 </a>
 
-                @php
-                    [$message, $author] = str(Illuminate\Foundation\Inspiring::quotes()->random())->explode('-');
-                @endphp
+                @php [$message, $author] = str(Illuminate\Foundation\Inspiring::quotes()->random())->explode('-'); @endphp
 
                 <div class="relative z-20 mt-auto">
                     <blockquote class="space-y-2">

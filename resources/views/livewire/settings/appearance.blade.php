@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <section class="w-full">
     @include('partials.settings-heading')
 

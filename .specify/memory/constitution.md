@@ -1,8 +1,8 @@
 <!--
 Sync Impact Report:
-Version: 1.0.0 (initial creation)
-Modified principles: N/A (initial)
-Added sections: Core Principles, Development Standards, Quality Assurance, Governance
++Version: 1.1.0 (Antigravity Enhancement)
++Modified principles: Governance (Updated for AI compliance)
+Added sections: Core Principles, Development Standards, Quality Assurance, Governance, AI Agent Protocol, Safety & Security
 Removed sections: N/A
 Templates requiring updates:
   ✅ plan-template.md - Constitution Check section already references constitution
@@ -52,6 +52,25 @@ Before creating new components, check for existing reusable components. Prefer F
 Code MUST be self-documenting through clear naming. Use PHPDoc blocks for complex logic. Follow existing code conventions found in sibling files. Prefer descriptive names (e.g., `isRegisteredForDiscounts`) over abbreviations. Comments are only for complex business logic, not obvious code.
 
 **Rationale**: Self-documenting code reduces maintenance time and onboarding effort. Clear naming eliminates the need for most comments while PHPDoc provides IDE support.
+
+### VII. AI Agent Protocol (Antigravity)
+
+When acting as an AI Agent (via Google Antigravity or similar), you MUST strictly adhere to the provided Spec Kit artifacts (`plan.md` and `tasks.md`).
+
+1. **Execution Mode**: You are in "Execution Mode". Do not re-plan. If a task in `tasks.md` is unclear, stop and ask the user for clarification.
+2. **Task Atomicity**: Execute one checkbox from `tasks.md` at a time. Mark it as completed `[x]` only after verification (tests pass).
+3. **Context Boundary**: Do not modify `spec.md`, `plan.md`, or `constitution.md` unless explicitly instructed to "Refactor the Plan".
+4. **Reporting**: After completing a task, provide a concise summary of files changed and confirm test status. Do not be verbose.
+
+**Rationale**: Agents must focus on execution reliability. Strict adherence to the artifact handoff ensures the architecture defined by Spec Kit is preserved.
+
+### VIII. Safety & Security
+
+1. **No Secrets**: Never output contents of `.env` or API keys in chat.
+2. **Data Preservation**: Never run `migrate:fresh` or deletion commands on production/staging environments without explicit user confirmation.
+3. **Dependency Lockdown**: Do not add new `composer` or `npm` packages unless they are explicitly listed in the `plan.md`.
+
+**Rationale**: AI Agents can accidentally destabilize environments or bloat projects. These guardrails prevent common automated errors.
 
 ## Development Standards
 
@@ -104,6 +123,7 @@ All pull requests MUST:
 - Update documentation if behavior changes
 - Follow existing code patterns and conventions
 - Be reviewed for compliance with this constitution
+- **AI Agents**: Must self-verify against this constitution before marking a task complete.
 
 ## Governance
 
@@ -129,4 +149,4 @@ This constitution supersedes all other development practices and guidelines. All
 
 ### Version History
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-22 | **Last Amended**: 2025-12-22
+**Version**: 1.1.0 | **Ratified**: 2025-12-23 | **Last Amended**: 2025-12-23

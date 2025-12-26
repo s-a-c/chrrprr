@@ -1,0 +1,54 @@
+ ------ ----------------------------------------------------------------------- 
+  Line   resources/views/pages/teams/[ulid].blade.php                           
+ ------ ----------------------------------------------------------------------- 
+  :12    Expression "new class extends \Livewire\Component…" on a separate      
+         line does not do anything.                                             
+         🪪  expr.resultUnused                                                  
+  :26    Property                                                               
+         Livewire\Component@anonymous/resources/views/pages/teams/[ulid].blade  
+         .php:12::$name (string) does not accept mixed.                         
+         🪪  assign.propertyType                                                
+  :28    Property                                                               
+         Livewire\Component@anonymous/resources/views/pages/teams/[ulid].blade  
+         .php:12::$bio (string) does not accept mixed.                          
+         🪪  assign.propertyType                                                
+  :29    Casting to int something that's already int.                           
+         🪪  cast.useless                                                       
+         💡  Because the type is coming from a PHPDoc, you can turn off this    
+         check by setting treatPhpDocTypesAsCertain: false in your phpstan.neo  
+         n.                                                                     
+  :30    Only booleans are allowed in a ternary operator condition, int<0,      
+         max>|null given.                                                       
+         🪪  ternary.condNotBoolean                                             
+  :42    Property App\Models\Team::$parent_id (int<0, max>|null) does not       
+         accept string|null.                                                    
+         🪪  assign.propertyType                                                
+  :47    Dynamic call to static method Illuminate\Session\Store::flash().       
+         🪪  staticMethod.dynamicCall                                           
+  :58    Method                                                                 
+         Livewire\Component@anonymous/resources/views/pages/teams/[ulid].blade  
+         .php:12::getParentsProperty() return type with generic class           
+         Illuminate\Database\Eloquent\Collection does not specify its types:    
+         TKey, TModel                                                           
+         🪪  missingType.generics                                               
+  :62    Only booleans are allowed in a negated boolean, App\Models\Team|null   
+         given.                                                                 
+         🪪  booleanNot.exprNotBoolean                                          
+  :66    Casting to int something that's already int.                           
+         🪪  cast.useless                                                       
+         💡  Because the type is coming from a PHPDoc, you can turn off this    
+         check by setting treatPhpDocTypesAsCertain: false in your phpstan.neo  
+         n.                                                                     
+  :66    Casting to int something that's already int.                           
+         🪪  cast.useless                                                       
+         💡  Because the type is coming from a PHPDoc, you can turn off this    
+         check by setting treatPhpDocTypesAsCertain: false in your phpstan.neo  
+         n.                                                                     
+  :66    Out of 77 possible param types, only 68 - 88.3 % actually have it.     
+         Add more param types to get over 99 %                                  
+         🪪  typeCoverage.paramTypeCoverage                                     
+ ------ ----------------------------------------------------------------------- 
+
+
+ [ERROR] Found 12 errors                                                        
+

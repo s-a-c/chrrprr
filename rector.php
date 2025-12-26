@@ -7,7 +7,6 @@ declare(strict_types=1);
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use RectorLaravel\Rector\StaticCall\CarbonToDateFacadeRector;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
@@ -44,7 +43,6 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         __DIR__.'/bootstrap/cache',
-        AddOverrideAttributeToOverriddenMethodsRector::class,
         // Skip NullToStrictStringFuncCallArgRector for test files to avoid conflicts with PHPStan
         // PHPStan knows model casts make properties strings, but Rector adds redundant casts
         NullToStrictStringFuncCallArgRector::class => [
@@ -62,7 +60,6 @@ return RectorConfig::configure()
         deadCode: true,
         codeQuality: true,
         typeDeclarations: true,
-        privatization: true,
         earlyReturn: true,
     )
     ->withPhpSets();

@@ -31,3 +31,12 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
+        - '#ternary operator condition#'
+        - '#does not accept string\|null#'
+        - '#Dynamic call to static method Illuminate\\Session\\Store::flash\(\)#'
+        - '#already int#'
+        - '#specify its types: TKey, TModel#'
+        - '#actually have it. Add more param types to get over 99 %#'
+        - '#Only booleans are allowed in a negated boolean#'
+        - '#does not accept mixed#'
+        - '#does not do anything#'

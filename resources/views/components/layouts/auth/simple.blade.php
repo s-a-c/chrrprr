@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
@@ -12,9 +14,7 @@
                     </span>
                     <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
                 </a>
-                <div class="flex flex-col gap-6">
-                    {{ $slot }}
-                </div>
+                <div class="flex flex-col gap-6">{{ $slot }}</div>
             </div>
         </div>
         @fluxScripts

@@ -14,8 +14,13 @@
         "test:browser": "bunx playwright test 2>&1"
     },
     "dependencies": {
+        "@catppuccin/highlightjs": "^1.0.1",
+        "@tailwindcss/typography": "^0.5.19",
         "autoprefixer": "^10.4.23",
-        "axios": "^1.13.2"
+        "axios": "^1.13.2",
+        "highlight.js": "^11.11.1",
+        "laravel-echo": "^2.2.6",
+        "pusher-js": "^8.4.0"
     },
     "devDependencies": {
         "@catppuccin/tailwindcss": "^1.0.0",
