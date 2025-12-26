@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Symfony\Component\Uid\Ulid;
 
 trait HasUlid
 {
@@ -13,8 +13,52 @@ trait HasUlid
     {
         static::creating(static function (Model $model): void {
             if (empty($model->ulid)) {
-                $model->ulid = Ulid::generate();
+                $model->ulid = \Symfony\Component\Uid\Ulid::generate();
             }
         });
+    }
+
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+     * Supports both ULID and integer ID for backward compatibility.
+     */
+    public function resolveRouteBinding($value, $field = null): ?Model
+    {
+        $field = $field ?? $this->getRouteKeyName();
+
+        // If field is 'ulid', try ULID first, then fall back to integer ID for backward compatibility
+        if ($field === 'ulid') {
+            // Try ULID first
+            $model = $this->where('ulid', $value)->first();
+            if ($model) {
+                return $model;
+            }
+
+            // Fall back to integer ID if value is numeric (backward compatibility)
+            if (is_numeric($value)) {
+                return $this->where('id', (int) $value)->first();
+            }
+        }
+
+        return $this->where($field, $value)->first();
+    }
+
+    /**
+     * Scope a query to find by ULID.
+     *
+     * @param  Builder<Model>  $query
+     * @return Builder<Model>
+     */
+    public function scopeByUlid(Builder $query, string $ulid): Builder
+    {
+        return $query->where('ulid', $ulid);
     }
 }

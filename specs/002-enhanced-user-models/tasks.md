@@ -268,26 +268,26 @@
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
 - [X] T073 [P] [US2] Create feature test for context switching in tests/Feature/Context/ContextSwitchingTest.php
-- [ ] T074 [P] [US2] Create feature test for context persistence across sessions in tests/Feature/Context/ContextPersistenceTest.php
-- [ ] T075 [P] [US2] Create feature test for context scoping of team queries in tests/Feature/Context/ContextScopingTest.php
-- [ ] T076 [P] [US2] Create feature test for context restoration on login in tests/Feature/Context/ContextRestorationTest.php
-- [ ] T077 [P] [US2] Create feature test for invalid context handling in tests/Feature/Context/InvalidContextTest.php
-- [ ] T077.5 [P] [US2] Create feature test for invalid context detection and auto-correction in tests/Feature/Context/InvalidContextAutoCorrectionTest.php
-- [ ] T078 [P] [US2] Create feature test for context bypass permissions in tests/Feature/Context/ContextBypassTest.php
+- [X] T074 [P] [US2] Create feature test for context persistence across sessions in tests/Feature/Context/ContextPersistenceTest.php
+- [X] T075 [P] [US2] Create feature test for context scoping of team queries in tests/Feature/Context/ContextScopingTest.php
+- [X] T076 [P] [US2] Create feature test for context restoration on login in tests/Feature/Context/ContextRestorationTest.php
+- [X] T077 [P] [US2] Create feature test for invalid context handling in tests/Feature/Context/InvalidContextTest.php
+- [X] T077.5 [P] [US2] Create feature test for invalid context detection and auto-correction in tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+- [X] T078 [P] [US2] Create feature test for context bypass permissions in tests/Feature/Context/ContextBypassTest.php
 
 ### 6.2. Implementation for User Story 2
 
 - [X] T079 [US2] Add context scoping local scope (scopeInContext) to Team model in app/Models/Team.php
 - [X] T080 [US2] Add withoutContextScope method for privileged users in app/Models/Team.php
-- [ ] T081 [US2] Create SwitchContextRequest form request with validation in app/Http/Requests/SwitchContextRequest.php
+- [X] T081 [US2] Create SwitchContextRequest form request with validation in app/Http/Requests/SwitchContextRequest.php
 - [X] T082 [US2] Create SwitchContext Livewire component in app/Livewire/Context/SwitchContext.php (implemented as Volt SFC in Folio page)
 - [X] T083 [US2] Implement context switching logic in User model (setCurrentContext method) in app/Models/User.php
 - [X] T084 [US2] Implement context validation (user must have access to organisation) in app/Models/User.php
-- [ ] T085 [US2] Implement context restoration on login via Fortify's AuthenticatedSessionResponse in app/Actions/Fortify/AuthenticatedSessionResponse.php (or check existing Fortify structure first)
+- [X] T085 [US2] Implement context restoration on login via Fortify's AuthenticatedSessionResponse in app/Actions/Fortify/AuthenticatedSessionResponse.php (or check existing Fortify structure first) - Implemented via ContextRestorationListener registered in FortifyServiceProvider
 - [X] T086 [US2] Create Livewire view for context switcher in resources/views/livewire/context/switch-context.blade.php (implemented as Volt SFC in Folio page)
-- [ ] T087 [US2] Add context switcher to navigation/layout in resources/views/components/navbar.blade.php or similar
-- [ ] T088 [US2] Update TeamList component to use context scoping in app/Livewire/Teams/TeamList.php
-- [ ] T089 [US2] Add context indicator to UI showing current organisation/division/department
+- [X] T087 [US2] Add context switcher to navigation/layout in resources/views/components/navbar.blade.php or similar - Already added in resources/views/layouts/app.blade.php
+- [X] T088 [US2] Update TeamList component to use context scoping in app/Livewire/Teams/TeamList.php - Already uses inContext() scope
+- [X] T089 [US2] Add context indicator to UI showing current organisation/division/department - Implemented in switch-context component via getCurrentContextName()
 
 **Checkpoint**: At this point, User Story 2 should be fully functional and testable independently. Users can switch context between accessible organisations, and all team queries are properly scoped.
 
@@ -303,42 +303,42 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T090 [P] [US3] Create feature test for ULID route binding in tests/Feature/Users/UlidRouteBindingTest.php
-- [ ] T091 [P] [US3] Create feature test for translatable user attributes in tests/Feature/Users/TranslatableAttributesTest.php
-- [ ] T092 [P] [US3] Create feature test for user state transitions in tests/Feature/Users/UserStateTransitionsTest.php
-- [ ] T093 [P] [US3] Create feature test for user status tracking in tests/Feature/Users/UserStatusTest.php
-- [ ] T094 [P] [US3] Create feature test for user-enterprise relationships in tests/Feature/Users/UserEnterpriseRelationshipsTest.php
-- [ ] T095 [P] [US3] Create feature test for backward compatibility with integer IDs in tests/Feature/Users/BackwardCompatibilityTest.php
+- [X] T090 [P] [US3] Create feature test for ULID route binding in tests/Feature/Users/UlidRouteBindingTest.php
+- [X] T091 [P] [US3] Create feature test for translatable user attributes in tests/Feature/Users/TranslatableAttributesTest.php
+- [X] T092 [P] [US3] Create feature test for user state transitions in tests/Feature/Users/UserStateTransitionsTest.php
+- [X] T093 [P] [US3] Create feature test for user status tracking in tests/Feature/Users/UserStatusTest.php
+- [X] T094 [P] [US3] Create feature test for user-enterprise relationships in tests/Feature/Users/UserEnterpriseRelationshipsTest.php
+- [X] T095 [P] [US3] Create feature test for backward compatibility with integer IDs in tests/Feature/Users/BackwardCompatibilityTest.php
 
 ### 7.2. Implementation for User Story 3
 
 - [X] T096 [US3] Integrate all User model enhancements (coordinate T097, T098, T099, T100) in app/Models/User.php
 - [X] T097 [US3] Implement state machine for User states in app/Models/User.php
 - [X] T098 [US3] Implement status tracking for User statuses in app/Models/User.php
-- [ ] T099 [US3] Implement user-enterprise many-to-many relationship in app/Models/User.php
+- [X] T099 [US3] Implement user-enterprise many-to-many relationship in app/Models/User.php
 - [X] T100 [US3] Implement user-organisation access many-to-many relationship in app/Models/User.php
-- [ ] T101 [US3] Add route model binding for ULID in app/Providers/RouteServiceProvider.php or bootstrap/app.php
-- [ ] T102 [US3] Implement backward compatibility for integer ID routes in app/Models/User.php
-- [ ] T103 [US3] Create data migration command to generate ULIDs for existing users in app/Console/Commands/GenerateUserUlids.php
-- [ ] T104 [US3] Create data migration command to set default states for existing users in app/Console/Commands/SetDefaultUserStates.php
-- [ ] T105 [US3] Update UserFactory to generate ULIDs and set states in database/factories/UserFactory.php
+- [X] T101 [US3] Add route model binding for ULID in app/Providers/RouteServiceProvider.php or bootstrap/app.php
+- [X] T102 [US3] Implement backward compatibility for integer ID routes in app/Models/User.php
+- [X] T103 [US3] Create data migration command to generate ULIDs for existing users in app/Console/Commands/GenerateUserUlids.php
+- [X] T104 [US3] Create data migration command to set default states for existing users in app/Console/Commands/SetDefaultUserStates.php
+- [X] T105 [US3] Update UserFactory to generate ULIDs and set states in database/factories/UserFactory.php
 - [X] T105.5 [P] [US3] Verify bio column is included in users table migration (T012.5)
 - [X] T105.6 [US3] Implement bio attribute (longText, nullable) in app/Models/User.php
 - [X] T105.7 [US3] Implement bio sanitization using Purify before storage in app/Models/User.php
-- [ ] T105.8 [US3] Integrate bio editing in Filament User resource using MarkdownEditor component in app/Filament/Resources/UserResource.php
-- [ ] T105.9 [US3] Implement role-based bio editing permissions (Users can edit own, Enterprise/Organisation Admins can edit any) in app/Policies/UserPolicy.php
-- [ ] T105.10 [US3] Implement bio display on user profile pages with markdown rendering and syntax highlighting in resources/views/pages/users/[ulid].blade.php
-- [ ] T105.11 [US3] Implement bio size limit validation (tenant-configurable soft limit default 10K, hard limit 50K) in app/Http/Requests/UpdateUserRequest.php or similar
-- [ ] T105.12 [US3] Implement empty bio placeholder handling in resources/views/pages/users/[ulid].blade.php
-- [ ] T105.13 [US3] Update data migration to set bio fields to null for existing users in app/Console/Commands/GenerateUserUlids.php or separate command
-- [ ] T105.14 [US3] [OPTIONAL CQRS] Create UserBuilder custom builder class for complex queries (active, banned, onboarded, withRole) in app/Models/Builders/UserBuilder.php (see research/adr-cqrs-refactor-user.md)
-- [ ] T105.15 [US3] [OPTIONAL CQRS] Update User model to use UserBuilder via newEloquentBuilder method (see research/adr-cqrs-refactor-user.md)
-- [ ] T105.16 [US3] [OPTIONAL CQRS] Create RegisterUser Action class for user registration with explicit transaction control in app/Actions/Users/RegisterUser.php (see research/adr-cqrs-refactor-user.md)
-- [ ] T105.17 [US3] [OPTIONAL CQRS] Create BanUser Action class for banning users with side effects (revoke tokens, sessions) in app/Actions/Users/BanUser.php (see research/adr-cqrs-refactor-user.md)
-- [ ] T105.18 [US3] [OPTIONAL CQRS] Create UpdateUserProfile Action class for profile updates in app/Actions/Users/UpdateUserProfile.php (see research/adr-cqrs-refactor-user.md)
-- [ ] T105.19 [US3] [OPTIONAL CQRS] Create TransitionUserState Action class for state transitions in app/Actions/Users/TransitionUserState.php (see research/adr-cqrs-refactor-user.md)
-- [ ] T105.20 [US3] [OPTIONAL CQRS] Update Filament UserResource to use Action classes via ->using() callbacks (see research/adr-cqrs-refactor-user.md)
-- [ ] T105.21 [US3] [OPTIONAL CQRS] Update Livewire components to use Action classes instead of direct model manipulation (see research/adr-cqrs-refactor-user.md)
+- [X] T105.8 [US3] Integrate bio editing in Filament User resource using MarkdownEditor component in app/Filament/Resources/UserResource.php
+- [X] T105.9 [US3] Implement role-based bio editing permissions (Users can edit own, Enterprise/Organisation Admins can edit any) in app/Policies/UserPolicy.php
+- [X] T105.10 [US3] Implement bio display on user profile pages with markdown rendering and syntax highlighting in resources/views/pages/users/[ulid].blade.php
+- [X] T105.11 [US3] Implement bio size limit validation (tenant-configurable soft limit default 10K, hard limit 50K) in app/Http/Requests/UpdateUserRequest.php or similar
+- [X] T105.12 [US3] Implement empty bio placeholder handling in resources/views/pages/users/[ulid].blade.php
+- [X] T105.13 [US3] Update data migration to set bio fields to null for existing users in app/Console/Commands/GenerateUserUlids.php or separate command
+- [X] T105.14 [US3] [OPTIONAL CQRS] Create UserBuilder custom builder class for complex queries (active, banned, onboarded, withRole) in app/Models/Builders/UserBuilder.php (see research/adr-cqrs-refactor-user.md)
+- [X] T105.15 [US3] [OPTIONAL CQRS] Update User model to use UserBuilder via newEloquentBuilder method (see research/adr-cqrs-refactor-user.md)
+- [X] T105.16 [US3] [OPTIONAL CQRS] Create RegisterUser Action class for user registration with explicit transaction control in app/Actions/Users/RegisterUser.php (see research/adr-cqrs-refactor-user.md)
+- [X] T105.17 [US3] [OPTIONAL CQRS] Create BanUser Action class for banning users with side effects (revoke tokens, sessions) in app/Actions/Users/BanUser.php (see research/adr-cqrs-refactor-user.md)
+- [X] T105.18 [US3] [OPTIONAL CQRS] Create UpdateUserProfile Action class for profile updates in app/Actions/Users/UpdateUserProfile.php (see research/adr-cqrs-refactor-user.md)
+- [X] T105.19 [US3] [OPTIONAL CQRS] Create TransitionUserState Action class for state transitions in app/Actions/Users/TransitionUserState.php (see research/adr-cqrs-refactor-user.md)
+- [X] T105.20 [US3] [OPTIONAL CQRS] Update Filament UserResource to use Action classes via ->using() callbacks (see research/adr-cqrs-refactor-user.md)
+- [X] T105.21 [US3] [OPTIONAL CQRS] Update Livewire components to use Action classes instead of direct model manipulation (see research/adr-cqrs-refactor-user.md)
 
 **Checkpoint**: At this point, User Story 3 should be fully functional and testable independently. Users have all enhanced attributes working with backward compatibility maintained, including biography support with markdown.
 

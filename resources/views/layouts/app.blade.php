@@ -28,7 +28,7 @@
             </flux:navlist>
 
             @auth
-                <livewire:pages.teams.switch-context />
+                @livewire('pages::teams.switch-context')
             @endauth
 
             <!-- Desktop User Menu -->

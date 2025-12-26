@@ -7,6 +7,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserState;
 use App\Enums\UserStatus;
+use App\Models\Builders\UserBuilder;
 use App\Models\Concerns\HasTranslatableAttributes;
 use App\Models\Concerns\HasUlid;
 use App\Models\Concerns\ProtectsKeyRoles;
@@ -19,7 +20,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Override;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
 use Spatie\Permission\Traits\HasRoles;
+use Stevebauman\Purify\Facades\Purify;
 
 #[ObservedBy(UserObserver::class)]
 final class User extends Authenticatable
@@ -35,6 +38,11 @@ final class User extends Authenticatable
     /** @var array<int, string> */
     public $translatable = [
         'bio',
+    ];
+
+    /** @var list<string> */
+    protected $appends = [
+        'bio_html',
     ];
 
     /**
@@ -130,6 +138,16 @@ final class User extends Authenticatable
     }
 
     /**
+     * Get the enterprises this user belongs to (many-to-many).
+     */
+    public function enterprises(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Enterprise::class, 'user_enterprise', 'user_id', 'enterprise_id')
+            ->withPivot('is_default')
+            ->withTimestamps();
+    }
+
+    /**
      * Get the organisations this user has access to.
      */
     public function accessibleOrganisations(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -166,6 +184,16 @@ final class User extends Authenticatable
         }
     }
 
+    /**
+     * Create a new Eloquent query builder for the model.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     */
+    public function newEloquentBuilder($query): UserBuilder
+    {
+        return new UserBuilder($query);
+    }
+
     #[Override]
     protected static function booted(): void
     {
@@ -194,6 +222,23 @@ final class User extends Authenticatable
             'status' => UserStatus::class,
             'tenant_id' => 'integer',
             'current_context_id' => 'integer',
+            'bio' => 'array',
         ];
+    }
+
+    /**
+     * Get the bio HTML attribute (rendered from markdown).
+     */
+    protected function getBioHtmlAttribute(): ?string
+    {
+        $bio = $this->getTranslation('bio', app()->getLocale());
+
+        if (empty($bio)) {
+            return null;
+        }
+
+        $html = resolve(MarkdownRenderer::class)->toHtml($bio);
+
+        return Purify::clean($html);
     }
 }

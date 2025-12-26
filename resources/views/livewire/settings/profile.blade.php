@@ -34,6 +34,13 @@
             </div>
         </form>
 
-        <livewire:settings.delete-user-form />
+        <div class="mt-8">
+            <flux:callout variant="ghost">
+                <flux:text>
+                    {{ __('Want to delete your account?') }}
+                    <flux:link :href="route('delete-account.show')" wire:navigate>{{ __('Go to Delete Account page') }}</flux:link>
+                </flux:text>
+            </flux:callout>
+        </div>
     </x-settings.layout>
 </section>
