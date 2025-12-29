@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Services\TeamOrganisationFinderService;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
-final class CrossOrganisationApproverResolver implements ApproverResolverInterface
+final readonly class CrossOrganisationApproverResolver implements ApproverResolverInterface
 {
     public function __construct(
         private TeamOrganisationFinderService $organisationFinder,

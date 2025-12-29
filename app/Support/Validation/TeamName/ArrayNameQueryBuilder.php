@@ -23,7 +23,7 @@ final class ArrayNameQueryBuilder implements NameQueryBuilderInterface
         $query->where(static function (Builder $q) use ($names): void {
             collect($names)
                 ->filter() // Automatically removes null/empty values
-                ->each(fn ($value, $locale) => $q->orWhere("name->{$locale}", $value));
+                ->each(static fn ($value, $locale) => $q->orWhere("name->{$locale}", $value));
         });
     }
 }

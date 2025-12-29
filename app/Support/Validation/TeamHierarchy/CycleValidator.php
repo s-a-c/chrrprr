@@ -8,7 +8,7 @@ use App\Models\Team;
 use App\Services\TeamHierarchyTraversalService;
 use Illuminate\Validation\ValidationException;
 
-final class CycleValidator implements HierarchyValidatorInterface
+final readonly class CycleValidator implements HierarchyValidatorInterface
 {
     public function __construct(
         private TeamHierarchyTraversalService $traversalService,

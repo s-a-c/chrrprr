@@ -26,7 +26,7 @@ final readonly class TeamOrganisationFinderService
         }
 
         return $this->getAncestry($team)
-            ->first(fn (Team $ancestor) => $ancestor->type === TeamType::ORGANISATION);
+            ->first(static fn (Team $ancestor): bool => $ancestor->type === TeamType::ORGANISATION);
     }
 
     /**
@@ -35,7 +35,7 @@ final readonly class TeamOrganisationFinderService
     public function isCrossOrganisationMove(Team $team, ?Team $newParent): bool
     {
         $sourceOrg = $this->findOrganisation($team);
-        $targetOrg = $newParent ? $this->findOrganisation($newParent) : null;
+        $targetOrg = $newParent instanceof Team ? $this->findOrganisation($newParent) : null;
 
         if (! $sourceOrg || ! $targetOrg) {
             return false;

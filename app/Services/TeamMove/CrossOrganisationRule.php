@@ -7,7 +7,7 @@ namespace App\Services\TeamMove;
 use App\Models\Team;
 use App\Services\TeamOrganisationFinderService;
 
-final class CrossOrganisationRule implements ApprovalRuleInterface
+final readonly class CrossOrganisationRule implements ApprovalRuleInterface
 {
     public function __construct(
         private TeamOrganisationFinderService $organisationFinder,

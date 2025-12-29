@@ -24,7 +24,7 @@ final readonly class UserPresenter
         return Str::of($user->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn (string $word) => Str::substr($word, 0, 1))
+            ->map(static fn (string $word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\TeamMove;
 
 use App\Models\Team;
-use Illuminate\Support\Collection;
 
 /**
  * Engine for determining if team moves require approval.
@@ -34,7 +33,7 @@ final readonly class ApprovalDecisionEngine
 
         // Use 'contains' to stop at first rule that returns true
         return collect($this->rules)
-            ->contains(fn (ApprovalRuleInterface $rule) => $rule->requiresApproval(
+            ->contains(static fn (ApprovalRuleInterface $rule): bool => $rule->requiresApproval(
                 $team,
                 $newParent,
                 $enterprise

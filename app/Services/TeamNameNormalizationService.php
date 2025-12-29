@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Team;
-use Illuminate\Support\Collection;
 
 /**
  * Service for normalizing team names using collection pipelines.
@@ -25,8 +24,8 @@ final readonly class TeamNameNormalizationService
 
         // Use collection pipeline instead of nested if/else
         return collect([$nameRaw])
-            ->filter(fn ($name) => $this->isValidStringName($name))
-            ->map(fn (string $name) => $this->processStringName($name))
+            ->filter($this->isValidStringName(...))
+            ->map($this->processStringName(...))
             ->first() ?? $this->getTeamNameFallback($team);
     }
 
@@ -65,7 +64,7 @@ final readonly class TeamNameNormalizationService
     private function extractStringPairs(array $decoded): array
     {
         return collect($decoded)
-            ->filter(fn ($value, $key) => is_string($key) && is_string($value))
+            ->filter(static fn ($value, $key): bool => is_string($key) && is_string($value))
             ->toArray();
     }
 

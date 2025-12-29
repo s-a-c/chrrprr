@@ -62,7 +62,7 @@ final readonly class TeamHierarchyTraversalService
 
         return $children
             ->merge(
-                $children->flatMap(fn ($child) => $this->getDescendants($child))
+                $children->flatMap($this->getDescendants(...))
             );
     }
 

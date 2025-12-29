@@ -8,7 +8,7 @@ use App\Models\Team;
 use App\Services\TeamHierarchyTraversalService;
 use Illuminate\Validation\ValidationException;
 
-final class DepthValidator implements HierarchyValidatorInterface
+final readonly class DepthValidator implements HierarchyValidatorInterface
 {
     public function __construct(
         private TeamHierarchyTraversalService $traversalService,

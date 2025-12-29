@@ -7,7 +7,6 @@ namespace App\Services\TeamMove;
 use App\Actions\Teams\MoveTeam;
 use App\Models\TeamMoveApproval;
 use App\Models\User;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 

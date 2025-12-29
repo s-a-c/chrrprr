@@ -17,7 +17,7 @@ use App\Models\Team;
  */
 final readonly class TeamTypeResolutionService
 {
-    private const TYPE_MAP = [
+    private const array TYPE_MAP = [
         Enterprise::class => 'enterprise',
         Organisation::class => 'organisation',
         Division::class => 'division',
@@ -34,11 +34,11 @@ final readonly class TeamTypeResolutionService
 
         // Use collection pipeline instead of nested if/else
         return collect([
-            fn () => $type instanceof TeamType ? $type->value : null,
-            fn () => is_string($type) ? $type : null,
-            fn () => $this->getTypeFromModel($team),
+            static fn () => $type instanceof TeamType ? $type->value : null,
+            static fn (): ?string => is_string($type) ? $type : null,
+            fn (): ?string => $this->getTypeFromModel($team),
         ])
-            ->map(fn (callable $resolver) => $resolver())
+            ->map(static fn (callable $resolver): ?string => $resolver())
             ->filter()
             ->first();
     }

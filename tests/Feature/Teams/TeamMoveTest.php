@@ -24,16 +24,16 @@ final class TeamMoveTest extends TestCase
             'tenant_id' => $enterprise1->id,
         ]);
 
-        static::assertEquals($enterprise1->id, $organisation->parent_id);
-        static::assertEquals($enterprise1->id, $organisation->tenant_id);
+        self::assertEquals($enterprise1->id, $organisation->parent_id);
+        self::assertEquals($enterprise1->id, $organisation->tenant_id);
 
         // Move to Enterprise 2
         $organisation->parent_id = $enterprise2->id;
         $organisation->save();
 
         $organisation->refresh();
-        static::assertEquals($enterprise2->id, $organisation->parent_id);
-        static::assertEquals($enterprise2->id, $organisation->tenant_id);
+        self::assertEquals($enterprise2->id, $organisation->parent_id);
+        self::assertEquals($enterprise2->id, $organisation->tenant_id);
     }
 
     public function test_cannot_move_enterprise_to_have_a_parent(): void

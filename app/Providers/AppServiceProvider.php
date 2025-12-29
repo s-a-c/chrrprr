@@ -31,7 +31,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->singleton(TeamOrganisationFinderService::class);
 
         // Register ApprovalDecisionEngine with rules
-        $this->app->singleton(ApprovalDecisionEngine::class, function ($app) {
+        $this->app->singleton(static function ($app): ApprovalDecisionEngine {
             $organisationFinder = $app->make(TeamOrganisationFinderService::class);
             $rules = [
                 new DescendantCountRule(),
@@ -43,11 +43,9 @@ final class AppServiceProvider extends ServiceProvider
         });
 
         // Register ApproverResolverFactory
-        $this->app->singleton(ApproverResolverFactory::class, function ($app) {
-            return new ApproverResolverFactory(
-                $app->make(TeamOrganisationFinderService::class)
-            );
-        });
+        $this->app->singleton(ApproverResolverFactory::class, static fn ($app): ApproverResolverFactory => new ApproverResolverFactory(
+            $app->make(TeamOrganisationFinderService::class)
+        ));
 
         // Register TeamMoveRequestService
         $this->app->singleton(TeamMoveRequestService::class);

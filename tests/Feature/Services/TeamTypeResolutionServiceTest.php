@@ -9,6 +9,7 @@ use App\Models\Division;
 use App\Models\Enterprise;
 use App\Models\Organisation;
 use App\Models\Project;
+use App\Models\Team;
 use App\Services\TeamTypeResolutionService;
 
 it('resolves type from TeamType enum', function (): void {
@@ -50,7 +51,7 @@ it('resolves all team types correctly', function (): void {
 });
 
 it('returns null for unknown team class', function (): void {
-    $team = new class extends \App\Models\Team {};
+    $team = new class extends Team {};
 
     $service = new TeamTypeResolutionService();
     $result = $service->resolve($team);

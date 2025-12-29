@@ -14,7 +14,7 @@ final class ParentTypeValidator implements HierarchyValidatorInterface
     {
         $parent = $this->resolveParent($team);
 
-        if (! $parent) {
+        if (! $parent instanceof Team) {
             return;
         }
 

@@ -23,7 +23,7 @@ trait HasTeamHierarchy
         $this->children()
             ->withoutGlobalScopes()
             ->get()
-            ->each(function (Team $child) use ($newTenantId): void {
+            ->each(static function (Team $child) use ($newTenantId): void {
                 $child->tenant_id = $newTenantId;
                 $child->save(); // Triggers updated recursively
             });
@@ -54,7 +54,7 @@ trait HasTeamHierarchy
      */
     public function isDescendantOf(Team $team): bool
     {
-        return app(TeamHierarchyTraversalService::class)
+        return resolve(TeamHierarchyTraversalService::class)
             ->isDescendantOf($this, $team);
     }
 
@@ -67,7 +67,7 @@ trait HasTeamHierarchy
      */
     public function getDepth(): int
     {
-        return app(TeamHierarchyTraversalService::class)
+        return resolve(TeamHierarchyTraversalService::class)
             ->getDepth($this);
     }
 
@@ -81,13 +81,13 @@ trait HasTeamHierarchy
         return collect([new EnterpriseParentValidator()])
             ->when(
                 $this->type !== TeamType::ENTERPRISE,
-                fn (Collection $validators) => $validators->concat([
+                static fn (Collection $validators) => $validators->concat([
                     new ParentTypeValidator(),
                     new CycleValidator(
-                        app(TeamHierarchyTraversalService::class)
+                        resolve(TeamHierarchyTraversalService::class)
                     ),
                     new DepthValidator(
-                        app(TeamHierarchyTraversalService::class)
+                        resolve(TeamHierarchyTraversalService::class)
                     ),
                 ])
             );

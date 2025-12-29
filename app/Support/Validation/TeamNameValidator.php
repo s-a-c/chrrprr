@@ -13,7 +13,7 @@ use App\Support\Validation\TeamName\StringNameQueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 
-final class TeamNameValidator
+final readonly class TeamNameValidator
 {
     public function __construct(
         private TeamNameNormalizationService $normalizationService,

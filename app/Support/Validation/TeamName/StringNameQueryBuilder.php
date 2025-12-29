@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 final class StringNameQueryBuilder implements NameQueryBuilderInterface
 {
-    private const LOCALES = ['en', 'es', 'fr', 'de'];
+    private const array LOCALES = ['en', 'es', 'fr', 'de'];
 
     public function applyConstraints(Builder $query, mixed $name, Team $team): void
     {
@@ -24,7 +24,7 @@ final class StringNameQueryBuilder implements NameQueryBuilderInterface
 
         $query->where(static function (Builder $q) use ($name): void {
             collect(self::LOCALES)
-                ->each(fn (string $locale) => $q->orWhere("name->{$locale}", $name));
+                ->each(static fn (string $locale) => $q->orWhere("name->{$locale}", $name));
 
             $q->orWhereJsonContains('name', $name);
         });
