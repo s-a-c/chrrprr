@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services\TeamMove;
 
-use App\Enums\TeamType;
 use App\Models\Team;
 use App\Models\User;
+use App\Services\TeamOrganisationFinderService;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
 final class SameOrganisationApproverResolver implements ApproverResolverInterface
 {
+    public function __construct(
+        private TeamOrganisationFinderService $organisationFinder,
+    ) {}
+
     /**
      * Resolve approvers for same-organisation moves.
      *
@@ -18,27 +22,9 @@ final class SameOrganisationApproverResolver implements ApproverResolverInterfac
      */
     public function resolve(Team $team, ?Team $newParent): array
     {
-        $organisation = $this->findOrganisation($team);
+        $organisation = $this->organisationFinder->findOrganisation($team);
 
         return $organisation instanceof Team ? $this->getOrganisationAdmins($organisation) : [];
-    }
-
-    /**
-     * Find the organisation that contains a team.
-     */
-    private function findOrganisation(Team $team): ?Team
-    {
-        $current = $team;
-
-        while ($current) {
-            if ($current->type === TeamType::ORGANISATION) {
-                return $current;
-            }
-
-            $current = $current->parent;
-        }
-
-        return null;
     }
 
     /**

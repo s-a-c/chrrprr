@@ -10,6 +10,7 @@ use App\Enums\UserStatus;
 use App\Models\Builders\UserBuilder;
 use App\Models\Concerns\HasTranslatableAttributes;
 use App\Models\Concerns\HasUlid;
+use App\Models\Concerns\ManagesUserContext;
 use App\Models\Concerns\ProtectsKeyRoles;
 use App\Observers\UserObserver;
 use Database\Factories\UserFactory;
@@ -20,12 +21,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Override;
-use Spatie\LaravelMarkdown\MarkdownRenderer;
 use Spatie\Permission\Traits\HasRoles;
-use Stevebauman\Purify\Facades\Purify;
 
 #[ObservedBy(UserObserver::class)]
 final class User extends Authenticatable
@@ -40,17 +38,13 @@ final class User extends Authenticatable
     use HasRoles;
     use HasTranslatableAttributes;
     use HasUlid;
+    use ManagesUserContext;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
     /** @var array<int, string> */
     public array $translatable = [
         'bio',
-    ];
-
-    /** @var list<string> */
-    protected $appends = [
-        'bio_html',
     ];
 
     /**
@@ -81,18 +75,6 @@ final class User extends Authenticatable
         'two_factor_recovery_codes',
         'remember_token',
     ];
-
-    /**
-     * Get the user's initials
-     */
-    public function initials(): string
-    {
-        return Str::of($this->name)
-            ->explode(' ')
-            ->take(2)
-            ->map(static fn (string $word) => Str::substr($word, 0, 1))
-            ->implode('');
-    }
 
     /**
      * Determine if the user is protected from deletion.
@@ -178,38 +160,6 @@ final class User extends Authenticatable
     }
 
     /**
-     * Switch the user's current context to a specific organisation.
-     */
-    public function switchContext(Organisation $organisation): bool
-    {
-        if (! $this->accessibleOrganisations()->where('organisation_id', $organisation->id)->exists()) {
-            return false;
-        }
-
-        return $this->update(['current_context_id' => $organisation->id]);
-    }
-
-    /**
-     * Validate the user's current context and default if necessary.
-     */
-    public function validateContext(): void
-    {
-        if (
-            ! $this->current_context_id
-            || ! $this->accessibleOrganisations()->where('organisation_id', $this->current_context_id)->exists()
-        ) {
-            $firstOrg = $this->accessibleOrganisations()->first();
-            if ($firstOrg) {
-                $this->update(['current_context_id' => $firstOrg->id]);
-
-                return;
-            }
-
-            $this->update(['current_context_id' => null]);
-        }
-    }
-
-    /**
      * Create a new Eloquent query builder for the model.
      *
      * @param  Builder  $query
@@ -246,21 +196,5 @@ final class User extends Authenticatable
             'current_context_id' => 'integer',
             'bio' => 'array',
         ];
-    }
-
-    /**
-     * Get the bio HTML attribute (rendered from markdown).
-     */
-    protected function getBioHtmlAttribute(): ?string
-    {
-        $bio = $this->getTranslation('bio', app()->getLocale());
-
-        if ($bio === null || $bio === '') {
-            return null;
-        }
-
-        $html = resolve(MarkdownRenderer::class)->toHtml($bio);
-
-        return Purify::clean($html);
     }
 }

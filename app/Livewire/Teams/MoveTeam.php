@@ -7,7 +7,7 @@ namespace App\Livewire\Teams;
 use App\Http\Requests\MoveTeamRequest;
 use App\Models\Team;
 use App\Models\TeamMoveApproval;
-use App\Services\TeamMoveService;
+use App\Services\TeamMove\TeamMoveRequestService;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -43,7 +43,7 @@ final class MoveTeam extends Component
 
         try {
             $team = Team::query()->where('ulid', $this->teamUlid)->firstOrFail();
-            $service = resolve(TeamMoveService::class);
+            $service = resolve(TeamMoveRequestService::class);
 
             $this->result = $service->requestMove(
                 $team,

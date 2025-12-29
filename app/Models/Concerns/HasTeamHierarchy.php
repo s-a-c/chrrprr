@@ -6,24 +6,33 @@ namespace App\Models\Concerns;
 
 use App\Enums\TeamType;
 use App\Models\Team;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
+use App\Services\TeamHierarchyTraversalService;
+use App\Support\Validation\TeamHierarchy\CycleValidator;
+use App\Support\Validation\TeamHierarchy\DepthValidator;
+use App\Support\Validation\TeamHierarchy\EnterpriseParentValidator;
+use App\Support\Validation\TeamHierarchy\ParentTypeValidator;
+use Illuminate\Support\Collection;
 
 trait HasTeamHierarchy
 {
     /**
-     * Update tenant IDs for all descendants recursively.
+     * Update tenant IDs for all descendants recursively using collections.
      */
     public function updateDescendantTenants(string $newTenantId): void
     {
-        foreach ($this->children()->withoutGlobalScopes()->get() as $child) {
-            $child->tenant_id = $newTenantId;
-            $child->save(); // Triggers updated recursively
-        }
+        $this->children()
+            ->withoutGlobalScopes()
+            ->get()
+            ->each(function (Team $child) use ($newTenantId): void {
+                $child->tenant_id = $newTenantId;
+                $child->save(); // Triggers updated recursively
+            });
     }
 
     /**
-     * Validate team hierarchy rules.
+     * Validate team hierarchy rules using collection-based validator orchestration.
+     *
+     * Replaces multiple if/else branches with collection pipeline.
      */
     public function validateHierarchy(): void
     {
@@ -33,61 +42,59 @@ trait HasTeamHierarchy
             return;
         }
 
-        $this->validateEnterpriseParent($type);
-
-        if ($type === TeamType::ENTERPRISE) {
-            return;
-        }
-
-        $parent = $this->resolveParent();
-
-        if (! $parent) {
-            return;
-        }
-
-        $this->validateParentType($type, $parent);
-        $this->validateNoCycles($parent);
-        $this->validateDepth($parent);
+        // Use collection pipeline with Higher Order Messaging
+        $this->getValidators()
+            ->each->validate($this); // Higher Order Messaging eliminates loop complexity
     }
 
     /**
      * Check if this team is a descendant of the given team.
+     *
+     * Delegates to traversal service for collection-based implementation.
      */
     public function isDescendantOf(Team $team): bool
     {
-        $currentParentId = $this->parent_id;
-
-        while ($currentParentId) {
-            if ((int) $currentParentId === (int) $team->id) {
-                return true;
-            }
-
-            $currentParentId = DB::table('teams')->where('id', $currentParentId)->value('parent_id');
-        }
-
-        return false;
+        return app(TeamHierarchyTraversalService::class)
+            ->isDescendantOf($this, $team);
     }
 
     /**
      * Get the depth of this team in the hierarchy.
      *
+     * Delegates to traversal service for collection-based implementation.
+     *
      * @psalm-return int<1, max>
      */
     public function getDepth(): int
     {
-        $depth = 1;
-        $currentParentId = $this->parent_id;
-
-        while ($currentParentId) {
-            $depth++;
-            $currentParentId = DB::table('teams')->where('id', $currentParentId)->value('parent_id');
-        }
-
-        return $depth;
+        return app(TeamHierarchyTraversalService::class)
+            ->getDepth($this);
     }
 
     /**
-     * Normalize type to enum (handles both string and enum HasTeamHierarchy).
+     * Get validators as a collection, conditionally adding validators based on team type.
+     *
+     * Uses collection 'when' method to conditionally build validator list.
+     */
+    private function getValidators(): Collection
+    {
+        return collect([new EnterpriseParentValidator()])
+            ->when(
+                $this->type !== TeamType::ENTERPRISE,
+                fn (Collection $validators) => $validators->concat([
+                    new ParentTypeValidator(),
+                    new CycleValidator(
+                        app(TeamHierarchyTraversalService::class)
+                    ),
+                    new DepthValidator(
+                        app(TeamHierarchyTraversalService::class)
+                    ),
+                ])
+            );
+    }
+
+    /**
+     * Normalize type to enum (handles both string and enum).
      */
     private function normalizeType(): ?TeamType
     {
@@ -102,98 +109,5 @@ trait HasTeamHierarchy
         }
 
         return null;
-    }
-
-    /**
-     * Validate that Enterprise doesn't have a parent.
-     */
-    private function validateEnterpriseParent(TeamType $type): void
-    {
-        if ($type === TeamType::ENTERPRISE && $this->parent_id !== null) {
-            throw ValidationException::withMessages([
-                'parent_id' => ['Enterprises cannot have a parent team.'],
-            ]);
-        }
-    }
-
-    /**
-     * Resolve the parent team, loading if necessary.
-     */
-    private function resolveParent(): ?Team
-    {
-        if ($this->parent_id === null) {
-            throw ValidationException::withMessages([
-                'parent_id' => ['This team type requires a parent team.'],
-            ]);
-        }
-
-        $parent = $this->parent;
-
-        if (! $parent) {
-            return $this
-                ->newQuery()
-                ->withoutGlobalScopes()
-                ->where('id', $this->parent_id)
-                ->whereNull('deleted_at')
-                ->first();
-        }
-
-        return $parent;
-    }
-
-    /**
-     * Validate that parent type matches expected type for this team type.
-     */
-    private function validateParentType(TeamType $type, Team $parent): void
-    {
-        $validParentType = match ($type) {
-            TeamType::ORGANISATION => TeamType::ENTERPRISE,
-            TeamType::DIVISION => TeamType::ORGANISATION,
-            TeamType::DEPARTMENT => TeamType::DIVISION,
-            TeamType::PROJECT => TeamType::DEPARTMENT,
-            default => null,
-        };
-
-        if ($validParentType && $parent->type !== $validParentType) {
-            throw ValidationException::withMessages([
-                'parent_id' => [
-                    "{$type->value} must belong to a {$validParentType->value}, but belongs to {$parent->type->value}.",
-                ],
-            ]);
-        }
-    }
-
-    /**
-     * Validate that moving wouldn't create a cycle.
-     */
-    private function validateNoCycles(Team $parent): void
-    {
-        if (! $this->id) {
-            return;
-        }
-
-        if ((int) $this->parent_id === (int) $this->id) {
-            throw ValidationException::withMessages([
-                'parent_id' => ['A team cannot be its own parent.'],
-            ]);
-        }
-
-        if ($parent->isDescendantOf($this)) {
-            throw ValidationException::withMessages([
-                'parent_id' => ['A team cannot be moved into its own descendant (would create a cycle).'],
-            ]);
-        }
-    }
-
-    /**
-     * Validate that depth doesn't exceed maximum.
-     */
-    private function validateDepth(Team $parent): void
-    {
-        if ($parent->getDepth() >= 10) {
-            throw ValidationException::withMessages([
-                'parent_id' => ['Team hierarchy depth cannot exceed 10 levels.'],
-            ]);
-        }
     }
 }

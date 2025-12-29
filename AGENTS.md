@@ -49,7 +49,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Documentation Files
 - You must only create documentation files if explicitly requested by the user.
 
-
 === boost rules ===
 
 ## Laravel Boost
@@ -86,7 +85,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 4. Mixed Queries - query=middleware "rate limit" - "middleware" AND exact phrase "rate limit"
 5. Multiple Queries - queries=["authentication", "middleware"] - ANY of these terms
 
-
 === php rules ===
 
 ## PHP
@@ -119,7 +117,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
 
-
 === herd rules ===
 
 ## Laravel Herd
@@ -127,14 +124,12 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - The application is served by Laravel Herd and will be available at: https?://[kebab-case-project-dir].test. Use the `get-absolute-url` tool to generate URLs for the user to ensure valid URLs.
 - You must not run any commands to make the site available via HTTP(s). It is _always_ available through Laravel Herd.
 
-
 === tests rules ===
 
 ## Test Enforcement
 
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
 - Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test` with a specific filename or filter.
-
 
 === folio/core rules ===
 
@@ -159,18 +154,15 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 - Add a 'name' to each new Folio page at the very top of the file so it has a named route available for other parts of the codebase to use.
 
-
 <code-snippet name="Adding named route to Folio page" lang="php">
 use function Laravel\Folio\name;
 
 name('products.index');
 </code-snippet>
 
-
 ### Support & Documentation
 - Folio supports: middleware, serving pages from multiple paths, subdomain routing, named routes, nested routes, index routes, route parameters, and route model binding.
 - If available, use Boost's `search-docs` tool to use Folio to its full potential and help the user effectively.
-
 
 <code-snippet name="Folio Middleware Example" lang="php">
 use function Laravel\Folio\{name, middleware};
@@ -179,7 +171,6 @@ name('admin.products');
 middleware(['auth', 'verified', 'can:manage-products']);
 ?>
 </code-snippet>
-
 
 === laravel/core rules ===
 
@@ -226,7 +217,6 @@ middleware(['auth', 'verified', 'can:manage-products']);
 ### Vite Error
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `bun run build` or ask the user to run `bun run dev` or `composer run dev`.
 
-
 === laravel/v12 rules ===
 
 ## Laravel 12
@@ -248,7 +238,6 @@ middleware(['auth', 'verified', 'can:manage-products']);
 ### Models
 - Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
 
-
 === fluxui-pro/core rules ===
 
 ## Flux UI Pro
@@ -264,14 +253,12 @@ middleware(['auth', 'verified', 'can:manage-products']);
     <flux:button variant="primary"/>
 </code-snippet>
 
-
 ### Available Components
 This is correct as of Boost installation, but there may be additional components within the codebase.
 
 <available-flux-components>
 accordion, autocomplete, avatar, badge, brand, breadcrumbs, button, calendar, callout, card, chart, checkbox, command, composer, context, date-picker, dropdown, editor, field, file-upload, heading, icon, input, kanban, modal, navbar, otp-input, pagination, pillbox, popover, profile, radio, select, separator, skeleton, slider, switch, table, tabs, text, textarea, time-picker, toast, tooltip
 </available-flux-components>
-
 
 === livewire/core rules ===
 
@@ -301,7 +288,6 @@ accordion, autocomplete, avatar, badge, brand, breadcrumbs, button, calendar, ca
     public function updatedSearch() { $this->resetPage(); }
 </code-snippet>
 
-
 ## Testing Livewire
 
 <code-snippet name="Example Livewire component test" lang="php">
@@ -313,12 +299,10 @@ accordion, autocomplete, avatar, badge, brand, breadcrumbs, button, calendar, ca
         ->assertStatus(200);
 </code-snippet>
 
-
     <code-snippet name="Testing a Livewire component exists within a page" lang="php">
         $this->get('/posts/create')
         ->assertSeeLivewire(CreatePost::class);
     </code-snippet>
-
 
 === pint/core rules ===
 
@@ -326,7 +310,6 @@ accordion, autocomplete, avatar, badge, brand, breadcrumbs, button, calendar, ca
 
 - You must run `vendor/bin/pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/pint --test`, simply run `vendor/bin/pint` to fix any formatting issues.
-
 
 === pest/core rules ===
 
@@ -380,7 +363,6 @@ it('has emails', function (string $email) {
 ]);
 </code-snippet>
 
-
 === pest/v4 rules ===
 
 ## Pest 4
@@ -425,7 +407,6 @@ $pages = visit(['/', '/about', '/contact']);
 $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 </code-snippet>
 
-
 === tailwindcss/core rules ===
 
 ## Tailwind Core
@@ -446,10 +427,8 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
         </div>
     </code-snippet>
 
-
 ### Dark Mode
 - If existing pages and components support dark mode, new pages and components must support dark mode in a similar way, typically using `dark:`.
-
 
 === tailwindcss/v4 rules ===
 
@@ -473,7 +452,6 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
    + @import "tailwindcss";
 </code-snippet>
 
-
 ### Replaced Utilities
 - Tailwind v4 removed deprecated utilities. Do not use the deprecated option - use the replacement.
 - Opacity values are still numeric.
@@ -492,24 +470,3 @@ $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 | decoration-slice | box-decoration-slice |
 | decoration-clone | box-decoration-clone |
 </laravel-boost-guidelines>
-
-[byterover-mcp]
-
-[byterover-mcp]
-
-You are given two tools from Byterover MCP server, including
-## 1. `byterover-store-knowledge`
-You `MUST` always use this tool when:
-
-+ Learning new patterns, APIs, or architectural decisions from the codebase
-+ Encountering error solutions or debugging techniques
-+ Finding reusable code patterns or utility functions
-+ Completing any significant task or plan implementation
-
-## 2. `byterover-retrieve-knowledge`
-You `MUST` always use this tool when:
-
-+ Starting any new task or implementation to gather relevant context
-+ Before making architectural decisions to understand existing patterns
-+ When debugging issues to check for previous solutions
-+ Working with unfamiliar parts of the codebase

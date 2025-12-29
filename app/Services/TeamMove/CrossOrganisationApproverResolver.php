@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services\TeamMove;
 
-use App\Enums\TeamType;
 use App\Models\Team;
 use App\Models\User;
+use App\Services\TeamOrganisationFinderService;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
 final class CrossOrganisationApproverResolver implements ApproverResolverInterface
 {
+    public function __construct(
+        private TeamOrganisationFinderService $organisationFinder,
+    ) {}
+
     /**
      * Resolve approvers for cross-organisation moves.
      *
@@ -18,8 +22,8 @@ final class CrossOrganisationApproverResolver implements ApproverResolverInterfa
      */
     public function resolve(Team $team, ?Team $newParent): array
     {
-        $sourceOrg = $this->findOrganisation($team);
-        $targetOrg = $newParent instanceof Team ? $this->findOrganisation($newParent) : null;
+        $sourceOrg = $this->organisationFinder->findOrganisation($team);
+        $targetOrg = $newParent instanceof Team ? $this->organisationFinder->findOrganisation($newParent) : null;
 
         $approvers = [];
         if ($sourceOrg instanceof Team) {
@@ -33,24 +37,6 @@ final class CrossOrganisationApproverResolver implements ApproverResolverInterfa
         }
 
         return array_unique($approvers);
-    }
-
-    /**
-     * Find the organisation that contains a team.
-     */
-    private function findOrganisation(Team $team): ?Team
-    {
-        $current = $team;
-
-        while ($current) {
-            if ($current->type === TeamType::ORGANISATION) {
-                return $current;
-            }
-
-            $current = $current->parent;
-        }
-
-        return null;
     }
 
     /**
