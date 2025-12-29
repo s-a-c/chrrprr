@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
+use App\Models\Department;
 use App\Models\Division;
 use App\Models\Enterprise;
 use App\Models\Organisation;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 beforeEach(function (): void {
     $this->enterprise = Enterprise::factory()->create();
     $this->user = User::factory()->create(['tenant_id' => $this->enterprise->id]);
 
-    Spatie\Permission\Models\Role::create(['name' => 'enterprise_admin']);
+    Role::query()->firstOrCreate(['name' => 'enterprise_admin', 'guard_name' => 'web']);
 
     $this->orgA = Organisation::factory()->create(['parent_id' => $this->enterprise->id]);
     $this->orgB = Organisation::factory()->create(['parent_id' => $this->enterprise->id]);
@@ -37,14 +39,16 @@ test('privileged users can bypass context scope', function (): void {
 
     // Without bypass - should only see Org A context
     $teamsInContext = Team::inContext()->get();
-    expect($teamsInContext->pluck('id'))->toContain($this->orgA->id)
+    expect($teamsInContext->pluck('id'))
+        ->toContain($this->orgA->id)
         ->toContain($divisionA->id)
         ->not->toContain($this->orgB->id)
         ->not->toContain($divisionB->id);
 
     // With bypass - should see all teams
     $allTeams = Team::withoutContextScope()->get();
-    expect($allTeams->pluck('id'))->toContain($this->orgA->id)
+    expect($allTeams->pluck('id'))
+        ->toContain($this->orgA->id)
         ->toContain($this->orgB->id)
         ->toContain($divisionA->id)
         ->toContain($divisionB->id);
@@ -60,14 +64,16 @@ test('regular users cannot bypass context scope', function (): void {
 
     // Regular users should only see context-scoped teams
     $teamsInContext = Team::inContext()->get();
-    expect($teamsInContext->pluck('id'))->toContain($this->orgA->id)
+    expect($teamsInContext->pluck('id'))
+        ->toContain($this->orgA->id)
         ->toContain($divisionA->id)
         ->not->toContain($this->orgB->id)
         ->not->toContain($divisionB->id);
 
     // withoutContextScope() should still respect context for regular users
     // (implementation may vary, but security should be maintained)
-    $allTeams = Team::withoutContextScope()->get();
+    Team::withoutContextScope()->get();
+
     // The method exists but may not actually bypass for non-privileged users
     // This depends on implementation details
 });
@@ -80,8 +86,8 @@ test('enterprise admin can view all teams regardless of context', function (): v
     // Create teams in both organisations
     $divisionA = Division::factory()->create(['parent_id' => $this->orgA->id]);
     $divisionB = Division::factory()->create(['parent_id' => $this->orgB->id]);
-    $departmentA = App\Models\Department::factory()->create(['parent_id' => $divisionA->id]);
-    $departmentB = App\Models\Department::factory()->create(['parent_id' => $divisionB->id]);
+    $departmentA = Department::factory()->create(['parent_id' => $divisionA->id]);
+    $departmentB = Department::factory()->create(['parent_id' => $divisionB->id]);
 
     // Set context to Org A
     $this->user->switchContext($this->orgA);
@@ -89,7 +95,8 @@ test('enterprise admin can view all teams regardless of context', function (): v
     // Enterprise admin should be able to see all teams with bypass
     $allTeams = Team::withoutContextScope()->get();
 
-    expect($allTeams->pluck('id'))->toContain($this->orgA->id)
+    expect($allTeams->pluck('id'))
+        ->toContain($this->orgA->id)
         ->toContain($this->orgB->id)
         ->toContain($divisionA->id)
         ->toContain($divisionB->id)
@@ -111,11 +118,10 @@ test('context bypass respects tenant isolation', function (): void {
 
     // Even with bypass, should not see teams from other enterprises
     // Filter by user's tenant_id to respect tenant isolation
-    $allTeams = Team::withoutContextScope()
-        ->where('tenant_id', $this->user->tenant_id)
-        ->get();
+    $allTeams = Team::withoutContextScope()->where('tenant_id', $this->user->tenant_id)->get();
 
-    expect($allTeams->pluck('id'))->not->toContain($otherEnterprise->id)
+    expect($allTeams->pluck('id'))
+        ->not->toContain($otherEnterprise->id)
         ->not->toContain($otherOrg->id)
         ->not->toContain($otherDivision->id);
 });

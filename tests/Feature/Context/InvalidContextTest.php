@@ -61,9 +61,7 @@ test('invalid context defaults to null when no accessible organisations', functi
     $this->user->switchContext($this->orgA);
 
     // Revoke access to all organisations
-    DB::table('user_organisation_access')
-        ->where('user_id', $this->user->id)
-        ->delete();
+    DB::table('user_organisation_access')->where('user_id', $this->user->id)->delete();
 
     // Validate context should set to null
     $this->user->validateContext();

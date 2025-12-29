@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Listeners\ContextRestorationListener;
 use App\Models\Enterprise;
 use App\Models\Organisation;
 use App\Models\User;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\DB;
 
 beforeEach(function (): void {
@@ -74,8 +76,8 @@ test('invalid context auto-correction works on login', function (): void {
     auth()->logout();
 
     // Login should trigger auto-correction via listener
-    $listener = new App\Listeners\ContextRestorationListener();
-    $loginEvent = new Illuminate\Auth\Events\Login('web', $this->user, false);
+    $listener = new ContextRestorationListener();
+    $loginEvent = new Login('web', $this->user, false);
     $listener->handle($loginEvent);
 
     // Refresh user to get updated context
@@ -109,9 +111,7 @@ test('invalid context auto-correction works with middleware', function (): void 
     $inaccessibleOrg = Organisation::factory()->create(['parent_id' => $this->enterprise->id]);
 
     // Set invalid context directly in database (bypassing validation)
-    DB::table('users')
-        ->where('id', $this->user->id)
-        ->update(['current_context_id' => $inaccessibleOrg->id]);
+    DB::table('users')->where('id', $this->user->id)->update(['current_context_id' => $inaccessibleOrg->id]);
 
     // Refresh user model
     $this->user->refresh();

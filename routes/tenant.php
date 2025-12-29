@@ -25,6 +25,6 @@ Route::middleware([
 ])->group(function (): void {
     Route::get(
         '/',
-        fn(): string => 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id'),
+        fn (): string => 'This is your multi-tenant application. The id of the current tenant is '.tenant('id'),
     );
 });

@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Uid\Ulid;
 
 final class GenerateUserUlids extends Command
@@ -36,7 +37,7 @@ final class GenerateUserUlids extends Command
 
         $this->info('Generating ULIDs for users without ULIDs...');
 
-        $query = User::whereNull('ulid')->orWhere('ulid', '');
+        $query = User::query()->whereNull('ulid')->orWhere('ulid', '');
         $total = $query->count();
 
         if ($total === 0) {
@@ -56,7 +57,7 @@ final class GenerateUserUlids extends Command
 
         $processed = 0;
 
-        $query->chunk($batchSize, function ($users) use (&$processed, $dryRun, $bar): void {
+        $query->chunk($batchSize, static function (Collection $users) use (&$processed, $dryRun, $bar): void {
             foreach ($users as $user) {
                 if (! $dryRun) {
                     $user->ulid = Ulid::generate();
@@ -77,9 +78,11 @@ final class GenerateUserUlids extends Command
 
         if ($dryRun) {
             $this->info("Would have generated ULIDs for {$processed} users.");
-        } else {
-            $this->info("Successfully generated ULIDs for {$processed} users.");
+
+            return Command::SUCCESS;
         }
+
+        $this->info("Successfully generated ULIDs for {$processed} users.");
 
         return Command::SUCCESS;
     }

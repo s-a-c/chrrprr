@@ -7,7 +7,7 @@ namespace App\Listeners;
 use App\Models\User;
 use Illuminate\Auth\Events\Login;
 
-class ContextRestorationListener
+final class ContextRestorationListener
 {
     /**
      * Handle the event.

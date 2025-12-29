@@ -1,0 +1,28 @@
+# Mago Analysis Baseline
+# ======================
+# This baseline file records known static analysis issues that are acceptable in the codebase.
+# When mago runs `analyze` with `--baseline`, it will ignore issues listed here and only report new issues.
+#
+# Purpose:
+# - Focus on new analysis issues introduced going forward
+# - Acknowledge existing type checking and static analysis results
+# - Reduce noise from acceptable code patterns
+#
+# Usage:
+#   mago --config mago.toml analyze --baseline mago-analysis-baseline.toml
+#
+# Regeneration:
+#   mago --config mago.toml analyze --generate-baseline --baseline mago-analysis-baseline.toml
+#
+# Last Updated: 2025-01-23
+
+variant = "loose"
+
+# ============================================================================
+# Issue Categories Being Baselined
+# ============================================================================
+#
+# This baseline will be populated when mago analyze is run with --generate-baseline
+# Static analysis issues will be recorded here for future reference.
+#
+

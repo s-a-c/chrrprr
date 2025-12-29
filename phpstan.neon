@@ -21,6 +21,7 @@ parameters:
         - node_modules
         - bootstrap/cache
         - tests/Pest.php
+        - database/migrations
 
     level: max
 

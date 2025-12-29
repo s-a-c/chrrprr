@@ -1,14 +1,13 @@
-<!-- @format -->
+<?php
 
+declare(strict_types=1);
+
+?>
 <?php
 
 use App\Http\Requests\UpdateTeamRequest;
 use App\Models\Team;
 use Livewire\Component;
-
-use function Laravel\Folio\name;
-
-name('teams.edit');
 
 new class extends Component {
     public string $teamUlid = '';
@@ -23,7 +22,7 @@ new class extends Component {
 
     public string $errorMessage = '';
 
-    public null|string $parent_id = null;
+    public ?string $parent_id = null;
 
     public function mount(string $ulid): void
     {
@@ -33,22 +32,22 @@ new class extends Component {
         $this->name = $team->getTranslation('name', app()->getLocale()) ?? '';
         $this->typeLabel = $team->type->label();
         $this->bio = $team->getTranslation('bio', app()->getLocale()) ?? '';
-        $this->lockVersion = (int) $team->lock_version;
-        $this->parent_id = $team->parent_id ? ((string) $team->parent_id) : null;
+        $this->lockVersion = $team->lock_version;
+        $this->parent_id = $team->parent_id ? (string) $team->parent_id : null;
     }
 
     public function save(): void
     {
         $this->errorMessage = '';
 
-        $rules = (new UpdateTeamRequest())->rules();
+        $rules = new UpdateTeamRequest()->rules();
         $this->validate($rules);
 
         try {
             $team = Team::query()->where('ulid', $this->teamUlid)->firstOrFail();
-            $action = app(\App\Actions\Teams\UpdateTeam::class);
+            $action = resolve(\App\Actions\Teams\UpdateTeam::class);
 
-            $team = $action->handle($team, [
+            $action->handle($team, [
                 'lock_version' => max(0, $this->lockVersion),
                 'parent_id' => $this->parent_id ? (int) $this->parent_id : null,
                 'name' => $this->name,
@@ -78,11 +77,7 @@ new class extends Component {
             return Team::all();
         }
 
-        return Team::all()->filter(
-            static fn($team): bool => (
-                ((int) $team->id) !== ((int) $currentTeam->id) && !$team->isDescendantOf($currentTeam)
-            ),
-        );
+        return Team::all()->filter(static fn($team): bool => (int) $team->id !== (int) $currentTeam->id && !$team->isDescendantOf($currentTeam));
     }
 
     /**
@@ -92,7 +87,7 @@ new class extends Component {
     {
         return Team::query()->where('ulid', $this->teamUlid)->first();
     }
-} ?>
+}; ?>
 
 <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
     <flux:heading level="1">Edit Team: {{ $this->name }}</flux:heading>
@@ -119,8 +114,9 @@ new class extends Component {
             <flux:field>
                 <flux:label>Parent Team</flux:label>
                 <flux:select wire:model="parent_id">
-                    @foreach($this->parents as $parent)
-                        <flux:select.option :value="(string) $parent->id">{{ $parent->name }} ({{ $parent->type->value }})</flux:select.option>
+                    @foreach ($this->parents as $parent)
+                        <flux:select.option :value="(string) $parent->id">{{ $parent->name }}
+                            ({{ $parent->type->value }})</flux:select.option>
                     @endforeach
                 </flux:select>
                 <flux:error name="parent_id" />
@@ -140,12 +136,13 @@ new class extends Component {
     </form>
 
     {{-- Bio Display Section --}}
-    @if($this->team)
+    @if ($this->team)
         <div class="mt-12 border-t border-zinc-200 dark:border-zinc-700 pt-8">
             <flux:heading level="2">Biography</flux:heading>
 
-            @if($this->team->bio_html)
-                <div class="mt-4 prose prose-zinc dark:prose-invert max-w-none
+            @if ($this->team->bio_html)
+                <div
+                    class="mt-4 prose prose-zinc dark:prose-invert max-w-none
                     prose-headings:text-zinc-900 dark:prose-headings:text-zinc-100
                     prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-800 dark:hover:prose-a:text-blue-300
                     prose-code:text-zinc-900 dark:prose-code:text-zinc-100

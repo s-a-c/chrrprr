@@ -65,9 +65,7 @@ return [
      *
      * More info: https://commonmark.thephpleague.com/2.4/extensions/overview/
      */
-    'extensions' => [
-        //
-    ],
+    'extensions' => [],
     /*
      * These block renderers should be added to the markdown environment. A valid
      * renderer implements League\CommonMark\Renderer\NodeRendererInterface;

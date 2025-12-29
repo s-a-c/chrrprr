@@ -268,7 +268,7 @@ new class extends Component {
             ],
             [
                 'author' => 'Alice Johnson',
-                'message' => 'Working on something cool with Chirper...',
+                'message' => 'Working on something cool with Chrrprr...',
                 'time' => '3 hours ago'
             ],
         ];

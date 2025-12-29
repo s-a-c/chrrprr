@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 12.43.1.
+ * Generated for Laravel 12.44.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1279,6 +1279,15 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Returns true if the container can return an entry for the given identifier.
+         * 
+         * Returns false otherwise.
+         * 
+         * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
+         * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
+         *
+         * @param string $id Identifier of the entry to look for.
+         * @return bool
          * @static
          */
         public static function has($id)
@@ -4623,7 +4632,15 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Obtains multiple cache items by their unique keys.
+         *
          * @return iterable
+         * @param iterable<string> $keys A list of keys that can be obtained in a single operation.
+         * @param mixed $default Default value to return for keys that do not exist.
+         * @return iterable<string, mixed> A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
+         * @throws \Psr\SimpleCache\InvalidArgumentException
+         *   MUST be thrown if $keys is neither an array nor a Traversable,
+         *   or if any of the $keys are not a legal value.
          * @static
          */
         public static function getMultiple($keys, $default = null)
@@ -4662,7 +4679,17 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
+         *
          * @return bool
+         * @param string $key The key of the item to store.
+         * @param mixed $value The value of the item to store, must be serializable.
+         * @param null|int|\DateInterval $ttl Optional. The TTL value of this item. If no value is sent and
+         *                                      the driver supports TTL then the library may set a default value
+         *                                      for it or let the driver take care of that.
+         * @return bool True on success and false on failure.
+         * @throws \Psr\SimpleCache\InvalidArgumentException
+         *   MUST be thrown if the $key string is not a legal value.
          * @static
          */
         public static function set($key, $value, $ttl = null)
@@ -4686,7 +4713,17 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Persists a set of key => value pairs in the cache, with an optional TTL.
+         *
          * @return bool
+         * @param iterable $values A list of key => value pairs for a multiple-set operation.
+         * @param null|int|\DateInterval $ttl Optional. The TTL value of this item. If no value is sent and
+         *                                       the driver supports TTL then the library may set a default value
+         *                                       for it or let the driver take care of that.
+         * @return bool True on success and false on failure.
+         * @throws \Psr\SimpleCache\InvalidArgumentException
+         *   MUST be thrown if $values is neither an array nor a Traversable,
+         *   or if any of the $values are not a legal value.
          * @static
          */
         public static function setMultiple($values, $ttl = null)
@@ -4830,7 +4867,13 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Delete an item from the cache by its unique key.
+         *
          * @return bool
+         * @param string $key The unique cache key of the item to delete.
+         * @return bool True if the item was successfully removed. False if there was an error.
+         * @throws \Psr\SimpleCache\InvalidArgumentException
+         *   MUST be thrown if the $key string is not a legal value.
          * @static
          */
         public static function delete($key)
@@ -4840,7 +4883,14 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Deletes multiple cache items in a single operation.
+         *
          * @return bool
+         * @param iterable<string> $keys A list of string-based keys to be deleted.
+         * @return bool True if the items were successfully removed. False if there was an error.
+         * @throws \Psr\SimpleCache\InvalidArgumentException
+         *   MUST be thrown if $keys is neither an array nor a Traversable,
+         *   or if any of the $keys are not a legal value.
          * @static
          */
         public static function deleteMultiple($keys)
@@ -4850,7 +4900,10 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Wipes clean the entire cache's keys.
+         *
          * @return bool
+         * @return bool True on success and false on failure.
          * @static
          */
         public static function clear()
@@ -10089,20 +10142,21 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Http\Client\PendingRequest withResponseMiddleware(callable $middleware)
      * @method static \Illuminate\Http\Client\PendingRequest withAttributes(array $attributes)
      * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
+     * @method static \Illuminate\Http\Client\PendingRequest afterResponse(callable|null $callback)
      * @method static \Illuminate\Http\Client\PendingRequest throw(callable|null $callback = null)
      * @method static \Illuminate\Http\Client\PendingRequest throwIf(callable|bool $condition)
      * @method static \Illuminate\Http\Client\PendingRequest throwUnless(callable|bool $condition)
      * @method static \Illuminate\Http\Client\PendingRequest dump()
      * @method static \Illuminate\Http\Client\PendingRequest dd()
-     * @method static void get(string $url, array|string|null $query = null)
-     * @method static void head(string $url, array|string|null $query = null)
-     * @method static void post(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
-     * @method static void patch(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
-     * @method static void put(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
-     * @method static void delete(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface get(string $url, array|string|null $query = null)
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface head(string $url, array|string|null $query = null)
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface post(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface patch(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface put(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
+     * @method static \Illuminate\Http\Client\Response|\GuzzleHttp\Promise\PromiseInterface delete(string $url, array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable $data = [])
      * @method static array pool(callable $callback, int|null $concurrency = null)
      * @method static \Illuminate\Http\Client\Batch batch(callable $callback)
-     * @method static void send(string $method, string $url, array $options = [])
+     * @method static \Illuminate\Http\Client\Response|\Illuminate\Http\Client\Promises\LazyPromise send(string $method, string $url, array $options = [])
      * @method static \GuzzleHttp\Client buildClient()
      * @method static \GuzzleHttp\Client createClient(\GuzzleHttp\HandlerStack $handlerStack)
      * @method static \GuzzleHttp\HandlerStack buildHandlerStack()
@@ -10110,7 +10164,7 @@ namespace Illuminate\Support\Facades {
      * @method static \Closure buildBeforeSendingHandler()
      * @method static \Closure buildRecorderHandler()
      * @method static \Closure buildStubHandler()
-     * @method static \GuzzleHttp\Psr7\RequestInterface runBeforeSendingCallbacks(\GuzzleHttp\Psr7\RequestInterface $request, array $options)
+     * @method static \Psr\Http\Message\RequestInterface runBeforeSendingCallbacks(\Psr\Http\Message\RequestInterface $request, array $options)
      * @method static array mergeOptions(array ...$options)
      * @method static \Illuminate\Http\Client\PendingRequest stub(callable $callback)
      * @method static bool isAllowedRequestUrl(string $url)
@@ -28041,6 +28095,83 @@ namespace Livewire\Features\SupportTesting {
             }
     }
 
+namespace Filament\Pages {
+    /**
+     */
+    class Dashboard extends \Filament\Pages\Page {
+            }
+    /**
+     */
+    class Page extends \Filament\Pages\BasePage {
+            }
+    /**
+     */
+    class BasePage extends \Livewire\Component {
+            }
+    /**
+     */
+    class SimplePage extends \Filament\Pages\BasePage {
+            }
+    }
+
+namespace Filament\Auth\Pages {
+    /**
+     * @property-read Action $registerAction
+     * @property-read Schema $form
+     * @property-read Schema $multiFactorChallengeForm
+     */
+    class Login extends \Filament\Pages\SimplePage {
+            }
+    }
+
+namespace App\Filament\Tenant\Resources\Teams\Pages {
+    /**
+     */
+    class CreateTeam extends \Filament\Resources\Pages\CreateRecord {
+            }
+    /**
+     */
+    class EditTeam extends \Filament\Resources\Pages\EditRecord {
+            }
+    /**
+     */
+    class ListTeams extends \Filament\Resources\Pages\ListRecords {
+            }
+    }
+
+namespace Filament\Resources\Pages {
+    /**
+     * @property-read Schema $form
+     */
+    class CreateRecord extends \Filament\Resources\Pages\Page {
+            }
+    /**
+     */
+    class Page extends \Filament\Pages\Page {
+            }
+    /**
+     * @template TModel of Model = Model
+     * @property-read Schema $form
+     */
+    class EditRecord extends \Filament\Resources\Pages\Page {
+            }
+    /**
+     */
+    class ListRecords extends \Filament\Resources\Pages\Page {
+            }
+    }
+
+namespace App\Filament\Tenant\Resources\Users\Pages {
+    /**
+     */
+    class EditUser extends \Filament\Resources\Pages\EditRecord {
+            }
+    /**
+     */
+    class ListUsers extends \Filament\Resources\Pages\ListRecords {
+            }
+    }
+
 namespace Illuminate\View {
     /**
      */
@@ -28212,6 +28343,10 @@ namespace App\Livewire\Settings {
     /**
      */
     class TwoFactor extends \Livewire\Component {
+            }
+    /**
+     */
+    class DeleteUserForm extends \Livewire\Component {
             }
     }
 

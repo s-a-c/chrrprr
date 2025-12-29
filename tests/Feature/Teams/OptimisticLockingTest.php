@@ -30,8 +30,8 @@ final class OptimisticLockingTest extends TestCase
         $team1->setTranslation('name', 'en', 'Updated Name 1');
         $team1->save();
 
-        $this->assertEquals(1, $team1->fresh()->lock_version);
-        $this->assertEquals('Updated Name 1', $team1->fresh()->getTranslation('name', 'en'));
+        static::assertSame(1, $team1->fresh()->lock_version);
+        static::assertSame('Updated Name 1', $team1->fresh()->getTranslation('name', 'en'));
 
         // Attempt to update instance 2 (stale lock_version)
         $this->expectException(OptimisticLockingException::class);
@@ -51,7 +51,7 @@ final class OptimisticLockingTest extends TestCase
         $team->setTranslation('name', 'en', 'New Name');
         $team->save();
 
-        $this->assertEquals(1, $team->lock_version);
-        $this->assertEquals(1, $team->fresh()->lock_version);
+        static::assertSame(1, $team->lock_version);
+        static::assertSame(1, $team->fresh()->lock_version);
     }
 }

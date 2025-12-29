@@ -1,6 +1,6 @@
-php_version = "8.2"
-stack_size = 64
-allow_unsupported_php_version = true
+php-version = "8.5"
+stack-size = 8388608
+allow-unsupported-php-version = true
 threads = 1
 
 [source]
@@ -11,36 +11,26 @@ excludes = [
     "tmp",
     "node_modules",
     "bootstrap/cache",
+    "database/migrations",
 ]
 extensions = ["php"]
 
 [linter]
 # Configure linter rules
-plugins = ["consistency", "naming"]
+integrations = ["laravel", "phpunit"]
 
-[[linter.rules]]
-name = "security/no-literal-password"
-enabled = false
+[linter.rules]
+"no-literal-password" = { enabled = false }
+"prefer-anonymous-migration" = { enabled = false }
+"class-name" = { enabled = false }
+"literal-named-argument" = { enabled = false }
 
-[[linter.rules]]
-name = "prefer-anonymous-migration"
-enabled = false
-
-[[linter.rules]]
-name = "consistency/class-name"
-enabled = false
-
-[[linter.rules]]
-name = "analysis/undefined-function-or-method"
-enabled = false
-
-[[linter.rules]]
-name = "best-practices/literal-named-argument"
-enabled = false
-
-[format]
-print_width = 120
-use_tabs = false
+[formatter]
+# Note: Mago's formatter is NOT used - Pint is the authoritative formatter
+# These settings are kept for reference but Mago format is not run in lint/lintfix
+# Pint handles all formatting to ensure Laravel style compliance
+print-width = 120  # Laravel default line length (matches Pint's default)
+use-tabs = false   # Use spaces (Laravel/Pint standard - 4 spaces per indent)
 
 # Guard/Architectural rules (documented here, though guard subcommand is missing in 0.26.1)
 # Enforces code structure and dependency rules

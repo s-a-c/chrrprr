@@ -2,11 +2,18 @@
 
 declare(strict_types=1);
 
+use App\Providers\AppServiceProvider;
+use App\Providers\Filament\AdminPanelProvider;
+use App\Providers\Filament\TenantPanelProvider;
+use App\Providers\FolioServiceProvider;
+use App\Providers\FortifyServiceProvider;
+use App\Providers\LivewireServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\Filament\AdminPanelProvider::class,
-    App\Providers\Filament\TenantPanelProvider::class,
-    App\Providers\FolioServiceProvider::class,
-    App\Providers\FortifyServiceProvider::class,
-    App\Providers\LivewireServiceProvider::class,
+    AppServiceProvider::class,
+    AdminPanelProvider::class,
+    TenantPanelProvider::class,
+    FolioServiceProvider::class,
+    FortifyServiceProvider::class,
+    LivewireServiceProvider::class,
 ];

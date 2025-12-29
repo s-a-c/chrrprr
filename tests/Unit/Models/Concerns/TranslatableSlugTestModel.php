@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Models\Concerns;
+
+use App\Models\Concerns\HasTranslatableAttributes;
+use App\Models\Concerns\HasTranslatableSlug;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+final class TranslatableSlugTestModel extends Model
+{
+    use HasFactory;
+    use HasTranslatableAttributes, HasTranslatableSlug;
+
+    /** @var bool */
+    public $timestamps = false;
+
+    /** @var array<int, string> */
+    public $translatable = ['name', 'slug'];
+
+    /** @var string|null */
+    protected $table = 'translatable_slug_test_models';
+
+    /** @var array<string> */
+    protected $guarded = [];
+
+    /** @var array<string, string> */
+    protected $casts = ['name' => 'array', 'slug' => 'array'];
+
+    /**
+     * @return string[][]
+     *
+     * @psalm-return array{slug: array{source: 'name'}}
+     */
+    #[Override]
+    /**
+     * @return string[][]
+     *
+     * @psalm-return array{slug: array{source: 'name'}}
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+            ],
+        ];
+    }
+}

@@ -21,7 +21,7 @@ final class RegisterUser
      */
     public function handle(array $data): User
     {
-        return DB::transaction(function () use ($data): User {
+        return DB::transaction(static function () use ($data): ?User {
             $user = User::query()->create([
                 'name' => $data['name'],
                 'email' => $data['email'],

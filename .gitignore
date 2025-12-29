@@ -1,55 +1,255 @@
 # ============================================================================
-# Laravel Framework
+# 1. SYSTEM & GLOBAL IGNORES
 # ============================================================================
-/.phpunit.cache
-.phpunit.result.cache
-/storage/*.key
-/storage/pail
-/tmp
-/vendor
+
+# --- OS-Specific Junk ---
+.DS_Store
+**/.DS_Store
+.AppleDouble
+._*
+.Trash
+.Trashes
+Thumbs.db
+saved_macos_defaults.plist
+
+# --- Large Personal Data Directories ($HOME) ---
+Applications/
+Desktop/
+Documents/
+Downloads/
+Library/
+Movies/
+Music/
+Pictures/
+Public/
+
+# --- Shell History & Sessions ---
+.bash_history
+.zsh_history
+.history
+.netrwhist
+.psysh/
+.zcompdump*
+
+# ============================================================================
+# 2. SECURITY & SECRETS (CRITICAL)
+# ============================================================================
+
+# --- Environment Files ---
 .env
+.env*
+!.env.example
+*.env
 .env.backup
 .env.production
 .envrc
+
+# --- Keys, Certificates, & Auth ---
+*.key
+*.pem
 /auth.json
 .secrets
 
+# --- Application Specific Secrets ---
+.config/.semgrep/settings.yml
+.config/clara/ollama/id_ed25519
+.config/claude/claude.json
+.config/claude/claude.json.backup
+.config/goose/config.yaml*
+.config/raycast/config.json*
+
 # ============================================================================
-# Node.js / JavaScript / Frontend
+# 3. DOTFILE MANAGEMENT
 # ============================================================================
-/node_modules
+
+# --- Chezmoi Internal ---
+.config/chezmoi
+.local/share/chezmoi
+
+# --- Legacy/Stow ---
+dotfiles*
+
+# ============================================================================
+# 4. EDITORS & IDE CONFIGURATION
+# ============================================================================
+
+# --- JetBrains (IntelliJ, PyCharm, etc) ---
+.idea/
+*.iml
+.config/idea/
+
+# --- VS Code / Cursor ---
+.vscode/
+.cursor/
+.config/vscode/
+.config/vscode-insiders/
+.config/cursor/
+*.code-workspace
+
+# --- Fleet, Zed, Nova ---
+.fleet/
+.zed/
+.nova/
+.config/zed/
+
+# --- Vim / Neovim ---
+*~
+*.swp
+*.swo
+*.swn
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]*.un~
+**/vim/undodir/*
+Session.vim
+
+# --- Emacs ---
+\#*\#
+.\#*
+*.elc
+emacs/.local/straight/
+
+# --- Editor Backups ---
+*.bak
+*.tmp
+*.orig
+
+# ============================================================================
+# 5. AI AGENTS & ASSISTANTS (CACHE/CONFIG)
+# ============================================================================
+# Ignoring these folders prevents committing heavy cache or local state
+# from common AI tools found in your setup.
+
+.ai
+.config/aitk/
+.config/augment/
+.config/clara/
+.config/claude/
+.config/cline/
+.config/codeium/
+.config/codex/
+.config/copilot/
+.config/crush/
+.config/gemini/
+.config/github-copilot/
+.config/goose/
+.config/junie/
+.config/kilocode/
+.config/lmstudio/
+.config/ollama/
+.config/ollamassist/
+.config/opencode/
+.config/refact/
+.config/roo/
+.config/rovodev/
+.config/serena/
+.config/supermaven/
+
+# ============================================================================
+# 6. LANGUAGES & FRAMEWORKS
+# ============================================================================
+
+# --- Node.js / JavaScript ---
+node_modules/
+.npm/
+.yarn/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+bun.lockb
+.nyc_output/
+coverage/
+
+# --- PHP / Laravel ---
+vendor/
+/vendor
+composer.lock
+.phpunit.cache
+.phpunit.result.cache
+.phpactor.json
+phpunit.xml.starter-kit-browser
+Homestead.json
+Homestead.yaml
+
+# Laravel Storage & Cache
 /public/build
 /public/hot
-npm-debug.log
-yarn-error.log
-bun.lockb
+/public/storage
+/storage/pail
+/storage/*.key
+.sass-cache/
+.angular/cache
+
+# --- Python ---
+venv/
+.env/
+__pycache__/
+*.pyc
+
+# --- Compiled / Binary Artifacts ---
+*.o
+*.a
+*.so
+*.bundle
+dist/
+build/
 
 # ============================================================================
-# IDE / Editor Directories
+# 7. DEVELOPMENT TOOLS & CLOUD CLIS
 # ============================================================================
-/.fleet
-/.idea
-/.nova
-/.vscode
-/.zed
-.phpactor.json
+
+# --- Cloud & Containers ---
+.config/atlassian-cli/
+.config/cabal/
+.config/caddy/
+.config/configstore/
+.config/containers/
+.config/docker/
+.config/gcloud/
+.config/gh/
+.config/heroku/
+.config/vs-kubernetes/
+
+# --- Logs & Sockets ---
+*.log
+*.sock
+test-output.log
+test-coverage-pcov.log
+test-coverage-xdebug.log
+
+# --- Temp Directories ---
+temp/
+tmp/
+.cache/
+.local/
+/tests/temp
+tmp-run.php
+
+# --- Trunk.io ---
+.trunk/
 
 # ============================================================================
-# Development Tools & Configuration
+# 8. AI DOCUMENTATION RULES (EXCEPTIONS)
 # ============================================================================
-# Trunk.io: .trunk/trunk.yaml is tracked, but .trunk/.gitignore handles
-# what's ignored within .trunk (plugins, actions, tools, etc.)
-# Note: .trunk is excluded from linters/test runners but config files are tracked
 
-# ============================================================================
-# AI Agent Rules (excluded from version control)
-# ============================================================================
-.ai
+# Ignore the .ai folder generally, but allow documentation files
 !.ai/AGENT.md
+!.ai/AGENTS
+!.ai/AGENTS.md
+!.ai/AGENTS/**
 !.ai/AI_INSTRUCTIONS.md
 !.ai/AI-GUIDELINES
 !.ai/AI-GUIDELINES.md
 !.ai/scripts/**
+
+# Specific rule overrides
+**/byterover-rules.md
+
+# ============================================================================
+# 9. MISCELLANEOUS
+# ============================================================================
+**/[0-9]*
 .clinerules/byterover-rules.md
 .kilocode/rules/byterover-rules.md
 .roo/rules/byterover-rules.md
@@ -58,26 +258,3 @@ bun.lockb
 .kiro/steering/byterover-rules.md
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
-
-# ============================================================================
-# Legacy / Homestead
-# ============================================================================
-Homestead.json
-Homestead.yaml
-
-# ============================================================================
-# Project-Specific Patterns
-# ============================================================================
-# Ignore files/folders with ONLY numeric names (no letters or other characters)
-# Matches: 123, 456/, 789.txt, etc.
-# Does NOT match: 001-enhanced-user-models, 123abc, etc.
-**/[0-9]
-**/[0-9][0-9]
-**/[0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]

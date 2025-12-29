@@ -10,7 +10,7 @@ use App\Support\Validation\TeamHierarchyValidator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-class MoveTeam
+final class MoveTeam
 {
     /**
      * Move a team to a new parent with cycle detection and tenant propagation.
@@ -24,35 +24,54 @@ class MoveTeam
         DB::transaction(function () use ($team, $newParentId): void {
             $newParent = $newParentId ? Team::query()->withoutGlobalScopes()->find($newParentId) : null;
 
-            // 1. Basic Hierarchy Validation
             TeamHierarchyValidator::validate($team->type, $newParent);
+            $this->validateNoCycle($team, $newParent);
 
-            // 2. Cycle Detection (Specific to Moving)
-            if ($newParent && $newParent->isDescendantOf($team)) {
-                throw ValidationException::withMessages([
-                    'parent_id' => ['Cannot move a team into its own descendant.'],
-                ]);
-            }
-
-            // 3. Perform Move
-            $oldTenantId = $team->tenant_id;
+            $oldTenantId = (string) $team->tenant_id;
             $team->parent_id = $newParentId;
-
-            // Update Tenant ID immediately for this node
-            if ($newParent) {
-                $newTenantId = $newParent->type === TeamType::ENTERPRISE ? $newParent->id : $newParent->tenant_id;
-                $team->tenant_id = $newTenantId;
-            } elseif ($team->type === TeamType::ENTERPRISE) {
-                // Enterprise becomes its own tenant
-                $team->tenant_id = $team->id;
-            }
-
+            $team->tenant_id = $this->calculateNewTenantId($team, $newParent);
             $team->saveQuietly(); // Avoid triggering observers
 
-            // 4. Handle Side Effects (Recursion)
-            if ($team->tenant_id !== $oldTenantId) {
-                $team->updateDescendantTenants((string) $team->tenant_id);
-            }
+            $this->propagateTenantChange($team, $oldTenantId);
         });
+    }
+
+    /**
+     * Validate that moving would not create a cycle.
+     */
+    private function validateNoCycle(Team $team, ?Team $newParent): void
+    {
+        if ($newParent && $newParent->isDescendantOf($team)) {
+            throw ValidationException::withMessages([
+                'parent_id' => ['Cannot move a team into its own descendant.'],
+            ]);
+        }
+    }
+
+    /**
+     * Calculate the new tenant ID based on the new parent.
+     */
+    private function calculateNewTenantId(Team $team, ?Team $newParent): string
+    {
+        if ($newParent instanceof Team) {
+            return $newParent->type === TeamType::ENTERPRISE ? (string) $newParent->id : (string) $newParent->tenant_id;
+        }
+
+        if ($team->type === TeamType::ENTERPRISE) {
+            // Enterprise becomes its own tenant
+            return (string) $team->id;
+        }
+
+        return (string) $team->tenant_id;
+    }
+
+    /**
+     * Propagate tenant changes to descendants if tenant changed.
+     */
+    private function propagateTenantChange(Team $team, string $oldTenantId): void
+    {
+        if ($team->tenant_id !== $oldTenantId) {
+            $team->updateDescendantTenants((string) $team->tenant_id);
+        }
     }
 }

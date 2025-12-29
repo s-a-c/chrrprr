@@ -52,5 +52,5 @@ test('it cannot transition from archived to active', function (): void {
     $team = Enterprise::factory()->create();
     $team->state->transitionTo(Archived::class);
 
-    expect(fn() => $team->state->transitionTo(Active::class))->toThrow(TransitionNotFound::class);
+    expect(fn () => $team->state->transitionTo(Active::class))->toThrow(TransitionNotFound::class);
 });

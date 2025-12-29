@@ -13,7 +13,7 @@ final class UpdateTeamRequest extends FormRequest
      *
      * @return string[][]
      *
-     * @psalm-return array{name: list{'required'}, bio: list{'nullable', 'string', 'max:1000'}}
+     * @psalm-return array{name: list{'required'}, bio: list{'nullable', 'string', 'max:10000'}}
      */
     public function rules(): array
     {

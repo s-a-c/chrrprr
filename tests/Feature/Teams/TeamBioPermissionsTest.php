@@ -16,8 +16,8 @@ beforeEach(function (): void {
     // Ensure roles exist
     app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
-    Role::query()->firstOrCreate(['name' => 'executive']);
-    Role::query()->firstOrCreate(['name' => 'deputy']);
+    Role::query()->firstOrCreate(['name' => 'executive', 'guard_name' => 'web']);
+    Role::query()->firstOrCreate(['name' => 'deputy', 'guard_name' => 'web']);
 
     Gate::policy(Enterprise::class, TeamPolicy::class);
 });

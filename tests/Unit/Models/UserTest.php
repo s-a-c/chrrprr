@@ -31,9 +31,9 @@ test('user model casts attributes correctly', function (): void {
 test('user model is translatable', function (): void {
     $model = new User();
     // Assuming bio is translatable
-    if (property_exists($model, 'translatable')) {
-        expect($model->translatable)->toContain('bio');
-    } else {
+    if (! property_exists($model, 'translatable')) {
         $this->fail('User model missing translatable property');
     }
+
+    expect($model->translatable)->toContain('bio');
 });

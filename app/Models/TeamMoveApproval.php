@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -18,8 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $reason
  * @property array|null $required_approvers
  * @property array|null $approvals
- * @property \Illuminate\Support\Carbon|null $approved_at
- * @property \Illuminate\Support\Carbon|null $rejected_at
+ * @property Carbon|null $approved_at
+ * @property Carbon|null $rejected_at
  * @property int|null $rejected_by_id
  * @property string|null $rejection_reason
  * @property Team $team
@@ -27,11 +29,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Team|null $toParent
  * @property User $requestedBy
  * @property User|null $rejectedBy
+ *
+ * @use HasFactory<Factory>
  */
 class TeamMoveApproval extends Model
 {
     use HasFactory;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'team_id',
         'from_parent_id',
@@ -47,36 +54,9 @@ class TeamMoveApproval extends Model
         'rejection_reason',
     ];
 
-    protected $casts = [
-        'required_approvers' => 'array',
-        'approvals' => 'array',
-        'approved_at' => 'datetime',
-        'rejected_at' => 'datetime',
-    ];
-
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
-    }
-
-    public function fromParent(): BelongsTo
-    {
-        return $this->belongsTo(Team::class, 'from_parent_id');
-    }
-
-    public function toParent(): BelongsTo
-    {
-        return $this->belongsTo(Team::class, 'to_parent_id');
-    }
-
-    public function requestedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'requested_by_id');
-    }
-
-    public function rejectedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'rejected_by_id');
     }
 
     public function isPending(): bool
@@ -84,13 +64,18 @@ class TeamMoveApproval extends Model
         return $this->status === 'pending';
     }
 
-    public function isApproved(): bool
+    /**
+     * @return array<string, string>
+     *
+     * @psalm-return array{required_approvers: 'array', approvals: 'array', approved_at: 'datetime', rejected_at: 'datetime'}
+     */
+    protected function casts(): array
     {
-        return $this->status === 'approved';
-    }
-
-    public function isRejected(): bool
-    {
-        return $this->status === 'rejected';
+        return [
+            'required_approvers' => 'array',
+            'approvals' => 'array',
+            'approved_at' => 'datetime',
+            'rejected_at' => 'datetime',
+        ];
     }
 }

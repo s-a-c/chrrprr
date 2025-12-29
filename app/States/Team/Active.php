@@ -6,6 +6,5 @@ namespace App\States\Team;
 
 final class Active extends TeamState
 {
-    /** @var string */
-    public static $name = 'active';
+    public static string $name = 'active';
 }

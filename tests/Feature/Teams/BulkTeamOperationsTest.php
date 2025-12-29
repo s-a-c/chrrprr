@@ -23,8 +23,7 @@ beforeEach(function (): void {
 
     // Register route if not already registered
     if (! Route::has('api.teams.bulk')) {
-        Route::post('/api/teams/bulk', [BulkTeamController::class, 'store'])
-            ->name('api.teams.bulk');
+        Route::post('/api/teams/bulk', [BulkTeamController::class, 'store'])->name('api.teams.bulk');
     }
 });
 
@@ -37,7 +36,8 @@ it('creates multiple teams in bulk', function (): void {
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
-    $response->assertStatus(200)
+    $response
+        ->assertStatus(200)
         ->assertJson([
             'success' => true,
             'total' => 3,
@@ -54,21 +54,40 @@ it('creates multiple teams in bulk', function (): void {
             ],
         ]);
 
-    expect(Organisation::count())->toBe(3);
+    expect(Organisation::query()->count())->toBe(3);
 });
 
 it('updates multiple teams in bulk', function (): void {
-    $org1 = Organisation::factory()->create(['parent_id' => $this->enterprise->id, 'tenant_id' => $this->enterprise->id]);
-    $org2 = Organisation::factory()->create(['parent_id' => $this->enterprise->id, 'tenant_id' => $this->enterprise->id]);
+    $org1 = Organisation::factory()->create([
+        'parent_id' => $this->enterprise->id,
+        'tenant_id' => $this->enterprise->id,
+    ]);
+    $org2 = Organisation::factory()->create([
+        'parent_id' => $this->enterprise->id,
+        'tenant_id' => $this->enterprise->id,
+    ]);
 
     $teams = [
-        ['id' => $org1->id, 'name' => 'Updated Team 1', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id, 'lock_version' => $org1->lock_version],
-        ['id' => $org2->id, 'name' => 'Updated Team 2', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id, 'lock_version' => $org2->lock_version],
+        [
+            'id' => $org1->id,
+            'name' => 'Updated Team 1',
+            'type' => TeamType::ORGANISATION->value,
+            'parent_id' => $this->enterprise->id,
+            'lock_version' => $org1->lock_version,
+        ],
+        [
+            'id' => $org2->id,
+            'name' => 'Updated Team 2',
+            'type' => TeamType::ORGANISATION->value,
+            'parent_id' => $this->enterprise->id,
+            'lock_version' => $org2->lock_version,
+        ],
     ];
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
-    $response->assertStatus(200)
+    $response
+        ->assertStatus(200)
         ->assertJson([
             'success' => true,
             'total' => 2,
@@ -78,22 +97,32 @@ it('updates multiple teams in bulk', function (): void {
 
     $org1->refresh();
     $org2->refresh();
-    expect($org1->getTranslation('name', app()->getLocale()))->toBe('Updated Team 1')
-        ->and($org2->getTranslation('name', app()->getLocale()))->toBe('Updated Team 2');
+    expect($org1->getTranslation('name', app()->getLocale()))
+        ->toBe('Updated Team 1')
+        ->and($org2->getTranslation('name', app()->getLocale()))
+        ->toBe('Updated Team 2');
 });
 
 it('handles partial success when some teams fail validation', function (): void {
-    $org = Organisation::factory()->create(['parent_id' => $this->enterprise->id, 'tenant_id' => $this->enterprise->id]);
+    $org = Organisation::factory()->create([
+        'parent_id' => $this->enterprise->id,
+        'tenant_id' => $this->enterprise->id,
+    ]);
 
     $teams = [
         ['name' => 'Valid Team', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
-        ['name' => $org->getTranslation('name', app()->getLocale()), 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id], // Duplicate name
+        [
+            'name' => $org->getTranslation('name', app()->getLocale()),
+            'type' => TeamType::ORGANISATION->value,
+            'parent_id' => $this->enterprise->id,
+        ], // Duplicate name
         ['name' => 'Another Valid Team', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
     ];
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
-    $response->assertStatus(207) // Multi-Status (partial success)
+    $response
+        ->assertStatus(207) // Multi-Status (partial success)
         ->assertJson([
             'success' => true,
             'total' => 3,
@@ -107,8 +136,15 @@ it('handles partial success when some teams fail validation', function (): void 
         ]);
 
     // Verify successful teams were created
-    expect(Organisation::where('name->en', 'Valid Team')->exists())->toBeTrue()
-        ->and(Organisation::where('name->en', 'Another Valid Team')->exists())->toBeTrue();
+    $validTeam = Organisation::query()
+        ->where('parent_id', $this->enterprise->id)
+        ->get()
+        ->first(fn ($team): bool => $team->getTranslation('name', app()->getLocale()) === 'Valid Team');
+    $anotherTeam = Organisation::query()
+        ->where('parent_id', $this->enterprise->id)
+        ->get()
+        ->first(fn ($team): bool => $team->getTranslation('name', app()->getLocale()) === 'Another Valid Team');
+    expect($validTeam)->not->toBeNull()->and($anotherTeam)->not->toBeNull();
 });
 
 it('returns error when batch size exceeds enterprise limit', function (): void {
@@ -117,12 +153,17 @@ it('returns error when batch size exceeds enterprise limit', function (): void {
 
     $teams = [];
     for ($i = 0; $i < 10; $i++) {
-        $teams[] = ['name' => "Team {$i}", 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id];
+        $teams[] = [
+            'name' => "Team {$i}",
+            'type' => TeamType::ORGANISATION->value,
+            'parent_id' => $this->enterprise->id,
+        ];
     }
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
-    $response->assertStatus(422)
+    $response
+        ->assertStatus(422)
         ->assertJson([
             'success' => false,
             'error' => 'Batch size exceeds maximum allowed (5).',
@@ -130,17 +171,27 @@ it('returns error when batch size exceeds enterprise limit', function (): void {
 });
 
 it('handles mixed create and update operations', function (): void {
-    $existingOrg = Organisation::factory()->create(['parent_id' => $this->enterprise->id, 'tenant_id' => $this->enterprise->id]);
+    $existingOrg = Organisation::factory()->create([
+        'parent_id' => $this->enterprise->id,
+        'tenant_id' => $this->enterprise->id,
+    ]);
 
     $teams = [
         ['name' => 'New Team 1', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
-        ['id' => $existingOrg->id, 'name' => 'Updated Existing Team', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id, 'lock_version' => $existingOrg->lock_version],
+        [
+            'id' => $existingOrg->id,
+            'name' => 'Updated Existing Team',
+            'type' => TeamType::ORGANISATION->value,
+            'parent_id' => $this->enterprise->id,
+            'lock_version' => $existingOrg->lock_version,
+        ],
         ['name' => 'New Team 2', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
     ];
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
-    $response->assertStatus(200)
+    $response
+        ->assertStatus(200)
         ->assertJson([
             'success' => true,
             'total' => 3,
@@ -149,8 +200,15 @@ it('handles mixed create and update operations', function (): void {
         ]);
 
     // Verify new teams were created
-    expect(Organisation::where('name->en', 'New Team 1')->exists())->toBeTrue()
-        ->and(Organisation::where('name->en', 'New Team 2')->exists())->toBeTrue();
+    $newTeam1 = Organisation::query()
+        ->where('parent_id', $this->enterprise->id)
+        ->get()
+        ->first(fn ($team): bool => $team->getTranslation('name', app()->getLocale()) === 'New Team 1');
+    $newTeam2 = Organisation::query()
+        ->where('parent_id', $this->enterprise->id)
+        ->get()
+        ->first(fn ($team): bool => $team->getTranslation('name', app()->getLocale()) === 'New Team 2');
+    expect($newTeam1)->not->toBeNull()->and($newTeam2)->not->toBeNull();
 
     // Verify existing team was updated
     $existingOrg->refresh();

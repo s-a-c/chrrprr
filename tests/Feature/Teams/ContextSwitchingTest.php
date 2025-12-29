@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
+use App\Models\Division;
 use App\Models\Enterprise;
 use App\Models\Organisation;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 beforeEach(function (): void {
-    $this->enterprise = \App\Models\Enterprise::factory()->create();
-    $this->user = \App\Models\User::factory()->create(['tenant_id' => $this->enterprise->id]);
+    $this->enterprise = Enterprise::factory()->create();
+    $this->user = User::factory()->create(['tenant_id' => $this->enterprise->id]);
 
-    \Spatie\Permission\Models\Role::create(['name' => 'enterprise_admin']);
+    Role::create(['name' => 'enterprise_admin']);
 
-    $this->orgA = \App\Models\Organisation::factory()->create(['parent_id' => $this->enterprise->id]);
+    $this->orgA = Organisation::factory()->create(['parent_id' => $this->enterprise->id]);
     $this->orgB = Organisation::factory()->create(['parent_id' => $this->enterprise->id]);
 
     // Grant access to both organisations
@@ -47,16 +50,15 @@ test('team queries are scoped to the current context', function (): void {
     $this->actingAs($this->user);
 
     // Create a division in Org A
-    $divisionA = \App\Models\Division::factory()->create(['parent_id' => $this->orgA->id]);
+    $divisionA = Division::factory()->create(['parent_id' => $this->orgA->id]);
     // Create a division in Org B
-    $divisionB = \App\Models\Division::factory()->create(['parent_id' => $this->orgB->id]);
+    $divisionB = Division::factory()->create(['parent_id' => $this->orgB->id]);
 
     $this->user->switchContext($this->orgA);
 
-    $teams = \App\Models\Team::inContext()->get();
+    $teams = Team::inContext()->get();
 
-    expect($teams->pluck('id'))->toContain($divisionA->id)
-        ->not->toContain($divisionB->id);
+    expect($teams->pluck('id'))->toContain($divisionA->id)->not->toContain($divisionB->id);
 });
 
 test('invalid context defaults to the first accessible organisation', function (): void {
@@ -84,14 +86,14 @@ test('privileged users can bypass context scope', function (): void {
     $this->user->assignRole('enterprise_admin');
     $this->actingAs($this->user);
 
-    $divisionA = \App\Models\Division::factory()->create(['parent_id' => $this->orgA->id]);
-    $divisionB = \App\Models\Division::factory()->create(['parent_id' => $this->orgB->id]);
+    Division::factory()->create(['parent_id' => $this->orgA->id]);
+    Division::factory()->create(['parent_id' => $this->orgB->id]);
 
     $this->user->switchContext($this->orgA);
 
     // Without bypass
-    expect(\App\Models\Team::inContext()->count())->toBe(2); // Org A + Division A
+    expect(Team::inContext()->count())->toBe(2); // Org A + Division A
 
     // With bypass (here naturally including Org B + Division B)
-    expect(\App\Models\Team::count())->toBeGreaterThan(2);
+    expect(Team::query()->count())->toBeGreaterThan(2);
 });

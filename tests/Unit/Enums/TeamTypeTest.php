@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\TeamType;
 
-test('team type enum has correct values', function (): void {
+test('team type enum TeamTypeTest correct values', function (): void {
     expect(TeamType::cases())->not->toBeEmpty();
 
     expect(TeamType::ENTERPRISE->value)->toBe('enterprise');
@@ -14,7 +14,7 @@ test('team type enum has correct values', function (): void {
     expect(TeamType::PROJECT->value)->toBe('project');
 });
 
-test('team type enum has labels', function (): void {
+test('team type enum TeamTypeTest labels', function (): void {
     expect(TeamType::ENTERPRISE->label())->toBe('Enterprise');
     expect(TeamType::ORGANISATION->label())->toBe('Organisation');
     expect(TeamType::DIVISION->label())->toBe('Division');

@@ -6,7 +6,6 @@ namespace App\Http\Requests;
 
 use App\Enums\TeamType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 /**
@@ -17,27 +16,20 @@ use Illuminate\Validation\Rules\Enum;
 final class BulkTeamRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true; // Authorization handled in controller
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
         return [
-            'teams' => ['required', 'array'],
+            'teams' => ['required', 'array', 'min:1'],
             'teams.*.name' => ['required', 'string'],
             'teams.*.type' => ['required', new Enum(TeamType::class)],
-            'teams.*.parent_id' => ['nullable', 'integer', Rule::exists('teams', 'id')->whereNull('deleted_at')],
-            'teams.*.bio' => ['nullable', 'string', 'max:10000'],
-            'teams.*.id' => ['nullable', 'integer', Rule::exists('teams', 'id')->whereNull('deleted_at')], // For updates
+            'teams.*.parent_id' => ['nullable', 'exists:teams,id'],
+            'teams.*.id' => ['nullable', 'exists:teams,id'],
+            'teams.*.lock_version' => ['nullable', 'integer'],
+            'teams.*.bio' => ['nullable', 'string', 'max:50000'],
         ];
     }
 

@@ -18,7 +18,7 @@ final class ProjectFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return (App\Enums\TeamStatus::ONLINE|string|string[])[]
      *
      * @psalm-return array{name: array{en: string}, state: Active::class, status: App\Enums\TeamStatus::ONLINE, bio: string}
      */
@@ -26,7 +26,7 @@ final class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->words(3, true) . ' Project'],
+            'name' => ['en' => fake()->words(3, true).' Project'],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => fake()->paragraph(),

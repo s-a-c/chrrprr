@@ -19,7 +19,9 @@ final class Role extends SpatieRole
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return string[]
+     *
+     * @psalm-return array{is_key: 'boolean'}
      */
     #[Override]
     protected function casts(): array

@@ -6,11 +6,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
+use Override;
 
 final class SwitchContextRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return true
      */
     public function authorize(): bool
     {
@@ -20,7 +24,9 @@ final class SwitchContextRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return (Exists|string)[][]
+     *
+     * @psalm-return array{organisation_id: list{'required', 'integer', Exists}}
      */
     public function rules(): array
     {
@@ -36,8 +42,11 @@ final class SwitchContextRequest extends FormRequest
     /**
      * Get custom messages for validator errors.
      *
-     * @return array<string, string>
+     * @return string[]
+     *
+     * @psalm-return array{'organisation_id.required': 'Please select an organisation.', 'organisation_id.exists': 'The selected organisation does not exist or is invalid.'}
      */
+    #[Override]
     public function messages(): array
     {
         return [

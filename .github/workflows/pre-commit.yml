@@ -1,0 +1,64 @@
+# Compliant with [AI-GUIDELINES.md](../../.ai/AI-GUIDELINES.md) v0921d4cfab198af1451ef177b6e47657b5d3ab0292f77bf232496291dee47183
+
+name: pre-commit
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  workflow-core:
+    name: Run Core Workflow
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.5
+          tools: composer:v2
+          coverage: pcov
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.1.17
+
+      - name: Configure Composer Auth
+        env:
+          FLUXUI_PRO_USERNAME: ${{ secrets.FLUXUI_PRO_USERNAME }}
+          FLUXUI_PRO_KEY: ${{ secrets.FLUXUI_PRO_KEY }}
+        run: |
+          if [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" ]]; then
+            echo "::error::Missing FLUXUI_PRO_USERNAME and FLUXUI_PRO_KEY secrets required for composer.fluxui.dev"
+            exit 1
+          fi
+
+          composer config http-basic.composer.fluxui.dev "$FLUXUI_PRO_USERNAME" "$FLUXUI_PRO_KEY"
+
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Install Bun Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build Assets
+        run: bun run build
+
+      - name: Prepare Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run Core Workflow Suite
+        run: composer ci:core

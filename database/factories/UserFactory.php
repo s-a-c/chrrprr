@@ -21,14 +21,14 @@ final class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
-    protected static null|string $password;
+    protected static ?string $password;
 
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return (App\Enums\UserState::ACTIVE|App\Enums\UserStatus::OFFLINE|Carbon|null|string)[]
      *
-     * @psalm-return array{name: string, email: string, email_verified_at: Carbon, password: string, remember_token: string, two_factor_secret: string, two_factor_recovery_codes: string, two_factor_confirmed_at: Carbon, bio: string, state: App\Enums\UserState::ACTIVE, status: App\Enums\UserStatus::OFFLINE}
+     * @psalm-return array{name: string, email: string, email_verified_at: Carbon, password: string, remember_token: string, two_factor_secret: string, two_factor_recovery_codes: string, two_factor_confirmed_at: Carbon, bio: string, state: App\Enums\UserState::ACTIVE, status: App\Enums\UserStatus::OFFLINE, tenant_id: null, current_context_id: null}
      */
     #[Override]
     public function definition(): array
@@ -61,7 +61,7 @@ final class UserFactory extends Factory
              *
              * @psalm-return array{email_verified_at: null}
              */
-            static fn(array $attributes): array => [
+            static fn (array $attributes): array => [
                 'email_verified_at' => null,
             ],
         );
@@ -78,7 +78,7 @@ final class UserFactory extends Factory
              *
              * @psalm-return array{two_factor_secret: null, two_factor_recovery_codes: null, two_factor_confirmed_at: null}
              */
-            static fn(array $attributes): array => [
+            static fn (array $attributes): array => [
                 'two_factor_secret' => null,
                 'two_factor_recovery_codes' => null,
                 'two_factor_confirmed_at' => null,

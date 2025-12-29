@@ -17,27 +17,27 @@ test('syntax highlighting initialization completes in less than 500ms after page
 
     // For now, we'll test that the bio HTML contains proper code block structure
     $bioContent = <<<'MARKDOWN'
-# Code Examples
+    # Code Examples
 
-Here's a PHP example:
+    Here's a PHP example:
 
-```php
-<?php
-class Example {
-    public function method(): string {
-        return 'Hello';
+    ```php
+    <?php
+    class SyntaxHighlightingPerformanceTest {
+        public function method(): string {
+            return 'Hello';
+        }
     }
-}
-```
+    ```
 
-And a JavaScript example:
+    And a JavaScript example:
 
-```javascript
-function example() {
-    return 'World';
-}
-```
-MARKDOWN;
+    ```javascript
+    function example() {
+        return 'World';
+    }
+    ```
+    MARKDOWN;
 
     $team = Enterprise::factory()->create([
         'bio' => $bioContent,
@@ -48,7 +48,7 @@ MARKDOWN;
     // Verify code blocks are present (syntax highlighting will process these client-side)
     expect($html)->toContain('<pre');
     expect($html)->toContain('<code');
-    expect($html)->toContain('class Example');
+    expect($html)->toContain('class SyntaxHighlightingPerformanceTest');
 })->skip('Performance test - requires browser environment for accurate client-side timing');
 
 test('syntax highlighting handles multiple code blocks efficiently', function (): void {
@@ -78,13 +78,13 @@ test('syntax highlighting handles multiple code blocks efficiently', function ()
 
 test('syntax highlighting handles empty code blocks gracefully', function (): void {
     $bioWithEmptyCodeBlock = <<<'MARKDOWN'
-# Example
+    # Example
 
-```php
-```
+    ```php
+    ```
 
-That's an empty code block.
-MARKDOWN;
+    That's an empty code block.
+    MARKDOWN;
 
     $team = Enterprise::factory()->create([
         'bio' => $bioWithEmptyCodeBlock,

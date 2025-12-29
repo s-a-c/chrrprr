@@ -30,35 +30,35 @@ it('sanitizes bio html', function (): void {
 });
 
 it('enforces bio size limit in validation', function (): void {
-    $longBio = str_repeat('a', 1001);
+    $longBio = str_repeat('a', 10001); // Exceeds max:10000
 
     $validator = Validator::make([
         'name' => 'Valid Name',
         'type' => TeamType::ENTERPRISE->value,
         'bio' => $longBio,
-    ], (new StoreTeamRequest())->rules()); // Testing Store request for limits
+    ], new StoreTeamRequest()->rules()); // Testing Store request for limits
 
     expect($validator->fails())->toBeTrue();
     expect($validator->errors()->messages())->toHaveKey('bio');
 
     // Test valid length
-    $validBio = str_repeat('a', 1000);
+    $validBio = str_repeat('a', 10000);
     $validatorValid = Validator::make([
         'name' => 'Valid Name',
         'type' => TeamType::ENTERPRISE->value,
         'bio' => $validBio,
-    ], (new StoreTeamRequest())->rules());
+    ], new StoreTeamRequest()->rules());
 
     expect($validatorValid->fails())->toBeFalse();
 });
 
 it('enforces bio size limit in update validation', function (): void {
-    $longBio = str_repeat('a', 1001);
+    $longBio = str_repeat('a', 10001); // Exceeds max:10000
 
     $validator = Validator::make([
         'name' => 'Valid Name',
         'bio' => $longBio,
-    ], (new UpdateTeamRequest())->rules());
+    ], new UpdateTeamRequest()->rules());
 
     expect($validator->fails())->toBeTrue();
     expect($validator->errors()->messages())->toHaveKey('bio');

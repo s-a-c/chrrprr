@@ -7,27 +7,26 @@ namespace App\Http\Controllers\Teams;
 use App\Actions\Teams\CreateTeam;
 use App\Actions\Teams\UpdateTeam;
 use App\Http\Requests\BulkTeamRequest;
-use App\Models\Enterprise;
 use App\Models\Team;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 use RuntimeException;
 
-final class BulkTeamController
+final readonly class BulkTeamController
 {
     public function __construct(
-        private readonly CreateTeam $createTeamAction,
-        private readonly UpdateTeam $updateTeamAction,
+        private CreateTeam $createTeamAction,
+        private UpdateTeam $updateTeamAction,
     ) {}
 
     /**
-     * Bulk create/update teams with partial success handling.
+     * Handle bulk team operations (create and update).
      */
     public function store(BulkTeamRequest $request): JsonResponse
     {
         $teams = $request->getTeams();
-        $enterprise = $this->getCurrentEnterprise();
+        $enterprise = $this->getEnterprise();
 
         // Validate batch size
         $maxBatchSize = $enterprise->bulk_operation_batch_size ?? 500;
@@ -44,58 +43,31 @@ final class BulkTeamController
 
         foreach ($teams as $index => $teamData) {
             try {
-                if (isset($teamData['id'])) {
-                    // Update existing team
-                    $team = Team::query()->findOrFail($teamData['id']);
-                    // Ensure lock_version is included if not provided
-                    if (! isset($teamData['lock_version'])) {
-                        $teamData['lock_version'] = $team->lock_version;
-                    }
-                    $updatedTeam = $this->updateTeamAction->handle($team, $teamData);
-
-                    $results[] = [
-                        'index' => $index,
-                        'success' => true,
-                        'team_id' => $updatedTeam->id,
-                        'team_ulid' => $updatedTeam->ulid,
-                        'action' => 'updated',
-                    ];
-                    $successCount++;
-                } else {
-                    // Create new team
-                    $team = $this->createTeamAction->handle($teamData);
-
-                    $results[] = [
-                        'index' => $index,
-                        'success' => true,
-                        'team_id' => $team->id,
-                        'team_ulid' => $team->ulid,
-                        'action' => 'created',
-                    ];
-                    $successCount++;
-                }
-            } catch (ValidationException $e) {
-                $results[] = [
-                    'index' => $index,
-                    'success' => false,
-                    'error' => $e->getMessage(),
-                    'errors' => $e->errors(),
-                ];
-                $failureCount++;
+                $result = $this->processTeam($teamData, $index);
+                $results[] = $result;
+                $successCount++;
             } catch (Exception $e) {
                 $results[] = [
                     'index' => $index,
                     'success' => false,
                     'error' => $e->getMessage(),
+                    'action' => isset($teamData['id']) ? 'update' : 'create',
                 ];
                 $failureCount++;
             }
         }
 
-        $statusCode = $failureCount === 0 ? 200 : ($successCount > 0 ? 207 : 400); // 207 = Multi-Status (partial success)
+        $statusCode = match (true) {
+            $failureCount === 0 => 200, // All succeeded
+            $successCount === 0 => 422, // All failed
+            default => 207, // Partial success (Multi-Status)
+        };
+
+        // success is true if there are any successes (partial or full)
+        $success = $successCount > 0;
 
         return response()->json([
-            'success' => $successCount > 0,
+            'success' => $success,
             'total' => count($teams),
             'success_count' => $successCount,
             'failure_count' => $failureCount,
@@ -104,29 +76,52 @@ final class BulkTeamController
     }
 
     /**
-     * Get the current enterprise tenant.
+     * Process a single team (create or update).
+     *
+     * @param  array<string, mixed>  $teamData
+     * @return array<string, mixed>
      */
-    private function getCurrentEnterprise(): Enterprise
+    private function processTeam(array $teamData, int $index): array
     {
-        $user = auth()->user();
+        if (isset($teamData['id'])) {
+            // Update existing team
+            $team = Team::query()->findOrFail($teamData['id']);
+            $team = $this->updateTeamAction->handle($team, $teamData);
 
-        if ($user && $user->tenant_id) {
-            $enterprise = Enterprise::query()->find($user->tenant_id);
-            if ($enterprise) {
-                return $enterprise;
-            }
+            return [
+                'index' => $index,
+                'success' => true,
+                'team_id' => $team->id,
+                'team_ulid' => $team->ulid,
+                'action' => 'update',
+            ];
         }
 
-        // Fallback: try to get from tenancy context
-        if (tenancy()->initialized && tenancy()->tenant) {
-            $tenantId = tenancy()->tenant->getKey();
-            $enterprise = Enterprise::query()->find($tenantId);
-            if ($enterprise) {
-                return $enterprise;
-            }
-        }
+        // Create new team
+        $team = $this->createTeamAction->handle($teamData);
 
-        // Last resort: create a default enterprise or throw
-        throw new RuntimeException('Unable to determine current enterprise tenant.');
+        return [
+            'index' => $index,
+            'success' => true,
+            'team_id' => $team->id,
+            'team_ulid' => $team->ulid,
+            'action' => 'create',
+        ];
+    }
+
+    /**
+     * Get the enterprise for the current user.
+     */
+    private function getEnterprise(): Team
+    {
+        $user = Auth::user();
+
+        throw_if(! $user || ! $user->tenant_id, RuntimeException::class, 'User must have a tenant.');
+
+        $enterprise = Team::query()->find($user->tenant_id);
+
+        throw_unless($enterprise, RuntimeException::class, 'Enterprise not found.');
+
+        return $enterprise;
     }
 }

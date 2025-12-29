@@ -6,7 +6,6 @@ namespace App\Models\Builders;
 
 use App\Enums\UserState;
 use App\Enums\UserStatus;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -68,10 +67,12 @@ class UserBuilder extends Builder
 
     /**
      * Scope the query to users with a specific role.
+     *
+     * @psalm-return static<TModelClass>
      */
-    public function withRole(string $role): self
+    public function withRole(string $role): static
     {
-        return $this->whereHas('roles', function ($query) use ($role): void {
+        return $this->whereHas('roles', static function (Builder $query) use ($role): void {
             $query->where('name', $role);
         });
     }

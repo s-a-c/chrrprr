@@ -19,27 +19,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Fix hostname resolution (for act)
+        run: |
+          if ! grep -q "localhost.localdomain" /etc/hosts 2>/dev/null; then
+            echo "127.0.0.1 localhost.localdomain localhost" | sudo tee -a /etc/hosts > /dev/null 2>&1 || true
+          fi
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: 8.5
           tools: composer:v2
           coverage: xdebug
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install Node Dependencies
-        run: npm i
+          bun-version: 1.1.17
 
       - name: Add Flux Credentials Loaded From ENV
         run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
 
       - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        run: |
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+          bun install --frozen-lockfile
 
       - name: Copy Environment File
         run: cp .env.example .env
@@ -48,7 +52,7 @@ jobs:
         run: php artisan key:generate
 
       - name: Build Assets
-        run: npm run build
+        run: bun run build
 
       - name: Run Tests
         run: ./vendor/bin/pest

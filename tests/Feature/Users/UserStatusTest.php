@@ -23,15 +23,18 @@ test('user status can be nullable', function (): void {
 test('user status is cast to enum', function (): void {
     $user = User::factory()->create(['status' => UserStatus::AWAY]);
 
-    expect($user->status)->toBeInstanceOf(UserStatus::class)
-        ->and($user->status)->toBe(UserStatus::AWAY);
+    expect($user->status)->toBeInstanceOf(UserStatus::class)->and($user->status)->toBe(UserStatus::AWAY);
 });
 
 test('user status has label method', function (): void {
-    expect(UserStatus::ONLINE->label())->toBe('Online')
-        ->and(UserStatus::OFFLINE->label())->toBe('Offline')
-        ->and(UserStatus::AWAY->label())->toBe('Away')
-        ->and(UserStatus::BUSY->label())->toBe('Busy');
+    expect(UserStatus::ONLINE->label())
+        ->toBe('Online')
+        ->and(UserStatus::OFFLINE->label())
+        ->toBe('Offline')
+        ->and(UserStatus::AWAY->label())
+        ->toBe('Away')
+        ->and(UserStatus::BUSY->label())
+        ->toBe('Busy');
 });
 
 test('user can transition between all statuses', function (): void {

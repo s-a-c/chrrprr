@@ -2,26 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Models\Concerns\HasUlid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+namespace Tests\Unit\Models\Concerns;
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 uses(TestCase::class);
-
-final class HasUlidTestModel extends Model
-{
-    use HasFactory;
-    use HasUlid;
-
-    public $timestamps = false;
-
-    protected $table = 'has_ulid_test_models';
-
-    protected $guarded = [];
-}
 
 beforeEach(function (): void {
     Schema::create('has_ulid_test_models', function (Blueprint $table): void {

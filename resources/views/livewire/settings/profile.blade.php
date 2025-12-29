@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <section class="w-full">
     @include('partials.settings-heading')
 
@@ -10,18 +8,21 @@
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
 
-                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail &&! auth()->user()->hasVerifiedEmail())
-                <div>
-                    <flux:text class="mt-4">
-                        {{ __('Your email address is unverified.') }}
+                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !auth()->user()->hasVerifiedEmail())
+                    <div>
+                        <flux:text class="mt-4">
+                            {{ __('Your email address is unverified.') }}
 
-                        <flux:link class="text-sm cursor-pointer" wire:click.prevent="resendVerificationNotification">{{ __('Click here to re-send the verification email.') }}</flux:link>
-                    </flux:text>
+                            <flux:link class="text-sm cursor-pointer"
+                                wire:click.prevent="resendVerificationNotification">
+                                {{ __('Click here to re-send the verification email.') }}</flux:link>
+                        </flux:text>
 
-                    @if (session('status') === 'verification-link-sent')
-                    <flux:text class="mt-2 font-medium !dark:text-green-400 !text-green-600">{{ __('A new verification link has been sent to your email address.') }}</flux:text>
-                    @endif
-                </div>
+                        @if (session('status') === 'verification-link-sent')
+                            <flux:text class="mt-2 font-medium !dark:text-green-400 !text-green-600">
+                                {{ __('A new verification link has been sent to your email address.') }}</flux:text>
+                        @endif
+                    </div>
                 @endif
             </div>
 
@@ -38,7 +39,8 @@
             <flux:callout variant="ghost">
                 <flux:text>
                     {{ __('Want to delete your account?') }}
-                    <flux:link :href="route('delete-account.show')" wire:navigate>{{ __('Go to Delete Account page') }}</flux:link>
+                    <flux:link :href="route('delete-account.show')" wire:navigate>{{ __('Go to Delete Account page') }}
+                    </flux:link>
                 </flux:text>
             </flux:callout>
         </div>

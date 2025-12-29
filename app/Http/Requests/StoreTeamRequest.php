@@ -15,7 +15,7 @@ final class StoreTeamRequest extends FormRequest
      *
      * @return (Enum|string)[][]
      *
-     * @psalm-return array{name: list{'required'}, type: list{'required', Enum}, parent_id: list{'nullable', 'exists:teams,id'}, bio: list{'nullable', 'string', 'max:1000'}}
+     * @psalm-return array{name: list{'required'}, type: list{'required', Enum}, parent_id: list{'nullable', 'exists:teams,id'}, bio: list{'nullable', 'string', 'max:10000'}}
      */
     public function rules(): array
     {

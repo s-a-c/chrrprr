@@ -20,12 +20,12 @@ return new class extends Migration {
         $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';
 
         throw_if(
-            empty($tableNames),
+            $tableNames === null || $tableNames === [],
             Exception::class,
             'Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.',
         );
         throw_if(
-            $teams && empty($columnNames['team_foreign_key'] ?? null),
+            $teams && ($columnNames['team_foreign_key'] ?? null) === null,
             Exception::class,
             'Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.',
         );
@@ -150,7 +150,7 @@ return new class extends Migration {
         $tableNames = config('permission.table_names');
 
         throw_if(
-            empty($tableNames),
+            $tableNames === null || $tableNames === [],
             Exception::class,
             'Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.',
         );

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\UserStatus;
 
-test('user status enum has correct values', function (): void {
+test('user status enum UserStatusTest correct values', function (): void {
     expect(UserStatus::cases())->not->toBeEmpty();
 
     expect(UserStatus::ONLINE->value)->toBe('online');
@@ -13,7 +13,7 @@ test('user status enum has correct values', function (): void {
     expect(UserStatus::BUSY->value)->toBe('busy');
 });
 
-test('user status enum has labels', function (): void {
+test('user status enum UserStatusTest labels', function (): void {
     expect(UserStatus::ONLINE->label())->toBe('Online');
     expect(UserStatus::OFFLINE->label())->toBe('Offline');
     expect(UserStatus::AWAY->label())->toBe('Away');

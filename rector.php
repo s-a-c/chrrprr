@@ -3,6 +3,19 @@
 declare(strict_types=1);
 
 // Compliant with [.ai/AI-GUIDELINES.md](../../.ai/AI-GUIDELINES.md) v374a22e55a53ea38928957463e1f0ef28f820080a27e0466f35d46c20626fa72
+//
+// Rector Configuration - Aligned with Pint
+// =========================================
+// This configuration is designed to work harmoniously with:
+// - Pint: Laravel's code style formatter (runs after Rector in lintfix - authoritative)
+// - Mago: Static analysis only (no formatting - Pint handles all formatting)
+//
+// Execution order in lintfix:
+// 1. Mago lint --fix (static analysis fixes only)
+// 2. Rector (code refactoring - may change structure)
+// 3. Pint (final Laravel style formatting - authoritative)
+//
+// Paths match Mago and Pint configurations for consistency.
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
@@ -25,6 +38,8 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_IF_HELPERS,
         LaravelSetList::LARAVEL_LEGACY_FACTORIES_TO_CLASSES,
     ])
+    // Align with Pint's import ordering: remove unused imports
+    // This complements Pint's "global_namespace_import" rule which organizes imports
     ->withImportNames(removeUnusedImports: true)
     ->withComposerBased(laravel: true)
     ->withCache(
@@ -54,6 +69,10 @@ return RectorConfig::configure()
             __DIR__.'/app/Console/Commands/DependencyReviewReport.php',
             __DIR__.'/app/Data/DependencyRecordData.php',
             __DIR__.'/tests/Unit/BasePlatform/DependencyCatalogueTest.php',
+        ],
+        // Skip throw_if refactoring for ProtectsKeyRoles - throw_if with class string doesn't work in this context
+        RectorLaravel\Rector\If_\ThrowIfRector::class => [
+            __DIR__.'/app/Models/Concerns/ProtectsKeyRoles.php',
         ],
     ])
     ->withPreparedSets(

@@ -12,10 +12,9 @@ trait ProtectsKeyRoles
     {
         static::deleting(static function ($user): void {
             // Check protection using the model method
-            throw_if(
-                method_exists($user, 'isProtectable') && $user->isProtectable(),
-                CannotDeleteKeyUserException::class,
-            );
+            if (method_exists($user, 'isProtectable') && $user->isProtectable()) {
+                throw new CannotDeleteKeyUserException();
+            }
         });
     }
 }

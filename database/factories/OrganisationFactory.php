@@ -18,7 +18,7 @@ final class OrganisationFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return (App\Enums\TeamStatus::ONLINE|string|string[])[]
      *
      * @psalm-return array{name: array{en: string}, state: Active::class, status: App\Enums\TeamStatus::ONLINE, bio: string}
      */

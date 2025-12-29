@@ -1,9 +1,12 @@
-<!-- @format -->
+<?php
 
+declare(strict_types=1);
+
+?>
 <?php
 
 use Livewire\Component;
 
-new class extends Component {} ?>
+new class extends Component {}; ?>
 
 <div>{{-- Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie --}}</div>

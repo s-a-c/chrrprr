@@ -1,0 +1,88 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "includes": [
+            "**",
+            "!node_modules",
+            "!vendor",
+            "!public/build",
+            "!public/hot",
+            "!dist",
+            "!.tmp",
+            "!.cache",
+            "!tmp",
+            "!.idea",
+            "!.vscode",
+            "!.fleet",
+            "!.zed",
+            "!.trunk",
+            "!.ai",
+            "!*.log",
+            "!*.blade.php"
+        ]
+    },
+    "formatter": {
+        "enabled": true,
+        "formatWithErrors": false,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineEnding": "lf",
+        "lineWidth": 200,
+        "attributePosition": "auto"
+    },
+    "assist": {
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "style": {
+                "noDefaultExport": "off"
+            }
+        }
+    },
+    "css": {
+        "parser": {
+            "cssModules": true,
+            "allowWrongLineComments": false,
+            "tailwindDirectives": true
+        },
+        "formatter": {
+            "enabled": true
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single",
+            "jsxQuoteStyle": "single",
+            "trailingCommas": "all",
+            "semicolons": "always",
+            "arrowParentheses": "always",
+            "bracketSpacing": true,
+            "bracketSameLine": false
+        }
+    },
+    "json": {
+        "formatter": {
+            "trailingCommas": "none"
+        }
+    },
+    "overrides": [
+        {
+            "includes": ["*.yml", "*.yaml"],
+            "formatter": {
+                "indentWidth": 4
+            }
+        }
+    ]
+}

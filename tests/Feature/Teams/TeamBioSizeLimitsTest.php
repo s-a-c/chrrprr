@@ -19,7 +19,7 @@ test('enforces soft limit default 10000 characters in store request', function (
         'name' => 'Valid Name',
         'type' => TeamType::ENTERPRISE->value,
         'bio' => $longBio,
-    ], (new StoreTeamRequest())->rules());
+    ], new StoreTeamRequest()->rules());
 
     expect($validator->fails())->toBeTrue();
     expect($validator->errors()->has('bio'))->toBeTrue();
@@ -32,7 +32,7 @@ test('allows bio at soft limit default 10000 characters in store request', funct
         'name' => 'Valid Name',
         'type' => TeamType::ENTERPRISE->value,
         'bio' => $validBio,
-    ], (new StoreTeamRequest())->rules());
+    ], new StoreTeamRequest()->rules());
 
     expect($validator->fails())->toBeFalse();
 });
@@ -47,7 +47,7 @@ test('enforces hard limit 50000 characters in store request', function (): void 
         'name' => 'Valid Name',
         'type' => TeamType::ENTERPRISE->value,
         'bio' => $longBio,
-    ], (new StoreTeamRequest())->rules());
+    ], new StoreTeamRequest()->rules());
 
     // Currently fails at soft limit (10K), hard limit (50K) would be enforced separately
     expect($validator->fails())->toBeTrue();
@@ -55,26 +55,26 @@ test('enforces hard limit 50000 characters in store request', function (): void 
 });
 
 test('enforces soft limit in update request', function (): void {
-    $team = Enterprise::factory()->create();
+    Enterprise::factory()->create();
     $longBio = str_repeat('a', 10001);
 
     $validator = Validator::make([
         'name' => 'Valid Name',
         'bio' => $longBio,
-    ], (new UpdateTeamRequest())->rules());
+    ], new UpdateTeamRequest()->rules());
 
     expect($validator->fails())->toBeTrue();
     expect($validator->errors()->has('bio'))->toBeTrue();
 });
 
 test('allows bio at soft limit in update request', function (): void {
-    $team = Enterprise::factory()->create();
+    Enterprise::factory()->create();
     $validBio = str_repeat('a', 10000);
 
     $validator = Validator::make([
         'name' => 'Valid Name',
         'bio' => $validBio,
-    ], (new UpdateTeamRequest())->rules());
+    ], new UpdateTeamRequest()->rules());
 
     expect($validator->fails())->toBeFalse();
 });
@@ -84,7 +84,7 @@ test('allows null bio', function (): void {
         'name' => 'Valid Name',
         'type' => TeamType::ENTERPRISE->value,
         'bio' => null,
-    ], (new StoreTeamRequest())->rules());
+    ], new StoreTeamRequest()->rules());
 
     expect($validator->fails())->toBeFalse();
 });

@@ -26,6 +26,8 @@
 - tools
 - ui and ux
 
+---
+
 ## translations
 
 create translations for the following:
@@ -46,6 +48,8 @@ create translations for the following:
 - tr_TR
 - en_US
 - vi_VN
+
+---
 
 ## Key / Protected Roles
 
@@ -68,3 +72,30 @@ Consider enterprise configurable additions to this list
 Consider use of an ENUM to enforce
 Consider adding `Admin` to the list
 Consider: the constraint should apply when there is only a single model, the last, with the role
+
+---
+
+## Laravel Extension Issues
+
+Debug Info
+
+{
+  "os": "darwin",
+  "arch": "arm64",
+  "php_version": "8.5.1",
+  "laravel_version": "12.44.0",
+  "php_command": "\"/Users/s-a-c/Library/Application Support/Herd/bin/php\""
+}
+
+----------------------------------------
+
+Custom Blade Directives
+
+Error:
+In FolioServiceProvider.php line 23:
+
+  App\Providers\FolioServiceProvider::boot() has #[\Override] attribute, but
+  no matching parent method exists
+
+
+---

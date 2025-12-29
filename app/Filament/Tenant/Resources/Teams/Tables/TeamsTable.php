@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Tenant\Resources\Teams\Tables;
 
 use Filament\Actions\BulkActionGroup;
@@ -11,26 +13,18 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
-class TeamsTable
+final class TeamsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('ulid')
-                    ->searchable(),
-                TextColumn::make('type')
-                    ->badge()
-                    ->searchable(),
-                TextColumn::make('parent.name')
-                    ->searchable(),
-                TextColumn::make('state')
-                    ->searchable(),
-                TextColumn::make('status')
-                    ->badge()
-                    ->searchable(),
-                TextColumn::make('tenant.name')
-                    ->searchable(),
+                TextColumn::make('ulid')->searchable(),
+                TextColumn::make('type')->badge()->searchable(),
+                TextColumn::make('parent.name')->searchable(),
+                TextColumn::make('state')->searchable(),
+                TextColumn::make('status')->badge()->searchable(),
+                TextColumn::make('tenant.name')->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -43,9 +37,7 @@ class TeamsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('lock_version')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('lock_version')->numeric()->sortable(),
             ])
             ->filters([
                 TrashedFilter::make(),

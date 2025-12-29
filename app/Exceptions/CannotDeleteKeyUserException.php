@@ -6,6 +6,4 @@ namespace App\Exceptions;
 
 use Exception;
 
-final class CannotDeleteKeyUserException extends Exception
-{
-}
+final class CannotDeleteKeyUserException extends Exception {}

@@ -6,20 +6,23 @@ namespace App\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Uid\Ulid;
 
 trait HasUlid
 {
     public static function bootHasUlid(): void
     {
         static::creating(static function (Model $model): void {
-            if (empty($model->ulid)) {
-                $model->ulid = \Symfony\Component\Uid\Ulid::generate();
+            if (($model->ulid ?? null) === null || $model->ulid === '') {
+                $model->ulid = Ulid::generate();
             }
         });
     }
 
     /**
      * Get the route key for the model.
+     *
+     * @psalm-return 'ulid'
      */
     public function getRouteKeyName(): string
     {
@@ -32,7 +35,7 @@ trait HasUlid
      */
     public function resolveRouteBinding($value, $field = null): ?Model
     {
-        $field = $field ?? $this->getRouteKeyName();
+        $field ??= $this->getRouteKeyName();
 
         // If field is 'ulid', try ULID first, then fall back to integer ID for backward compatibility
         if ($field === 'ulid') {
@@ -57,7 +60,7 @@ trait HasUlid
      * @param  Builder<Model>  $query
      * @return Builder<Model>
      */
-    public function scopeByUlid(Builder $query, string $ulid): Builder
+    protected function scopeByUlid(Builder $query, string $ulid): Builder
     {
         return $query->where('ulid', $ulid);
     }

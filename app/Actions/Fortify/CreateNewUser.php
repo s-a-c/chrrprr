@@ -36,7 +36,7 @@ final class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         // Use RegisterUser action for consistency with CQRS pattern
-        return app(RegisterUser::class)->handle([
+        return resolve(RegisterUser::class)->handle([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],

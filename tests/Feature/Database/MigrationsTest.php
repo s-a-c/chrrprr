@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 uses(RefreshDatabase::class);
 
 test('database migrations run successfully', function (): void {
-    // RefreshDatabase trait automatically runs migrations.
+    // RefreshDatabase trait MigrationsTest runs migrations.
     // We explicitly check if specific tables exist to verify.
 
     $tables = [

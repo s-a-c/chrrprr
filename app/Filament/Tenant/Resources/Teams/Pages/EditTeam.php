@@ -12,11 +12,23 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
+use Override;
 
-class EditTeam extends EditRecord
+final class EditTeam extends EditRecord
 {
     protected static string $resource = TeamResource::class;
 
+    /**
+     * @return (DeleteAction|ForceDeleteAction|RestoreAction)[]
+     *
+     * @psalm-return list{DeleteAction, ForceDeleteAction, RestoreAction}
+     */
+    #[Override]
+    /**
+     * @return (DeleteAction|ForceDeleteAction|RestoreAction)[]
+     *
+     * @psalm-return list{DeleteAction, ForceDeleteAction, RestoreAction}
+     */
     protected function getHeaderActions(): array
     {
         return [
@@ -26,19 +38,37 @@ class EditTeam extends EditRecord
         ];
     }
 
+    /**
+     * @return (mixed|null)[]
+     *
+     * @psalm-return array{lock_version: mixed|null,...}
+     */
+    #[Override]
+    /**
+     * @return (mixed|null)[]
+     *
+     * @psalm-return array{lock_version: mixed|null,...}
+     */
     protected function mutateFormDataBeforeSave(array $data): array
     {
         // Ensure lock_version is included
         if (! isset($data['lock_version'])) {
-            $data['lock_version'] = $this->record->lock_version;
+            $data['lock_version'] = $this->record?->lock_version;
         }
 
         return $data;
     }
 
+    /**
+     * @return Team
+     */
+    #[Override]
+    /**
+     * @return Team
+     */
     protected function handleRecordUpdate(Model|Team $record, array $data): Model|Team
     {
         // Use the UpdateTeam action instead of default model update
-        return app(UpdateTeam::class)->handle($record, $data);
+        return resolve(UpdateTeam::class)->handle($record, $data);
     }
 }

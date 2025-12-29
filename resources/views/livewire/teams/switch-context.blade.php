@@ -45,7 +45,7 @@ new class extends Component {
     {
         /** @var User $user */
         $user = auth()->user();
-        $organisation = Organisation::find($organisationId);
+        $organisation = Organisation::query()->find($organisationId);
 
         if ($organisation && $user->switchContext($organisation)) {
             $this->currentContextId = $organisation->id;
@@ -65,7 +65,6 @@ new class extends Component {
             return __('Select Context');
         }
 
-        /** @var Organisation|null $current */
         $current = $this->organisations->firstWhere('id', $this->currentContextId);
 
         return $current ? $current->name : __('Unknown Context');

@@ -8,7 +8,7 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
-class AssignExecutive
+final class AssignExecutive
 {
     /**
      * Assign an executive to a team.

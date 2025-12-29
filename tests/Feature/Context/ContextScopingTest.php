@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Enums\TeamType;
+use App\Models\Department;
 use App\Models\Division;
 use App\Models\Enterprise;
 use App\Models\Organisation;
+use App\Models\Project;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +38,8 @@ test('team queries are scoped to current organisation context', function (): voi
 
     $teams = Team::inContext()->get();
 
-    expect($teams->pluck('id'))->toContain($this->orgA->id)
+    expect($teams->pluck('id'))
+        ->toContain($this->orgA->id)
         ->toContain($divisionA->id)
         ->not->toContain($this->orgB->id)
         ->not->toContain($divisionB->id);
@@ -46,19 +50,20 @@ test('team queries include all descendants of current context', function (): voi
 
     // Create hierarchy under Org A
     $divisionA = Division::factory()->create(['parent_id' => $this->orgA->id]);
-    $departmentA = App\Models\Department::factory()->create(['parent_id' => $divisionA->id]);
-    $projectA = App\Models\Project::factory()->create(['parent_id' => $departmentA->id]);
+    $departmentA = Department::factory()->create(['parent_id' => $divisionA->id]);
+    $projectA = Project::factory()->create(['parent_id' => $departmentA->id]);
 
     // Create hierarchy under Org B
     $divisionB = Division::factory()->create(['parent_id' => $this->orgB->id]);
-    $departmentB = App\Models\Department::factory()->create(['parent_id' => $divisionB->id]);
+    $departmentB = Department::factory()->create(['parent_id' => $divisionB->id]);
 
     $this->user->switchContext($this->orgA);
 
     $teams = Team::inContext()->get();
 
     // Should include Org A and all its descendants
-    expect($teams->pluck('id'))->toContain($this->orgA->id)
+    expect($teams->pluck('id'))
+        ->toContain($this->orgA->id)
         ->toContain($divisionA->id)
         ->toContain($departmentA->id)
         ->toContain($projectA->id)
@@ -76,14 +81,12 @@ test('switching context updates team query scope', function (): void {
     // Start with Org A
     $this->user->switchContext($this->orgA);
     $teamsA = Team::inContext()->get();
-    expect($teamsA->pluck('id'))->toContain($divisionA->id)
-        ->not->toContain($divisionB->id);
+    expect($teamsA->pluck('id'))->toContain($divisionA->id)->not->toContain($divisionB->id);
 
     // Switch to Org B
     $this->user->switchContext($this->orgB);
     $teamsB = Team::inContext()->get();
-    expect($teamsB->pluck('id'))->toContain($divisionB->id)
-        ->not->toContain($divisionA->id);
+    expect($teamsB->pluck('id'))->toContain($divisionB->id)->not->toContain($divisionA->id);
 });
 
 test('team queries return empty when no context is set', function (): void {
@@ -92,7 +95,7 @@ test('team queries return empty when no context is set', function (): void {
     // Ensure no context is set
     $this->user->update(['current_context_id' => null]);
 
-    $divisionA = Division::factory()->create(['parent_id' => $this->orgA->id]);
+    Division::factory()->create(['parent_id' => $this->orgA->id]);
 
     $teams = Team::inContext()->get();
 
@@ -113,9 +116,7 @@ test('organisation queries are scoped to current context', function (): void {
     $this->user->switchContext($this->orgA);
 
     // When querying organisations in context, should only get Org A and descendants
-    $teams = Team::inContext()->where('type', App\Enums\TeamType::ORGANISATION)->get();
+    $teams = Team::inContext()->where('type', TeamType::ORGANISATION)->get();
 
-    expect($teams->pluck('id'))->toContain($this->orgA->id)
-        ->not->toContain($this->orgB->id)
-        ->not->toContain($orgC->id);
+    expect($teams->pluck('id'))->toContain($this->orgA->id)->not->toContain($this->orgB->id)->not->toContain($orgC->id);
 });

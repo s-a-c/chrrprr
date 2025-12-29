@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Route;
 beforeEach(function (): void {
     // Create a test route that uses route model binding
     Route::middleware('web')->group(function (): void {
-        Route::get('/test-users/{user}', function (User $user): string {
-            return (string) $user->id;
-        })->name('test.users.show');
+        Route::get('/test-users/{user}', fn (User $user): string => (string) $user->id)->name('test.users.show');
     });
 });
 
@@ -46,8 +44,7 @@ test('user route uses ulid as route key name', function (): void {
 test('user can be found by ulid scope', function (): void {
     $user = User::factory()->create();
 
-    $found = User::byUlid($user->ulid)->first();
+    $found = User::query()->byUlid($user->ulid)->first();
 
-    expect($found)->not->toBeNull()
-        ->and($found->id)->toBe($user->id);
+    expect($found)->not->toBeNull()->and($found->id)->toBe($user->id);
 });

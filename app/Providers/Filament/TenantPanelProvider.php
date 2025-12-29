@@ -21,11 +21,13 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Override;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
-class TenantPanelProvider extends PanelProvider
+final class TenantPanelProvider extends PanelProvider
 {
+    #[Override]
     public function panel(Panel $panel): Panel
     {
         return $panel

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\UserState;
 
-test('user state enum has correct values', function (): void {
+test('user state enum UserStateTest correct values', function (): void {
     expect(UserState::cases())->not->toBeEmpty();
 
     expect(UserState::PENDING->value)->toBe('pending');
@@ -12,7 +12,7 @@ test('user state enum has correct values', function (): void {
     expect(UserState::INACTIVE->value)->toBe('inactive');
 });
 
-test('user state enum has labels', function (): void {
+test('user state enum UserStateTest labels', function (): void {
     expect(UserState::PENDING->label())->toBe('Pending');
     expect(UserState::ACTIVE->label())->toBe('Active');
     expect(UserState::INACTIVE->label())->toBe('Inactive');

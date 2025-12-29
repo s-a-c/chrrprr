@@ -9,6 +9,9 @@ use App\Models\Team;
 use App\Models\TeamMoveApproval;
 use App\Services\TeamMoveService;
 use Exception;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 final class MoveTeam extends Component
@@ -35,28 +38,28 @@ final class MoveTeam extends Component
         $this->errorMessage = '';
         $this->result = null;
 
-        $rules = (new MoveTeamRequest())->rules();
+        $rules = new MoveTeamRequest()->rules();
         $this->validate($rules);
 
         try {
             $team = Team::query()->where('ulid', $this->teamUlid)->firstOrFail();
-            $service = app(TeamMoveService::class);
+            $service = resolve(TeamMoveService::class);
 
             $this->result = $service->requestMove(
                 $team,
                 $this->parent_id ? (int) $this->parent_id : null,
                 auth()->user(),
-                $this->reason ?: null,
+                $this->reason !== null && $this->reason !== '' ? $this->reason : null,
             );
 
-            if ($this->result instanceof TeamMoveApproval) {
-                session()->flash('status', 'Team move request submitted for approval.');
-            } else {
-                session()->flash('status', 'Team moved successfully.');
-            }
+            $statusMessage = $this->result instanceof TeamMoveApproval
+                ? 'Team move request submitted for approval.'
+                : 'Team moved successfully.';
+
+            session()->flash('status', $statusMessage);
 
             $this->redirect(route('teams.index'));
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             throw $e; // Let Livewire handle standard validation errors
         } catch (Exception $e) {
             $this->errorMessage = 'An error occurred: '.$e->getMessage();
@@ -64,9 +67,9 @@ final class MoveTeam extends Component
     }
 
     /**
-     * @psalm-return \Illuminate\Database\Eloquent\Collection<int, Team>
+     * @psalm-return Collection<int, Team>
      */
-    public function getParentsProperty(): \Illuminate\Database\Eloquent\Collection
+    public function getParentsProperty(): Collection
     {
         $currentTeam = Team::query()->where('ulid', $this->teamUlid)->first();
 
@@ -76,13 +79,14 @@ final class MoveTeam extends Component
 
         // Don't include the current team or its descendants in potential parents
         return Team::all()->filter(
-            static fn ($team): bool => (
-                ((int) $team->id) !== ((int) $currentTeam->id) && ! $team->isDescendantOf($currentTeam)
+            static fn (Team $team): bool => (
+                (int) $team->id !== (int) $currentTeam->id
+                && ! $team->isDescendantOf($currentTeam)
             ),
         );
     }
 
-    public function render(): \Illuminate\Contracts\View\View
+    public function render(): \Illuminate\View\View|View
     {
         return view('livewire.teams.move-team');
     }

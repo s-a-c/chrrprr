@@ -2,35 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Models\Concerns\HasTranslatableAttributes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+namespace Tests\Unit\Models\Concerns;
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 uses(TestCase::class);
-
-final class TranslatableTestModel extends Model
-{
-    use HasFactory;
-    use HasTranslatableAttributes;
-
-    /** @var bool */
-    public $timestamps = false;
-
-    /** @var array<int, string> */
-    public $translatable = ['name'];
-
-    /** @var string|null */
-    protected $table = 'translatable_test_models';
-
-    /** @var array<string> */
-    protected $guarded = [];
-
-    /** @var array<string, string> */
-    protected $casts = ['name' => 'array']; // Spatie trait handles casting usually but ensures array for non-db testing
-}
 
 beforeEach(function (): void {
     Schema::create('translatable_test_models', function (Blueprint $table): void {

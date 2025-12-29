@@ -15,7 +15,7 @@ trait HasTranslatableSlug
     {
         static::saving(static function ($model): void {
             foreach ($model->sluggable() as $attribute => $config) {
-                if (!(property_exists($model, 'translatable') && in_array($attribute, $model->translatable))) {
+                if (! (property_exists($model, 'translatable') && in_array($attribute, $model->translatable, true))) {
                     continue;
                 }
 

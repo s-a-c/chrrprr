@@ -15,6 +15,9 @@ use App\Observers\UserObserver;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -29,14 +32,19 @@ final class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory;
 
-    use HasRoles;
-    use HasTranslatableAttributes, HasUlid;
+    // Must be before HasRoles to run before role detachment
+    // @phpstan-ignore-next-line
     use ProtectsKeyRoles;
+    use HasRoles;
+    use HasTranslatableAttributes;
+    use HasUlid;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
     /** @var array<int, string> */
-    public $translatable = [
+    public array $translatable = [
         'bio',
     ];
 
@@ -82,7 +90,7 @@ final class User extends Authenticatable
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(static fn ($word) => Str::substr($word, 0, 1))
+            ->map(static fn (string $word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
@@ -96,7 +104,8 @@ final class User extends Authenticatable
         $teamKey = config('permission.column_names.team_foreign_key');
 
         // Get all key roles held by this user, including their team context
-        $userKeyRoles = $this->getConnection()
+        $userKeyRoles = $this
+            ->getConnection()
             ->table($pivotTable)
             ->join($rolesTable, "{$pivotTable}.role_id", '=', "{$rolesTable}.id")
             ->where("{$pivotTable}.model_id", $this->getKey())
@@ -107,7 +116,8 @@ final class User extends Authenticatable
 
         foreach ($userKeyRoles as $row) {
             // Count users in this specific (role, team) combination
-            $count = $this->getConnection()
+            $count = $this
+                ->getConnection()
                 ->table($pivotTable)
                 ->where('role_id', $row->role_id)
                 ->where($teamKey, $row->team_id)
@@ -123,36 +133,46 @@ final class User extends Authenticatable
 
     /**
      * Get the enterprise tenant this user belongs to.
+     *
+     * @psalm-return BelongsTo<Enterprise>
      */
-    public function tenant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function tenant(): BelongsTo
     {
         return $this->belongsTo(Enterprise::class, 'tenant_id');
     }
 
     /**
      * Get the current organisational context of the user.
+     *
+     * @psalm-return BelongsTo<Organisation>
      */
-    public function currentContext(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function currentContext(): BelongsTo
     {
         return $this->belongsTo(Organisation::class, 'current_context_id');
     }
 
     /**
      * Get the enterprises this user belongs to (many-to-many).
+     *
+     * @psalm-return BelongsToMany<Enterprise>
      */
-    public function enterprises(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function enterprises(): BelongsToMany
     {
-        return $this->belongsToMany(Enterprise::class, 'user_enterprise', 'user_id', 'enterprise_id')
+        return $this
+            ->belongsToMany(Enterprise::class, 'user_enterprise', 'user_id', 'enterprise_id')
             ->withPivot('is_default')
             ->withTimestamps();
     }
 
     /**
      * Get the organisations this user has access to.
+     *
+     * @psalm-return BelongsToMany<Organisation>
      */
-    public function accessibleOrganisations(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function accessibleOrganisations(): BelongsToMany
     {
-        return $this->belongsToMany(Organisation::class, 'user_organisation_access', 'user_id', 'organisation_id')
+        return $this
+            ->belongsToMany(Organisation::class, 'user_organisation_access', 'user_id', 'organisation_id')
             ->withPivot('assigned_at')
             ->withTimestamps();
     }
@@ -174,21 +194,27 @@ final class User extends Authenticatable
      */
     public function validateContext(): void
     {
-        if (! $this->current_context_id || ! $this->accessibleOrganisations()->where('organisation_id', $this->current_context_id)->exists()) {
+        if (
+            ! $this->current_context_id
+            || ! $this->accessibleOrganisations()->where('organisation_id', $this->current_context_id)->exists()
+        ) {
             $firstOrg = $this->accessibleOrganisations()->first();
             if ($firstOrg) {
                 $this->update(['current_context_id' => $firstOrg->id]);
-            } else {
-                $this->update(['current_context_id' => null]);
+
+                return;
             }
+
+            $this->update(['current_context_id' => null]);
         }
     }
 
     /**
      * Create a new Eloquent query builder for the model.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  Builder  $query
      */
+    #[Override]
     public function newEloquentBuilder($query): UserBuilder
     {
         return new UserBuilder($query);
@@ -197,20 +223,16 @@ final class User extends Authenticatable
     #[Override]
     protected static function booted(): void
     {
-        // Ensure deletion prevention runs
-        self::deleting(static function (User $user): void {
-            if ($user->isProtectable()) {
-                throw new \App\Exceptions\CannotDeleteKeyUserException();
-            }
-        });
+        // Deletion prevention is handled by ProtectsKeyRoles trait
+        // which must run before HasRoles to check before role detachment
     }
 
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return string[]
      *
-     * @psalm-return array{email_verified_at: 'datetime', password: 'hashed', state: UserState::class, status: UserStatus::class, tenant_id: 'integer', current_context_id: 'integer'}
+     * @psalm-return array{email_verified_at: 'datetime', password: 'hashed', state: UserState::class, status: UserStatus::class, tenant_id: 'integer', current_context_id: 'integer', bio: 'array'}
      */
     #[Override]
     protected function casts(): array
@@ -233,7 +255,7 @@ final class User extends Authenticatable
     {
         $bio = $this->getTranslation('bio', app()->getLocale());
 
-        if (empty($bio)) {
+        if ($bio === null || $bio === '') {
             return null;
         }
 

@@ -11,8 +11,10 @@ test('user bio can be set in different locales', function (): void {
     $user->setTranslation('bio', 'fr', 'Bio en français');
     $user->save();
 
-    expect($user->getTranslation('bio', 'en'))->toBe('English bio')
-        ->and($user->getTranslation('bio', 'fr'))->toBe('Bio en français');
+    expect($user->getTranslation('bio', 'en'))
+        ->toBe('English bio')
+        ->and($user->getTranslation('bio', 'fr'))
+        ->toBe('Bio en français');
 });
 
 test('user bio returns default locale when translation missing', function (): void {
@@ -23,8 +25,7 @@ test('user bio returns default locale when translation missing', function (): vo
 
     // When fallback is false, returns empty string if translation missing
     $translation = $user->getTranslation('bio', 'fr', false);
-    expect($translation)->toBeEmpty()
-        ->and($user->getTranslation('bio', 'fr', true))->toBe('English bio'); // Falls back to default
+    expect($translation)->toBeEmpty()->and($user->getTranslation('bio', 'fr', true))->toBe('English bio'); // Falls back to default
 });
 
 test('user bio can be retrieved in current locale', function (): void {

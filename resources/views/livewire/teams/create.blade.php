@@ -1,5 +1,8 @@
-<!-- @format -->
+<?php
 
+declare(strict_types=1);
+
+?>
 <?php
 
 use App\Enums\TeamType;
@@ -7,16 +10,12 @@ use App\Http\Requests\StoreTeamRequest;
 use App\Models\Team;
 use Livewire\Component;
 
-use function Laravel\Folio\name;
-
-name('teams.create');
-
 new class extends Component {
     public string $name = '';
 
     public string $type = '';
 
-    public null|string $parent_id = null;
+    public ?string $parent_id = null;
 
     public string $bio = '';
 
@@ -32,13 +31,13 @@ new class extends Component {
     {
         $this->errorMessage = '';
 
-        $rules = (new StoreTeamRequest())->rules();
+        $rules = new StoreTeamRequest()->rules();
         $this->validate($rules);
 
         try {
-            $action = app(\App\Actions\Teams\CreateTeam::class);
+            $action = resolve(\App\Actions\Teams\CreateTeam::class);
 
-            $team = $action->handle([
+            $action->handle([
                 'name' => $this->name,
                 'type' => $this->type,
                 'parent_id' => $this->parent_id ? (int) $this->parent_id : null,
@@ -59,13 +58,13 @@ new class extends Component {
     {
         return Team::all(); // Simplified for MVP hierarchy selection
     }
-} ?>
+}; ?>
 
 <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
     <flux:heading level="1">Create New Team</flux:heading>
     <flux:subheading>Define a new team within the hierarchy.</flux:subheading>
 
-    @if ($errorMessage)
+    @if (!empty($errorMessage))
         <flux:callout variant="danger" class="mt-4">{{ $errorMessage }}</flux:callout>
     @endif
 
@@ -79,7 +78,7 @@ new class extends Component {
         <flux:field>
             <flux:label>Type</flux:label>
             <flux:select wire:model="type">
-                @foreach(TeamType::cases() as $type)
+                @foreach (TeamType::cases() as $type)
                     <flux:select.option :value="$type->value">{{ $type->label() }}</flux:select.option>
                 @endforeach
             </flux:select>
@@ -90,8 +89,9 @@ new class extends Component {
             <flux:label>Parent Team</flux:label>
             <flux:select wire:model="parent_id">
                 <flux:select.option value="">No Parent (Enterprise)</flux:select.option>
-                @foreach($this->parents as $parent)
-                    <flux:select.option :value="$parent->id">{{ $parent->name }} ({{ $parent->type->value }})</flux:select.option>
+                @foreach ($this->parents as $parent)
+                    <flux:select.option :value="$parent->id">{{ $parent->name }} ({{ $parent->type->value }})
+                    </flux:select.option>
                 @endforeach
             </flux:select>
             <flux:error name="parent_id" />

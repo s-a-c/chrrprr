@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Enums\UserState;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 use ValueError;
 
 final class SetDefaultUserStates extends Command
@@ -30,6 +31,8 @@ final class SetDefaultUserStates extends Command
 
     /**
      * Execute the console command.
+     *
+     * @psalm-return 0|1
      */
     public function handle(): int
     {
@@ -40,7 +43,7 @@ final class SetDefaultUserStates extends Command
         // Validate state
         try {
             $state = UserState::from($stateValue);
-        } catch (ValueError $e) {
+        } catch (ValueError) {
             $this->error("Invalid state: {$stateValue}. Must be one of: pending, active, inactive");
 
             return Command::FAILURE;
@@ -48,7 +51,7 @@ final class SetDefaultUserStates extends Command
 
         $this->info("Setting default state to '{$state->value}' for users without a state...");
 
-        $query = User::whereNull('state');
+        $query = User::query()->whereNull('state');
         $total = $query->count();
 
         if ($total === 0) {
@@ -68,7 +71,7 @@ final class SetDefaultUserStates extends Command
 
         $processed = 0;
 
-        $query->chunk($batchSize, function ($users) use (&$processed, $dryRun, $state, $bar): void {
+        $query->chunk($batchSize, static function (Collection $users) use (&$processed, $dryRun, $state, $bar): void {
             foreach ($users as $user) {
                 if (! $dryRun) {
                     $user->state = $state;
@@ -85,9 +88,11 @@ final class SetDefaultUserStates extends Command
 
         if ($dryRun) {
             $this->info("Would have set state '{$state->value}' for {$processed} users.");
-        } else {
-            $this->info("Successfully set state '{$state->value}' for {$processed} users.");
+
+            return Command::SUCCESS;
         }
+
+        $this->info("Successfully set state '{$state->value}' for {$processed} users.");
 
         return Command::SUCCESS;
     }

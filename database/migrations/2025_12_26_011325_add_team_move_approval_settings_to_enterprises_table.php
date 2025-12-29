@@ -16,8 +16,14 @@ return new class extends Migration {
             // Add approval settings columns (only applicable to Enterprise type)
             // These are stored on the teams table but only used when type = 'enterprise'
             $table->integer('move_approval_descendant_threshold')->default(10)->after('lock_version');
-            $table->integer('move_approval_depth_change_threshold')->default(2)->after('move_approval_descendant_threshold');
-            $table->boolean('move_approval_require_cross_org')->default(true)->after('move_approval_depth_change_threshold');
+            $table
+                ->integer('move_approval_depth_change_threshold')
+                ->default(2)
+                ->after('move_approval_descendant_threshold');
+            $table
+                ->boolean('move_approval_require_cross_org')
+                ->default(true)
+                ->after('move_approval_depth_change_threshold');
             $table->integer('bulk_operation_batch_size')->default(500)->after('move_approval_require_cross_org');
         });
     }

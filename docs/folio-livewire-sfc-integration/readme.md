@@ -25,6 +25,7 @@ sequenceDiagram
     Folio->>LW: Render SFC Component
     LW->>Layout: Use default layouts.app
     Layout-->>Browser: Total HTML (Flux UI + LW SFC)
+
 ```
 
 ## Key Components
@@ -45,6 +46,7 @@ graph TD
     C --> G["App Logo"]
     C --> H["Nav List (Platform)"]
     C --> I["User Menu"]
+
 ```
 
 ## Setup & Configuration

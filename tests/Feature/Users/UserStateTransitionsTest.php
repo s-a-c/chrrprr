@@ -26,12 +26,14 @@ test('user can transition from active to inactive state', function (): void {
 test('user state is cast to enum', function (): void {
     $user = User::factory()->create(['state' => UserState::ACTIVE]);
 
-    expect($user->state)->toBeInstanceOf(UserState::class)
-        ->and($user->state)->toBe(UserState::ACTIVE);
+    expect($user->state)->toBeInstanceOf(UserState::class)->and($user->state)->toBe(UserState::ACTIVE);
 });
 
 test('user state has label method', function (): void {
-    expect(UserState::PENDING->label())->toBe('Pending')
-        ->and(UserState::ACTIVE->label())->toBe('Active')
-        ->and(UserState::INACTIVE->label())->toBe('Inactive');
+    expect(UserState::PENDING->label())
+        ->toBe('Pending')
+        ->and(UserState::ACTIVE->label())
+        ->toBe('Active')
+        ->and(UserState::INACTIVE->label())
+        ->toBe('Inactive');
 });

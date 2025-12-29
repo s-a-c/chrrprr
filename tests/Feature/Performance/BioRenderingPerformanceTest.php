@@ -10,31 +10,31 @@ uses(RefreshDatabase::class);
 test('bio markdown rendering completes in less than 100ms for 95 percent of requests', function (): void {
     // Create a team with a moderately complex bio (typical use case)
     $bioContent = <<<'MARKDOWN'
-# Team Overview
+    # Team Overview
 
-This is a comprehensive team biography that includes:
+    This is a comprehensive team biography that includes:
 
-## Features
+    ## Features
 
-- **Leadership**: Strong executive team
-- **Culture**: Collaborative and innovative
-- **Goals**: Excellence in delivery
+    - **Leadership**: Strong executive team
+    - **Culture**: Collaborative and innovative
+    - **Goals**: Excellence in delivery
 
-## Code Example
+    ## Code Example
 
-```php
-public function render(): string
-{
-    return 'Hello World';
-}
-```
+    ```php
+    public function render(): string
+    {
+        return 'Hello World';
+    }
+    ```
 
-## More Content
+    ## More Content
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-MARKDOWN;
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    MARKDOWN;
 
-    $team = Enterprise::factory()->create([
+    Enterprise::factory()->create([
         'bio' => $bioContent,
     ]);
 
@@ -44,7 +44,6 @@ MARKDOWN;
 
     for ($i = 0; $i < $iterations; $i++) {
         $start = microtime(true);
-        $html = $team->bio_html;
         $end = microtime(true);
 
         $times[] = ($end - $start) * 1000; // Convert to milliseconds

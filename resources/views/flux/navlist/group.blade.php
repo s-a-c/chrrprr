@@ -1,5 +1,8 @@
-<!-- @format -->
+<?php
 
+declare(strict_types=1);
+
+?>
 @props([ 'expandable' => false, 'expanded' => true, 'heading' => null, ]) <?php if ($expandable && $heading): ?>
 
 <ui-disclosure {{ $attributes->

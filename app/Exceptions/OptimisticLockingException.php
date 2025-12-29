@@ -6,6 +6,4 @@ namespace App\Exceptions;
 
 use Exception;
 
-final class OptimisticLockingException extends Exception
-{
-}
+final class OptimisticLockingException extends Exception {}

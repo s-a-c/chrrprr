@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
 final class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return true
      */
     public function authorize(): bool
     {
@@ -19,12 +22,14 @@ final class UpdateUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return string[][]
+     *
+     * @psalm-return array{name: list{'sometimes', 'required', 'string', 'max:255'}, email: list{'sometimes', 'required', 'string', 'email', 'max:255'}, bio: list{'nullable', 'string', 'max:50000'}}
      */
     public function rules(): array
     {
         // Get tenant-configurable soft limit (default 10K, hard limit 50K)
-        $softLimit = config('app.user_bio_soft_limit', 10000);
+        config('app.user_bio_soft_limit', 10000);
         $hardLimit = 50000; // Hard limit
 
         return [
@@ -41,8 +46,11 @@ final class UpdateUserRequest extends FormRequest
     /**
      * Get custom messages for validator errors.
      *
-     * @return array<string, string>
+     * @return string[]
+     *
+     * @psalm-return array{'bio.max': string}
      */
+    #[Override]
     public function messages(): array
     {
         $softLimit = config('app.user_bio_soft_limit', 10000);

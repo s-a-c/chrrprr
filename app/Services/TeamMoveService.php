@@ -9,13 +9,20 @@ use App\Enums\TeamType;
 use App\Models\Team;
 use App\Models\TeamMoveApproval;
 use App\Models\User;
+use App\Services\TeamMove\ApprovalRuleInterface;
+use App\Services\TeamMove\ApproverResolverInterface;
+use App\Services\TeamMove\CrossOrganisationApproverResolver;
+use App\Services\TeamMove\CrossOrganisationRule;
+use App\Services\TeamMove\DepthChangeRule;
+use App\Services\TeamMove\DescendantCountRule;
+use App\Services\TeamMove\SameOrganisationApproverResolver;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-class TeamMoveService
+final readonly class TeamMoveService
 {
     public function __construct(
-        private readonly MoveTeam $moveTeamAction,
+        private MoveTeam $moveTeamAction,
     ) {}
 
     /**
@@ -23,9 +30,18 @@ class TeamMoveService
      *
      * @return TeamMoveApproval|Team Returns approval request if approval needed, or the moved team if not
      */
-    public function requestMove(Team $team, ?int $newParentId, User $requestedBy, ?string $reason = null): TeamMoveApproval|Team
-    {
-        return DB::transaction(function () use ($team, $newParentId, $requestedBy, $reason): TeamMoveApproval|Team {
+    public function requestMove(
+        Team $team,
+        ?int $newParentId,
+        User $requestedBy,
+        ?string $reason = null,
+    ): TeamMoveApproval|Team {
+        return DB::transaction(function () use (
+            $team,
+            $newParentId,
+            $requestedBy,
+            $reason,
+        ): TeamMoveApproval|Team|null {
             $newParent = $newParentId ? Team::query()->withoutGlobalScopes()->find($newParentId) : null;
             $enterprise = $team->tenant;
 
@@ -40,7 +56,9 @@ class TeamMoveService
             // Create approval request
             $requiredApprovers = $this->determineRequiredApprovers($team, $newParent);
 
-            $approval = TeamMoveApproval::create([
+            // TODO(@system): Dispatch notification event to required approvers
+
+            return TeamMoveApproval::query()->create([
                 'team_id' => $team->id,
                 'from_parent_id' => $team->parent_id,
                 'to_parent_id' => $newParentId,
@@ -50,10 +68,6 @@ class TeamMoveService
                 'required_approvers' => $requiredApprovers,
                 'approvals' => [],
             ]);
-
-            // TODO: Dispatch notification event to required approvers
-
-            return $approval;
         });
     }
 
@@ -61,6 +75,41 @@ class TeamMoveService
      * Approve a team move request.
      */
     public function approve(TeamMoveApproval $approval, User $approver): void
+    {
+        $this->validateApprovalRequest($approval, $approver);
+
+        DB::transaction(function () use ($approval, $approver): void {
+            $this->recordApproval($approval, $approver);
+
+            if ($this->allApproversHaveApproved($approval)) {
+                $this->executeMove($approval);
+            }
+
+            $approval->save();
+        });
+    }
+
+    /**
+     * Reject a team move request.
+     */
+    public function reject(TeamMoveApproval $approval, User $rejector, string $reason): void
+    {
+        $this->validateRejectionRequest($approval, $rejector);
+
+        $approval->update([
+            'status' => 'rejected',
+            'rejected_at' => now(),
+            'rejected_by_id' => $rejector->id,
+            'rejection_reason' => $reason,
+        ]);
+
+        // TODO(@system): Dispatch notification event
+    }
+
+    /**
+     * Validate that the approval request can be approved.
+     */
+    private function validateApprovalRequest(TeamMoveApproval $approval, User $approver): void
     {
         if (! $approval->isPending()) {
             throw ValidationException::withMessages([
@@ -74,39 +123,51 @@ class TeamMoveService
                 'approver' => ['You are not authorized to approve this request.'],
             ]);
         }
-
-        DB::transaction(function () use ($approval, $approver): void {
-            $requiredApprovers = $approval->required_approvers ?? [];
-            $existingApprovals = $approval->approvals ?? [];
-            $existingApprovals[] = [
-                'user_id' => $approver->id,
-                'approved_at' => now()->toISOString(),
-                'status' => 'approved',
-            ];
-
-            $approval->approvals = $existingApprovals;
-
-            // Check if all required approvers have approved
-            $approvedUserIds = array_column($existingApprovals, 'user_id');
-            $allApproved = count(array_intersect($requiredApprovers, $approvedUserIds)) === count($requiredApprovers);
-
-            if ($allApproved) {
-                // Execute the move
-                $team = $approval->team;
-                $this->moveTeamAction->handle($team, $approval->to_parent_id);
-
-                $approval->status = 'approved';
-                $approval->approved_at = now();
-            }
-
-            $approval->save();
-        });
     }
 
     /**
-     * Reject a team move request.
+     * Record an approval from a user.
      */
-    public function reject(TeamMoveApproval $approval, User $rejector, string $reason): void
+    private function recordApproval(TeamMoveApproval $approval, User $approver): void
+    {
+        $existingApprovals = $approval->approvals ?? [];
+        $existingApprovals[] = [
+            'user_id' => $approver->id,
+            'approved_at' => now()->toISOString(),
+            'status' => 'approved',
+        ];
+
+        $approval->approvals = $existingApprovals;
+    }
+
+    /**
+     * Check if all required approvers have approved.
+     */
+    private function allApproversHaveApproved(TeamMoveApproval $approval): bool
+    {
+        $requiredApprovers = $approval->required_approvers ?? [];
+        $existingApprovals = $approval->approvals ?? [];
+        $approvedUserIds = array_column($existingApprovals, 'user_id');
+
+        return count(array_intersect($requiredApprovers, $approvedUserIds)) === count($requiredApprovers);
+    }
+
+    /**
+     * Execute the team move and mark approval as complete.
+     */
+    private function executeMove(TeamMoveApproval $approval): void
+    {
+        $team = $approval->team;
+        $this->moveTeamAction->handle($team, $approval->to_parent_id);
+
+        $approval->status = 'approved';
+        $approval->approved_at = now();
+    }
+
+    /**
+     * Validate that the rejection request can be rejected.
+     */
+    private function validateRejectionRequest(TeamMoveApproval $approval, User $rejector): void
     {
         if (! $approval->isPending()) {
             throw ValidationException::withMessages([
@@ -120,15 +181,6 @@ class TeamMoveService
                 'rejector' => ['You are not authorized to reject this request.'],
             ]);
         }
-
-        $approval->update([
-            'status' => 'rejected',
-            'rejected_at' => now(),
-            'rejected_by_id' => $rejector->id,
-            'rejection_reason' => $reason,
-        ]);
-
-        // TODO: Dispatch notification event
     }
 
     /**
@@ -136,35 +188,35 @@ class TeamMoveService
      */
     private function requiresApproval(Team $team, ?Team $newParent, ?Team $enterprise): bool
     {
-        if (! $enterprise) {
+        if (! $enterprise instanceof Team) {
             return false;
         }
 
-        // Get approval thresholds from enterprise (defaults if not set)
-        $descendantThreshold = $enterprise->move_approval_descendant_threshold ?? 10;
-        $depthChangeThreshold = $enterprise->move_approval_depth_change_threshold ?? 2;
-        $requireCrossOrg = $enterprise->move_approval_require_cross_org ?? true;
+        $rules = $this->getApprovalRules();
 
-        // Check descendant count threshold
-        $descendantCount = $this->getDescendantCount($team);
-        if ($descendantCount >= $descendantThreshold) {
-            return true;
-        }
+        foreach ($rules as $rule) {
+            if (! $rule->requiresApproval($team, $newParent, $enterprise)) {
+                continue;
+            }
 
-        // Check depth change threshold
-        $currentDepth = $team->getDepth();
-        $newDepth = $newParent ? ($newParent->getDepth() + 1) : 1;
-        $depthChange = abs($newDepth - $currentDepth);
-        if ($depthChange >= $depthChangeThreshold) {
-            return true;
-        }
-
-        // Check cross-organisation move
-        if ($requireCrossOrg && $this->isCrossOrganisationMove($team, $newParent)) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Get all approval rules to check.
+     *
+     * @return array<ApprovalRuleInterface>
+     */
+    private function getApprovalRules(): array
+    {
+        return [
+            new DescendantCountRule(),
+            new DepthChangeRule(),
+            new CrossOrganisationRule(),
+        ];
     }
 
     /**
@@ -174,31 +226,21 @@ class TeamMoveService
      */
     private function determineRequiredApprovers(Team $team, ?Team $newParent): array
     {
-        $approvers = [];
+        $resolver = $this->getApproverResolver($team, $newParent);
 
+        return $resolver->resolve($team, $newParent);
+    }
+
+    /**
+     * Get the appropriate approver resolver based on move type.
+     */
+    private function getApproverResolver(Team $team, ?Team $newParent): ApproverResolverInterface
+    {
         if ($this->isCrossOrganisationMove($team, $newParent)) {
-            // Cross-organisation move: require approval from both source and target org admins
-            $sourceOrg = $this->findOrganisation($team);
-            $targetOrg = $newParent ? $this->findOrganisation($newParent) : null;
-
-            if ($sourceOrg) {
-                $sourceAdmins = $this->getOrganisationAdmins($sourceOrg);
-                $approvers = array_merge($approvers, $sourceAdmins);
-            }
-
-            if ($targetOrg && $targetOrg->id !== ($sourceOrg?->id)) {
-                $targetAdmins = $this->getOrganisationAdmins($targetOrg);
-                $approvers = array_merge($approvers, $targetAdmins);
-            }
-        } else {
-            // Within same organisation: require approval from organisation admin
-            $organisation = $this->findOrganisation($team);
-            if ($organisation) {
-                $approvers = $this->getOrganisationAdmins($organisation);
-            }
+            return new CrossOrganisationApproverResolver();
         }
 
-        return array_unique($approvers);
+        return new SameOrganisationApproverResolver();
     }
 
     /**
@@ -207,7 +249,7 @@ class TeamMoveService
     private function isCrossOrganisationMove(Team $team, ?Team $newParent): bool
     {
         $sourceOrg = $this->findOrganisation($team);
-        $targetOrg = $newParent ? $this->findOrganisation($newParent) : null;
+        $targetOrg = $newParent instanceof Team ? $this->findOrganisation($newParent) : null;
 
         if (! $sourceOrg || ! $targetOrg) {
             return false;
@@ -232,48 +274,5 @@ class TeamMoveService
         }
 
         return null;
-    }
-
-    /**
-     * Get organisation admin user IDs.
-     *
-     * @return array<int>
-     */
-    private function getOrganisationAdmins(Team $organisation): array
-    {
-        // Find users with 'organisation_admin' role scoped to this organisation
-        $previousTeamId = getPermissionsTeamId();
-        setPermissionsTeamId($organisation->id);
-
-        try {
-            // Check if role exists first
-            try {
-                return User::query()
-                    ->role('organisation_admin')
-                    ->pluck('id')
-                    ->toArray();
-            } catch (\Spatie\Permission\Exceptions\RoleDoesNotExist) {
-                // Role doesn't exist yet, return empty array
-                return [];
-            }
-        } finally {
-            setPermissionsTeamId($previousTeamId);
-        }
-    }
-
-    /**
-     * Get the count of all descendants (recursive).
-     */
-    private function getDescendantCount(Team $team): int
-    {
-        $count = 0;
-        $children = $team->children()->withoutGlobalScopes()->get();
-
-        foreach ($children as $child) {
-            $count++; // Count the direct child
-            $count += $this->getDescendantCount($child); // Recursively count descendants
-        }
-
-        return $count;
     }
 }

@@ -21,7 +21,7 @@ final class UpdateUserProfile
      */
     public function handle(User $user, array $data): User
     {
-        return DB::transaction(function () use ($user, $data): User {
+        return DB::transaction(static function () use ($user, $data): ?User {
             // Handle translatable bio field
             $locale = app()->getLocale();
             if (isset($data['bio'])) {
@@ -37,7 +37,8 @@ final class UpdateUserProfile
             }
 
             // Handle email_verified_at reset if email changed
-            $shouldResetEmailVerification = array_key_exists('email_verified_at', $data) && $data['email_verified_at'] === null;
+            $shouldResetEmailVerification =
+                array_key_exists('email_verified_at', $data) && $data['email_verified_at'] === null;
             $emailChanged = isset($data['email']) && $user->email !== $data['email'];
 
             if ($shouldResetEmailVerification || $emailChanged) {
@@ -45,7 +46,7 @@ final class UpdateUserProfile
             }
 
             // Update other fields
-            if (! empty($data)) {
+            if ($data !== []) {
                 $user->update($data);
             }
 

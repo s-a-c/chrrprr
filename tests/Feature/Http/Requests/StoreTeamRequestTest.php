@@ -8,17 +8,17 @@ use App\Models\Enterprise;
 use Illuminate\Support\Facades\Validator;
 
 it('validates required fields', function (): void {
-    $validator = Validator::make([], (new StoreTeamRequest())->rules());
+    $validator = Validator::make([], new StoreTeamRequest()->rules());
 
     expect($validator->fails())->toBeTrue();
     expect($validator->errors()->messages())->toHaveKeys(['name', 'type']);
 });
 
-it('validates enum type', function (): void {
+it('validates enum StoreTeamRequestTest', function (): void {
     $validator = Validator::make([
         'name' => 'Test Team',
         'type' => 'invalid_type',
-    ], (new StoreTeamRequest())->rules());
+    ], new StoreTeamRequest()->rules());
 
     expect($validator->fails())->toBeTrue();
     expect($validator->errors()->messages())->toHaveKey('type');
@@ -31,7 +31,7 @@ it('validates parent_id existence', function (): void {
             'type' => TeamType::ORGANISATION->value,
             'parent_id' => 999999, // Non-existent ID
         ],
-        (new StoreTeamRequest())->rules(),
+        new StoreTeamRequest()->rules(),
     );
 
     expect($validator->fails())->toBeTrue();
@@ -46,7 +46,7 @@ it('passes validation with valid data', function (): void {
         'type' => TeamType::ORGANISATION->value,
         'parent_id' => $enterprise->id,
         'bio' => 'Something about the team',
-    ], (new StoreTeamRequest())->rules());
+    ], new StoreTeamRequest()->rules());
 
     expect($validator->fails())->toBeFalse();
 });
@@ -59,7 +59,7 @@ it('allows nullable bio', function (): void {
         'type' => TeamType::ORGANISATION->value,
         'parent_id' => $enterprise->id,
         'bio' => null,
-    ], (new StoreTeamRequest())->rules());
+    ], new StoreTeamRequest()->rules());
 
     expect($validator->fails())->toBeFalse();
 });

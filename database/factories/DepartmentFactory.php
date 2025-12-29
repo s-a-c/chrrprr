@@ -18,7 +18,7 @@ final class DepartmentFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return (App\Enums\TeamStatus::ONLINE|string|string[])[]
      *
      * @psalm-return array{name: array{en: string}, state: Active::class, status: App\Enums\TeamStatus::ONLINE, bio: string}
      */
@@ -26,7 +26,7 @@ final class DepartmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->jobTitle() . ' Department'],
+            'name' => ['en' => fake()->jobTitle().' Department'],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => fake()->paragraph(),
