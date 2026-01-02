@@ -22,40 +22,36 @@ final readonly class BulkTeamController
 
     /**
      * Handle bulk team operations (create and update).
+     *
+     * Uses collection pipeline with partition for functional approach.
      */
     public function store(BulkTeamRequest $request): JsonResponse
     {
-        $teams = $request->getTeams();
+        $teams = collect($request->getTeams());
         $enterprise = $this->getEnterprise();
 
         // Validate batch size
         $maxBatchSize = $enterprise->bulk_operation_batch_size ?? 500;
-        if (count($teams) > $maxBatchSize) {
+        if ($teams->count() > $maxBatchSize) {
             return response()->json([
                 'success' => false,
                 'error' => "Batch size exceeds maximum allowed ({$maxBatchSize}).",
             ], 422);
         }
 
-        $results = [];
-        $successCount = 0;
-        $failureCount = 0;
+        $results = $teams
+            ->mapWithKeys(fn (array $teamData, int $index): array => [
+                $index => $this->processTeamSafely($teamData, $index),
+            ])
+            ->values();
 
-        foreach ($teams as $index => $teamData) {
-            try {
-                $result = $this->processTeam($teamData, $index);
-                $results[] = $result;
-                $successCount++;
-            } catch (Exception $e) {
-                $results[] = [
-                    'index' => $index,
-                    'success' => false,
-                    'error' => $e->getMessage(),
-                    'action' => isset($teamData['id']) ? 'update' : 'create',
-                ];
-                $failureCount++;
-            }
-        }
+        [$successes, $failures] = $results->partition(
+            static fn ($result): bool => ($result['success'] ?? false) === true
+        );
+
+        $successCount = $successes->count();
+        $failureCount = $failures->count();
+        $total = $teams->count();
 
         $statusCode = match (true) {
             $failureCount === 0 => 200, // All succeeded
@@ -63,23 +59,42 @@ final readonly class BulkTeamController
             default => 207, // Partial success (Multi-Status)
         };
 
-        // success is true if there are any successes (partial or full)
-        $success = $successCount > 0;
-
         return response()->json([
-            'success' => $success,
-            'total' => count($teams),
+            'success' => $successCount > 0,
+            'total' => $total,
             'success_count' => $successCount,
             'failure_count' => $failureCount,
-            'results' => $results,
+            'results' => $results->all(),
         ], $statusCode);
+    }
+
+    /**
+     * Process a single team safely, catching exceptions.
+     *
+     * @param  array<string, mixed>  $teamData
+     * @return array<string, mixed>
+     */
+    private function processTeamSafely(array $teamData, int $index): array
+    {
+        try {
+            return $this->processTeam($teamData, $index);
+        } catch (Exception $e) {
+            return [
+                'index' => $index,
+                'success' => false,
+                'error' => $e->getMessage(),
+                'action' => isset($teamData['id']) ? 'update' : 'create',
+            ];
+        }
     }
 
     /**
      * Process a single team (create or update).
      *
      * @param  array<string, mixed>  $teamData
-     * @return array<string, mixed>
+     * @return (int|mixed|string|true)[]
+     *
+     * @psalm-return array{index: int, success: true, team_id: mixed, team_ulid: mixed, action: 'create'|'update'}
      */
     private function processTeam(array $teamData, int $index): array
     {

@@ -23,7 +23,7 @@ final readonly class UpdateTeam
      */
     public function handle(Team $team, array $data): Team
     {
-        return DB::transaction(function () use ($team, $data): Team {
+        return DB::transaction(function () use ($team, $data): Team|null {
             $this->checkOptimisticLock($team, $data);
             $this->handleMoveIfNeeded($team, $data);
             $this->handleTranslatableFields($team, $data);

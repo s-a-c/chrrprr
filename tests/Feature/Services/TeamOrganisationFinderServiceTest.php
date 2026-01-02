@@ -23,7 +23,7 @@ it('finds organisation for team within organisation', function (): void {
     $service = new TeamOrganisationFinderService();
 
     expect($service->findOrganisation($division))->toBeInstanceOf(Organisation::class);
-    expect($service->findOrganisation($division)->id)->toBe($org->id);
+    expect($service->findOrganisation($division)?->id)->toBe($org->id);
 });
 
 it('returns organisation when team is organisation itself', function (): void {
@@ -36,7 +36,7 @@ it('returns organisation when team is organisation itself', function (): void {
     $service = new TeamOrganisationFinderService();
 
     expect($service->findOrganisation($org))->toBeInstanceOf(Organisation::class);
-    expect($service->findOrganisation($org)->id)->toBe($org->id);
+    expect($service->findOrganisation($org)?->id)->toBe($org->id);
 });
 
 it('returns null when team has no organisation ancestor', function (): void {

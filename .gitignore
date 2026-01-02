@@ -167,6 +167,8 @@ vendor/
 composer.lock
 .phpunit.cache
 .phpunit.result.cache
+.pest-cache
+.pest.cache
 .phpactor.json
 phpunit.xml.starter-kit-browser
 Homestead.json

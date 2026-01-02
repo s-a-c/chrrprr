@@ -8,6 +8,7 @@ use App\Models\Enterprise;
 use App\Models\Organisation;
 use App\Services\TeamMove\ApprovalDecisionEngine;
 use App\Services\TeamMove\ApprovalRuleInterface;
+use Override;
 use RuntimeException;
 
 it('returns true when any rule requires approval', function (): void {
@@ -19,6 +20,10 @@ it('returns true when any rule requires approval', function (): void {
 
     $rule = new class implements ApprovalRuleInterface
     {
+        #[Override]
+        /**
+         * @return true
+         */
         public function requiresApproval($team, $newParent, $enterprise): bool
         {
             return true;
@@ -39,6 +44,10 @@ it('returns false when no rules require approval', function (): void {
 
     $rule = new class implements ApprovalRuleInterface
     {
+        #[Override]
+        /**
+         * @return false
+         */
         public function requiresApproval($team, $newParent, $enterprise): bool
         {
             return false;
@@ -59,6 +68,10 @@ it('stops at first rule that requires approval', function (): void {
 
     $rule1 = new class implements ApprovalRuleInterface
     {
+        #[Override]
+        /**
+         * @return true
+         */
         public function requiresApproval($team, $newParent, $enterprise): bool
         {
             return true;
@@ -67,6 +80,10 @@ it('stops at first rule that requires approval', function (): void {
 
     $rule2 = new class implements ApprovalRuleInterface
     {
+        #[Override]
+        /**
+         * @return never
+         */
         public function requiresApproval($team, $newParent, $enterprise): bool
         {
             // This should never be called if contains() short-circuits
@@ -84,6 +101,10 @@ it('returns false when enterprise is not provided', function (): void {
 
     $rule = new class implements ApprovalRuleInterface
     {
+        #[Override]
+        /**
+         * @return true
+         */
         public function requiresApproval($team, $newParent, $enterprise): bool
         {
             return true;

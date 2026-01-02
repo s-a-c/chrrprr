@@ -55,7 +55,6 @@ it('throws exception when depth would exceed limit', function (): void {
 
     $validator = new DepthValidator(new TeamHierarchyTraversalService());
 
-    $this->expectException(ValidationException::class);
-    $this->expectExceptionMessage('Team hierarchy depth cannot exceed 10 levels.');
-    $validator->validate($newOrg);
+    expect(fn () => $validator->validate($newOrg))
+        ->toThrow(ValidationException::class, 'Team hierarchy depth cannot exceed 10 levels.');
 });

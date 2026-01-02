@@ -7,6 +7,7 @@ namespace App\Services\TeamMove;
 use App\Models\Team;
 use App\Models\User;
 use App\Services\TeamOrganisationFinderService;
+use Override;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
 final readonly class SameOrganisationApproverResolver implements ApproverResolverInterface
@@ -20,6 +21,7 @@ final readonly class SameOrganisationApproverResolver implements ApproverResolve
      *
      * @return array<int>
      */
+    #[Override]
     public function resolve(Team $team, ?Team $newParent): array
     {
         $organisation = $this->organisationFinder->findOrganisation($team);

@@ -45,24 +45,29 @@ final readonly class TeamOrganisationFinderService
     }
 
     /**
-     * Get ancestry using collection pipeline.
+     * Get ancestry using functional recursive collection pipeline.
+     *
+     * Stops when organisation is found, similar to TeamHierarchyTraversalService pattern.
      */
     private function getAncestry(Team $team): Collection
     {
-        $ancestors = collect();
-        $current = $team->parent;
+        return $this->buildAncestryUntilOrganisation($team->parent);
+    }
 
-        // Build ancestry collection using functional approach
-        while ($current) {
-            $ancestors->push($current);
-
-            if ($current->type === TeamType::ORGANISATION) {
-                break;
-            }
-
-            $current = $current->parent;
+    /**
+     * Recursively build ancestry collection until organisation is found.
+     */
+    private function buildAncestryUntilOrganisation(?Team $current): Collection
+    {
+        if (! $current instanceof Team) {
+            return collect();
         }
 
-        return $ancestors;
+        if ($current->type === TeamType::ORGANISATION) {
+            return collect([$current]);
+        }
+
+        return $this->buildAncestryUntilOrganisation($current->parent)
+            ->prepend($current);
     }
 }

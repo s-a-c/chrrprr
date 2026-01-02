@@ -9,6 +9,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function (): void {
+    // Skip all browser tests during mutation testing due to timeout issues
+    if (getenv('PEST_MUTATE') === '1') {
+        $this->markTestSkipped('Browser tests skipped during mutation testing due to timeout issues');
+    }
+});
+
 describe('Dashboard Page', function (): void {
     it('renders dashboard correctly', function (): void {
         $user = User::factory()->create();
@@ -128,11 +135,13 @@ describe('Teams Create Page', function (): void {
 
     it('can create a new team', function (): void {
         $user = User::factory()->create();
+        $enterprise = Enterprise::factory()->create();
 
         $this->actingAs($user);
         $page = visit('/teams/create')
             ->fill('name', 'Test Team')
             ->select('type', 'organisation')
+            ->select('parent_id', (string) $enterprise->id)
             ->fill('bio', '# Test Team Bio')
             ->click('Create Team');
 

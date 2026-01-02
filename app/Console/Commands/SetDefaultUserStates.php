@@ -7,8 +7,7 @@ namespace App\Console\Commands;
 use App\Enums\UserState;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Collection;
-use ValueError;
+use Illuminate\Support\Collection;
 
 final class SetDefaultUserStates extends Command
 {
@@ -40,10 +39,16 @@ final class SetDefaultUserStates extends Command
         $batchSize = (int) $this->option('batch-size');
         $stateValue = $this->option('state');
 
+        // Validate state value is a string
+        if (! is_string($stateValue)) {
+            $this->error('State option must be a string. Must be one of: pending, active, inactive');
+
+            return Command::FAILURE;
+        }
+
         // Validate state
-        try {
-            $state = UserState::from($stateValue);
-        } catch (ValueError) {
+        $state = UserState::tryFrom($stateValue);
+        if ($state === null) {
             $this->error("Invalid state: {$stateValue}. Must be one of: pending, active, inactive");
 
             return Command::FAILURE;
@@ -51,8 +56,9 @@ final class SetDefaultUserStates extends Command
 
         $this->info("Setting default state to '{$state->value}' for users without a state...");
 
+        /** @var \Illuminate\Database\Eloquent\Builder<User> $query */
         $query = User::query()->whereNull('state');
-        $total = $query->count();
+        $total = (int) $query->count();
 
         if ($total === 0) {
             $this->info('No users need state updates.');
@@ -72,7 +78,8 @@ final class SetDefaultUserStates extends Command
         $processed = 0;
 
         $query->chunk($batchSize, static function (Collection $users) use (&$processed, $dryRun, $state, $bar): void {
-            foreach ($users as $user) {
+            /** @var Collection<int, User> $users */
+            $users->each(static function ($user) use (&$processed, $dryRun, $state, $bar): void {
                 if (! $dryRun) {
                     $user->state = $state;
                     $user->saveQuietly(); // Use saveQuietly to avoid triggering events
@@ -80,7 +87,7 @@ final class SetDefaultUserStates extends Command
 
                 $processed++;
                 $bar->advance();
-            }
+            });
         });
 
         $bar->finish();

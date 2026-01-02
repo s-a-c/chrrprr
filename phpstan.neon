@@ -41,3 +41,16 @@ parameters:
         - '#Only booleans are allowed in a negated boolean#'
         - '#does not accept mixed#'
         - '#does not do anything#'
+        # Pest framework warnings
+        - '#Ambiguous method call to.*on class Pest\\#'
+        - '#Call to method.*of internal class Pest\\#'
+        # Laravel Eloquent Builder dynamic methods
+        - '#Ambiguous method call to.*on class Illuminate\\Database\\Eloquent\\Builder#'
+        - '#Ambiguous property access.*on class Illuminate\\Database\\Eloquent\\Model#'
+        - '#Ambiguous property access.*on class Illuminate\\Database\\Eloquent\\Collection#'
+        # Laravel framework dynamic methods
+        - '#Ambiguous method call to.*on class Illuminate\\Support\\Facades\\Route#'
+        - '#Ambiguous method call to.*on class Illuminate\\Session\\SessionManager#'
+        # PHPUnit/Pest internal class warnings
+        - '#method\.internalClass#'
+        - '#staticMethod\.dynamicCall#'

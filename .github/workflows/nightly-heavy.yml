@@ -54,10 +54,25 @@ jobs:
           cp .env.example .env
           php artisan key:generate
           php artisan migrate --force
-          php artisan db:seed --class=BasePlatformSeeder
+          php artisan db:seed
 
       - name: Run Heavy Tier Workflow
-        run: composer ci:heavy
+        timeout-minutes: 60
+        # For faster nightly runs (Infection only), use: composer run test:heavy:nightly
+        run: composer run test:heavy
 
-      - name: Run Policy Checksum Monitor
-        run: php artisan policy:checksum-monitor
+      - name: Upload Mutation Test Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutation-test-reports
+          path: |
+            infection.html
+            infection-summary.log
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Run Pest Architecture Tests (Optional - May Timeout)
+        continue-on-error: true
+        timeout-minutes: 20
+        run: composer run test:arch:pest

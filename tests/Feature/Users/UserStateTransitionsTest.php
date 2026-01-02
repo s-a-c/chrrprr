@@ -11,7 +11,7 @@ test('user can transition from pending to active state', function (): void {
     $user->state = UserState::ACTIVE;
     $user->save();
 
-    expect($user->fresh()->state)->toBe(UserState::ACTIVE);
+    expect($user->fresh()?->state)->toBe(UserState::ACTIVE);
 });
 
 test('user can transition from active to inactive state', function (): void {
@@ -20,7 +20,7 @@ test('user can transition from active to inactive state', function (): void {
     $user->state = UserState::INACTIVE;
     $user->save();
 
-    expect($user->fresh()->state)->toBe(UserState::INACTIVE);
+    expect($user->fresh()?->state)->toBe(UserState::INACTIVE);
 });
 
 test('user state is cast to enum', function (): void {

@@ -6,8 +6,6 @@ namespace App\Presenters;
 
 use App\Models\User;
 use Illuminate\Support\Str;
-use Spatie\LaravelMarkdown\MarkdownRenderer;
-use Stevebauman\Purify\Facades\Purify;
 
 /**
  * Presenter for User model UI-related methods.
@@ -26,21 +24,5 @@ final readonly class UserPresenter
             ->take(2)
             ->map(static fn (string $word) => Str::substr($word, 0, 1))
             ->implode('');
-    }
-
-    /**
-     * Get the bio HTML attribute (rendered from markdown).
-     */
-    public function bioHtml(User $user): ?string
-    {
-        $bio = $user->getTranslation('bio', app()->getLocale());
-
-        if ($bio === null || $bio === '') {
-            return null;
-        }
-
-        $html = resolve(MarkdownRenderer::class)->toHtml($bio);
-
-        return Purify::clean($html);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Services\TeamMove;
 
 use App\Models\Team;
 use App\Services\TeamOrganisationFinderService;
+use Override;
 
 final readonly class CrossOrganisationRule implements ApprovalRuleInterface
 {
@@ -13,6 +14,7 @@ final readonly class CrossOrganisationRule implements ApprovalRuleInterface
         private TeamOrganisationFinderService $organisationFinder,
     ) {}
 
+    #[Override]
     public function requiresApproval(Team $team, ?Team $newParent, Team $enterprise): bool
     {
         if (! ($enterprise->move_approval_require_cross_org ?? true)) {

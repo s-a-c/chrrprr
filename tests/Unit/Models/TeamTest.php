@@ -51,9 +51,21 @@ test('team model is translatable', function (): void {
 
 test('team model has sluggable configuration', function (): void {
     $model = new Team();
-    expect($model->sluggable())->toBe([
-        'slug' => [
-            'source' => 'name',
-        ],
-    ]);
+    $slugOptions = $model->getSlugOptions();
+
+    // Use reflection to access SlugOptions properties
+    $reflection = new ReflectionClass($slugOptions);
+    $slugFieldProperty = $reflection->getProperty('slugField');
+    $slugFieldProperty->setAccessible(true);
+    $slugField = $slugFieldProperty->getValue($slugOptions);
+
+    $generateSlugFromProperty = $reflection->getProperty('generateSlugFrom');
+    $generateSlugFromProperty->setAccessible(true);
+    $sourceFields = $generateSlugFromProperty->getValue($slugOptions);
+
+    // generateSlugFrom can be a string or array
+    $expectedSource = is_array($sourceFields) ? $sourceFields[0] : $sourceFields;
+
+    expect($expectedSource)->toBe('name')
+        ->and($slugField)->toBe('slug');
 });

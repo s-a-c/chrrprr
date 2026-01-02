@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-?>
-<?php
-
 use App\Models\User;
 use Livewire\Component;
 

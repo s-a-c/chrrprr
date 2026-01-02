@@ -8,6 +8,7 @@ use App\Models\Concerns\HasTranslatableAttributes;
 use App\Models\Concerns\HasTranslatableSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\SlugOptions;
 
 final class TranslatableSlugTestModel extends Model
 {
@@ -30,22 +31,15 @@ final class TranslatableSlugTestModel extends Model
     protected $casts = ['name' => 'array', 'slug' => 'array'];
 
     /**
-     * @return string[][]
+     * Get the options for generating the slug.
      *
-     * @psalm-return array{slug: array{source: 'name'}}
+     * @psalm-return SlugOptions
      */
     #[Override]
-    /**
-     * @return string[][]
-     *
-     * @psalm-return array{slug: array{source: 'name'}}
-     */
-    public function sluggable(): array
+    public function getSlugOptions(): SlugOptions
     {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
     }
 }

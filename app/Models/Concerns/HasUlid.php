@@ -7,6 +7,7 @@ namespace App\Models\Concerns;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\Uid\Ulid;
+use Tests\Unit\Models\Concerns\HasUlidTestModel;
 
 trait HasUlid
 {
@@ -33,7 +34,7 @@ trait HasUlid
      * Retrieve the model for a bound value.
      * Supports both ULID and integer ID for backward compatibility.
      */
-    public function resolveRouteBinding($value, $field = null): ?Model
+    public function resolveRouteBinding($value, $field = null): ?HasUlidTestModel
     {
         $field ??= $this->getRouteKeyName();
 

@@ -47,9 +47,8 @@ it('displays all chrrps from the computed property', function (): void {
     $response->assertSee('3 hours ago');
 });
 
-it('does not require authentication to access the chrrps page', function (): void {
+it('requires authentication to access the chrrps page', function (): void {
     $response = get('/chrrps');
 
-    $response->assertSuccessful();
-    $response->assertSee('Just deployed my first Laravel app!');
+    $response->assertRedirect('/login');
 });

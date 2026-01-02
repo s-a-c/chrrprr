@@ -42,7 +42,11 @@ final class UserFactory extends Factory
             'two_factor_secret' => Str::random(10),
             'two_factor_recovery_codes' => Str::random(10),
             'two_factor_confirmed_at' => now(),
-            'bio' => fake()->paragraph(),
+            'bio' => ($paragraphCount = random_int(0, 5)) > 0
+                ? collect(range(1, $paragraphCount))
+                    ->map(static fn (): string => implode(' ', fake()->sentences(random_int(3, 7))))
+                    ->implode("\n\n")
+                : '',
             'state' => UserState::ACTIVE,
             'status' => UserStatus::OFFLINE,
             'tenant_id' => null,

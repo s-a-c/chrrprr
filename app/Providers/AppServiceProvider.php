@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Models\Team;
-use App\Observers\TeamObserver;
 use App\Services\TeamMove\ApprovalDecisionEngine;
 use App\Services\TeamMove\ApproverResolverFactory;
 use App\Services\TeamMove\CrossOrganisationRule;
@@ -14,9 +12,16 @@ use App\Services\TeamMove\DescendantCountRule;
 use App\Services\TeamMove\TeamMoveApprovalService;
 use App\Services\TeamMove\TeamMoveRequestService;
 use App\Services\TeamOrganisationFinderService;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Gate;
+use Carbon\CarbonImmutable;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 use Override;
 
 final class AppServiceProvider extends ServiceProvider
@@ -27,11 +32,27 @@ final class AppServiceProvider extends ServiceProvider
     #[Override]
     public function register(): void
     {
+        // Check if a slug is already configured (via .env or cached config)
+        /** @var string|null $slug */
+        $slug = config('app.slug');
+        if ($slug === null) {
+            /** @var string $name */
+            $name = config('app.name', 'Laravel');
+            /** @var string $env */
+            $env = config('app.env', 'production');
+
+            // Logic: Append env unless production
+            $source = $env === 'production' ? $name : "$name $env";
+
+            // Set the config at runtime
+            config(['app.slug' => Str::slug($source)]);
+        }
+
         // Register TeamOrganisationFinderService as singleton
         $this->app->singleton(TeamOrganisationFinderService::class);
 
         // Register ApprovalDecisionEngine with rules
-        $this->app->singleton(static function ($app): ApprovalDecisionEngine {
+        $this->app->singleton(static function (Application $app): ApprovalDecisionEngine {
             $organisationFinder = $app->make(TeamOrganisationFinderService::class);
             $rules = [
                 new DescendantCountRule(),
@@ -43,7 +64,7 @@ final class AppServiceProvider extends ServiceProvider
         });
 
         // Register ApproverResolverFactory
-        $this->app->singleton(ApproverResolverFactory::class, static fn ($app): ApproverResolverFactory => new ApproverResolverFactory(
+        $this->app->singleton(ApproverResolverFactory::class, static fn (Application $app): ApproverResolverFactory => new ApproverResolverFactory(
             $app->make(TeamOrganisationFinderService::class)
         ));
 
@@ -59,23 +80,99 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Team::observe(TeamObserver::class);
+        $this->configureCarbon();
+        $this->configureCommands();
+        $this->configureModels();
+        $this->configurePasswordRules();
+        $this->configureUrl();
+        $this->configureVite();
+    }
 
-        // Allow Super Admin role to bypass all permission and policy checks
-        Gate::before(static function (?Authenticatable $user, string $ability): ?bool {
-            if ($user && method_exists($user, 'hasRole')) {
-                // Check for Super Admin role in global context (team_id = 0)
-                $previousTeamId = getPermissionsTeamId();
-                setPermissionsTeamId(0);
-                $hasSuperAdmin = $user->hasRole('Super Admin');
-                setPermissionsTeamId($previousTeamId);
+    /**
+     * Configure the application's carbon.
+     */
+    private function configureCarbon(): void
+    {
+        Date::use(CarbonImmutable::class);
+    }
 
-                if ($hasSuperAdmin) {
-                    return true;
-                }
-            }
+    /**
+     * Configure the application's commands.
+     */
+    private function configureCommands(): void
+    {
+        /** @var bool $isProduction */
+        $isProduction = $this->app->environment('production');
 
-            return null; // Let other gates/policies handle the check
-        });
+        DB::prohibitDestructiveCommands(
+            $isProduction
+            && ! $this->app->runningInConsole()
+            && ! $this->app->runningUnitTests()
+            && ! $this->app->isDownForMaintenance(),
+        );
+    }
+
+    /**
+     * Configure the application's models.
+     */
+    private function configureModels(): void
+    {
+        /** @var bool $isProduction */
+        $isProduction = $this->app->environment('production');
+
+        Model::shouldBeStrict(! $isProduction);
+        Model::unguard(! $isProduction);
+    }
+
+    /**
+     * Configure the application's password rules.
+     */
+    private function configurePasswordRules(): void
+    {
+        /** @var bool $isLocal */
+        $isLocal = $this->app->environment('local');
+        if (! $isLocal) {
+            Password::defaults(function () {
+                return Password::min(12)
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->mixedCase()
+                    ->uncompromised();
+            });
+        } else {
+            Password::defaults(function () {
+                return Password::min(8)
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->mixedCase();
+            });
+        }
+
+        // config(['auth.password_timeout' => 60])
+    }
+
+    /**
+     * Configure the application's url.
+     */
+    private function configureUrl(): void
+    {
+        /** @var bool $isLocal */
+        $isLocal = $this->app->environment('local');
+        if (! $isLocal) {
+            URL::forceScheme('https');
+        }
+    }
+
+    /**
+     * Configure the application's vite.
+     */
+    private function configureVite(): void
+    {
+        Vite::useBuildDirectory('build')
+            ->withEntryPoints([
+                'resources/js/app.js',
+            ]);
     }
 }

@@ -58,7 +58,7 @@ final class GenerateUserUlids extends Command
         $processed = 0;
 
         $query->chunk($batchSize, static function (Collection $users) use (&$processed, $dryRun, $bar): void {
-            foreach ($users as $user) {
+            $users->each(static function ($user) use (&$processed, $dryRun, $bar): void {
                 if (! $dryRun) {
                     $user->ulid = Ulid::generate();
                     // Set bio to null for existing users (T105.13)
@@ -70,7 +70,7 @@ final class GenerateUserUlids extends Command
 
                 $processed++;
                 $bar->advance();
-            }
+            });
         });
 
         $bar->finish();

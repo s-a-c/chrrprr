@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-?>
-<?php
-
 use App\Models\Team;
 use Livewire\Component;
 
@@ -19,6 +16,10 @@ new class extends Component {
 }; ?>
 
 <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    @if (session('status'))
+        <flux:callout variant="success" class="mb-4">{{ session('status') }}</flux:callout>
+    @endif
+
     <div class="flex justify-between items-center bg-white p-6 rounded-lg shadow-sm dark:bg-zinc-900">
         <div>
             <flux:heading level="1">Teams</flux:heading>

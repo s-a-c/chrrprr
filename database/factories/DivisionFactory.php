@@ -29,7 +29,11 @@ final class DivisionFactory extends Factory
             'name' => ['en' => fake()->word().' Division'],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
-            'bio' => fake()->paragraph(),
+            'bio' => ($paragraphCount = random_int(0, 5)) > 0
+                ? collect(range(1, $paragraphCount))
+                    ->map(static fn (): string => implode(' ', fake()->sentences(random_int(3, 7))))
+                    ->implode("\n\n")
+                : '',
         ];
     }
 }

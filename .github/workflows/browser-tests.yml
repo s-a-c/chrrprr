@@ -169,4 +169,4 @@ HELPER_EOF
         run: bun run build
 
       - name: Tests
-        run: php vendor/bin/pest
+        run: composer run test:browser

@@ -10,6 +10,11 @@ new class extends Component
     public string $message = '';
 
     // In LW4, computed properties are accessed by their name directly in Blade
+    /**
+     * @return string[][]
+     *
+     * @psalm-return list{array{author: 'Jane Doe', message: 'Just deployed my first Laravel app! 🚀', time: '5 minutes ago'}, array{author: 'John Smith', message: 'Laravel makes web development fun again!', time: '1 hour ago'}, array{author: 'Alice Johnson', message: 'Working on something cool with Chrrprr...', time: '3 hours ago'}}
+     */
     #[Computed]
     public function chrrps(): array
     {
@@ -25,6 +30,10 @@ new class extends Component
 }; ?>
 
 <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+    @if (session('status'))
+        <flux:callout variant="success" class="mb-4">{{ session('status') }}</flux:callout>
+    @endif
+
     <form wire:submit="store" class="space-y-4">
         <flux:field>
             <flux:label>What's on your mind?</flux:label>

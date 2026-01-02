@@ -7,6 +7,7 @@ namespace App\Support\Validation\TeamHierarchy;
 use App\Models\Team;
 use App\Services\TeamHierarchyTraversalService;
 use Illuminate\Validation\ValidationException;
+use Override;
 
 final readonly class DepthValidator implements HierarchyValidatorInterface
 {
@@ -14,6 +15,7 @@ final readonly class DepthValidator implements HierarchyValidatorInterface
         private TeamHierarchyTraversalService $traversalService,
     ) {}
 
+    #[Override]
     public function validate(Team $team): void
     {
         $parent = $team->parent;

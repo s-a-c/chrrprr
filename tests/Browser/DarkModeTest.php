@@ -34,8 +34,8 @@ it('maintains dark mode preference across pages', function (): void {
 
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
 
-    $page = visit('/teams')
-        ->actingAs($user);
+    $this->actingAs($user);
+    $page = visit('/teams');
 
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
 });

@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->char('ulid', 26)->nullable()->unique()->after('id');
             $table->string('state')->nullable()->after('ulid');
             $table->string('status')->nullable()->after('state');
+            $table->string('slug')->nullable()->unique()->after('name');
         });
     }
 
@@ -25,7 +26,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('users', static function (Blueprint $table): void {
-            $table->dropColumn(['ulid', 'state', 'status']);
+            $table->dropColumn(['ulid', 'state', 'status', 'slug']);
         });
     }
 };

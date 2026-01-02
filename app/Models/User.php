@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Contracts\SchemaScopedModel;
 use App\Enums\UserState;
 use App\Enums\UserStatus;
 use App\Models\Builders\UserBuilder;
+use App\Models\Concerns\HasCustomSchema;
 use App\Models\Concerns\HasTranslatableAttributes;
 use App\Models\Concerns\HasUlid;
 use App\Models\Concerns\ManagesUserContext;
 use App\Models\Concerns\ProtectsKeyRoles;
 use App\Observers\UserObserver;
-use Database\Factories\UserFactory;
+use App\Presenters\UserPresenter;
+use App\Services\UserProtectionService;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,11 +25,14 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Scout\Searchable;
 use Override;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 #[ObservedBy(UserObserver::class)]
-final class User extends Authenticatable
+final class User extends Authenticatable implements MustVerifyEmail, SchemaScopedModel
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     /** @use HasFactory<UserFactory> */
@@ -35,11 +41,14 @@ final class User extends Authenticatable
     // Must be before HasRoles to run before role detachment
     // @phpstan-ignore-next-line
     use ProtectsKeyRoles;
+    use HasCustomSchema;
     use HasRoles;
+    use HasSlug;
     use HasTranslatableAttributes;
     use HasUlid;
     use ManagesUserContext;
     use Notifiable;
+    use Searchable;
     use TwoFactorAuthenticatable;
 
     /** @var array<int, string> */
@@ -59,6 +68,7 @@ final class User extends Authenticatable
         'state',
         'status',
         'bio',
+        'slug',
         'ulid',
         'tenant_id',
         'current_context_id',
@@ -78,39 +88,12 @@ final class User extends Authenticatable
 
     /**
      * Determine if the user is protected from deletion.
+     *
+     * Delegates to UserProtectionService for improved testability and separation of concerns.
      */
     public function isProtectable(): bool
     {
-        $pivotTable = config('permission.table_names.model_has_roles');
-        $rolesTable = config('permission.table_names.roles');
-        $teamKey = config('permission.column_names.team_foreign_key');
-
-        // Get all key roles held by this user, including their team context
-        $userKeyRoles = $this
-            ->getConnection()
-            ->table($pivotTable)
-            ->join($rolesTable, "{$pivotTable}.role_id", '=', "{$rolesTable}.id")
-            ->where("{$pivotTable}.model_id", $this->getKey())
-            ->where("{$pivotTable}.model_type", $this->getMorphClass())
-            ->where("{$rolesTable}.is_key", true)
-            ->select("{$rolesTable}.id as role_id", "{$pivotTable}.{$teamKey} as team_id")
-            ->get();
-
-        foreach ($userKeyRoles as $row) {
-            // Count users in this specific (role, team) combination
-            $count = $this
-                ->getConnection()
-                ->table($pivotTable)
-                ->where('role_id', $row->role_id)
-                ->where($teamKey, $row->team_id)
-                ->count();
-
-            if ($count <= 1) {
-                return true;
-            }
-        }
-
-        return false;
+        return resolve(UserProtectionService::class)->isProtectable($this);
     }
 
     /**
@@ -160,6 +143,14 @@ final class User extends Authenticatable
     }
 
     /**
+     * Get the user's initials.
+     */
+    public function initials(): string
+    {
+        return resolve(UserPresenter::class)->initials($this);
+    }
+
+    /**
      * Create a new Eloquent query builder for the model.
      *
      * @param  Builder  $query
@@ -168,6 +159,68 @@ final class User extends Authenticatable
     public function newEloquentBuilder($query): UserBuilder
     {
         return new UserBuilder($query);
+    }
+
+    /**
+     * Get the options for generating the slug.
+     *
+     * @psalm-return SlugOptions
+     */
+    #[Override]
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
+    /**
+     * Get the value used to index the model.
+     */
+    public function getScoutKey(): mixed
+    {
+        return $this->ulid;
+    }
+
+    /**
+     * Get the key name used to index the model.
+     */
+    public function getScoutKeyName(): mixed
+    {
+        return 'ulid';
+    }
+
+    /**
+     * Typo-tolerant fuzzy search scope using pg_trgm.
+     */
+    public function scopeFuzzySearch($query, string $term)
+    {
+        return $query->whereRaw('name % ?', [$term])
+            ->orderByRaw('similarity(name, ?) DESC', [$term]);
+    }
+
+    /**
+     * Full-text search scope using weighted search_vector.
+     */
+    public function scopeFullTextSearch($query, string $term)
+    {
+        return $query->whereRaw('search_vector @@ to_tsquery(?, ?)', ['english', $term])
+            ->orderByRaw('ts_rank(search_vector, to_tsquery(?, ?)) DESC', ['english', $term]);
+    }
+
+    /**
+     * Scout: Define the indexable data array.
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'ulid' => $this->ulid,
+            'name' => $this->name,
+            'email' => $this->email,
+            'bio' => $this->getTranslation('bio', 'en'),
+            'status' => $this->status->value,
+        ];
     }
 
     #[Override]

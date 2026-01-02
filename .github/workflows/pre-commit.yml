@@ -61,4 +61,4 @@ jobs:
           php artisan key:generate
 
       - name: Run Core Workflow Suite
-        run: composer ci:core
+        run: composer run test:core

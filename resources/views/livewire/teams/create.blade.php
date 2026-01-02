@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-?>
-<?php
-
 use App\Enums\TeamType;
 use App\Http\Requests\StoreTeamRequest;
 use App\Models\Team;
@@ -63,6 +60,10 @@ new class extends Component {
 <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
     <flux:heading level="1">Create New Team</flux:heading>
     <flux:subheading>Define a new team within the hierarchy.</flux:subheading>
+
+    @if (session('status'))
+        <flux:callout variant="success" class="mt-4">{{ session('status') }}</flux:callout>
+    @endif
 
     @if (!empty($errorMessage))
         <flux:callout variant="danger" class="mt-4">{{ $errorMessage }}</flux:callout>

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\SchemaScopedModel;
+use App\Models\Concerns\HasCustomSchema;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Override;
 
 /**
  * @property int $id
@@ -32,8 +34,9 @@ use Illuminate\Support\Carbon;
  *
  * @use HasFactory<Factory>
  */
-class TeamMoveApproval extends Model
+class TeamMoveApproval extends Model implements SchemaScopedModel
 {
+    use HasCustomSchema;
     use HasFactory;
 
     /**
@@ -54,11 +57,6 @@ class TeamMoveApproval extends Model
         'rejection_reason',
     ];
 
-    public function team(): BelongsTo
-    {
-        return $this->belongsTo(Team::class);
-    }
-
     public function isPending(): bool
     {
         return $this->status === 'pending';
@@ -69,6 +67,7 @@ class TeamMoveApproval extends Model
      *
      * @psalm-return array{required_approvers: 'array', approvals: 'array', approved_at: 'datetime', rejected_at: 'datetime'}
      */
+    #[Override]
     protected function casts(): array
     {
         return [

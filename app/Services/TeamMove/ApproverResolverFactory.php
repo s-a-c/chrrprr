@@ -19,7 +19,7 @@ final readonly class ApproverResolverFactory
     /**
      * Get the appropriate approver resolver based on move type.
      */
-    public function getResolver(Team $team, ?Team $newParent): ApproverResolverInterface
+    public function getResolver(Team $team, ?Team $newParent): SameOrganisationApproverResolver|CrossOrganisationApproverResolver
     {
         if ($this->organisationFinder->isCrossOrganisationMove($team, $newParent)) {
             return new CrossOrganisationApproverResolver($this->organisationFinder);

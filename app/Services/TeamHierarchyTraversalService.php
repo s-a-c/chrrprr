@@ -51,8 +51,11 @@ final readonly class TeamHierarchyTraversalService
      * Get all descendants of a team (for batch operations).
      *
      * Uses recursive collection mapping instead of imperative loops.
+     *
+     *
+     * @psalm-return Collection<never, never>|\Illuminate\Database\Eloquent\Collection<int, TRelatedModel>
      */
-    public function getDescendants(Team $team): Collection
+    public function getDescendants(Team $team): \Illuminate\Database\Eloquent\Collection|Collection
     {
         $children = $team->children()->withoutGlobalScopes()->get();
 

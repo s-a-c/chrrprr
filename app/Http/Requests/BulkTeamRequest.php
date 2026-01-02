@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 
 use App\Enums\TeamType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 /**
@@ -26,8 +27,16 @@ final class BulkTeamRequest extends FormRequest
             'teams' => ['required', 'array', 'min:1'],
             'teams.*.name' => ['required', 'string'],
             'teams.*.type' => ['required', new Enum(TeamType::class)],
-            'teams.*.parent_id' => ['nullable', 'exists:teams,id'],
-            'teams.*.id' => ['nullable', 'exists:teams,id'],
+            'teams.*.parent_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('teams', 'id')->whereNull('deleted_at'),
+            ],
+            'teams.*.id' => [
+                'nullable',
+                'integer',
+                Rule::exists('teams', 'id')->whereNull('deleted_at'),
+            ],
             'teams.*.lock_version' => ['nullable', 'integer'],
             'teams.*.bio' => ['nullable', 'string', 'max:50000'],
         ];
@@ -40,6 +49,6 @@ final class BulkTeamRequest extends FormRequest
      */
     public function getTeams(): array
     {
-        return $this->validated()['teams'];
+        return $this->validated()['teams'] ?? [];
     }
 }

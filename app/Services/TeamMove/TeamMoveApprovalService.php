@@ -76,8 +76,8 @@ final readonly class TeamMoveApprovalService
             ]);
         }
 
-        $requiredApprovers = $approval->required_approvers ?? [];
-        if (! in_array($approver->id, $requiredApprovers, true)) {
+        $requiredApprovers = collect($approval->required_approvers ?? []);
+        if (! $requiredApprovers->contains($approver->id)) {
             throw ValidationException::withMessages([
                 'approver' => ['You are not authorized to approve this request.'],
             ]);
@@ -95,8 +95,8 @@ final readonly class TeamMoveApprovalService
             ]);
         }
 
-        $requiredApprovers = $approval->required_approvers ?? [];
-        if (! in_array($rejector->id, $requiredApprovers, true)) {
+        $requiredApprovers = collect($approval->required_approvers ?? []);
+        if (! $requiredApprovers->contains($rejector->id)) {
             throw ValidationException::withMessages([
                 'rejector' => ['You are not authorized to reject this request.'],
             ]);
@@ -105,17 +105,18 @@ final readonly class TeamMoveApprovalService
 
     /**
      * Record an approval from a user.
+     *
+     * Uses collection push for functional approach.
      */
     private function recordApproval(TeamMoveApproval $approval, User $approver): void
     {
-        $existingApprovals = $approval->approvals ?? [];
-        $existingApprovals[] = [
-            'user_id' => $approver->id,
-            'approved_at' => now()->toISOString(),
-            'status' => 'approved',
-        ];
-
-        $approval->approvals = $existingApprovals;
+        $approval->approvals = collect($approval->approvals ?? [])
+            ->push([
+                'user_id' => $approver->id,
+                'approved_at' => now()->toISOString(),
+                'status' => 'approved',
+            ])
+            ->all();
     }
 
     /**

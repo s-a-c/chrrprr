@@ -11,6 +11,8 @@ interface NameQueryBuilderInterface
 {
     /**
      * Apply name constraints to the query.
+     *
+     * @param  array<array-key, mixed>|string  $name
      */
-    public function applyConstraints(Builder $query, mixed $name, Team $team): void;
+    public function applyConstraints(Builder $query, array|string $name, Team $team): void;
 }

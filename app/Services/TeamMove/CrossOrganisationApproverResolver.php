@@ -7,6 +7,7 @@ namespace App\Services\TeamMove;
 use App\Models\Team;
 use App\Models\User;
 use App\Services\TeamOrganisationFinderService;
+use Override;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
 final readonly class CrossOrganisationApproverResolver implements ApproverResolverInterface
@@ -18,25 +19,30 @@ final readonly class CrossOrganisationApproverResolver implements ApproverResolv
     /**
      * Resolve approvers for cross-organisation moves.
      *
-     * @return array<int>
+     * Uses collection pipeline for functional approach.
+     *
+     *
+     * @psalm-return array<int, never>
      */
+    #[Override]
     public function resolve(Team $team, ?Team $newParent): array
     {
         $sourceOrg = $this->organisationFinder->findOrganisation($team);
-        $targetOrg = $newParent instanceof Team ? $this->organisationFinder->findOrganisation($newParent) : null;
+        $targetOrg = $newParent instanceof Team
+            ? $this->organisationFinder->findOrganisation($newParent)
+            : null;
 
-        $approvers = [];
+        $approvers = collect();
+
         if ($sourceOrg instanceof Team) {
-            $sourceAdmins = $this->getOrganisationAdmins($sourceOrg);
-            $approvers = array_merge($approvers, $sourceAdmins);
+            $approvers = $approvers->merge($this->getOrganisationAdmins($sourceOrg));
         }
 
         if ($targetOrg && $targetOrg->id !== $sourceOrg?->id) {
-            $targetAdmins = $this->getOrganisationAdmins($targetOrg);
-            $approvers = array_merge($approvers, $targetAdmins);
+            $approvers = $approvers->merge($this->getOrganisationAdmins($targetOrg));
         }
 
-        return array_unique($approvers);
+        return $approvers->unique()->values()->all();
     }
 
     /**

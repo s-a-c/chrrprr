@@ -49,15 +49,21 @@ trait ManagesTeamRoles
         $this->validateExecutiveDeputyConstraints($user, 'executive');
 
         $this->withTeamContext(static function () use ($user): void {
-            $existing = User::query()
-                ->role('executive')
-                ->where('id', '!=', $user->id)
-                ->first();
+            try {
+                $existing = User::query()
+                    ->role('executive')
+                    ->where('id', '!=', $user->id)
+                    ->first();
 
-            if ($existing) {
-                throw ValidationException::withMessages([
-                    'executive' => ['This team already has an executive assigned.'],
-                ]);
+                if ($existing) {
+                    throw ValidationException::withMessages([
+                        'executive' => ['This team already has an executive assigned.'],
+                    ]);
+                }
+            } catch (RoleDoesNotExist) {
+                // Role doesn't exist yet in team context, so no existing executive to check
+                // This is fine - we can proceed with assignment
+                // The role will be assigned when assignRole is called
             }
 
             $user->assignRole('executive');
@@ -66,14 +72,16 @@ trait ManagesTeamRoles
 
     /**
      * Remove the executive from this team.
+     *
+     * Uses collection each for functional approach.
      */
     public function removeExecutive(): void
     {
         $this->withTeamContext(static function (): void {
-            $executives = User::query()->role('executive')->get();
-            foreach ($executives as $exec) {
-                $exec->removeRole('executive');
-            }
+            User::query()
+                ->role('executive')
+                ->get()
+                ->each(static fn (User $exec) => $exec->removeRole('executive'));
         });
     }
 
@@ -83,7 +91,13 @@ trait ManagesTeamRoles
     public function hasExecutive(): bool
     {
         // Closure executes query logic, cannot use first-class callable syntax
-        return $this->withTeamContext(static fn (): bool => User::query()->role('executive')->exists());
+        return $this->withTeamContext(static function (): bool {
+            try {
+                return User::query()->role('executive')->exists();
+            } catch (RoleDoesNotExist) {
+                return false;
+            }
+        });
     }
 
     /**
@@ -134,33 +148,33 @@ trait ManagesTeamRoles
 
     /**
      * Check for role conflicts between executive and deputy.
+     *
+     * Unified approach eliminates code duplication between executive and deputy checks.
      */
     private function checkRoleConflict(User $user, string $role): void
     {
         $conflictingRole = $role === 'executive' ? 'deputy' : 'executive';
 
+        if (! $this->userHasRole($user, $conflictingRole)) {
+            return;
+        }
+
+        throw ValidationException::withMessages([
+            $role => ['A user cannot be both executive and deputy of the same team.'],
+        ]);
+    }
+
+    /**
+     * Check if the user has the given role in the current team context.
+     */
+    private function userHasRole(User $user, string $role): bool
+    {
         try {
-            if ($role === 'executive') {
-                $conflictingIds = User::query()->role($conflictingRole)->pluck('id');
-                if ($conflictingIds->contains($user->id)) {
-                    throw ValidationException::withMessages([
-                        'executive' => ['A user cannot be both executive and deputy of the same team.'],
-                    ]);
-                }
-
-                return;
-            }
-
-            $conflicting = User::query()->role($conflictingRole)->first();
-            if ($conflicting && $conflicting->id === $user->id) {
-                throw ValidationException::withMessages([
-                    'deputy' => ['A user cannot be both executive and deputy of the same team.'],
-                ]);
-            }
-        } catch (RoleDoesNotExist $e) {
+            return User::query()->role($role)->where('id', $user->id)->exists();
+        } catch (RoleDoesNotExist) {
             // Role doesn't exist yet, so no conflict to check
             // This is expected behavior when roles haven't been created yet
-            unset($e); // No action needed - the absence of a role means no conflict exists
+            return false;
         }
     }
 }

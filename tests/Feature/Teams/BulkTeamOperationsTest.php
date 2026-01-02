@@ -11,8 +11,9 @@ use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
+use Tests\TestCase;
 
-uses(RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 beforeEach(function (): void {
     $this->enterprise = Enterprise::factory()->create([
@@ -28,11 +29,18 @@ beforeEach(function (): void {
 });
 
 it('creates multiple teams in bulk', function (): void {
-    $teams = [
-        ['name' => 'Team 1', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
-        ['name' => 'Team 2', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
-        ['name' => 'Team 3', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
-    ];
+    $teams = collect(['Team 1', 'Team 2', 'Team 3'])
+        ->map(/**
+         * @return (mixed|string)[]
+         *
+         * @psalm-return array{name: 'Team 1'|'Team 2'|'Team 3', type: 'organisation', parent_id: mixed}
+         */
+            fn (string $name): array => [
+                'name' => $name,
+                'type' => TeamType::ORGANISATION->value,
+                'parent_id' => $this->enterprise->id,
+            ])
+        ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
@@ -67,22 +75,15 @@ it('updates multiple teams in bulk', function (): void {
         'tenant_id' => $this->enterprise->id,
     ]);
 
-    $teams = [
-        [
-            'id' => $org1->id,
-            'name' => 'Updated Team 1',
+    $teams = collect([$org1, $org2])
+        ->map(fn (Organisation $org, int $index): array => [
+            'id' => $org->id,
+            'name' => 'Updated Team '.($index + 1),
             'type' => TeamType::ORGANISATION->value,
             'parent_id' => $this->enterprise->id,
-            'lock_version' => $org1->lock_version,
-        ],
-        [
-            'id' => $org2->id,
-            'name' => 'Updated Team 2',
-            'type' => TeamType::ORGANISATION->value,
-            'parent_id' => $this->enterprise->id,
-            'lock_version' => $org2->lock_version,
-        ],
-    ];
+            'lock_version' => $org->lock_version,
+        ])
+        ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
@@ -109,15 +110,16 @@ it('handles partial success when some teams fail validation', function (): void 
         'tenant_id' => $this->enterprise->id,
     ]);
 
-    $teams = [
-        ['name' => 'Valid Team', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
-        [
-            'name' => $org->getTranslation('name', app()->getLocale()),
+    $teams = collect([
+        ['name' => 'Valid Team'],
+        ['name' => $org->getTranslation('name', app()->getLocale())], // Duplicate name
+        ['name' => 'Another Valid Team'],
+    ])
+        ->map(fn (array $team): array => array_merge($team, [
             'type' => TeamType::ORGANISATION->value,
             'parent_id' => $this->enterprise->id,
-        ], // Duplicate name
-        ['name' => 'Another Valid Team', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
-    ];
+        ]))
+        ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
@@ -151,14 +153,18 @@ it('returns error when batch size exceeds enterprise limit', function (): void {
     $this->enterprise->update(['bulk_operation_batch_size' => 5]);
     $this->enterprise->refresh();
 
-    $teams = [];
-    for ($i = 0; $i < 10; $i++) {
-        $teams[] = [
-            'name' => "Team {$i}",
-            'type' => TeamType::ORGANISATION->value,
-            'parent_id' => $this->enterprise->id,
-        ];
-    }
+    $teams = collect(range(0, 9))
+        ->map(/**
+         * @return (mixed|string)[]
+         *
+         * @psalm-return array{name: string, type: 'organisation', parent_id: mixed}
+         */
+            fn (int $i): array => [
+                'name' => "Team {$i}",
+                'type' => TeamType::ORGANISATION->value,
+                'parent_id' => $this->enterprise->id,
+            ])
+        ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
@@ -176,17 +182,20 @@ it('handles mixed create and update operations', function (): void {
         'tenant_id' => $this->enterprise->id,
     ]);
 
-    $teams = [
-        ['name' => 'New Team 1', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
+    $teams = collect([
+        ['name' => 'New Team 1'],
         [
             'id' => $existingOrg->id,
             'name' => 'Updated Existing Team',
-            'type' => TeamType::ORGANISATION->value,
-            'parent_id' => $this->enterprise->id,
             'lock_version' => $existingOrg->lock_version,
         ],
-        ['name' => 'New Team 2', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $this->enterprise->id],
-    ];
+        ['name' => 'New Team 2'],
+    ])
+        ->map(fn (array $team): array => array_merge($team, [
+            'type' => TeamType::ORGANISATION->value,
+            'parent_id' => $this->enterprise->id,
+        ]))
+        ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
@@ -218,10 +227,13 @@ it('handles mixed create and update operations', function (): void {
 it('returns failure status when all operations fail', function (): void {
     // Try to create teams with invalid parent (will fail form validation before reaching controller)
     $invalidParentId = 99999; // Non-existent parent
-    $teams = [
-        ['name' => 'Team 1', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $invalidParentId],
-        ['name' => 'Team 2', 'type' => TeamType::ORGANISATION->value, 'parent_id' => $invalidParentId],
-    ];
+    $teams = collect(['Team 1', 'Team 2'])
+        ->map(fn (string $name): array => [
+            'name' => $name,
+            'type' => TeamType::ORGANISATION->value,
+            'parent_id' => $invalidParentId,
+        ])
+        ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 

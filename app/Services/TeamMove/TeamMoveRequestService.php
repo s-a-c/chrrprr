@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\DB;
 final readonly class TeamMoveRequestService
 {
     public function __construct(
-        private MoveTeam $moveTeamAction,
         private ApprovalDecisionEngine $approvalEngine,
+        private MoveTeam $moveTeamAction,
         private ApproverResolverFactory $resolverFactory,
     ) {}
 
@@ -62,6 +62,11 @@ final readonly class TeamMoveRequestService
         });
     }
 
+    /**
+     * @return int[]
+     *
+     * @psalm-return array<int>
+     */
     private function determineRequiredApprovers(Team $team, ?Team $newParent): array
     {
         $resolver = $this->resolverFactory->getResolver($team, $newParent);

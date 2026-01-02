@@ -9,13 +9,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function (): void {
+    // Skip all browser tests during mutation testing due to timeout issues
+    if (getenv('PEST_MUTATE') === '1') {
+        $this->markTestSkipped('Browser tests skipped during mutation testing due to timeout issues');
+    }
+});
+
 it('renders correctly on mobile viewport', function (): void {
     $user = User::factory()->create();
 
     $this->actingAs($user);
     $page = visit('/dashboard')
-        ->on()
-        ->mobile();
+        ->resize(375, 667);
 
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
 });
@@ -25,8 +31,7 @@ it('renders correctly on tablet viewport', function (): void {
 
     $this->actingAs($user);
     $page = visit('/dashboard')
-        ->on()
-        ->tablet();
+        ->resize(768, 1024);
 
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
 });
@@ -47,8 +52,7 @@ it('renders teams page correctly on mobile', function (): void {
 
     $this->actingAs($user);
     $page = visit('/teams')
-        ->on()
-        ->mobile();
+        ->resize(375, 667);
 
     $page->assertSee('Teams');
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
@@ -59,8 +63,7 @@ it('renders forms correctly on mobile', function (): void {
 
     $this->actingAs($user);
     $page = visit('/teams/create')
-        ->on()
-        ->mobile();
+        ->resize(375, 667);
 
     $page->assertSee('Create New Team');
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
@@ -71,8 +74,7 @@ it('renders navigation correctly on mobile', function (): void {
 
     $this->actingAs($user);
     $page = visit('/dashboard')
-        ->on()
-        ->mobile();
+        ->resize(375, 667);
 
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
 });
@@ -82,8 +84,7 @@ it('renders correctly on iPhone 14 Pro viewport', function (): void {
 
     $this->actingAs($user);
     $page = visit('/dashboard')
-        ->on()
-        ->iPhone14Pro();
+        ->resize(393, 852);
 
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
 });

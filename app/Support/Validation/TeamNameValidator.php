@@ -8,7 +8,6 @@ use App\Models\Team;
 use App\Services\TeamNameNormalizationService;
 use App\Services\TeamTypeResolutionService;
 use App\Support\Validation\TeamName\ArrayNameQueryBuilder;
-use App\Support\Validation\TeamName\NameQueryBuilderInterface;
 use App\Support\Validation\TeamName\StringNameQueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
@@ -16,8 +15,8 @@ use Illuminate\Validation\ValidationException;
 final readonly class TeamNameValidator
 {
     public function __construct(
-        private TeamNameNormalizationService $normalizationService,
         private TeamTypeResolutionService $typeResolutionService,
+        private TeamNameNormalizationService $normalizationService,
     ) {}
 
     /**
@@ -45,7 +44,7 @@ final readonly class TeamNameValidator
     /**
      * Get the appropriate query builder based on name type.
      */
-    private function getQueryBuilder(array|string $name): NameQueryBuilderInterface
+    private function getQueryBuilder(array|string $name): ArrayNameQueryBuilder|StringNameQueryBuilder
     {
         return is_array($name)
             ? new ArrayNameQueryBuilder()
@@ -54,6 +53,8 @@ final readonly class TeamNameValidator
 
     /**
      * Build the base query for finding sibling teams.
+     *
+     * @psalm-return Builder<Team>
      */
     private function buildSiblingQuery(Team $team, ?string $type): Builder
     {

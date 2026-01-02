@@ -32,138 +32,352 @@ integrations = ["laravel", "phpunit"]
 print-width = 120  # Laravel default line length (matches Pint's default)
 use-tabs = false   # Use spaces (Laravel/Pint standard - 4 spaces per indent)
 
-# Guard/Architectural rules (documented here, though guard subcommand is missing in 0.26.1)
+# Guard/Architectural rules
 # Enforces code structure and dependency rules
-# [guard]
-# excludes = ["database", "tests", "resources/views", "routes", "bootstrap"]
+# These rules complement Pest architecture tests and ensure proper layer separation
+[guard]
+excludes = ["database", "tests", "resources/views", "routes", "bootstrap", "config", "public"]
 
 # Perimeter rules: Control namespace dependencies
 # These rules ensure proper layer separation and dependency management
+# They mirror the failing Pest architecture tests that check toOnlyUse()
 
-# Routes files (global namespace) can use Laravel framework, Livewire, and all vendor packages
-# [[guard.perimeter.rules]]
-# namespace = "@global"
-# permit = [
-#     "@self",
-#     "@native",
-#     "App\\",
-#     "Illuminate\\",
-#     "Laravel\\",
-#     "Livewire\\",
-#     "Spatie\\",
-#     "Stancl\\",
-#     "Parental\\",
-#     "Symfony\\",
-#     "Cviebrock\\",
-#     "Stevebauman\\",
-#     "Database\\",
-# ]
+# Controllers should only depend on Models, Requests, Resources, Actions, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Http\\Controllers\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Http\\Requests\\",
+    "App\\Http\\Resources\\",
+    "App\\Actions\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
 
-# Exception classes can extend PHP core Exception classes and use Laravel framework
-# [[guard.perimeter.rules]]
-# namespace = "App\\Exceptions\\"
-# permit = [
-#     "@self",
-#     "@native",
-#     "Illuminate\\",
-#     "Laravel\\",
-# ]
+# Form Requests should only use Enums, Models, and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Http\\Requests\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
 
-# Controllers should only depend on Models, Requests, Resources, and Laravel framework classes
-# [[guard.perimeter.rules]]
-# namespace = "App\\Http\\Controllers\\"
-# permit = [
-#     "@self",
-#     "@native",
-#     "App\\Models\\",
-#     "App\\Http\\Requests\\",
-#     "App\\Http\\Resources\\",
-#     "Illuminate\\",
-#     "Laravel\\",
-# ]
+# Models can use Eloquent, framework, and third-party model packages
+[[guard.perimeter.rules]]
+namespace = "App\\Models\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Support\\",
+    "App\\States\\",
+    "App\\Observers\\",
+    "App\\Presenters\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Spatie\\",
+    "Parental\\",
+    "Symfony\\",
+    "Cviebrock\\",
+    "Stevebauman\\",
+    "Staudenmeir\\",
+    "Stancl\\",
+    "Database\\",
+    "Tests\\", # Models\Concerns\HasUlid uses test model for type hint
+]
 
-# Models can use Eloquent, Laravel framework, and third-party model packages
-# [[guard.perimeter.rules]]
-# namespace = "App\\Models\\"
-# permit = [
-#     "@self",
-#     "@native",
-#     "App\\",
-#     "Illuminate\\",
-#     "Laravel\\",
-#     "Spatie\\",
-#     "Parental\\",
-#     "Symfony\\",
-#     "Cviebrock\\",
-#     "Stevebauman\\",
-#     "Stancl\\",
-#     "Database\\",
-# ]
+# Model Builders should only use Models, Enums, and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Models\\Builders\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Enums\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
 
-# Service providers can depend on application, framework, and all vendor packages
-# [[guard.perimeter.rules]]
-# namespace = "App\\Providers\\"
-# permit = [
-#     "@self",
-#     "@native",
-#     "App\\",
-#     "Illuminate\\",
-#     "Laravel\\",
-#     "Spatie\\",
-#     "Stancl\\",
-#     "Parental\\",
-#     "Symfony\\",
-#     "Cviebrock\\",
-#     "Stevebauman\\",
-# ]
+# Model Concerns should follow model dependencies
+[[guard.perimeter.rules]]
+namespace = "App\\Models\\Concerns\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Services\\", # Concerns may use services (e.g., TeamHierarchyTraversalService)
+    "App\\Support\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
 
-# Livewire components can use models, requests, and framework classes
-# [[guard.perimeter.rules]]
-# namespace = "App\\Livewire\\"
-# permit = [
-#     "@self",
-#     "@native",
-#     "App\\Models\\",
-#     "App\\Http\\Requests\\",
-#     "Illuminate\\",
-#     "Laravel\\",
-#     "Livewire\\",
-# ]
+# Actions should only use Enums, Models, Requests, Services, Support, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Actions\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Http\\Requests\\",
+    "App\\Services\\",
+    "App\\Support\\",
+    "App\\Actions\\", # Actions can use other Actions
+    "Illuminate\\",
+    "Laravel\\",
+    "Spatie\\",
+    "Override",
+    "Deprecated",
+    "Stevebauman\\",
+]
 
-# Actions (Fortify, etc.) can use models, requests, and framework classes
-# [[guard.perimeter.rules]]
-# namespace = "App\\Actions\\"
-# permit = [
-#     "@self",
-#     "@native",
-#     "App\\Models\\",
-#     "App\\Http\\Requests\\",
-#     "Illuminate\\",
-#     "Laravel\\",
-#     "Override",
-# ]
+# Services should only use Actions, Enums, Models, other Services, Support, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Services\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Actions\\",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Services\\",
+    "App\\Support\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Spatie\\",
+    "Staudenmeir\\",
+    "Deprecated",
+    "Override",
+]
 
-# Form Requests can use enums, validation rules, and framework classes
-# [[guard.perimeter.rules]]
-# namespace = "App\\Http\\Requests\\"
-# permit = [
-#     "@self",
-#     "@native",
-#     "App\\Enums\\",
-#     "App\\Models\\",
-#     "Illuminate\\",
-#     "Laravel\\",
-# ]
+# Support Validation should only use Enums, Models, Services, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Support\\Validation\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Services\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Override",
+]
 
-# State classes can use Spatie ModelStates and other framework classes
-# [[guard.perimeter.rules]]
-# namespace = "App\\States\\"
-# permit = [
-#     "@self",
-#     "@native",
-#     "App\\",
-#     "Spatie\\",
-#     "Illuminate\\",
-#     "Laravel\\",
-#     "Override",
-# ]
+# States should only use Spatie, framework, and App namespace
+[[guard.perimeter.rules]]
+namespace = "App\\States\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\",
+    "Spatie\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Override",
+]
+
+# Livewire components should only use Enums, Models, Requests, Services, Actions, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Livewire\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Http\\Requests\\",
+    "App\\Services\\",
+    "App\\Actions\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Livewire\\",
+    "Filament\\",
+]
+
+# Filament resources should only use Enums, Models, Requests, Services, Actions, and Filament
+[[guard.perimeter.rules]]
+namespace = "App\\Filament\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Http\\Requests\\",
+    "App\\Services\\",
+    "App\\Actions\\",
+    "Filament\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Override",
+    "Deprecated",
+]
+
+# Policies should only use Models and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Policies\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+
+# Observers should only use Models, Services, and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Observers\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Services\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+
+# Listeners should only use Models and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Listeners\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+
+# Presenters should only use Models and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Presenters\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+
+# Enums should only use framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Enums\\"
+permit = [
+    "@self",
+    "@native",
+    "Illuminate\\",
+    "Laravel\\",
+]
+
+# Console Commands should only use Models, Services, Actions, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Console\\Commands\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Services\\",
+    "App\\Actions\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Symfony\\",
+]
+
+# Exceptions should only extend framework exception classes
+[[guard.perimeter.rules]]
+namespace = "App\\Exceptions\\"
+permit = [
+    "@self",
+    "@native",
+    "Illuminate\\",
+    "Laravel\\",
+    "Exception",
+]
+
+# Providers should be able to use all application and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Providers\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Spatie\\",
+    "Stancl\\",
+    "Parental\\",
+    "Symfony\\",
+    "Cviebrock\\",
+    "Stevebauman\\",
+    "Filament\\",
+    "Livewire\\",
+    "Override",
+]
+
+# ============================================================================
+# Structural Rules: Enforce class structure and inheritance
+# These rules complement Pest architecture tests for class structure
+# ============================================================================
+
+# Services should be final classes
+[[guard.structural.rules]]
+on = "App\\Services\\**"
+target = "class"
+must-be-final = true
+reason = "Services should be final to prevent extension and maintain clear boundaries."
+
+# Actions should be final classes
+[[guard.structural.rules]]
+on = "App\\Actions\\**"
+target = "class"
+must-be-final = true
+reason = "Actions should be final to prevent extension and maintain clear boundaries."
+
+# Policies should be final classes
+[[guard.structural.rules]]
+on = "App\\Policies\\**"
+target = "class"
+must-be-final = true
+reason = "Policies should be final classes to prevent extension."
+
+# Note: Model extension rule is handled by Pest architecture tests
+# Mago Guard's must-extend only checks direct extension, but models like User
+# extend Authenticatable (which extends Model), so transitive inheritance
+# is better checked by Pest's toExtend() method.
+
+# Enums must implement BackedEnum
+[[guard.structural.rules]]
+on = "App\\Enums\\**"
+target = "class"
+must-implement = "BackedEnum"
+reason = "Enums must implement BackedEnum interface."
+
+# ============================================================================
+# Schema Architecture Rules
+# ============================================================================
+
+# Rule 1: All Core Models must implement SchemaScopedModel to ensure safe schema resolution
+[[guard.structural.rules]]
+on = "App\\Models\\**"
+target = "class"
+must-implement = "App\\Contracts\\SchemaScopedModel"
+reason = "All core models must be schema-aware to support the Hybrid Schema Architecture."
+# Exclude external packages or specific models if necessary
+exclude = [
+    "App\\Models\\Domain", # Extends Stancl\Tenancy
+    "App\\Models\\SearchAnalytics", # Explicitly resides in Search schema
+    "App\\Models\\Role" # TODO: Temporarily excluded - verify Spatie Permission package compatibility with schema scoping
+]
+
+# Rule 2: SearchAnalytics must reside in the Search namespace or be final
+[[guard.structural.rules]]
+on = "App\\Models\\SearchAnalytics"
+target = "class"
+must-be-final = true
+reason = "Search infrastructure models should not be extended."

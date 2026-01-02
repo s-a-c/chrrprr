@@ -13,15 +13,15 @@ use Laravel\Fortify\Features;
 
 Route::get('/', fn (): View|\Illuminate\Contracts\View\View => view('welcome'))->name('home');
 
-Route::view('dashboard', 'dashboard')->middleware(['auth', 'verified'])->name('dashboard');
+Route::view('dashboard', 'dashboard')->middleware(['auth', 'auth.session', 'verified'])->name('dashboard');
 
-// Public Livewire SFC route
-Route::livewire('/chrrps', 'chrrps.index');
-
-Route::middleware(['auth'])->group(function (): void {
+Route::middleware(['auth', 'auth.session', 'verified'])->group(function (): void {
     // Livewire SFC routes
+    Route::livewire('/chrrps', 'chrrps.index');
     Route::livewire('/teams', 'teams.index')->name('teams.index');
     Route::livewire('/teams/create', 'teams.create')->name('teams.create');
+    // Switch-context route must come before {ulid} route to avoid route conflict
+    Route::livewire('/teams/switch-context', 'teams.switch-context')->name('teams.switch-context');
     Route::livewire('/teams/{ulid}', 'teams.ulid')->name('teams.edit');
     Route::livewire('/users/{ulid}', 'users.ulid')->name('users.show');
 

@@ -9,8 +9,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function (): void {
+    // Skip all browser tests during mutation testing due to timeout issues
+    if (getenv('PEST_MUTATE') === '1') {
+        $this->markTestSkipped('Browser tests skipped during mutation testing due to timeout issues');
+    }
+});
+
 describe('Flux UI Components', function (): void {
     it('renders buttons correctly', function (): void {
+
         $user = User::factory()->create();
 
         $this->actingAs($user);
@@ -47,7 +55,7 @@ describe('Flux UI Components', function (): void {
 
     it('renders badges correctly', function (): void {
         $user = User::factory()->create();
-        $team = Enterprise::factory()->create();
+        Enterprise::factory()->create();
 
         $this->actingAs($user);
         $page = visit('/teams');
@@ -57,7 +65,7 @@ describe('Flux UI Components', function (): void {
 
     it('renders avatars correctly', function (): void {
         $user = User::factory()->create();
-        $team = Enterprise::factory()->create();
+        Enterprise::factory()->create();
 
         $this->actingAs($user);
         $page = visit('/teams');

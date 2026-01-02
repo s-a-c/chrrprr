@@ -6,6 +6,7 @@ namespace App\Support\Validation\TeamName;
 
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Builder;
+use Override;
 
 /**
  * Query builder for array-based (translatable) team names.
@@ -14,7 +15,13 @@ use Illuminate\Database\Eloquent\Builder;
  */
 final class ArrayNameQueryBuilder implements NameQueryBuilderInterface
 {
-    public function applyConstraints(Builder $query, mixed $names, Team $team): void
+    #[Override]
+    /**
+     * @param  (null|string)[]|string  $names
+     *
+     * @psalm-param 'not an array'|array{en: 'Existing Org'|null, es?: '', fr?: 'Valid Name'} $names
+     */
+    public function applyConstraints(Builder $query, array|string $names, Team $team): void
     {
         if (! is_array($names)) {
             return;

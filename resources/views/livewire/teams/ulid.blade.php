@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-?>
-<?php
-
 use App\Http\Requests\UpdateTeamRequest;
 use App\Models\Team;
 use Livewire\Component;
@@ -92,6 +89,10 @@ new class extends Component {
 <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
     <flux:heading level="1">Edit Team: {{ $this->name }}</flux:heading>
     <flux:subheading>Update details for this team.</flux:subheading>
+
+    @if (session('status'))
+        <flux:callout variant="success" class="mt-4">{{ session('status') }}</flux:callout>
+    @endif
 
     @if ($errorMessage)
         <flux:callout variant="danger" class="mt-4">{{ $errorMessage }}</flux:callout>

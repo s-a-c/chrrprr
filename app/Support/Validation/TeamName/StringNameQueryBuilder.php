@@ -6,6 +6,7 @@ namespace App\Support\Validation\TeamName;
 
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Builder;
+use Override;
 
 /**
  * Query builder for string-based team names.
@@ -16,7 +17,13 @@ final class StringNameQueryBuilder implements NameQueryBuilderInterface
 {
     private const array LOCALES = ['en', 'es', 'fr', 'de'];
 
-    public function applyConstraints(Builder $query, mixed $name, Team $team): void
+    #[Override]
+    /**
+     * @param  string|string[]  $name
+     *
+     * @psalm-param ''|'Test Name'|'Test Organisation'|list{'not', 'a', 'string'} $name
+     */
+    public function applyConstraints(Builder $query, array|string $name, Team $team): void
     {
         if (! is_string($name) || $name === '') {
             return;

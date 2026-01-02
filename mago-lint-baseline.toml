@@ -1,200 +1,16 @@
-# Mago Linting Baseline
-# =====================
-# This baseline file records known linting issues that are acceptable in the codebase.
-# When mago runs with `--baseline`, it will ignore issues listed here and only report new issues.
-#
-# Purpose:
-# - Focus on new issues introduced going forward
-# - Acknowledge existing architectural decisions and patterns
-# - Reduce noise from acceptable code patterns
-#
-# Usage:
-#   mago --config mago.toml lint --baseline mago-lint-baseline.toml
-#
-# Regeneration:
-#   mago --config mago.toml lint --generate-baseline --baseline mago-lint-baseline.toml
-#
-# Last Updated: 2025-01-23
-
 variant = "loose"
 
-# ============================================================================
-# Issue Categories Being Baselined
-# ============================================================================
-#
-# 1. no-else-clause (15 occurrences)
-#    - Architectural: Else clauses are used intentionally for clarity in some contexts
-#    - Some are in migrations where refactoring isn't practical
-#    - Can be addressed incrementally during refactoring
-#
-# 2. cyclomatic-complexity (3 occurrences)
-#    - HasTeamHierarchy trait: Complexity 19 (threshold 15) - Business logic trait
-#    - TeamMoveService: Complexity 21 (threshold 15) - Orchestrates complex workflows
-#    - TeamNameValidator: Complexity 21 (threshold 15) - Handles complex name validation logic
-#    - These represent intentional architectural decisions for cohesive business logic
-#
-# 3. too-many-methods (3 occurrences)
-#    - User model: 12 methods (threshold 10) - Appropriate for Eloquent model with relationships
-#    - TeamMoveService: 15 methods (threshold 10) - Orchestrates complex business logic
-#    - TeamNameValidator: 13 methods (threshold 10) - Well-structured validation with focused methods
-#    - Splitting would reduce cohesion and make code harder to follow
-#
-# 4. kan-defect (2 occurrences)
-#    - HasTeamHierarchy trait: Score 2.04 - Related to cyclomatic complexity
-#    - TeamNameValidator: Score 1.68 - Complex validation logic for team names
-#    - Architectural decisions for cohesive business logic
-#
-# 5. halstead (3 occurrences)
-#    - Complexity metric warnings for complex methods
-#    - Acceptable for business logic that requires comprehensive handling
-#
-# 6. prefer-first-class-callable (3 occurrences)
-#    - ManagesTeamRoles.php: Closures execute query logic, cannot use first-class callable syntax
-#    - These are false positives - closures perform work, not just forward arguments
-#
-# 7. assertion-style (8 occurrences)
-#    - Test files using self:: instead of static::
-#    - Note: Some tests may intentionally use self:: for specific reasons
-#    - Can be addressed incrementally
-
-# ============================================================================
-# Application Code Issues
-# ============================================================================
-
-# Else clauses in application code - acceptable patterns
-[[issues]]
-file = "app/Actions/Teams/CreateTeam.php"
-code = "no-else-clause"
-message = "Avoid `elseif` clauses."
-count = 1
-
-[[issues]]
-file = "app/Actions/Teams/UpdateTeam.php"
-code = "no-else-clause"
-message = "Avoid `else` clauses."
-count = 1
-
-[[issues]]
-file = "app/Console/Commands/GenerateUserUlids.php"
-code = "no-else-clause"
-message = "Avoid `else` clauses."
-count = 1
-
-[[issues]]
-file = "app/Models/Concerns/ManagesTeamRoles.php"
-code = "no-else-clause"
-message = "Avoid `else` clauses."
-count = 1
-
-[[issues]]
-file = "app/Models/User.php"
-code = "no-else-clause"
-message = "Avoid `else` clauses."
-count = 1
-
-[[issues]]
-file = "app/Observers/TeamObserver.php"
-code = "no-else-clause"
-message = "Avoid `elseif` clauses."
-count = 1
-
-[[issues]]
-file = "app/Support/Validation/TeamNameValidator.php"
-code = "no-else-clause"
-message = "Avoid `else` clauses."
-count = 1
-
-# Complexity metrics - architectural decisions
-[[issues]]
-file = "app/Models/Concerns/HasTeamHierarchy.php"
-code = "cyclomatic-complexity"
-message = "Trait has high complexity."
-count = 1
-
-[[issues]]
-file = "app/Models/Concerns/HasTeamHierarchy.php"
-code = "kan-defect"
-message = "Trait has a high kan defect score (2.04)."
-count = 1
-
-[[issues]]
-file = "app/Services/TeamMoveService.php"
-code = "cyclomatic-complexity"
-message = "Class has high complexity."
-count = 1
-
-[[issues]]
-file = "app/Support/Validation/TeamNameValidator.php"
-code = "cyclomatic-complexity"
-message = "Class has high complexity."
-count = 1
-
-# Method count - appropriate for domain models and service orchestration
-[[issues]]
-file = "app/Models/User.php"
-code = "too-many-methods"
-message = "Class has too many methods."
-count = 1
-
-[[issues]]
-file = "app/Services/TeamMoveService.php"
-code = "too-many-methods"
-message = "Class has too many methods."
-count = 1
-
-[[issues]]
-file = "app/Support/Validation/TeamNameValidator.php"
-code = "too-many-methods"
-message = "Class has too many methods."
-count = 1
-
-[[issues]]
-file = "app/Support/Validation/TeamNameValidator.php"
-code = "kan-defect"
-message = "Class has a high kan defect score (1.6800000000000002)."
-count = 1
-
-# Halstead complexity - complex business logic methods
 [[issues]]
 file = "app/Actions/Teams/MoveTeam.php"
 code = "halstead"
 message = "Method has a high halstead difficulty"
 count = 1
 
-# First-class callable - false positives (closures execute logic)
 [[issues]]
 file = "app/Models/Concerns/ManagesTeamRoles.php"
 code = "prefer-first-class-callable"
 message = "Use first-class callable syntax `...` instead of a arrow function."
 count = 3
-
-# ============================================================================
-# Migration File Issues
-# ============================================================================
-# Note: Migration files often contain intentional patterns that don't follow
-# standard code style guidelines. Refactoring migrations is generally not recommended.
-
-[[issues]]
-file = "database/migrations/2025_12_23_153239_create_permission_tables.php"
-code = "halstead"
-message = "Method has a high halstead effort"
-count = 1
-
-[[issues]]
-file = "database/migrations/2025_12_23_153239_create_permission_tables.php"
-code = "halstead"
-message = "Method has a high halstead volume"
-count = 1
-
-[[issues]]
-file = "database/migrations/2025_12_23_153239_create_permission_tables.php"
-code = "no-else-clause"
-message = "Avoid `else` clauses."
-count = 3
-
-# ============================================================================
-# View/Template Issues
-# ============================================================================
 
 [[issues]]
 file = "resources/views/flux/navlist/group.blade.php"
@@ -208,12 +24,6 @@ code = "no-else-clause"
 message = "Avoid `elseif` clauses."
 count = 1
 
-# ============================================================================
-# Test File Issues
-# ============================================================================
-
-# Assertion style - using self:: instead of static::
-# Note: Some tests may intentionally use self:: for specific reasons
 [[issues]]
 file = "tests/Feature/Teams/OptimisticLockingTest.php"
 code = "assertion-style"
@@ -225,9 +35,3 @@ file = "tests/Feature/Teams/TeamMoveTest.php"
 code = "assertion-style"
 message = "Inconsistent assertions style."
 count = 4
-
-[[issues]]
-file = "tests/Unit/Models/UserTest.php"
-code = "no-else-clause"
-message = "Avoid `else` clauses."
-count = 1

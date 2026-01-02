@@ -52,6 +52,6 @@ final class OptimisticLockingTest extends TestCase
         $team->save();
 
         self::assertSame(1, $team->lock_version);
-        self::assertSame(1, $team->fresh()->lock_version);
+        self::assertSame(1, $team->fresh()?->lock_version);
     }
 }

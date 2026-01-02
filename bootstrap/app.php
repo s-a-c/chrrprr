@@ -50,6 +50,12 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->group('universal', []); // Middleware that runs on both central and tenant domains
+
+        // Middleware group that includes both auth and auth.session for web routes
+        $middleware->group('auth.web', [
+            'auth',
+            'auth.session',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {})
     ->create();

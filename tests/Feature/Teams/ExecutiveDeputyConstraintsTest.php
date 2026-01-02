@@ -15,8 +15,8 @@ test('cannot assign multiple executives to a team', function (): void {
     $user1 = User::factory()->create();
     $user2 = User::factory()->create();
 
-    // Create role
-    Role::create(['name' => 'executive']);
+    // Create role with guard_name to match other tests
+    Role::query()->firstOrCreate(['name' => 'executive', 'guard_name' => 'web']);
 
     // Implement method on Team model later
     $org->assignExecutive($user1);
@@ -37,7 +37,7 @@ test('can assign deputies to a team', function (): void {
     $user1 = User::factory()->create();
     $user2 = User::factory()->create();
 
-    Role::create(['name' => 'deputy']);
+    Role::query()->firstOrCreate(['name' => 'deputy', 'guard_name' => 'web']);
 
     $org->assignDeputy($user1);
 

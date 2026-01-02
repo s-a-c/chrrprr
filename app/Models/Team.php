@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\SchemaScopedModel;
 use App\Enums\TeamStatus;
 use App\Enums\TeamType;
 use App\Models\Builders\TeamBuilder;
+use App\Models\Concerns\HasCustomSchema;
 use App\Models\Concerns\HasTeamHierarchy;
 use App\Models\Concerns\HasTranslatableAttributes;
 use App\Models\Concerns\HasTranslatableSlug;
 use App\Models\Concerns\HasUlid;
 use App\Models\Concerns\ManagesTeamRoles;
 use App\States\Team\TeamState;
+use App\Support\Html\TeamBioRenderer;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
+use Laravel\Scout\Searchable;
 use Override;
 use Parental\HasChildren;
-use Spatie\LaravelMarkdown\MarkdownRenderer;
 use Spatie\ModelStates\HasStates;
-use Stevebauman\Purify\Facades\Purify;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @property self|null $parent
@@ -31,10 +35,13 @@ use Stevebauman\Purify\Facades\Purify;
  * @property TeamState $state
  * @property TeamStatus $status
  * @property int<0, max> $lock_version
+ *
+ * @use HasFactory<Factory>
  */
-class Team extends Model
+class Team extends Model implements SchemaScopedModel
 {
     use HasChildren;
+    use HasCustomSchema;
     use HasFactory;
     use HasStates;
     use HasTeamHierarchy;
@@ -42,6 +49,7 @@ class Team extends Model
     use HasTranslatableSlug;
     use HasUlid;
     use ManagesTeamRoles;
+    use Searchable;
     use SoftDeletes;
 
     /** @var array<int, string> */
@@ -96,7 +104,10 @@ class Team extends Model
         return new TeamBuilder($query);
     }
 
-    public function parent(): BelongsTo
+    /**
+     * @psalm-return \Illuminate\Database\Eloquent\Builder<TRelatedModel>
+     */
+    public function parent(): \Illuminate\Database\Eloquent\Builder
     {
         return $this->belongsTo(self::class, 'parent_id')->withoutGlobalScopes();
     }
@@ -112,22 +123,65 @@ class Team extends Model
     }
 
     /**
-     * @return string[][]
+     * Get the options for generating the slug.
      *
-     * @psalm-return array{slug: array{source: 'name'}}
+     * @psalm-return SlugOptions
      */
     #[Override]
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
     /**
-     * @return string[][]
-     *
-     * @psalm-return array{slug: array{source: 'name'}}
+     * Get the value used to index the model.
      */
-    public function sluggable(): array
+    public function getScoutKey(): mixed
+    {
+        return $this->ulid;
+    }
+
+    /**
+     * Get the key name used to index the model.
+     */
+    public function getScoutKeyName(): mixed
+    {
+        return 'ulid';
+    }
+
+    /**
+     * Typo-tolerant fuzzy search scope using pg_trgm.
+     */
+    public function scopeFuzzySearch($query, string $term)
+    {
+        // Extract English name from JSON for comparison
+        return $query->whereRaw("(name->>'en') % ?", [$term])
+            ->orderByRaw("similarity((name->>'en'), ?) DESC", [$term]);
+    }
+
+    /**
+     * Full-text search scope using weighted search_vector.
+     */
+    public function scopeFullTextSearch($query, string $term)
+    {
+        return $query->whereRaw('search_vector @@ to_tsquery(?, ?)', ['english', $term])
+            ->orderByRaw('ts_rank(search_vector, to_tsquery(?, ?)) DESC', ['english', $term]);
+    }
+
+    /**
+     * Scout: Define the indexable data array.
+     */
+    public function toSearchableArray(): array
     {
         return [
-            'slug' => [
-                'source' => 'name',
-            ],
+            'id' => $this->id,
+            'ulid' => $this->ulid,
+            'name' => $this->getTranslation('name', 'en'),
+            'bio' => $this->getTranslation('bio', 'en'),
+            'type' => $this->type->value,
+            'status' => $this->status->value,
         ];
     }
 
@@ -152,16 +206,15 @@ class Team extends Model
         ];
     }
 
+    /**
+     * Get the rendered HTML version of the team bio.
+     *
+     * Delegates to TeamBioRenderer for improved testability and separation of concerns.
+     */
     protected function getBioHtmlAttribute(): ?string
     {
         $bio = $this->getTranslation('bio', app()->getLocale());
 
-        if ($bio === null || $bio === '') {
-            return null;
-        }
-
-        $html = resolve(MarkdownRenderer::class)->toHtml($bio);
-
-        return Purify::clean($html);
+        return resolve(TeamBioRenderer::class)->render($bio, app()->getLocale());
     }
 }
