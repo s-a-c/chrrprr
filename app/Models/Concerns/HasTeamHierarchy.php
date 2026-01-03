@@ -16,6 +16,23 @@ use Illuminate\Support\Collection;
 trait HasTeamHierarchy
 {
     /**
+     * Boot the trait and register model events.
+     */
+    public static function bootHasTeamHierarchy(): void
+    {
+        static::creating(static function (Team $team): void {
+            $team->validateHierarchy();
+        });
+
+        static::updating(static function (Team $team): void {
+            // Only validate if parent_id or type is being changed
+            if ($team->isDirty(['parent_id', 'type'])) {
+                $team->validateHierarchy();
+            }
+        });
+    }
+
+    /**
      * Update tenant IDs for all descendants recursively using collections.
      */
     public function updateDescendantTenants(string $newTenantId): void
@@ -38,8 +55,14 @@ trait HasTeamHierarchy
     {
         $type = $this->normalizeType();
 
+        // Skip validation if type cannot be determined (e.g., during factory creation before type is set)
         if (! $type) {
             return;
+        }
+
+        // Ensure type is set as enum on the model for validators
+        if ($this->getAttribute('type') !== $type) {
+            $this->setAttribute('type', $type);
         }
 
         // Use collection pipeline with Higher Order Messaging

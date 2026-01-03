@@ -116,7 +116,8 @@ new class extends Component {
                 <flux:select wire:model="parent_id">
                     @foreach ($this->parents as $parent)
                         <flux:select.option :value="(string) $parent->id">{{ $parent->name }}
-                            ({{ $parent->type->value }})</flux:select.option>
+                            ({{ $parent->type->value }})
+                        </flux:select.option>
                     @endforeach
                 </flux:select>
                 <flux:error name="parent_id" />

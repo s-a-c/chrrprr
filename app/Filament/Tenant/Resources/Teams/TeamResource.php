@@ -7,6 +7,7 @@ namespace App\Filament\Tenant\Resources\Teams;
 use App\Filament\Tenant\Resources\Teams\Pages\CreateTeam;
 use App\Filament\Tenant\Resources\Teams\Pages\EditTeam;
 use App\Filament\Tenant\Resources\Teams\Pages\ListTeams;
+use App\Filament\Tenant\Resources\Teams\Pages\ViewTeam;
 use App\Filament\Tenant\Resources\Teams\Schemas\TeamForm;
 use App\Filament\Tenant\Resources\Teams\Tables\TeamsTable;
 use App\Models\Team;
@@ -53,19 +54,20 @@ final class TeamResource extends Resource
     /**
      * @return PageRegistration[]
      *
-     * @psalm-return array{index: PageRegistration, create: PageRegistration, edit: PageRegistration}
+     * @psalm-return array{index: PageRegistration, create: PageRegistration, view: PageRegistration, edit: PageRegistration}
      */
     #[Override]
     /**
      * @return PageRegistration[]
      *
-     * @psalm-return array{index: PageRegistration, create: PageRegistration, edit: PageRegistration}
+     * @psalm-return array{index: PageRegistration, create: PageRegistration, view: PageRegistration, edit: PageRegistration}
      */
     public static function getPages(): array
     {
         return [
             'index' => ListTeams::route('/'),
             'create' => CreateTeam::route('/create'),
+            'view' => ViewTeam::route('/{record}'),
             'edit' => EditTeam::route('/{record}/edit'),
         ];
     }

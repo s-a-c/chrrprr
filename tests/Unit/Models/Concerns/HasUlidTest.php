@@ -11,10 +11,15 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 beforeEach(function (): void {
+    Schema::dropIfExists('has_ulid_test_models');
     Schema::create('has_ulid_test_models', function (Blueprint $table): void {
         $table->id();
         $table->char('ulid', 26)->nullable();
     });
+});
+
+afterEach(function (): void {
+    Schema::dropIfExists('has_ulid_test_models');
 });
 
 it('generates a ulid on creation', function (): void {

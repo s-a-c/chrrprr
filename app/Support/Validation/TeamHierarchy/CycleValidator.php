@@ -28,8 +28,20 @@ final readonly class CycleValidator implements HierarchyValidatorInterface
             ]);
         }
 
-        $parent = $team->parent;
-        if ($parent && $this->traversalService->isDescendantOf($parent, $team)) {
+        // Get the new parent (use the parent_id that's being set, not the relationship)
+        $newParentId = $team->parent_id;
+        if ($newParentId === null) {
+            return; // No parent, no cycle possible
+        }
+
+        // Load the new parent to check if it's a descendant
+        $newParent = $team->newQuery()
+            ->withoutGlobalScopes()
+            ->where('id', $newParentId)
+            ->whereNull('deleted_at')
+            ->first();
+
+        if ($newParent && $this->traversalService->isDescendantOf($newParent, $team)) {
             throw ValidationException::withMessages([
                 'parent_id' => ['A team cannot be moved into its own descendant (would create a cycle).'],
             ]);

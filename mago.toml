@@ -5,7 +5,16 @@ threads = 1
 
 [source]
 includes = ["vendor"]
-paths = ["app", "bootstrap", "config", "database", "public", "resources", "routes", "tests"]
+paths = [
+    "app",
+    "bootstrap",
+    "config",
+    "database",
+    "public",
+    "resources",
+    "routes",
+    "tests",
+]
 excludes = [
     "storage",
     "tmp",
@@ -29,14 +38,27 @@ integrations = ["laravel", "phpunit"]
 # Note: Mago's formatter is NOT used - Pint is the authoritative formatter
 # These settings are kept for reference but Mago format is not run in lint/lintfix
 # Pint handles all formatting to ensure Laravel style compliance
-print-width = 120  # Laravel default line length (matches Pint's default)
-use-tabs = false   # Use spaces (Laravel/Pint standard - 4 spaces per indent)
+print-width = 120 # Laravel default line length (matches Pint's default)
+use-tabs = false  # Use spaces (Laravel/Pint standard - 4 spaces per indent)
 
 # Guard/Architectural rules
 # Enforces code structure and dependency rules
 # These rules complement Pest architecture tests and ensure proper layer separation
 [guard]
-excludes = ["database", "tests", "resources/views", "routes", "bootstrap", "config", "public"]
+# Exclude infrastructure directories from Perimeter Guard checks
+# - Config files contain configuration, not application logic
+# - Database files (migrations, seeders) have different architectural requirements
+# - Tests need access to everything to test the application
+# - Routes, resources (views), bootstrap, and public are infrastructure files
+excludes = [
+    "config",
+    "database",
+    "tests",
+    "routes",
+    "resources",
+    "bootstrap",
+    "public",
+]
 
 # Perimeter rules: Control namespace dependencies
 # These rules ensure proper layer separation and dependency management
@@ -90,7 +112,7 @@ permit = [
     "Staudenmeir\\",
     "Stancl\\",
     "Database\\",
-    "Tests\\", # Models\Concerns\HasUlid uses test model for type hint
+    "Tests\\",           # Models\Concerns\HasUlid uses test model for type hint
 ]
 
 # Model Builders should only use Models, Enums, and framework classes
@@ -130,7 +152,7 @@ permit = [
     "App\\Http\\Requests\\",
     "App\\Services\\",
     "App\\Support\\",
-    "App\\Actions\\", # Actions can use other Actions
+    "App\\Actions\\",        # Actions can use other Actions
     "Illuminate\\",
     "Laravel\\",
     "Spatie\\",
@@ -223,13 +245,7 @@ permit = [
 # Policies should only use Models and framework classes
 [[guard.perimeter.rules]]
 namespace = "App\\Policies\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\Models\\",
-    "Illuminate\\",
-    "Laravel\\",
-]
+permit = ["@self", "@native", "App\\Models\\", "Illuminate\\", "Laravel\\"]
 
 # Observers should only use Models, Services, and framework classes
 [[guard.perimeter.rules]]
@@ -246,34 +262,17 @@ permit = [
 # Listeners should only use Models and framework classes
 [[guard.perimeter.rules]]
 namespace = "App\\Listeners\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\Models\\",
-    "Illuminate\\",
-    "Laravel\\",
-]
+permit = ["@self", "@native", "App\\Models\\", "Illuminate\\", "Laravel\\"]
 
 # Presenters should only use Models and framework classes
 [[guard.perimeter.rules]]
 namespace = "App\\Presenters\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\Models\\",
-    "Illuminate\\",
-    "Laravel\\",
-]
+permit = ["@self", "@native", "App\\Models\\", "Illuminate\\", "Laravel\\"]
 
 # Enums should only use framework classes
 [[guard.perimeter.rules]]
 namespace = "App\\Enums\\"
-permit = [
-    "@self",
-    "@native",
-    "Illuminate\\",
-    "Laravel\\",
-]
+permit = ["@self", "@native", "Illuminate\\", "Laravel\\"]
 
 # Console Commands should only use Models, Services, Actions, and framework
 [[guard.perimeter.rules]]
@@ -292,13 +291,7 @@ permit = [
 # Exceptions should only extend framework exception classes
 [[guard.perimeter.rules]]
 namespace = "App\\Exceptions\\"
-permit = [
-    "@self",
-    "@native",
-    "Illuminate\\",
-    "Laravel\\",
-    "Exception",
-]
+permit = ["@self", "@native", "Illuminate\\", "Laravel\\", "Exception"]
 
 # Providers should be able to use all application and framework classes
 [[guard.perimeter.rules]]
@@ -317,6 +310,67 @@ permit = [
     "Stevebauman\\",
     "Filament\\",
     "Livewire\\",
+    "Carbon\\",
+    "Override",
+]
+
+# Contracts should be able to use Support and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Contracts\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Support\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Override",
+]
+
+# Support should be able to use framework classes and native PHP functions
+[[guard.perimeter.rules]]
+namespace = "App\\Support\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Support\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Laravel\\Telescope\\",
+    "Spatie\\",
+    "Stevebauman\\",
+    "Throwable",
+    "Closure",
+    "BadMethodCallException",
+    "Override",
+]
+
+# Events should be able to use Enums, Models, Services, Support, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Events\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Services\\",
+    "App\\Support\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Thunk\\",
+    "Override",
+]
+
+# Projections should be able to use Models, Events, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Projections\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Events\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Thunk\\",
     "Override",
 ]
 
@@ -365,15 +419,10 @@ reason = "Enums must implement BackedEnum interface."
 # Rule 1: All Core Models must implement SchemaScopedModel to ensure safe schema resolution
 [[guard.structural.rules]]
 on = "App\\Models\\**"
+not-on = "App\\Models\\Domain|App\\Models\\SearchAnalytics|App\\Models\\Role|App\\Models\\Builders\\TeamBuilder|App\\Models\\Builders\\UserBuilder"
 target = "class"
 must-implement = "App\\Contracts\\SchemaScopedModel"
-reason = "All core models must be schema-aware to support the Hybrid Schema Architecture."
-# Exclude external packages or specific models if necessary
-exclude = [
-    "App\\Models\\Domain", # Extends Stancl\Tenancy
-    "App\\Models\\SearchAnalytics", # Explicitly resides in Search schema
-    "App\\Models\\Role" # TODO: Temporarily excluded - verify Spatie Permission package compatibility with schema scoping
-]
+reason = "All core models must be schema-aware to support the Hybrid Schema Architecture. Excludes Domain (extends Stancl\\Tenancy), SearchAnalytics (explicitly in Search schema), Role (TODO: verify Spatie Permission compatibility), and Builders (query builders, not models)."
 
 # Rule 2: SearchAnalytics must reside in the Search namespace or be final
 [[guard.structural.rules]]
@@ -381,3 +430,81 @@ on = "App\\Models\\SearchAnalytics"
 target = "class"
 must-be-final = true
 reason = "Search infrastructure models should not be extended."
+
+# ============================================================================
+# Monadic CQRS Architecture Rules
+# ============================================================================
+
+# Rule 3: Command Handlers must implement CommandHandler interface and return Result
+[[guard.structural.rules]]
+on = "App\\Handlers\\Commands\\**Handler"
+target = "class"
+must-implement = "App\\Contracts\\CommandHandler"
+reason = "Command handlers must implement CommandHandler interface for CQRS architecture."
+
+# Rule 4: Query Handlers must implement QueryHandler interface and return Result
+[[guard.structural.rules]]
+on = "App\\Handlers\\Queries\\**Handler"
+target = "class"
+must-implement = "App\\Contracts\\QueryHandler"
+reason = "Query handlers must implement QueryHandler interface for CQRS architecture."
+
+# Rule 5: Handlers must extend BaseHandler
+[[guard.structural.rules]]
+on = "App\\Handlers\\**Handler"
+not-on = "App\\Handlers\\BaseHandler"
+target = "class"
+must-extend = "App\\Handlers\\BaseHandler"
+reason = "Handlers must extend BaseHandler for common CQRS patterns. Excludes BaseHandler itself and DTOs (Command/Query classes)."
+
+# ============================================================================
+# Monadic CQRS Return Type Rules
+# ============================================================================
+
+# Rule 6: Handler methods must return Result type
+# Note: This is enforced via PHPStan/static analysis rather than Mago Guard
+# as Mago Guard focuses on structural rules, not method signatures.
+# PHPStan level 9 will catch missing return types.
+
+# Handlers should only use Contracts, Support, Models, Services, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Handlers\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Contracts\\",
+    "App\\Support\\",
+    "App\\Models\\",
+    "App\\Services\\",
+    "App\\Enums\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Stevebauman\\",
+    "Override",
+]
+
+# Tests should be able to use all application classes, testing frameworks, and utilities
+[[guard.perimeter.rules]]
+namespace = "Tests\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Pest\\",
+    "PHPUnit\\",
+    "Tests\\",
+    "Livewire\\",
+    "Filament\\",
+    "Spatie\\",
+    "Stancl\\",
+    "Parental\\",
+    "Symfony\\",
+    "Cviebrock\\",
+    "Stevebauman\\",
+    "Staudenmeir\\",
+    "Database\\",
+    "Override",
+    "Deprecated",
+]

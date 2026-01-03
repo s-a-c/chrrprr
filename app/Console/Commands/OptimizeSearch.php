@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class OptimizeSearch extends Command
+final class OptimizeSearch extends Command
 {
     protected $signature = 'search:optimize';
 
@@ -23,7 +23,15 @@ class OptimizeSearch extends Command
 
         $this->info('Optimizing Search Schema...');
 
-        $appSchema = config('database.connections.pgsql.schema');
+        /** @var string|mixed $appSchemaRaw */
+        $appSchemaRaw = config('database.connections.pgsql.schema');
+        if (! is_string($appSchemaRaw)) {
+            $this->error('Database schema configuration is invalid.');
+
+            return;
+        }
+
+        $appSchema = $appSchemaRaw;
 
         // Analyze specifically updates statistics for the query planner
         // crucial for the complex GIN/GIST indexes to work efficiently.

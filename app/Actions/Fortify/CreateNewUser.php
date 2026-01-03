@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions\Fortify;
 
-use App\Actions\Users\RegisterUser;
+use App\Handlers\Commands\Users\RegisterUserCommand;
+use App\Handlers\Commands\Users\RegisterUserHandler;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Override;
+use RuntimeException;
 
 final class CreateNewUser implements CreatesNewUsers
 {
@@ -18,7 +20,7 @@ final class CreateNewUser implements CreatesNewUsers
     /**
      * Validate and create a newly registered user.
      *
-     * @param  array<string, string>  $input
+     * @param  array<string, mixed>  $input
      */
     #[Override]
     public function create(array $input): User
@@ -35,11 +37,20 @@ final class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        // Use RegisterUser action for consistency with CQRS pattern
-        return resolve(RegisterUser::class)->handle([
+        // Use RegisterUserHandler for consistency with CQRS pattern
+        $handler = resolve(RegisterUserHandler::class);
+        $command = new RegisterUserCommand([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
         ]);
+
+        $result = $handler->handle($command)->logInternal();
+
+        /** @var User */
+        return $result->match(
+            onSuccess: static fn (mixed $user): User => $user instanceof User ? $user : throw new RuntimeException('Invalid user returned'),
+            onFailure: static fn (string $error) => throw new RuntimeException($error)
+        );
     }
 }

@@ -22,15 +22,19 @@ it('throws exception when enterprise has parent', function (): void {
     $parent = Enterprise::factory()->create(['name' => ['en' => 'Parent Enterprise']]);
     $enterprise = Enterprise::factory()->create([
         'name' => ['en' => 'Child Enterprise'],
-        'parent_id' => $parent->id,
     ]);
+
+    // Manually set parent_id after creation (since Enterprise model clears it during creation)
+    // Use saveQuietly to bypass model events, then test the validator directly
+    $enterprise->parent_id = $parent->id;
+    $enterprise->saveQuietly();
 
     $validator = new EnterpriseParentValidator();
 
     $this->expectException(ValidationException::class);
     $this->expectExceptionMessage('Enterprises cannot have a parent team.');
 
-    $validator->validate($enterprise);
+    $validator->validate($enterprise->fresh());
 });
 
 it('allows non-enterprise teams with parent', function (): void {

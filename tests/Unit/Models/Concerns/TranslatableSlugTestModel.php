@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\SlugOptions;
 
+/**
+ * @property int|null $id
+ * @property array<string, string>|string|null $name
+ * @property array<string, string>|string|null $slug
+ */
 final class TranslatableSlugTestModel extends Model
 {
     use HasFactory;
@@ -40,6 +45,7 @@ final class TranslatableSlugTestModel extends Model
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+            ->saveSlugsTo('slug')
+            ->allowDuplicateSlugs(); // Disable Spatie's uniqueness check since we handle it manually for JSON columns
     }
 }

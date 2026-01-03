@@ -8,6 +8,8 @@ use App\Providers\Filament\TenantPanelProvider;
 use App\Providers\FolioServiceProvider;
 use App\Providers\FortifyServiceProvider;
 use App\Providers\LivewireServiceProvider;
+use App\Providers\MonadBladeServiceProvider;
+use App\Providers\ResultServiceProvider;
 
 return [
     AppServiceProvider::class,
@@ -16,4 +18,6 @@ return [
     FolioServiceProvider::class,
     FortifyServiceProvider::class,
     LivewireServiceProvider::class,
+    ResultServiceProvider::class,
+    MonadBladeServiceProvider::class,
 ];

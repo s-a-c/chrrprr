@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Filament\Tenant\Resources\Teams\Pages;
 
-use App\Actions\Teams\UpdateTeam;
 use App\Filament\Tenant\Resources\Teams\TeamResource;
+use App\Handlers\Commands\Teams\UpdateTeamCommand;
+use App\Handlers\Commands\Teams\UpdateTeamHandler;
 use App\Models\Team;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Override;
+use RuntimeException;
 
 final class EditTeam extends EditRecord
 {
@@ -68,7 +71,32 @@ final class EditTeam extends EditRecord
      */
     protected function handleRecordUpdate(Model|Team $record, array $data): Model|Team
     {
-        // Use the UpdateTeam action instead of default model update
-        return resolve(UpdateTeam::class)->handle($record, $data);
+        assert($record instanceof Team, 'Record must be a Team instance');
+        $handler = resolve(UpdateTeamHandler::class);
+        $command = new UpdateTeamCommand($record, $data);
+
+        $result = $handler->handle($command)->logInternal();
+
+        /** @var Team */
+        return $result->match(
+            onSuccess: static function (mixed $team, array $logs): Team {
+                assert($team instanceof Team, 'Result must contain a Team instance');
+                Notification::make()
+                    ->title('Team updated successfully')
+                    ->success()
+                    ->send();
+
+                return $team;
+            },
+            onFailure: static function (string $error, array $logs): never {
+                Notification::make()
+                    ->title('Team update failed')
+                    ->body($error)
+                    ->danger()
+                    ->send();
+
+                throw new RuntimeException($error);
+            }
+        );
     }
 }

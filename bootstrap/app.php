@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Support\Result;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Http\Request;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Folio\Folio;
@@ -57,5 +59,29 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.session',
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {})
+    ->withExceptions(function (Exceptions $exceptions): void {
+        // Convert unhandled exceptions to Result::failure for API routes
+        // This allows the UI to handle a "Crashed Command" exactly the same way
+        // it handles a "Validation Failure"
+        $exceptions->render(function (Throwable $e, Request $request) {
+            if ($request->is('api/*') || $request->wantsJson()) {
+                // Convert any exception into a Failure Monad for the response
+                $result = Result::failure(
+                    $e->getMessage(),
+                    ['trace' => 'Captured by Global Handler', 'file' => $e->getFile(), 'line' => $e->getLine()]
+                );
+
+                return $result->match(
+                    onSuccess: fn (): null => null, // Should not happen
+                    onFailure: fn (string $error, array $logs) => response()->json([
+                        'status' => 'exception',
+                        'error' => $error,
+                        'audit' => $logs,
+                    ], 500)
+                );
+            }
+
+            return null; // Let Laravel handle non-API exceptions normally
+        });
+    })
     ->create();

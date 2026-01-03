@@ -11,11 +11,16 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 beforeEach(function (): void {
+    Schema::dropIfExists('translatable_slug_test_models');
     Schema::create('translatable_slug_test_models', function (Blueprint $table): void {
         $table->id();
         $table->json('name')->nullable();
         $table->json('slug')->nullable();
     });
+});
+
+afterEach(function (): void {
+    Schema::dropIfExists('translatable_slug_test_models');
 });
 
 it('generates translatable slugs', function (): void {

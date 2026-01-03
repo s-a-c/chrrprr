@@ -6,6 +6,7 @@ namespace App\Filament\Tenant\Resources\Users;
 
 use App\Filament\Tenant\Resources\Users\Pages\EditUser;
 use App\Filament\Tenant\Resources\Users\Pages\ListUsers;
+use App\Filament\Tenant\Resources\Users\Pages\ViewUser;
 use App\Filament\Tenant\Resources\Users\Schemas\UserForm;
 use App\Filament\Tenant\Resources\Users\Tables\UsersTable;
 use App\Models\User;
@@ -50,18 +51,19 @@ final class UserResource extends Resource
     /**
      * @return PageRegistration[]
      *
-     * @psalm-return array{index: PageRegistration, edit: PageRegistration}
+     * @psalm-return array{index: PageRegistration, view: PageRegistration, edit: PageRegistration}
      */
     #[Override]
     /**
      * @return PageRegistration[]
      *
-     * @psalm-return array{index: PageRegistration, edit: PageRegistration}
+     * @psalm-return array{index: PageRegistration, view: PageRegistration, edit: PageRegistration}
      */
     public static function getPages(): array
     {
         return [
             'index' => ListUsers::route('/'),
+            'view' => ViewUser::route('/{record}'),
             'edit' => EditUser::route('/{record}/edit'),
         ];
     }

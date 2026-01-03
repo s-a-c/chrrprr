@@ -56,11 +56,9 @@ test('team model has sluggable configuration', function (): void {
     // Use reflection to access SlugOptions properties
     $reflection = new ReflectionClass($slugOptions);
     $slugFieldProperty = $reflection->getProperty('slugField');
-    $slugFieldProperty->setAccessible(true);
     $slugField = $slugFieldProperty->getValue($slugOptions);
 
     $generateSlugFromProperty = $reflection->getProperty('generateSlugFrom');
-    $generateSlugFromProperty->setAccessible(true);
     $sourceFields = $generateSlugFromProperty->getValue($slugOptions);
 
     // generateSlugFrom can be a string or array

@@ -13,7 +13,7 @@ use App\Models\TeamMoveApproval;
 use App\Models\User;
 use App\Services\TeamMoveService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 uses(RefreshDatabase::class);
 
@@ -178,7 +178,7 @@ it('throws exception when non-authorized user tries to approve', function (): vo
     $approval = $this->service->requestMove($division, $org2->id, $requester);
     expect($approval)->toBeInstanceOf(TeamMoveApproval::class);
 
-    expect(fn () => $this->service->approve($approval, $unauthorizedUser))->toThrow(ValidationException::class);
+    expect(fn () => $this->service->approve($approval, $unauthorizedUser))->toThrow(RuntimeException::class);
 });
 
 it('creates approval request when depth change exceeds threshold', function (): void {

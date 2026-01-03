@@ -31,7 +31,12 @@ it('resolves type from string attribute', function (): void {
 });
 
 it('resolves type from model class', function (): void {
-    $division = Division::factory()->create(['name' => ['en' => 'Division']]);
+    $enterprise = Enterprise::factory()->create();
+    $org = Organisation::factory()->create(['parent_id' => $enterprise->id]);
+    $division = Division::factory()->create([
+        'parent_id' => $org->id,
+        'name' => ['en' => 'Division'],
+    ]);
     $division->setRawAttributes(['type' => null]);
 
     $service = new TeamTypeResolutionService();

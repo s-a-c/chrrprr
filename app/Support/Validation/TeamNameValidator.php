@@ -7,10 +7,10 @@ namespace App\Support\Validation;
 use App\Models\Team;
 use App\Services\TeamNameNormalizationService;
 use App\Services\TeamTypeResolutionService;
+use App\Support\Result;
 use App\Support\Validation\TeamName\ArrayNameQueryBuilder;
 use App\Support\Validation\TeamName\StringNameQueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Validation\ValidationException;
 
 final readonly class TeamNameValidator
 {
@@ -23,8 +23,10 @@ final readonly class TeamNameValidator
      * Validate that the team name is unique among siblings.
      *
      * Simplified using collection-based services and strategy pattern.
+     *
+     * @return Result<bool, string>
      */
-    public function validateUnique(Team $team): void
+    public function validateUnique(Team $team): Result
     {
         $type = $this->typeResolutionService->resolve($team);
         $query = $this->buildSiblingQuery($team, $type);
@@ -35,10 +37,13 @@ final readonly class TeamNameValidator
         $builder->applyConstraints($query, $nameToCheck, $team);
 
         if ($query->exists()) {
-            throw ValidationException::withMessages([
-                'name' => ['The team name has already been taken within this scope.'],
-            ]);
+            return Result::failure(
+                'The team name has already been taken within this scope.',
+                ['Name uniqueness validation failed']
+            );
         }
+
+        return Result::success(true, ['Name uniqueness validated']);
     }
 
     /**

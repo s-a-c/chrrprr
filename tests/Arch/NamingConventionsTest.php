@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\GenerateUserUlids;
+use App\Console\Commands\SetDefaultUserStates;
+use App\Http\Controllers\Controller;
+
 /*
  * |--------------------------------------------------------------------------
  * | Naming Convention Rules
@@ -25,7 +29,7 @@ arch('Controllers should end with Controller suffix')
     ->expect('App\Http\Controllers')
     ->classes()
     ->toHaveSuffix('Controller')
-    ->ignoring('App\Http\Controllers\Controller');
+    ->ignoring(Controller::class);
 
 arch('Policies should end with Policy suffix')
     ->expect('App\Policies')
@@ -57,6 +61,6 @@ arch('Commands should end with Command suffix')
     ->classes()
     ->toHaveSuffix('Command')
     ->ignoring([
-        'App\Console\Commands\GenerateUserUlids', // Legacy naming
-        'App\Console\Commands\SetDefaultUserStates', // Legacy naming
+        GenerateUserUlids::class, // Legacy naming
+        SetDefaultUserStates::class, // Legacy naming
     ]);

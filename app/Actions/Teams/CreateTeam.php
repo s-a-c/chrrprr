@@ -8,6 +8,7 @@ use App\Enums\TeamType;
 use App\Models\Team;
 use App\Support\Validation\TeamHierarchyValidator;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 
 final class CreateTeam
 {
@@ -18,11 +19,22 @@ final class CreateTeam
      */
     public function handle(array $data): Team
     {
+        /** @var Team */
         return DB::transaction(static function () use ($data): Team {
-            $type = $data['type'] instanceof TeamType ? $data['type'] : TeamType::from($data['type']);
+            /** @var TeamType|string|int|null $typeValue */
+            $typeValue = $data['type'] ?? null;
+            if (! ($typeValue instanceof TeamType)) {
+                throw_if(! is_string($typeValue) && ! is_int($typeValue), InvalidArgumentException::class, 'Type must be a TeamType instance, string, or int');
+                /** @var string|int $typeValue */
+                $type = TeamType::from($typeValue);
+            } else {
+                $type = $typeValue;
+            }
+
             $parentId = $data['parent_id'] ?? null;
 
             // Resolve Parent
+            /** @var Team|null $parent */
             $parent = $parentId ? Team::query()->withoutGlobalScopes()->find($parentId) : null;
 
             // Run Validation
@@ -30,7 +42,7 @@ final class CreateTeam
 
             // Determine Tenant (Enterprise logic)
             $tenantId = null;
-            if ($parent) {
+            if ($parent instanceof Team) {
                 $tenantId = $parent->type === TeamType::ENTERPRISE ? $parent->id : $parent->tenant_id;
             }
 

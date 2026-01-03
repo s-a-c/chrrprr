@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Teams;
 
-use App\Actions\Teams\CreateTeam;
-use App\Actions\Teams\UpdateTeam;
+use App\Handlers\Commands\Teams\CreateTeamCommand;
+use App\Handlers\Commands\Teams\CreateTeamHandler;
+use App\Handlers\Commands\Teams\UpdateTeamCommand;
+use App\Handlers\Commands\Teams\UpdateTeamHandler;
 use App\Http\Requests\BulkTeamRequest;
 use App\Models\Team;
-use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use RuntimeException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final readonly class BulkTeamController
 {
     public function __construct(
-        private CreateTeam $createTeamAction,
-        private UpdateTeam $updateTeamAction,
+        private CreateTeamHandler $createTeamHandler,
+        private UpdateTeamHandler $updateTeamHandler,
     ) {}
 
     /**
@@ -31,6 +33,7 @@ final readonly class BulkTeamController
         $enterprise = $this->getEnterprise();
 
         // Validate batch size
+        /** @var int $maxBatchSize */
         $maxBatchSize = $enterprise->bulk_operation_batch_size ?? 500;
         if ($teams->count() > $maxBatchSize) {
             return response()->json([
@@ -45,9 +48,14 @@ final readonly class BulkTeamController
             ])
             ->values();
 
-        [$successes, $failures] = $results->partition(
+        $partitioned = $results->partition(
             static fn ($result): bool => ($result['success'] ?? false) === true
         );
+
+        /** @var Collection<int, array<string, mixed>> $successes */
+        $successes = $partitioned->get(0);
+        /** @var Collection<int, array<string, mixed>> $failures */
+        $failures = $partitioned->get(1);
 
         $successCount = $successes->count();
         $failureCount = $failures->count();
@@ -69,73 +77,93 @@ final readonly class BulkTeamController
     }
 
     /**
-     * Process a single team safely, catching exceptions.
+     * Process a single team safely using Result monad.
      *
      * @param  array<string, mixed>  $teamData
      * @return array<string, mixed>
      */
     private function processTeamSafely(array $teamData, int $index): array
     {
-        try {
-            return $this->processTeam($teamData, $index);
-        } catch (Exception $e) {
-            return [
-                'index' => $index,
-                'success' => false,
-                'error' => $e->getMessage(),
-                'action' => isset($teamData['id']) ? 'update' : 'create',
-            ];
-        }
+        return $this->processTeam($teamData, $index);
     }
 
     /**
-     * Process a single team (create or update).
+     * Process a single team (create or update) using Result monad.
      *
      * @param  array<string, mixed>  $teamData
-     * @return (int|mixed|string|true)[]
-     *
-     * @psalm-return array{index: int, success: true, team_id: mixed, team_ulid: mixed, action: 'create'|'update'}
+     * @return array<string, mixed>
      */
     private function processTeam(array $teamData, int $index): array
     {
         if (isset($teamData['id'])) {
             // Update existing team
-            $team = Team::query()->findOrFail($teamData['id']);
-            $team = $this->updateTeamAction->handle($team, $teamData);
+            /** @var Team|null $team */
+            $team = Team::query()->find($teamData['id']);
+            if (! $team instanceof Team) {
+                return [
+                    'index' => $index,
+                    'success' => false,
+                    'error' => 'Team not found.',
+                    'action' => 'update',
+                ];
+            }
 
-            return [
+            $command = new UpdateTeamCommand($team, $teamData);
+            $result = $this->updateTeamHandler->handle($command);
+
+            return $result->match(
+                onSuccess: static fn (Team $updatedTeam): array => [
+                    'index' => $index,
+                    'success' => true,
+                    'team_id' => $updatedTeam->id,
+                    'team_ulid' => $updatedTeam->ulid,
+                    'action' => 'update',
+                ],
+                onFailure: static fn (string $error): array => [
+                    'index' => $index,
+                    'success' => false,
+                    'error' => $error,
+                    'action' => 'update',
+                ]
+            );
+        }
+
+        // Create new team
+        $command = new CreateTeamCommand($teamData);
+        $result = $this->createTeamHandler->handle($command);
+
+        return $result->match(
+            onSuccess: static fn (Team $team): array => [
                 'index' => $index,
                 'success' => true,
                 'team_id' => $team->id,
                 'team_ulid' => $team->ulid,
-                'action' => 'update',
-            ];
-        }
-
-        // Create new team
-        $team = $this->createTeamAction->handle($teamData);
-
-        return [
-            'index' => $index,
-            'success' => true,
-            'team_id' => $team->id,
-            'team_ulid' => $team->ulid,
-            'action' => 'create',
-        ];
+                'action' => 'create',
+            ],
+            onFailure: static fn (string $error): array => [
+                'index' => $index,
+                'success' => false,
+                'error' => $error,
+                'action' => 'create',
+            ]
+        );
     }
 
     /**
      * Get the enterprise for the current user.
+     *
+     * @throws HttpException
      */
     private function getEnterprise(): Team
     {
         $user = Auth::user();
 
-        throw_if(! $user || ! $user->tenant_id, RuntimeException::class, 'User must have a tenant.');
+        abort_if(! $user || ! $user->tenant_id, 403, 'User must have a tenant.');
 
+        /** @var Team|null $enterprise */
         $enterprise = Team::query()->find($user->tenant_id);
 
-        throw_unless($enterprise, RuntimeException::class, 'Enterprise not found.');
+        abort_unless($enterprise instanceof Team, 404, 'Enterprise not found.');
 
         return $enterprise;
     }

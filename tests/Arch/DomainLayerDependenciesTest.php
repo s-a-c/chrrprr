@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Concerns\HasUlid;
+
 /*
  * |--------------------------------------------------------------------------
  * | Domain Layer Dependency Rules
@@ -39,7 +41,7 @@ arch('Models should only use Eloquent, framework, and third-party model packages
         'Database',
         'Tests', // Models\Concerns\HasUlid uses test model for type hint
     ])
-    ->ignoring('App\Models\Concerns\HasUlid'); // Uses test model for type hint
+    ->ignoring(HasUlid::class); // Uses test model for type hint
 
 arch('Model Builders should only use Models, Enums, and framework classes')
     ->expect('App\Models\Builders')

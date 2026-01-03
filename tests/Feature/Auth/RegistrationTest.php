@@ -11,12 +11,13 @@ test('registration screen can be rendered', function (): void {
 });
 
 test('new users can register', function (): void {
-    $response = $this->post(route('register.store'), [
-        'name' => 'John Doe',
-        'email' => 'test@example.com',
-        'password' => $password = Str::password(16),
-        'password_confirmation' => $password,
-    ]);
+    $response = $this->from(route('register'))
+        ->post(route('register.store'), [
+            'name' => 'John Doe',
+            'email' => 'test@example.com',
+            'password' => $password = Str::password(16),
+            'password_confirmation' => $password,
+        ]);
 
     $response->assertSessionHasNoErrors()->assertRedirect(route('dashboard', absolute: false));
 

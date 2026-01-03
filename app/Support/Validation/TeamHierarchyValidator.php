@@ -6,7 +6,7 @@ namespace App\Support\Validation;
 
 use App\Enums\TeamType;
 use App\Models\Team;
-use Illuminate\Validation\ValidationException;
+use App\Support\Result;
 
 final class TeamHierarchyValidator
 {
@@ -15,27 +15,28 @@ final class TeamHierarchyValidator
      *
      * @param  TeamType  $childType  The type of the child team
      * @param  Team|null  $parent  The parent team (null for Enterprise)
-     *
-     * @throws ValidationException
+     * @return Result<bool, string>
      */
-    public static function validate(TeamType $childType, ?Team $parent): void
+    public static function validate(TeamType $childType, ?Team $parent): Result
     {
         // 1. Enterprise Rule
         if ($childType === TeamType::ENTERPRISE) {
             if ($parent instanceof Team) {
-                throw ValidationException::withMessages([
-                    'parent_id' => ['Enterprises cannot have a parent.'],
-                ]);
+                return Result::failure(
+                    'Enterprises cannot have a parent.',
+                    ['Enterprise hierarchy validation failed']
+                );
             }
 
-            return;
+            return Result::success(true, ['Enterprise hierarchy validated']);
         }
 
         // 2. Orphan Rule
         if (! $parent instanceof Team) {
-            throw ValidationException::withMessages([
-                'parent_id' => ['This team type requires a parent team.'],
-            ]);
+            return Result::failure(
+                'This team type requires a parent team.',
+                ['Orphan team validation failed']
+            );
         }
 
         // 3. Type Compatibility Rule
@@ -48,18 +49,20 @@ final class TeamHierarchyValidator
         };
 
         if ($validParentType && $parent->type !== $validParentType) {
-            throw ValidationException::withMessages([
-                'parent_id' => [
-                    "{$childType->value} must belong to a {$validParentType->value}, but belongs to {$parent->type->value}.",
-                ],
-            ]);
+            return Result::failure(
+                "{$childType->value} must belong to a {$validParentType->value}, but belongs to {$parent->type->value}.",
+                ['Type compatibility validation failed']
+            );
         }
 
         // 4. Depth Rule
         if ($parent->getDepth() >= 10) {
-            throw ValidationException::withMessages([
-                'parent_id' => ['Team hierarchy depth cannot exceed 10 levels.'],
-            ]);
+            return Result::failure(
+                'Team hierarchy depth cannot exceed 10 levels.',
+                ['Depth validation failed']
+            );
         }
+
+        return Result::success(true, ['Hierarchy validation passed']);
     }
 }

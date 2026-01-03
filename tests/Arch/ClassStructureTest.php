@@ -13,7 +13,7 @@ declare(strict_types=1);
  * | - Uses classes() method for efficient class-level analysis
  * | - Excludes non-class files from analysis
  */
-
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 
 // Apply Laravel preset
@@ -27,7 +27,7 @@ arch('All controllers should be instantiable classes')
     ->expect('App\Http\Controllers')
     ->classes()
     ->toBeClasses()
-    ->ignoring('App\Http\Controllers\Controller');
+    ->ignoring(Controller::class);
 
 // ============================================================================
 // Inheritance Rules

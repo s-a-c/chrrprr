@@ -60,5 +60,16 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
+      - name: Setup Test Environment
+        run: |
+          cp .env.example .env.testing
+          php artisan key:generate --env=testing
+
       - name: Run Core Workflow Suite
         run: composer run test:core
+
+      - name: Run Behat Unit Tests
+        run: composer behat:unit
+
+      - name: Run Behat API Tests
+        run: composer behat:api

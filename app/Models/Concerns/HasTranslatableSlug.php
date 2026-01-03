@@ -7,8 +7,11 @@ namespace App\Models\Concerns;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
+/**
+ * @mago-expect High complexity due to reflection-based slug generation for translatable fields.
+ * This is necessary to work with Spatie's HasSlug trait while supporting translatable attributes.
+ */
 trait HasTranslatableSlug
 {
     use HasSlug;
@@ -26,18 +29,15 @@ trait HasTranslatableSlug
             // Access SlugOptions properties using reflection
             $reflection = new ReflectionClass($slugOptions);
             $slugFieldProperty = $reflection->getProperty('slugField');
-            $slugFieldProperty->setAccessible(true);
             $slugField = $slugFieldProperty->getValue($slugOptions);
 
             $generateSlugFromProperty = $reflection->getProperty('generateSlugFrom');
-            $generateSlugFromProperty->setAccessible(true);
             $sourceFields = $generateSlugFromProperty->getValue($slugOptions);
 
             // Check if allowDuplicateSlugs property exists (may vary by Spatie version)
             $allowDuplicateSlugs = false;
             if ($reflection->hasProperty('allowDuplicateSlugs')) {
                 $allowDuplicateSlugsProperty = $reflection->getProperty('allowDuplicateSlugs');
-                $allowDuplicateSlugsProperty->setAccessible(true);
                 $allowDuplicateSlugs = $allowDuplicateSlugsProperty->getValue($slugOptions);
             }
 
@@ -53,20 +53,45 @@ trait HasTranslatableSlug
                 $sourceFields = is_array($sourceFields) ? $sourceFields : [$sourceFields];
 
                 foreach ($sourceFields as $sourceField) {
-                    $translations = $model->getTranslations($sourceField);
-                    foreach ($translations as $locale => $value) {
-                        if (empty($value)) {
-                            continue;
+                    // Check if source field is translatable
+                    $isSourceFieldTranslatable = property_exists($model, 'translatable')
+                        && in_array($sourceField, $model->translatable, true);
+
+                    if ($isSourceFieldTranslatable) {
+                        // Source field is translatable - generate slugs for each locale
+                        $translations = $model->getTranslations($sourceField);
+                        foreach ($translations as $locale => $value) {
+                            if ($value === null) {
+                                continue;
+                            }
+
+                            if ($value === '') {
+                                continue;
+                            }
+
+                            $slug = Str::slug($value);
+
+                            // Handle duplicate slugs if needed
+                            if (! $allowDuplicateSlugs) {
+                                $slug = $model->makeTranslatableSlugUnique($slug, $slugField, $locale);
+                            }
+
+                            $model->setTranslation($slugField, $locale, $slug);
                         }
+                    } else {
+                        // Source field is not translatable - generate slug for default locale (use 'en' for consistency)
+                        $value = $model->getAttribute($sourceField);
+                        if ($value !== null && $value !== '') {
+                            $defaultLocale = 'en';
+                            $slug = Str::slug($value);
 
-                        $slug = Str::slug($value);
+                            // Handle duplicate slugs if needed
+                            if (! $allowDuplicateSlugs) {
+                                $slug = $model->makeTranslatableSlugUnique($slug, $slugField, $defaultLocale);
+                            }
 
-                        // Handle duplicate slugs if needed
-                        if (! $allowDuplicateSlugs) {
-                            $slug = $model->makeTranslatableSlugUnique($slug, $slugField, $locale);
+                            $model->setTranslation($slugField, $defaultLocale, $slug);
                         }
-
-                        $model->setTranslation($slugField, $locale, $slug);
                     }
                 }
             }
@@ -88,7 +113,6 @@ trait HasTranslatableSlug
         // Use reflection to access SlugOptions properties
         $reflection = new ReflectionClass($slugOptions);
         $slugFieldProperty = $reflection->getProperty('slugField');
-        $slugFieldProperty->setAccessible(true);
         $slugField = $slugFieldProperty->getValue($slugOptions);
 
         // If slug field is translatable, don't let Spatie generate it (we handle it manually)
@@ -121,7 +145,17 @@ trait HasTranslatableSlug
      */
     protected function slugExists(string $slug, string $slugField, string $locale): bool
     {
-        $query = static::where($slugField.'->'.$locale, $slug);
+        $connection = static::getConnection();
+        $driver = $connection->getDriverName();
+
+        // For PostgreSQL, if the column is VARCHAR but contains JSON, we need to cast it
+        if ($driver === 'pgsql') {
+            // Cast to JSONB for PostgreSQL to handle JSON operations on VARCHAR columns
+            $query = static::whereRaw("CAST({$slugField} AS JSONB)->>'{$locale}' = ?", [$slug]);
+        } else {
+            // For other databases, use standard JSON path syntax
+            $query = static::where($slugField.'->'.$locale, $slug);
+        }
 
         if ($this->exists) {
             $query->where($this->getKeyName(), '!=', $this->getKey());

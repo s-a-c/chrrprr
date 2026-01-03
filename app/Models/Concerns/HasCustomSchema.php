@@ -19,17 +19,22 @@ trait HasCustomSchema
         $schema = Config::get('database.connections.pgsql.schema');
 
         // Handle template variables like ${APP_ID}
-        if ($schema && str_contains($schema, '${APP_ID}')) {
-            $appId = env('APP_ID', 'chrrprr');
+        if ($schema && str_contains((string) $schema, '${APP_ID}')) {
+            /** @var mixed $appIdRaw */
+            $appIdRaw = env('APP_ID', 'chrrprr');
+            $appId = is_string($appIdRaw) ? $appIdRaw : 'chrrprr';
             $schema = str_replace('${APP_ID}', $appId, $schema);
         }
 
         // Ensure we have a valid schema name
-        if (empty($schema) || $schema === '' || $schema === '${APP_ID}') {
-            $schema = env('APP_ID', 'chrrprr') ?: 'public';
+        if (in_array($schema, [null, '', '${APP_ID}'], true)) {
+            /** @var mixed $appIdRaw */
+            $appIdRaw = env('APP_ID', 'chrrprr');
+            $appId = is_string($appIdRaw) && $appIdRaw !== '' ? $appIdRaw : 'public';
+            $schema = $appId;
         }
 
-        if ($driver === 'pgsql' && $schema && $schema !== 'public' && ! str_contains($table, '.')) {
+        if ($driver === 'pgsql' && $schema !== 'public' && ! str_contains($table, '.')) {
             return "{$schema}.{$table}";
         }
 

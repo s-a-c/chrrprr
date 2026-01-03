@@ -8,6 +8,7 @@ use App\Exceptions\OptimisticLockingException;
 use App\Models\Team;
 use App\Support\Validation\TeamNameValidator;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 final readonly class UpdateTeam
 {
@@ -23,13 +24,18 @@ final readonly class UpdateTeam
      */
     public function handle(Team $team, array $data): Team
     {
-        return DB::transaction(function () use ($team, $data): Team|null {
+        /** @var Team */
+        return DB::transaction(function () use ($team, $data): Team {
             $this->checkOptimisticLock($team, $data);
             $this->handleMoveIfNeeded($team, $data);
             $this->handleTranslatableFields($team, $data);
             $this->handleStandardFields($team, $data);
 
-            return $team->fresh();
+            $fresh = $team->fresh();
+            throw_unless($fresh instanceof Team, RuntimeException::class, 'Team not found after update');
+
+            /** @var Team $fresh */
+            return $fresh;
         });
     }
 

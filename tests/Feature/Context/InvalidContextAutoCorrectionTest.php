@@ -108,7 +108,11 @@ test('invalid context auto-correction works with middleware', function (): void 
     $this->actingAs($this->user);
 
     // Create an organisation the user doesn't have access to, then set it as context
-    $inaccessibleOrg = Organisation::factory()->create(['parent_id' => $this->enterprise->id]);
+    // Use a unique name to avoid conflicts with existing organisations
+    $inaccessibleOrg = Organisation::factory()->create([
+        'parent_id' => $this->enterprise->id,
+        'name' => ['en' => 'Inaccessible Organisation '.uniqid()],
+    ]);
 
     // Set invalid context directly in database (bypassing validation)
     DB::table('users')->where('id', $this->user->id)->update(['current_context_id' => $inaccessibleOrg->id]);

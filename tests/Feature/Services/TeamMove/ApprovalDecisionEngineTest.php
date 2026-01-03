@@ -97,7 +97,11 @@ it('stops at first rule that requires approval', function (): void {
 });
 
 it('returns false when enterprise is not provided', function (): void {
-    $org = Organisation::factory()->create(['name' => ['en' => 'Organisation']]);
+    $enterprise = Enterprise::factory()->create();
+    $org = Organisation::factory()->create([
+        'parent_id' => $enterprise->id,
+        'name' => ['en' => 'Organisation'],
+    ]);
 
     $rule = new class implements ApprovalRuleInterface
     {

@@ -23,23 +23,24 @@ final class AssignExecutive
 
         try {
             // Check if team already has an executive
+            /** @var User|null $existing */
             $existing = User::query()
-                ->role('executive', $team)
+                ->role('executive')
                 ->where('id', '!=', $user->id)
                 ->first();
 
-            if ($existing) {
+            if ($existing instanceof User) {
                 throw ValidationException::withMessages([
                     'executive' => ['This team already has an executive assigned.'],
                 ]);
             }
 
             // Check if user is already executive
-            if ($user->hasRole('executive', $team)) {
+            if ($user->hasRole('executive')) {
                 return;
             }
 
-            $user->assignRole('executive', $team);
+            $user->assignRole('executive');
         } finally {
             setPermissionsTeamId($previousTeamId);
         }

@@ -7,6 +7,36 @@ namespace App\Policies;
 final class UserPolicy
 {
     /**
+     * Determine whether the user can view any models.
+     *
+     * @return false
+     */
+    public function viewAny(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     *
+     * @return false
+     */
+    public function view(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can create models.
+     *
+     * @return false
+     */
+    public function create(): bool
+    {
+        return false;
+    }
+
+    /**
      * Determine whether the user can update the model.
      *
      * @return false

@@ -1,0 +1,83 @@
+default:
+  suites:
+    browser:
+      paths:
+        - '%paths.base%/features'
+      contexts:
+        - FeatureContext
+        - BrowserContext
+        - LaravelContext
+        - TenantContext
+        - CqrsContext
+      filters:
+        tags: "@browser"
+      extensions:
+        Behat\MinkExtension:
+          base_url: 'http://chrrprr.test'
+          browser_name: 'chrome'
+          sessions:
+            default:
+              chrome:
+                api_url: 'http://127.0.0.1:9222'
+                capabilities:
+                  chromeOptions:
+                    args:
+                      - '--headless'
+                      - '--no-sandbox'
+                      - '--disable-dev-shm-usage'
+                      - '--disable-gpu'
+            playwright:
+              playwright:
+                api_url: 'http://127.0.0.1:9222'
+                capabilities:
+                  browserName: 'chromium'
+                  headless: true
+          javascript_session: playwright
+          show_cmd: 'open -a "Google Chrome" --args --remote-debugging-port=9222 %s'
+          show_auto: false
+          files_path: '%paths.base%/features/fixtures'
+    api:
+      paths:
+        - '%paths.base%/features'
+      contexts:
+        - FeatureContext
+        - ApiContext
+        - LaravelContext:
+            use_transactions: true
+        - TenantContext
+        - CqrsContext
+      filters:
+        tags: "@api"
+      extensions:
+        Behat\MinkExtension:
+          base_url: 'http://chrrprr.test'
+          sessions:
+            default:
+              browserkit_http: ~
+    unit:
+      paths:
+        - '%paths.base%/features'
+      contexts:
+        - FeatureContext
+        - LaravelContext:
+            use_transactions: true
+        - TenantContext
+        - CqrsContext
+      filters:
+        tags: "@unit"
+  extensions:
+    Cevinio\Behat:
+      bootstrap_path: 'bootstrap/app.php'
+      env_path: '.env.testing'
+    Behat\MinkExtension:
+      base_url: 'http://chrrprr.test'
+      default_session: 'default'
+      files_path: '%paths.base%/features/fixtures'
+      sessions:
+        default:
+          browserkit_http: ~
+  formatters:
+    pretty:
+      verbose: true
+      snippets: true
+      language: en

@@ -56,10 +56,53 @@ jobs:
           php artisan migrate --force
           php artisan db:seed
 
+      - name: Setup Test Environment
+        run: |
+          cp .env.example .env.testing
+          php artisan key:generate --env=testing
+
+      - name: Setup Test Database for Behat
+        run: |
+          php artisan migrate:fresh --env=testing --force
+
       - name: Run Heavy Tier Workflow
         timeout-minutes: 60
         # For faster nightly runs (Infection only), use: composer run test:heavy:nightly
         run: composer run test:heavy
+
+      - name: Run Behat Unit Tests
+        run: composer behat:unit
+
+      - name: Run Behat API Tests
+        run: composer behat:api
+
+      - name: Setup Browser Server for Behat
+        run: |
+          google-chrome --version || echo "Chrome not found, will use Playwright"
+          google-chrome --remote-debugging-port=9222 --headless --no-sandbox --disable-dev-shm-usage --disable-gpu > /dev/null 2>&1 &
+          sleep 2
+
+      - name: Run Behat Browser Tests
+        run: composer behat:browser
+        continue-on-error: true
+
+      - name: Upload Behat Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-nightly-screenshots
+          path: tests/Browser/Screenshots/
+          if-no-files-found: ignore
+
+      - name: Upload Behat Output
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-nightly-output
+          path: |
+            features/**/*.feature
+            behat.yml
+          if-no-files-found: ignore
 
       - name: Upload Mutation Test Reports
         uses: actions/upload-artifact@v4

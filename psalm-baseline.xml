@@ -7,19 +7,13 @@
     <MoreSpecificImplementedParamType>
       <code><![CDATA[$input]]></code>
     </MoreSpecificImplementedParamType>
-    <UnusedClass>
-      <code><![CDATA[CreateNewUser]]></code>
-    </UnusedClass>
   </file>
   <file src="app/Actions/Fortify/ResetUserPassword.php">
-    <UnusedClass>
-      <code><![CDATA[ResetUserPassword]]></code>
-    </UnusedClass>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[reset]]></code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="app/Actions/Teams/AssignExecutive.php">
-    <InvalidArgument>
-      <code><![CDATA[$team]]></code>
-    </InvalidArgument>
     <MissingThrowsDocblock>
       <code><![CDATA[throw ValidationException::withMessages([
                     'executive' => ['This team already has an executive assigned.'],
@@ -28,9 +22,6 @@
     <MixedArgument>
       <code><![CDATA[$team->id]]></code>
     </MixedArgument>
-    <MixedAssignment>
-      <code><![CDATA[$existing]]></code>
-    </MixedAssignment>
     <MixedMethodCall>
       <code><![CDATA[first]]></code>
       <code><![CDATA[where]]></code>
@@ -44,55 +35,18 @@
     </UnusedClass>
   </file>
   <file src="app/Actions/Teams/CreateTeam.php">
-    <MixedArgument>
-      <code><![CDATA[$data['type']]]></code>
-    </MixedArgument>
     <MixedAssignment>
       <code><![CDATA[$parentId]]></code>
       <code><![CDATA[$tenantId]]></code>
     </MixedAssignment>
-    <MixedReturnStatement>
-      <code><![CDATA[DB::transaction(static function () use ($data): Team {
-            $type = $data['type'] instanceof TeamType ? $data['type'] : TeamType::from($data['type']);
-            $parentId = $data['parent_id'] ?? null;
-
-            // Resolve Parent
-            $parent = $parentId ? Team::query()->withoutGlobalScopes()->find($parentId) : null;
-
-            // Run Validation
-            TeamHierarchyValidator::validate($type, $parent);
-
-            // Determine Tenant (Enterprise logic)
-            $tenantId = null;
-            if ($parent) {
-                $tenantId = $parent->type === TeamType::ENTERPRISE ? $parent->id : $parent->tenant_id;
-            } elseif ($type === TeamType::ENTERPRISE) {
-                $tenantId = null; // Will be set to self ID after creation
-            }
-
-            // Create team (observer will validate hierarchy and unique name)
-            $team = Team::query()->create([
-                ...$data,
-                'tenant_id' => $tenantId,
-            ]);
-
-            // Fix Enterprise Self-Referential Tenant ID
-            if ($type === TeamType::ENTERPRISE) {
-                $team->updateQuietly(['tenant_id' => $team->id]);
-            }
-
-            return $team;
-        })]]></code>
-    </MixedReturnStatement>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$parent]]></code>
-    </PossiblyInvalidArgument>
+    <PossiblyUnusedReturnValue>
+      <code><![CDATA[Team]]></code>
+    </PossiblyUnusedReturnValue>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$parentId]]></code>
     </RiskyTruthyFalsyComparison>
     <UndefinedMagicPropertyFetch>
       <code><![CDATA[$parent->id]]></code>
-      <code><![CDATA[$parent->tenant_id]]></code>
       <code><![CDATA[$team->id]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
@@ -105,49 +59,26 @@
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$newParentId]]></code>
     </RiskyTruthyFalsyComparison>
-    <UndefinedMagicPropertyAssignment>
-      <code><![CDATA[$team->parent_id]]></code>
-      <code><![CDATA[$team->tenant_id]]></code>
-    </UndefinedMagicPropertyAssignment>
     <UndefinedMagicPropertyFetch>
       <code><![CDATA[$newParent->id]]></code>
-      <code><![CDATA[$newParent->tenant_id]]></code>
       <code><![CDATA[$team->id]]></code>
-      <code><![CDATA[$team->parent_id]]></code>
-      <code><![CDATA[$team->tenant_id]]></code>
-      <code><![CDATA[$team->tenant_id]]></code>
-      <code><![CDATA[$team->tenant_id]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
   <file src="app/Actions/Teams/UpdateTeam.php">
-    <InvalidNullableReturnType>
-      <code><![CDATA[Team]]></code>
-    </InvalidNullableReturnType>
     <MixedArgument>
       <code><![CDATA[$data['parent_id']]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
       <code><![CDATA[$data]]></code>
     </MixedArgumentTypeCoercion>
-    <MixedReturnStatement>
-      <code><![CDATA[DB::transaction(function () use ($team, $data): Team {
-            $this->checkOptimisticLock($team, $data);
-            $this->handleMoveIfNeeded($team, $data);
-            $this->handleTranslatableFields($team, $data);
-            $this->handleStandardFields($team, $data);
-
-            return $team->fresh();
-        })]]></code>
-    </MixedReturnStatement>
-    <NullableReturnStatement>
-      <code><![CDATA[$team->fresh()]]></code>
-    </NullableReturnStatement>
     <PossiblyUnusedMethod>
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
+    <PossiblyUnusedReturnValue>
+      <code><![CDATA[Team]]></code>
+    </PossiblyUnusedReturnValue>
     <UndefinedMagicPropertyFetch>
       <code><![CDATA[$team->id]]></code>
-      <code><![CDATA[$team->parent_id]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
   <file src="app/Actions/Users/RegisterUser.php">
@@ -175,6 +106,9 @@
             return $user->fresh();
         })]]></code>
     </MixedReturnStatement>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[handle]]></code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="app/Actions/Users/UpdateUserProfile.php">
     <MixedArgument>
@@ -220,6 +154,9 @@
             return $user->fresh();
         })]]></code>
     </MixedReturnStatement>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[handle]]></code>
+    </PossiblyUnusedMethod>
     <UndefinedMagicPropertyAssignment>
       <code><![CDATA[$user->email_verified_at]]></code>
     </UndefinedMagicPropertyAssignment>
@@ -231,6 +168,9 @@
     <ArgumentTypeCoercion>
       <code><![CDATA[$batchSize]]></code>
     </ArgumentTypeCoercion>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[handle]]></code>
+    </PossiblyUnusedMethod>
     <RiskyCast>
       <code><![CDATA[$this->option('batch-size')]]></code>
     </RiskyCast>
@@ -246,20 +186,19 @@
     <UndefinedMagicPropertyFetch>
       <code><![CDATA[$user->bio]]></code>
     </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Console/Commands/OptimizeSearch.php">
     <UnusedClass>
-      <code><![CDATA[GenerateUserUlids]]></code>
+      <code><![CDATA[OptimizeSearch]]></code>
     </UnusedClass>
   </file>
   <file src="app/Console/Commands/SetDefaultUserStates.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$batchSize]]></code>
     </ArgumentTypeCoercion>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$stateValue]]></code>
-    </PossiblyInvalidArgument>
-    <PossiblyInvalidCast>
-      <code><![CDATA[$stateValue]]></code>
-    </PossiblyInvalidCast>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[handle]]></code>
+    </PossiblyUnusedMethod>
     <RiskyCast>
       <code><![CDATA[$this->option('batch-size')]]></code>
     </RiskyCast>
@@ -271,8 +210,33 @@
     <UndefinedMagicPropertyAssignment>
       <code><![CDATA[$user->state]]></code>
     </UndefinedMagicPropertyAssignment>
+  </file>
+  <file src="app/Events/Teams/TeamCreated.php">
+    <MixedAssignment>
+      <code><![CDATA[$firstMessage]]></code>
+    </MixedAssignment>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[validate]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$bio]]></code>
+      <code><![CDATA[$data]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$state]]></code>
+      <code><![CDATA[$status]]></code>
+      <code><![CDATA[$tenant_id]]></code>
+    </PossiblyUnusedProperty>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[TeamCreated]]></code>
+    </PropertyNotSetInConstructor>
+    <UnusedPsalmSuppress>
+      <code><![CDATA[PossiblyUnusedProperty]]></code>
+    </UnusedPsalmSuppress>
+  </file>
+  <file src="app/Filament/Actions/ResultAction.php">
     <UnusedClass>
-      <code><![CDATA[SetDefaultUserStates]]></code>
+      <code><![CDATA[ResultAction]]></code>
     </UnusedClass>
   </file>
   <file src="app/Filament/Tenant/Resources/Teams/Pages/CreateTeam.php">
@@ -284,9 +248,6 @@
     </MixedArgumentTypeCoercion>
   </file>
   <file src="app/Filament/Tenant/Resources/Teams/Pages/EditTeam.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$record]]></code>
-    </ArgumentTypeCoercion>
     <InvalidPropertyFetch>
       <code><![CDATA[$this->record?->lock_version]]></code>
     </InvalidPropertyFetch>
@@ -311,15 +272,20 @@
       <code><![CDATA[EditTeam]]></code>
     </UndefinedClass>
   </file>
+  <file src="app/Filament/Tenant/Resources/Teams/Pages/ViewTeam.php">
+    <MissingTemplateParam>
+      <code><![CDATA[ViewTeam]]></code>
+    </MissingTemplateParam>
+    <UndefinedClass>
+      <code><![CDATA[ViewTeam]]></code>
+    </UndefinedClass>
+  </file>
   <file src="app/Filament/Tenant/Resources/Teams/TeamResource.php">
     <NonInvariantDocblockPropertyType>
       <code><![CDATA[$model]]></code>
     </NonInvariantDocblockPropertyType>
   </file>
   <file src="app/Filament/Tenant/Resources/Users/Pages/EditUser.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$record]]></code>
-    </ArgumentTypeCoercion>
     <MethodSignatureMismatch>
       <code><![CDATA[$data]]></code>
       <code><![CDATA[$record]]></code>
@@ -331,49 +297,261 @@
       <code><![CDATA[$data]]></code>
     </MixedArgumentTypeCoercion>
   </file>
+  <file src="app/Filament/Tenant/Resources/Users/Pages/ViewUser.php">
+    <MissingTemplateParam>
+      <code><![CDATA[ViewUser]]></code>
+    </MissingTemplateParam>
+  </file>
   <file src="app/Filament/Tenant/Resources/Users/UserResource.php">
     <NonInvariantDocblockPropertyType>
       <code><![CDATA[$model]]></code>
     </NonInvariantDocblockPropertyType>
   </file>
-  <file src="app/Http/Controllers/Teams/BulkTeamController.php">
-    <InvalidReturnStatement>
-      <code><![CDATA[$enterprise]]></code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[Team]]></code>
-    </InvalidReturnType>
-    <MissingThrowsDocblock>
-      <code><![CDATA[findOrFail]]></code>
-      <code><![CDATA[findOrFail]]></code>
-    </MissingThrowsDocblock>
-    <MixedAssignment>
-      <code><![CDATA[$maxBatchSize]]></code>
-    </MixedAssignment>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$team]]></code>
-    </PossiblyInvalidArgument>
-    <PossiblyNullPropertyFetch>
-      <code><![CDATA[$user->tenant_id]]></code>
-    </PossiblyNullPropertyFetch>
+  <file src="app/Handlers/BaseHandler.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[guardAll]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="app/Handlers/Commands/Teams/AssignExecutiveCommand.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[AssignExecutiveCommand]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="app/Handlers/Commands/Teams/AssignExecutiveHandler.php">
+    <MixedArgument>
+      <code><![CDATA[$command->team->id]]></code>
+    </MixedArgument>
+    <MixedMethodCall>
+      <code><![CDATA[first]]></code>
+      <code><![CDATA[where]]></code>
+    </MixedMethodCall>
+    <MixedReturnStatement>
+      <code><![CDATA[DB::transaction(function () use ($command): Team {
+                $this->assignExecutive($command);
+
+                return $command->team;
+            })]]></code>
+    </MixedReturnStatement>
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[Result::failure('Invalid command type', ['Expected AssignExecutiveCommand'])]]></code>
+      <code><![CDATA[Result::try(
+            fn (): Team => DB::transaction(function () use ($command): Team {
+                $this->assignExecutive($command);
+
+                return $command->team;
+            }),
+            ['Starting executive assignment']
+        )]]></code>
+      <code><![CDATA[Result<Team>]]></code>
+    </MixedReturnTypeCoercion>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$command]]></code>
+    </MoreSpecificImplementedParamType>
     <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$team->id]]></code>
-      <code><![CDATA[$team->id]]></code>
-      <code><![CDATA[$team->ulid]]></code>
-      <code><![CDATA[$team->ulid]]></code>
-      <code><![CDATA[$user->tenant_id]]></code>
-      <code><![CDATA[$user->tenant_id]]></code>
+      <code><![CDATA[$command->executive->id]]></code>
+      <code><![CDATA[$command->team->id]]></code>
     </UndefinedMagicPropertyFetch>
     <UnusedClass>
-      <code><![CDATA[BulkTeamController]]></code>
+      <code><![CDATA[AssignExecutiveHandler]]></code>
     </UnusedClass>
   </file>
-  <file src="app/Http/Requests/BulkTeamRequest.php">
-    <MixedArrayAccess>
-      <code><![CDATA[$this->validated()['teams']]]></code>
-    </MixedArrayAccess>
+  <file src="app/Handlers/Commands/Teams/CreateTeamCommand.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[CreateTeamCommand]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="app/Handlers/Commands/Teams/CreateTeamHandler.php">
+    <MixedAssignment>
+      <code><![CDATA[$firstMessage]]></code>
+    </MixedAssignment>
     <MixedReturnStatement>
-      <code><![CDATA[$this->validated()['teams']]]></code>
+      <code><![CDATA[DB::transaction(fn (): Team => $this->createTeam($command))]]></code>
+    </MixedReturnStatement>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$command]]></code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="app/Handlers/Commands/Teams/MoveTeamCommand.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[MoveTeamCommand]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="app/Handlers/Commands/Teams/MoveTeamHandler.php">
+    <MixedReturnStatement>
+      <code><![CDATA[DB::transaction(fn (): Team => $this->moveTeam($command, $newParent))]]></code>
+    </MixedReturnStatement>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$command]]></code>
+    </MoreSpecificImplementedParamType>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$newParent->id]]></code>
+      <code><![CDATA[$team->id]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Handlers/Commands/Teams/UpdateTeamCommand.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[UpdateTeamCommand]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="app/Handlers/Commands/Teams/UpdateTeamHandler.php">
+    <MixedArgumentTypeCoercion>
+      <code><![CDATA[$data]]></code>
+      <code><![CDATA[is_array($data) ? $data : throw new RuntimeException('Invalid data type')]]></code>
+    </MixedArgumentTypeCoercion>
+    <MixedAssignment>
+      <code><![CDATA[$lockVersion]]></code>
+      <code><![CDATA[$parentId]]></code>
+    </MixedAssignment>
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[$this->guard(
+            $currentDbVersion === $providedVersion,
+            'Optimistic locking failed: version mismatch'
+        )]]></code>
+      <code><![CDATA[$this->moveTeamHandler->handle($moveCommand)
+            ->flatMap(static function () use ($data): Result {
+                // Remove parent_id from data so we don't double-update
+                unset($data['parent_id']);
+
+                return Result::success($data, ['Team move handled']);
+            })]]></code>
+      <code><![CDATA[$this->nameValidator->validateUnique($team)
+                ->flatMap(static function () use ($team, $data, $locale): Result {
+                    unset($data['name']);
+
+                    if (isset($data['bio'])) {
+                        $team->setTranslation('bio', $locale, $data['bio']);
+                        unset($data['bio']);
+                    }
+
+                    return Result::success($data, ['Translatable fields handled']);
+                })]]></code>
+      <code><![CDATA[Result::success($data, ['No move needed'])]]></code>
+      <code><![CDATA[Result::success($data, ['Translatable fields handled'])]]></code>
+      <code><![CDATA[Result::success(true, ['No lock version provided'])]]></code>
+      <code><![CDATA[Result<array<string, mixed>>]]></code>
+      <code><![CDATA[Result<array<string, mixed>>]]></code>
+      <code><![CDATA[Result<bool>]]></code>
+    </MixedReturnTypeCoercion>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$command]]></code>
+    </MoreSpecificImplementedParamType>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$team->id]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Handlers/Commands/Users/RegisterUserCommand.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[RegisterUserCommand]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="app/Handlers/Commands/Users/RegisterUserHandler.php">
+    <MixedReturnStatement>
+      <code><![CDATA[DB::transaction(fn (): User => $this->registerUser($command))]]></code>
+    </MixedReturnStatement>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$command]]></code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="app/Handlers/Commands/Users/UpdateUserProfileCommand.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[UpdateUserProfileCommand]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="app/Handlers/Commands/Users/UpdateUserProfileHandler.php">
+    <InvalidNullableReturnType>
+      <code><![CDATA[User]]></code>
+    </InvalidNullableReturnType>
+    <MixedAssignment>
+      <code><![CDATA[$bio]]></code>
+    </MixedAssignment>
+    <MixedReturnStatement>
+      <code><![CDATA[DB::transaction(fn (): User => $this->updateUserProfile($command))]]></code>
+    </MixedReturnStatement>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$command]]></code>
+    </MoreSpecificImplementedParamType>
+    <NullableReturnStatement>
+      <code><![CDATA[$fresh]]></code>
+    </NullableReturnStatement>
+    <UndefinedMagicPropertyAssignment>
+      <code><![CDATA[$command->user->email_verified_at]]></code>
+    </UndefinedMagicPropertyAssignment>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$command->user->email]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Handlers/Queries/Teams/GetTeamHandler.php">
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$query]]></code>
+    </MoreSpecificImplementedParamType>
+    <UnusedClass>
+      <code><![CDATA[GetTeamHandler]]></code>
+    </UnusedClass>
+  </file>
+  <file src="app/Handlers/Queries/Teams/GetTeamQuery.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[GetTeamQuery]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="app/Http/Controllers/Teams/BulkTeamController.php">
+    <MissingThrowsDocblock>
+      <code><![CDATA[getEnterprise]]></code>
+    </MissingThrowsDocblock>
+    <MixedReturnStatement>
+      <code><![CDATA[$result->match(
+                onSuccess: static fn (Team $updatedTeam): array => [
+                    'index' => $index,
+                    'success' => true,
+                    'team_id' => $updatedTeam->id,
+                    'team_ulid' => $updatedTeam->ulid,
+                    'action' => 'update',
+                ],
+                onFailure: static fn (string $error): array => [
+                    'index' => $index,
+                    'success' => false,
+                    'error' => $error,
+                    'action' => 'update',
+                ]
+            )]]></code>
+      <code><![CDATA[$result->match(
+            onSuccess: static fn (Team $team): array => [
+                'index' => $index,
+                'success' => true,
+                'team_id' => $team->id,
+                'team_ulid' => $team->ulid,
+                'action' => 'create',
+            ],
+            onFailure: static fn (string $error): array => [
+                'index' => $index,
+                'success' => false,
+                'error' => $error,
+                'action' => 'create',
+            ]
+        )]]></code>
+    </MixedReturnStatement>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[store]]></code>
+    </PossiblyUnusedMethod>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$team->id]]></code>
+      <code><![CDATA[$updatedTeam->id]]></code>
+      <code><![CDATA[$user->tenant_id]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Http/Requests/BulkTeamRequest.php">
+    <MixedReturnStatement>
+      <code><![CDATA[$validated['teams'] ?? []]]></code>
+      <code><![CDATA[$validated['teams'] ?? []]]></code>
     </MixedReturnStatement>
     <PossiblyUnusedMethod>
       <code><![CDATA[rules]]></code>
@@ -406,19 +584,173 @@
     </UnusedClass>
   </file>
   <file src="app/Livewire/Settings/DeleteUserForm.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[view('livewire.settings.delete-user-form')]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[Factory|View]]></code>
+    </InvalidReturnType>
+    <MissingThrowsDocblock>
+      <code><![CDATA[delete]]></code>
+    </MissingThrowsDocblock>
+    <PossiblyNullReference>
+      <code><![CDATA[delete]]></code>
+    </PossiblyNullReference>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[deleteUser]]></code>
+      <code><![CDATA[render]]></code>
+    </PossiblyUnusedMethod>
     <PossiblyUnusedProperty>
       <code><![CDATA[$password]]></code>
     </PossiblyUnusedProperty>
   </file>
   <file src="app/Livewire/Settings/Password.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[view('livewire.settings.password')]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[Factory|View]]></code>
+    </InvalidReturnType>
+    <PossiblyNullReference>
+      <code><![CDATA[update]]></code>
+    </PossiblyNullReference>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[render]]></code>
+      <code><![CDATA[updatePassword]]></code>
+    </PossiblyUnusedMethod>
     <PossiblyUnusedProperty>
-      <code><![CDATA[$password]]></code>
+      <code><![CDATA[$current_password]]></code>
+      <code><![CDATA[$password_confirmation]]></code>
     </PossiblyUnusedProperty>
   </file>
   <file src="app/Livewire/Settings/Profile.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[view('livewire.settings.profile')]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[Factory|View]]></code>
+    </InvalidReturnType>
+    <MixedAssignment>
+      <code><![CDATA[$this->email]]></code>
+      <code><![CDATA[$this->name]]></code>
+    </MixedAssignment>
+    <PossiblyNullArgument>
+      <code><![CDATA[$user]]></code>
+    </PossiblyNullArgument>
+    <PossiblyNullPropertyFetch>
+      <code><![CDATA[$user->email]]></code>
+      <code><![CDATA[$user->id]]></code>
+      <code><![CDATA[$user->name]]></code>
+    </PossiblyNullPropertyFetch>
+    <PossiblyNullReference>
+      <code><![CDATA[hasVerifiedEmail]]></code>
+      <code><![CDATA[sendEmailVerificationNotification]]></code>
+    </PossiblyNullReference>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[mount]]></code>
+      <code><![CDATA[render]]></code>
+      <code><![CDATA[resendVerificationNotification]]></code>
+      <code><![CDATA[updateProfileInformation]]></code>
+    </PossiblyUnusedMethod>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$user->email]]></code>
+      <code><![CDATA[$user->id]]></code>
+      <code><![CDATA[$user->name]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Livewire/Settings/TwoFactor.php">
+    <InvalidCast>
+      <code><![CDATA[config('session.domain')]]></code>
+      <code><![CDATA[config('session.domain')]]></code>
+      <code><![CDATA[config('session.domain')]]></code>
+      <code><![CDATA[config('session.domain')]]></code>
+    </InvalidCast>
+    <InvalidReturnStatement>
+      <code><![CDATA[view('livewire.settings.two-factor')]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[Factory|View]]></code>
+    </InvalidReturnType>
+    <MissingThrowsDocblock>
+      <code><![CDATA[abort_unless(Features::canManageTwoFactorAuthentication(), 403, 'Two-factor authentication is not enabled.')]]></code>
+      <code><![CDATA[abort_unless(Features::canManageTwoFactorAuthentication(), 403, 'Two-factor authentication is not enabled.')]]></code>
+      <code><![CDATA[all]]></code>
+      <code><![CDATA[all]]></code>
+      <code><![CDATA[all]]></code>
+      <code><![CDATA[all]]></code>
+      <code><![CDATA[delete]]></code>
+      <code><![CDATA[get]]></code>
+      <code><![CDATA[post]]></code>
+      <code><![CDATA[post]]></code>
+    </MissingThrowsDocblock>
+    <MixedArgument>
+      <code><![CDATA[$user->two_factor_secret]]></code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion>
+      <code><![CDATA[config('session.domain')]]></code>
+      <code><![CDATA[config('session.domain')]]></code>
+      <code><![CDATA[config('session.domain')]]></code>
+      <code><![CDATA[config('session.domain')]]></code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess>
+      <code><![CDATA[$data['svg']]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code><![CDATA[$data]]></code>
+      <code><![CDATA[$this->manualSetupKey]]></code>
+      <code><![CDATA[$this->qrCodeSvg]]></code>
+    </MixedAssignment>
+    <PossiblyNullArgument>
+      <code><![CDATA[$user->two_factor_secret]]></code>
+    </PossiblyNullArgument>
+    <PossiblyNullPropertyFetch>
+      <code><![CDATA[$user->two_factor_confirmed_at]]></code>
+      <code><![CDATA[$user->two_factor_secret]]></code>
+      <code><![CDATA[$user->two_factor_secret]]></code>
+    </PossiblyNullPropertyFetch>
+    <PossiblyNullReference>
+      <code><![CDATA[forceFill]]></code>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[hasEnabledTwoFactorAuthentication]]></code>
+      <code><![CDATA[hasEnabledTwoFactorAuthentication]]></code>
+      <code><![CDATA[hasEnabledTwoFactorAuthentication]]></code>
+      <code><![CDATA[hasEnabledTwoFactorAuthentication]]></code>
+    </PossiblyNullReference>
+    <PossiblyUndefinedMethod>
+      <code><![CDATA[json]]></code>
+      <code><![CDATA[successful]]></code>
+      <code><![CDATA[successful]]></code>
+      <code><![CDATA[successful]]></code>
+      <code><![CDATA[successful]]></code>
+    </PossiblyUndefinedMethod>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[disable]]></code>
+      <code><![CDATA[enable]]></code>
+      <code><![CDATA[getModalConfigProperty]]></code>
+      <code><![CDATA[getRequiresConfirmationProperty]]></code>
+      <code><![CDATA[mount]]></code>
+      <code><![CDATA[render]]></code>
+      <code><![CDATA[resetVerification]]></code>
+      <code><![CDATA[showVerificationIfNecessary]]></code>
+      <code><![CDATA[updatedTwoFactorEnabled]]></code>
+    </PossiblyUnusedMethod>
     <PossiblyUnusedProperty>
-      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$manualSetupKey]]></code>
+      <code><![CDATA[$qrCodeSvg]]></code>
+      <code><![CDATA[$showModal]]></code>
+      <code><![CDATA[$showVerificationStep]]></code>
+      <code><![CDATA[$twoFactorEnabled]]></code>
     </PossiblyUnusedProperty>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[! $user->two_factor_confirmed_at]]></code>
+      <code><![CDATA[$user->two_factor_secret]]></code>
+    </RiskyTruthyFalsyComparison>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$user->two_factor_confirmed_at]]></code>
+      <code><![CDATA[$user->two_factor_secret]]></code>
+      <code><![CDATA[$user->two_factor_secret]]></code>
+    </UndefinedMagicPropertyFetch>
   </file>
   <file src="app/Livewire/Settings/TwoFactor/RecoveryCodes.php">
     <MixedArgument>
@@ -442,7 +774,6 @@
       <code><![CDATA[firstOrFail]]></code>
       <code><![CDATA[firstOrFail]]></code>
       <code><![CDATA[firstOrFail]]></code>
-      <code><![CDATA[throw $e]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument>
       <code><![CDATA[auth()->user()]]></code>
@@ -453,10 +784,12 @@
     <TypeDoesNotContainNull>
       <code><![CDATA[null]]></code>
     </TypeDoesNotContainNull>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$this->result instanceof TeamMoveApproval]]></code>
+    </TypeDoesNotContainType>
     <UndefinedMagicPropertyFetch>
       <code><![CDATA[$currentTeam->id]]></code>
       <code><![CDATA[$team->id]]></code>
-      <code><![CDATA[$team->parent_id]]></code>
     </UndefinedMagicPropertyFetch>
     <UnusedClass>
       <code><![CDATA[MoveTeam]]></code>
@@ -484,13 +817,6 @@
     <ClassMustBeFinal>
       <code><![CDATA[TeamBuilder]]></code>
     </ClassMustBeFinal>
-    <MissingClosureParamType>
-      <code><![CDATA[$query]]></code>
-    </MissingClosureParamType>
-    <MixedMethodCall>
-      <code><![CDATA[from]]></code>
-      <code><![CDATA[select]]></code>
-    </MixedMethodCall>
     <PossiblyUnusedMethod>
       <code><![CDATA[inContext]]></code>
       <code><![CDATA[withoutContextScope]]></code>
@@ -532,72 +858,79 @@
       <code><![CDATA[withStatus]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="app/Models/Concerns/HasTeamHierarchy.php">
-    <MissingThrowsDocblock>
-      <code><![CDATA[throw ValidationException::withMessages([
-                'parent_id' => [
-                    "{$type->value} must belong to a {$validParentType->value}, but belongs to {$parent->type->value}.",
-                ],
-            ])]]></code>
-      <code><![CDATA[throw ValidationException::withMessages([
-                'parent_id' => ['A team cannot be its own parent.'],
-            ])]]></code>
-      <code><![CDATA[throw ValidationException::withMessages([
-                'parent_id' => ['A team cannot be moved into its own descendant (would create a cycle).'],
-            ])]]></code>
-      <code><![CDATA[throw ValidationException::withMessages([
-                'parent_id' => ['Enterprises cannot have a parent team.'],
-            ])]]></code>
-      <code><![CDATA[throw ValidationException::withMessages([
-                'parent_id' => ['Team hierarchy depth cannot exceed 10 levels.'],
-            ])]]></code>
-      <code><![CDATA[throw ValidationException::withMessages([
-                'parent_id' => ['This team type requires a parent team.'],
-            ])]]></code>
-    </MissingThrowsDocblock>
+  <file src="app/Models/Concerns/HasCustomSchema.php">
+    <MixedArgument>
+      <code><![CDATA[$schema]]></code>
+    </MixedArgument>
     <MixedAssignment>
-      <code><![CDATA[$currentParentId]]></code>
-      <code><![CDATA[$currentParentId]]></code>
-      <code><![CDATA[$currentParentId]]></code>
-      <code><![CDATA[$currentParentId]]></code>
+      <code><![CDATA[$connection]]></code>
+      <code><![CDATA[$driver]]></code>
+      <code><![CDATA[$schema]]></code>
+    </MixedAssignment>
+    <PossiblyInvalidCast>
+      <code><![CDATA[$schema]]></code>
+    </PossiblyInvalidCast>
+  </file>
+  <file src="app/Models/Concerns/HasTeamHierarchy.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[static function (Team $child) use ($newTenantId): void {
+                $child->tenant_id = $newTenantId;
+                $child->save(); // Triggers updated recursively
+            }]]></code>
+    </ArgumentTypeCoercion>
+    <MixedAssignment>
       <code><![CDATA[$typeValue]]></code>
     </MixedAssignment>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$team->id]]></code>
-    </UndefinedMagicPropertyFetch>
-    <UndefinedThisPropertyFetch>
-      <code><![CDATA[$this->id]]></code>
-      <code><![CDATA[$this->parent_id]]></code>
-      <code><![CDATA[$this->parent_id]]></code>
-      <code><![CDATA[$this->parent_id]]></code>
-      <code><![CDATA[$this->parent_id]]></code>
-      <code><![CDATA[$this->parent_id]]></code>
-    </UndefinedThisPropertyFetch>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[bootHasTeamHierarchy]]></code>
+    </PossiblyUnusedMethod>
+    <UndefinedMagicMethod>
+      <code><![CDATA[validate]]></code>
+    </UndefinedMagicMethod>
   </file>
   <file src="app/Models/Concerns/HasTranslatableSlug.php">
     <MissingClosureParamType>
       <code><![CDATA[$model]]></code>
     </MissingClosureParamType>
+    <MissingThrowsDocblock>
+      <code><![CDATA[getProperty]]></code>
+    </MissingThrowsDocblock>
     <MixedArgument>
       <code><![CDATA[$model]]></code>
       <code><![CDATA[$model]]></code>
       <code><![CDATA[$model->translatable]]></code>
+      <code><![CDATA[$model->translatable]]></code>
+      <code><![CDATA[$slugOptions]]></code>
+      <code><![CDATA[$slugOptions]]></code>
+      <code><![CDATA[$slugOptions]]></code>
+      <code><![CDATA[$slugOptions]]></code>
+      <code><![CDATA[$value]]></code>
       <code><![CDATA[$value]]></code>
     </MixedArgument>
-    <MixedArrayAccess>
-      <code><![CDATA[$config['source']]]></code>
-    </MixedArrayAccess>
     <MixedAssignment>
-      <code><![CDATA[$attribute]]></code>
-      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$allowDuplicateSlugs]]></code>
       <code><![CDATA[$locale]]></code>
-      <code><![CDATA[$source]]></code>
+      <code><![CDATA[$query]]></code>
+      <code><![CDATA[$slug]]></code>
+      <code><![CDATA[$slug]]></code>
+      <code><![CDATA[$slugField]]></code>
+      <code><![CDATA[$slugField]]></code>
+      <code><![CDATA[$slugOptions]]></code>
+      <code><![CDATA[$sourceField]]></code>
+      <code><![CDATA[$sourceFields]]></code>
       <code><![CDATA[$translations]]></code>
+      <code><![CDATA[$value]]></code>
       <code><![CDATA[$value]]></code>
     </MixedAssignment>
     <MixedMethodCall>
+      <code><![CDATA[exists]]></code>
+      <code><![CDATA[getAttribute]]></code>
+      <code><![CDATA[getSlugOptions]]></code>
+      <code><![CDATA[makeTranslatableSlugUnique]]></code>
+      <code><![CDATA[makeTranslatableSlugUnique]]></code>
       <code><![CDATA[setTranslation]]></code>
-      <code><![CDATA[sluggable]]></code>
+      <code><![CDATA[setTranslation]]></code>
+      <code><![CDATA[where]]></code>
     </MixedMethodCall>
     <MixedPropertyFetch>
       <code><![CDATA[$model->translatable]]></code>
@@ -605,9 +938,28 @@
     <PossiblyUnusedMethod>
       <code><![CDATA[bootHasTranslatableSlug]]></code>
       <code><![CDATA[bootHasTranslatableSlug]]></code>
-      <code><![CDATA[sluggableEvent]]></code>
-      <code><![CDATA[sluggableEvent]]></code>
+      <code><![CDATA[bootHasTranslatableSlug]]></code>
+      <code><![CDATA[makeTranslatableSlugUnique]]></code>
+      <code><![CDATA[makeTranslatableSlugUnique]]></code>
+      <code><![CDATA[makeTranslatableSlugUnique]]></code>
+      <code><![CDATA[shouldGenerateSlug]]></code>
+      <code><![CDATA[shouldGenerateSlug]]></code>
+      <code><![CDATA[shouldGenerateSlug]]></code>
     </PossiblyUnusedMethod>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[! $allowDuplicateSlugs]]></code>
+      <code><![CDATA[! $allowDuplicateSlugs]]></code>
+    </RiskyTruthyFalsyComparison>
+    <TypeDoesNotContainType>
+      <code><![CDATA[! $slugOptions]]></code>
+      <code><![CDATA[$slugOptions]]></code>
+    </TypeDoesNotContainType>
+    <UndefinedMagicMethod>
+      <code><![CDATA[parent::shouldGenerateSlug()]]></code>
+      <code><![CDATA[static::whereRaw("CAST({$slugField} AS JSONB)->>'{$locale}' = ?", [$slug])]]></code>
+      <code><![CDATA[static::whereRaw("CAST({$slugField} AS JSONB)->>'{$locale}' = ?", [$slug])]]></code>
+      <code><![CDATA[static::whereRaw("CAST({$slugField} AS JSONB)->>'{$locale}' = ?", [$slug])]]></code>
+    </UndefinedMagicMethod>
   </file>
   <file src="app/Models/Concerns/HasUlid.php">
     <MissingParamType>
@@ -632,40 +984,26 @@
   <file src="app/Models/Concerns/ManagesTeamRoles.php">
     <MissingThrowsDocblock>
       <code><![CDATA[throw ValidationException::withMessages([
-                        'deputy' => ['A user cannot be both executive and deputy of the same team.'],
-                    ])]]></code>
-      <code><![CDATA[throw ValidationException::withMessages([
-                        'executive' => ['A user cannot be both executive and deputy of the same team.'],
-                    ])]]></code>
-      <code><![CDATA[throw ValidationException::withMessages([
                 $role => ['The user must belong to the same enterprise as the team.'],
             ])]]></code>
+      <code><![CDATA[throw ValidationException::withMessages([
+            $role => ['A user cannot be both executive and deputy of the same team.'],
+        ])]]></code>
     </MissingThrowsDocblock>
     <MixedArgument>
       <code><![CDATA[$this->id]]></code>
     </MixedArgument>
-    <MixedAssignment>
-      <code><![CDATA[$conflicting]]></code>
-      <code><![CDATA[$conflictingIds]]></code>
-      <code><![CDATA[$exec]]></code>
-      <code><![CDATA[$executives]]></code>
-      <code><![CDATA[$existing]]></code>
-    </MixedAssignment>
     <MixedMethodCall>
-      <code><![CDATA[contains]]></code>
+      <code><![CDATA[each]]></code>
+      <code><![CDATA[exists]]></code>
       <code><![CDATA[exists]]></code>
       <code><![CDATA[first]]></code>
       <code><![CDATA[first]]></code>
-      <code><![CDATA[first]]></code>
       <code><![CDATA[get]]></code>
       <code><![CDATA[get]]></code>
-      <code><![CDATA[pluck]]></code>
-      <code><![CDATA[removeRole]]></code>
+      <code><![CDATA[where]]></code>
       <code><![CDATA[where]]></code>
     </MixedMethodCall>
-    <MixedPropertyFetch>
-      <code><![CDATA[$conflicting->id]]></code>
-    </MixedPropertyFetch>
     <MixedReturnStatement>
       <code><![CDATA[User::query()->role('deputy')->get()]]></code>
       <code><![CDATA[User::query()->role('executive')->exists()]]></code>
@@ -678,15 +1016,23 @@
       <code><![CDATA[removeDeputy]]></code>
       <code><![CDATA[removeExecutive]]></code>
     </PossiblyUnusedMethod>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$this->tenant_id]]></code>
+    </RiskyTruthyFalsyComparison>
     <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$user->id]]></code>
-      <code><![CDATA[$user->id]]></code>
-      <code><![CDATA[$user->id]]></code>
       <code><![CDATA[$user->tenant_id]]></code>
     </UndefinedMagicPropertyFetch>
     <UndefinedThisPropertyFetch>
       <code><![CDATA[$this->id]]></code>
-      <code><![CDATA[$this->tenant_id]]></code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="app/Models/Concerns/ManagesUserContext.php">
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$organisation->id]]></code>
+      <code><![CDATA[$validOrg?->id]]></code>
+    </UndefinedMagicPropertyFetch>
+    <UndefinedThisPropertyFetch>
+      <code><![CDATA[$this->current_context_id]]></code>
     </UndefinedThisPropertyFetch>
   </file>
   <file src="app/Models/Concerns/ProtectsKeyRoles.php">
@@ -705,13 +1051,49 @@
       <code><![CDATA[HasFactory]]></code>
     </MissingTemplateParam>
   </file>
+  <file src="app/Models/Enterprise.php">
+    <LessSpecificImplementedReturnType>
+      <code><![CDATA[TenantCollection<static>]]></code>
+    </LessSpecificImplementedReturnType>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getTenantKey(): string]]></code>
+      <code><![CDATA[public function getTenantKeyName(): string]]></code>
+      <code><![CDATA[public function newCollection(array $models = []): TenantCollection]]></code>
+    </MissingOverrideAttribute>
+    <MixedAssignment>
+      <code><![CDATA[$originalTenant]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[first]]></code>
+    </MixedMethodCall>
+    <MixedPropertyFetch>
+      <code><![CDATA[$this->domains()->first()?->domain]]></code>
+    </MixedPropertyFetch>
+    <MixedReturnStatement>
+      <code><![CDATA[$this->domains()->first()?->domain]]></code>
+      <code><![CDATA[$this->domains()->first()?->domain]]></code>
+      <code><![CDATA[$this->id]]></code>
+    </MixedReturnStatement>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$callback]]></code>
+      <code><![CDATA[$models]]></code>
+    </MoreSpecificImplementedParamType>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[canHaveParent]]></code>
+      <code><![CDATA[getIntKey]]></code>
+      <code><![CDATA[getSubdomainAttribute]]></code>
+    </PossiblyUnusedMethod>
+    <TooManyTemplateParams>
+      <code><![CDATA[TenantCollection<static>]]></code>
+    </TooManyTemplateParams>
+    <UndefinedThisPropertyFetch>
+      <code><![CDATA[$this->id]]></code>
+    </UndefinedThisPropertyFetch>
+  </file>
   <file src="app/Models/Role.php">
     <MissingTemplateParam>
       <code><![CDATA[HasFactory]]></code>
     </MissingTemplateParam>
-    <NonInvariantDocblockPropertyType>
-      <code><![CDATA[$fillable]]></code>
-    </NonInvariantDocblockPropertyType>
     <PropertyNotSetInConstructor>
       <code><![CDATA[Role]]></code>
     </PropertyNotSetInConstructor>
@@ -719,10 +1101,19 @@
   <file src="app/Models/Team.php">
     <InvalidReturnStatement>
       <code><![CDATA[$this->belongsTo(self::class, 'parent_id')->withoutGlobalScopes()]]></code>
-      <code><![CDATA[Purify::clean($html)]]></code>
+      <code><![CDATA[[
+            'type' => TeamType::class,
+            'state' => TeamState::class,
+            'status' => TeamStatus::class,
+            'name' => 'array',
+            'slug' => 'array',
+            'bio' => 'array',
+            'lock_version' => 'integer',
+        ]]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code><![CDATA[BelongsTo]]></code>
+      <code><![CDATA[BelongsTo<self, self>]]></code>
+      <code><![CDATA[array{type: TeamType::class, state: TeamState::class, status: TeamStatus::class, name: 'array', slug: 'string', bio: 'array', lock_version: 'integer'}]]></code>
     </InvalidReturnType>
     <MissingTemplateParam>
       <code><![CDATA[HasFactory]]></code>
@@ -740,6 +1131,8 @@
       <code><![CDATA[$appends]]></code>
       <code><![CDATA[$appends]]></code>
       <code><![CDATA[$appends]]></code>
+      <code><![CDATA[$appends]]></code>
+      <code><![CDATA[$fillable]]></code>
       <code><![CDATA[$fillable]]></code>
       <code><![CDATA[$fillable]]></code>
       <code><![CDATA[$fillable]]></code>
@@ -749,79 +1142,75 @@
     </NonInvariantDocblockPropertyType>
     <PossiblyUnusedMethod>
       <code><![CDATA[getBioHtmlAttribute]]></code>
+      <code><![CDATA[getScoutKey]]></code>
       <code><![CDATA[parent]]></code>
       <code><![CDATA[tenant]]></code>
+      <code><![CDATA[toSearchableArray]]></code>
     </PossiblyUnusedMethod>
     <PossiblyUnusedProperty>
       <code><![CDATA[$translatable]]></code>
     </PossiblyUnusedProperty>
+    <TooManyTemplateParams>
+      <code><![CDATA[BelongsTo<self, self>]]></code>
+    </TooManyTemplateParams>
+    <UndefinedThisPropertyFetch>
+      <code><![CDATA[$this->id]]></code>
+      <code><![CDATA[$this->slug]]></code>
+    </UndefinedThisPropertyFetch>
   </file>
   <file src="app/Models/TeamMoveApproval.php">
     <ClassMustBeFinal>
       <code><![CDATA[TeamMoveApproval]]></code>
     </ClassMustBeFinal>
-    <MissingOverrideAttribute>
-      <code><![CDATA[protected function casts(): array]]></code>
-    </MissingOverrideAttribute>
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->belongsTo(Team::class, 'team_id')->withoutGlobalScopes()]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[BelongsTo<Team, Team>]]></code>
+    </InvalidReturnType>
     <MissingTemplateParam>
       <code><![CDATA[HasFactory]]></code>
     </MissingTemplateParam>
     <PossiblyUnusedMethod>
       <code><![CDATA[team]]></code>
     </PossiblyUnusedMethod>
+    <TooManyTemplateParams>
+      <code><![CDATA[BelongsTo<Team, Team>]]></code>
+    </TooManyTemplateParams>
   </file>
   <file src="app/Models/User.php">
-    <InvalidCast>
-      <code><![CDATA[$pivotTable]]></code>
-      <code><![CDATA[$pivotTable]]></code>
-      <code><![CDATA[$pivotTable]]></code>
-      <code><![CDATA[$pivotTable]]></code>
-      <code><![CDATA[$rolesTable]]></code>
-      <code><![CDATA[$rolesTable]]></code>
-      <code><![CDATA[$rolesTable]]></code>
-      <code><![CDATA[$teamKey]]></code>
-    </InvalidCast>
-    <InvalidReturnStatement>
-      <code><![CDATA[Purify::clean($html)]]></code>
-    </InvalidReturnStatement>
-    <MixedArgument>
-      <code><![CDATA[$bio]]></code>
-      <code><![CDATA[$this->name]]></code>
-    </MixedArgument>
-    <MixedArgumentTypeCoercion>
-      <code><![CDATA[$pivotTable]]></code>
-      <code><![CDATA[$pivotTable]]></code>
-      <code><![CDATA[$rolesTable]]></code>
-      <code><![CDATA[$teamKey]]></code>
-    </MixedArgumentTypeCoercion>
-    <MixedAssignment>
-      <code><![CDATA[$bio]]></code>
-    </MixedAssignment>
+    <InvalidTemplateParam>
+      <code><![CDATA[HasFactory]]></code>
+    </InvalidTemplateParam>
+    <MixedPropertyFetch>
+      <code><![CDATA[$this->status->value]]></code>
+    </MixedPropertyFetch>
     <NonInvariantDocblockPropertyType>
-      <code><![CDATA[$appends]]></code>
       <code><![CDATA[$fillable]]></code>
       <code><![CDATA[$hidden]]></code>
     </NonInvariantDocblockPropertyType>
     <PossiblyUnusedMethod>
       <code><![CDATA[currentContext]]></code>
       <code><![CDATA[enterprises]]></code>
-      <code><![CDATA[getBioHtmlAttribute]]></code>
+      <code><![CDATA[getScoutKey]]></code>
       <code><![CDATA[initials]]></code>
+      <code><![CDATA[isProtectable]]></code>
       <code><![CDATA[tenant]]></code>
+      <code><![CDATA[toSearchableArray]]></code>
     </PossiblyUnusedMethod>
     <PossiblyUnusedProperty>
       <code><![CDATA[$translatable]]></code>
     </PossiblyUnusedProperty>
-    <TooManyArguments>
-      <code><![CDATA[select]]></code>
-    </TooManyArguments>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$firstOrg->id]]></code>
-      <code><![CDATA[$organisation->id]]></code>
-    </UndefinedMagicPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User]]></code>
+    </UndefinedDocblockClass>
     <UndefinedThisPropertyFetch>
-      <code><![CDATA[$this->current_context_id]]></code>
+      <code><![CDATA[$this->email]]></code>
+      <code><![CDATA[$this->id]]></code>
       <code><![CDATA[$this->name]]></code>
+      <code><![CDATA[$this->status]]></code>
+      <code><![CDATA[$this->ulid]]></code>
+      <code><![CDATA[$this->ulid]]></code>
     </UndefinedThisPropertyFetch>
   </file>
   <file src="app/Observers/TeamObserver.php">
@@ -829,31 +1218,22 @@
       <code><![CDATA[0]]></code>
     </DocblockTypeContradiction>
     <MissingThrowsDocblock>
-      <code><![CDATA[type]]></code>
+      <code><![CDATA[throw ValidationException::withMessages([
+                'name' => [$result->error],
+            ])]]></code>
     </MissingThrowsDocblock>
-    <MixedAssignment>
-      <code><![CDATA[$newTenantId]]></code>
-    </MixedAssignment>
     <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
       <code><![CDATA[creating]]></code>
-      <code><![CDATA[updated]]></code>
+      <code><![CDATA[saving]]></code>
       <code><![CDATA[updating]]></code>
     </PossiblyUnusedMethod>
     <PropertyTypeCoercion>
-      <code><![CDATA[$databaseLockVersion + 1]]></code>
+      <code><![CDATA[$currentVersion + 1]]></code>
     </PropertyTypeCoercion>
-    <UndefinedMagicPropertyAssignment>
-      <code><![CDATA[$team->tenant_id]]></code>
-      <code><![CDATA[$team->tenant_id]]></code>
-    </UndefinedMagicPropertyAssignment>
     <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$parent->id]]></code>
-      <code><![CDATA[$parent->tenant_id]]></code>
+      <code><![CDATA[$newParent->id]]></code>
       <code><![CDATA[$team->id]]></code>
       <code><![CDATA[$team->id]]></code>
-      <code><![CDATA[$team->parent_id]]></code>
-      <code><![CDATA[$team->tenant_id]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
   <file src="app/Policies/TeamPolicy.php">
@@ -869,15 +1249,69 @@
   </file>
   <file src="app/Policies/UserPolicy.php">
     <PossiblyUnusedMethod>
+      <code><![CDATA[create]]></code>
       <code><![CDATA[delete]]></code>
       <code><![CDATA[forceDelete]]></code>
       <code><![CDATA[update]]></code>
+      <code><![CDATA[view]]></code>
+      <code><![CDATA[viewAny]]></code>
     </PossiblyUnusedMethod>
   </file>
+  <file src="app/Presenters/UserPresenter.php">
+    <MixedArgument>
+      <code><![CDATA[$user->name]]></code>
+    </MixedArgument>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$user->name]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Projections/Teams/TeamProjection.php">
+    <MissingTemplateParam>
+      <code><![CDATA[HasFactory]]></code>
+    </MissingTemplateParam>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[team]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="app/Projections/Teams/TeamProjector.php">
+    <UnusedClass>
+      <code><![CDATA[TeamProjector]]></code>
+    </UnusedClass>
+  </file>
   <file src="app/Providers/AppServiceProvider.php">
-    <MissingThrowsDocblock>
-      <code><![CDATA[Team::observe(TeamObserver::class)]]></code>
-    </MissingThrowsDocblock>
+    <MissingClosureParamType>
+      <code><![CDATA[$ability]]></code>
+      <code><![CDATA[$user]]></code>
+    </MissingClosureParamType>
+    <MixedAssignment>
+      <code><![CDATA[$hasKeyRole]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[exists]]></code>
+      <code><![CDATA[roles]]></code>
+      <code><![CDATA[where]]></code>
+    </MixedMethodCall>
+    <MixedOperand>
+      <code><![CDATA[$request->input('email')]]></code>
+    </MixedOperand>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[boot]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="app/Providers/FolioServiceProvider.php">
+    <MixedFunctionCall>
+      <code><![CDATA[(resolve('livewire')->new($componentName))()]]></code>
+    </MixedFunctionCall>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[boot]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="app/Providers/MonadBladeServiceProvider.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[boot]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="app/Providers/ResultServiceProvider.php">
     <PossiblyUnusedMethod>
       <code><![CDATA[boot]]></code>
     </PossiblyUnusedMethod>
@@ -949,10 +1383,34 @@
       <code><![CDATA[TenancyServiceProvider]]></code>
     </UnusedClass>
   </file>
+  <file src="app/Services/TeamHierarchyTraversalService.php">
+    <InvalidArgument>
+      <code><![CDATA[$team->parent_id]]></code>
+    </InvalidArgument>
+    <InvalidTemplateParam>
+      <code><![CDATA[Collection<never, never>|\Illuminate\Database\Eloquent\Collection<int, TRelatedModel>]]></code>
+    </InvalidTemplateParam>
+    <MixedArgument>
+      <code><![CDATA[$parent->parent_id]]></code>
+    </MixedArgument>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[! $parentId]]></code>
+    </RiskyTruthyFalsyComparison>
+    <UndefinedDocblockClass>
+      <code><![CDATA[Collection<never, never>|\Illuminate\Database\Eloquent\Collection<int, TRelatedModel>]]></code>
+    </UndefinedDocblockClass>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$ancestor->id]]></code>
+    </UndefinedMagicPropertyFetch>
+    <UnusedParam>
+      <code><![CDATA[$team]]></code>
+    </UnusedParam>
+  </file>
   <file src="app/Services/TeamMove/CrossOrganisationApproverResolver.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function resolve(Team $team, ?Team $newParent): array]]></code>
-    </MissingOverrideAttribute>
+    <InvalidArgument>
+      <code><![CDATA[$this->getOrganisationAdmins($sourceOrg)]]></code>
+      <code><![CDATA[$this->getOrganisationAdmins($targetOrg)]]></code>
+    </InvalidArgument>
     <MixedArgument>
       <code><![CDATA[$organisation->id]]></code>
     </MixedArgument>
@@ -973,40 +1431,36 @@
     </UndefinedMagicPropertyFetch>
   </file>
   <file src="app/Services/TeamMove/CrossOrganisationRule.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function requiresApproval(Team $team, ?Team $newParent, Team $enterprise): bool]]></code>
-    </MissingOverrideAttribute>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[! ($enterprise->move_approval_require_cross_org ?? true)]]></code>
     </RiskyTruthyFalsyComparison>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$sourceOrg->id]]></code>
-      <code><![CDATA[$targetOrg->id]]></code>
-    </UndefinedMagicPropertyFetch>
   </file>
   <file src="app/Services/TeamMove/DepthChangeRule.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function requiresApproval(Team $team, ?Team $newParent, Team $enterprise): bool]]></code>
-    </MissingOverrideAttribute>
     <MixedAssignment>
       <code><![CDATA[$threshold]]></code>
     </MixedAssignment>
   </file>
   <file src="app/Services/TeamMove/DescendantCountRule.php">
     <ArgumentTypeCoercion>
-      <code><![CDATA[$child]]></code>
+      <code><![CDATA[fn (Team $child): int => 1 + $this->getDescendantCount($child)]]></code>
     </ArgumentTypeCoercion>
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function requiresApproval(Team $team, ?Team $newParent, Team $enterprise): bool]]></code>
-    </MissingOverrideAttribute>
     <MixedAssignment>
       <code><![CDATA[$threshold]]></code>
     </MixedAssignment>
+    <MixedReturnStatement>
+      <code><![CDATA[$team->children()
+            ->withoutGlobalScopes()
+            ->get()
+            ->sum(fn (Team $child): int => 1 + $this->getDescendantCount($child)
+            )]]></code>
+      <code><![CDATA[$team->children()
+            ->withoutGlobalScopes()
+            ->get()
+            ->sum(fn (Team $child): int => 1 + $this->getDescendantCount($child)
+            )]]></code>
+    </MixedReturnStatement>
   </file>
   <file src="app/Services/TeamMove/SameOrganisationApproverResolver.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function resolve(Team $team, ?Team $newParent): array]]></code>
-    </MissingOverrideAttribute>
     <MixedArgument>
       <code><![CDATA[$organisation->id]]></code>
     </MixedArgument>
@@ -1024,7 +1478,7 @@
       <code><![CDATA[$organisation->id]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
-  <file src="app/Services/TeamMoveService.php">
+  <file src="app/Services/TeamMove/TeamMoveApprovalService.php">
     <MissingThrowsDocblock>
       <code><![CDATA[throw ValidationException::withMessages([
                 'approval' => ['This approval request is no longer pending.'],
@@ -1039,6 +1493,83 @@
                 'rejector' => ['You are not authorized to reject this request.'],
             ])]]></code>
     </MissingThrowsDocblock>
+    <MixedReturnStatement>
+      <code><![CDATA[DB::transaction(function () use ($approval, $approver): bool {
+                $this->recordApproval($approval, $approver);
+
+                // If all approvers have approved, we need to execute the move
+                // But executeMove returns Result, and we're in a transaction
+                // So we'll call it and unwrap the Result (throwing on failure to rollback transaction)
+                if ($this->allApproversHaveApproved($approval)) {
+                    $executeResult = $this->executeMove($approval);
+                    if ($executeResult->isFailure) {
+                        // Throw to rollback transaction - Result::try will catch and convert to failure Result
+                        throw new RuntimeException($executeResult->error);
+                    }
+                }
+
+                $approval->save();
+
+                return true;
+            })]]></code>
+    </MixedReturnStatement>
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[$moveResult->flatMap(static function () use ($approval): Result {
+            $approval->status = 'approved';
+            $approval->approved_at = now();
+
+            return Result::success(true, ['Team move executed and approval marked as complete']);
+        })]]></code>
+      <code><![CDATA[Result::failure('Team not found for approval', ['Team move execution failed'])]]></code>
+      <code><![CDATA[Result::try(
+            function () use ($approval, $approver): bool {
+                $this->validateApprovalRequest($approval, $approver);
+
+                return true;
+            },
+            ['Validating approval request']
+        )->flatMap(fn (): Result => Result::try(
+            fn (): bool => DB::transaction(function () use ($approval, $approver): bool {
+                $this->recordApproval($approval, $approver);
+
+                // If all approvers have approved, we need to execute the move
+                // But executeMove returns Result, and we're in a transaction
+                // So we'll call it and unwrap the Result (throwing on failure to rollback transaction)
+                if ($this->allApproversHaveApproved($approval)) {
+                    $executeResult = $this->executeMove($approval);
+                    if ($executeResult->isFailure) {
+                        // Throw to rollback transaction - Result::try will catch and convert to failure Result
+                        throw new RuntimeException($executeResult->error);
+                    }
+                }
+
+                $approval->save();
+
+                return true;
+            }),
+            ['Recording approval and executing move if needed']
+        ))]]></code>
+      <code><![CDATA[Result<bool, string>]]></code>
+      <code><![CDATA[Result<bool, string>]]></code>
+    </MixedReturnTypeCoercion>
+    <PossiblyNullArgument>
+      <code><![CDATA[$executeResult->error]]></code>
+    </PossiblyNullArgument>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <TooManyTemplateParams>
+      <code><![CDATA[Result<bool, string>]]></code>
+      <code><![CDATA[Result<bool, string>]]></code>
+    </TooManyTemplateParams>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$approver->id]]></code>
+      <code><![CDATA[$approver->id]]></code>
+      <code><![CDATA[$rejector->id]]></code>
+      <code><![CDATA[$rejector->id]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Services/TeamMove/TeamMoveRequestService.php">
     <MixedArgument>
       <code><![CDATA[$enterprise]]></code>
     </MixedArgument>
@@ -1047,112 +1578,96 @@
     </MixedAssignment>
     <MixedReturnStatement>
       <code><![CDATA[DB::transaction(function () use (
-            $team,
-            $newParentId,
-            $requestedBy,
-            $reason,
-        ): TeamMoveApproval|Team|null {
-            $newParent = $newParentId ? Team::query()->withoutGlobalScopes()->find($newParentId) : null;
-            $enterprise = $team->tenant;
+                $team,
+                $newParentId,
+                $requestedBy,
+                $reason,
+                $newParent,
+            ): TeamMoveApproval {
+                $requiredApprovers = $this->determineRequiredApprovers($team, $newParent);
 
-            // Check if approval is required
-            if (! $this->requiresApproval($team, $newParent, $enterprise)) {
-                // No approval needed, execute move directly
-                $this->moveTeamAction->handle($team, $newParentId);
-
-                return $team->fresh();
-            }
-
-            // Create approval request
-            $requiredApprovers = $this->determineRequiredApprovers($team, $newParent);
-
-            // TODO(@system): Dispatch notification event to required approvers
-
-            return TeamMoveApproval::query()->create([
-                'team_id' => $team->id,
-                'from_parent_id' => $team->parent_id,
-                'to_parent_id' => $newParentId,
-                'requested_by_id' => $requestedBy->id,
-                'status' => 'pending',
-                'reason' => $reason,
-                'required_approvers' => $requiredApprovers,
-                'approvals' => [],
-            ]);
-        })]]></code>
+                return TeamMoveApproval::query()->create([
+                    'team_id' => $team->id,
+                    'from_parent_id' => $team->parent_id,
+                    'to_parent_id' => $newParentId,
+                    'requested_by_id' => $requestedBy->id,
+                    'status' => 'pending',
+                    'reason' => $reason,
+                    'required_approvers' => $requiredApprovers,
+                    'approvals' => [],
+                ]);
+            })]]></code>
     </MixedReturnStatement>
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[$moveResult->flatMap(static function (Team $movedTeam): Result {
+                $fresh = $movedTeam->fresh();
+                if (! $fresh instanceof Team) {
+                    return Result::failure('Team not found after move', ['Team move completed but refresh failed']);
+                }
+
+                return Result::success($fresh, ['Team moved successfully']);
+            })]]></code>
+      <code><![CDATA[Result::try(
+            fn (): TeamMoveApproval => DB::transaction(function () use (
+                $team,
+                $newParentId,
+                $requestedBy,
+                $reason,
+                $newParent,
+            ): TeamMoveApproval {
+                $requiredApprovers = $this->determineRequiredApprovers($team, $newParent);
+
+                return TeamMoveApproval::query()->create([
+                    'team_id' => $team->id,
+                    'from_parent_id' => $team->parent_id,
+                    'to_parent_id' => $newParentId,
+                    'requested_by_id' => $requestedBy->id,
+                    'status' => 'pending',
+                    'reason' => $reason,
+                    'required_approvers' => $requiredApprovers,
+                    'approvals' => [],
+                ]);
+            }),
+            ['Approval request created']
+        )]]></code>
+      <code><![CDATA[Result<TeamMoveApproval|Team, string>]]></code>
+    </MixedReturnTypeCoercion>
     <PossiblyUnusedMethod>
       <code><![CDATA[__construct]]></code>
-      <code><![CDATA[approve]]></code>
-      <code><![CDATA[reject]]></code>
     </PossiblyUnusedMethod>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$newParentId]]></code>
     </RiskyTruthyFalsyComparison>
+    <TooManyTemplateParams>
+      <code><![CDATA[Result<TeamMoveApproval|Team, string>]]></code>
+    </TooManyTemplateParams>
     <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$approver->id]]></code>
-      <code><![CDATA[$approver->id]]></code>
-      <code><![CDATA[$rejector->id]]></code>
-      <code><![CDATA[$rejector->id]]></code>
       <code><![CDATA[$requestedBy->id]]></code>
-      <code><![CDATA[$sourceOrg->id]]></code>
-      <code><![CDATA[$targetOrg->id]]></code>
       <code><![CDATA[$team->id]]></code>
-      <code><![CDATA[$team->parent_id]]></code>
       <code><![CDATA[$team->tenant]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
-  <file src="app/States/Team/Active.php">
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$name]]></code>
-    </PossiblyUnusedProperty>
+  <file src="app/Services/TeamMoveService.php">
+    <MixedReturnStatement>
+      <code><![CDATA[$result->match(
+            onSuccess: static fn (TeamMoveApproval|Team $value): TeamMoveApproval|Team => $value,
+            onFailure: static fn (string $error): TeamMoveApproval|Team => throw new RuntimeException($error)
+        )]]></code>
+    </MixedReturnStatement>
+    <NoValue>
+      <code><![CDATA[throw new RuntimeException($error)]]></code>
+    </NoValue>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[approve]]></code>
+      <code><![CDATA[reject]]></code>
+      <code><![CDATA[requestMove]]></code>
+    </PossiblyUnusedMethod>
   </file>
-  <file src="app/States/Team/Archived.php">
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$name]]></code>
-    </PossiblyUnusedProperty>
-  </file>
-  <file src="app/States/Team/Inactive.php">
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$name]]></code>
-    </PossiblyUnusedProperty>
-  </file>
-  <file src="app/States/Team/TeamState.php">
-    <MissingTemplateParam>
-      <code><![CDATA[TeamState]]></code>
-    </MissingTemplateParam>
-  </file>
-  <file src="app/Support/Validation/TeamNameValidator.php">
-    <DocblockTypeContradiction>
-      <code><![CDATA[$team->getAttribute('type') ?? $this->getTypeFromModel($team)]]></code>
-      <code><![CDATA[$value !== null]]></code>
-    </DocblockTypeContradiction>
+  <file src="app/Services/TeamNameNormalizationService.php">
     <InaccessibleProperty>
       <code><![CDATA[$team->attributes]]></code>
     </InaccessibleProperty>
-    <InvalidArgument>
-      <code><![CDATA[static function ($q) use ($nameToCheck): void {
-                foreach ($nameToCheck as $locale => $value) {
-                    if (! ($value !== null && $value !== '')) {
-                        continue;
-                    }
-
-                    $q->orWhere("name->{$locale}", $value);
-                }
-            }]]></code>
-      <code><![CDATA[static function ($q) use ($stringValue): void {
-                    // Try common locales
-                    foreach (['en', 'es', 'fr', 'de'] as $locale) {
-                        $q->orWhere("name->{$locale}", $stringValue);
-                    }
-                    // Also check if the entire JSON field equals the string (for non-translatable)
-                    $q->orWhereJsonContains('name', $stringValue);
-                }]]></code>
-    </InvalidArgument>
-    <MissingThrowsDocblock>
-      <code><![CDATA[throw ValidationException::withMessages([
-                'name' => ['The team name has already been taken within this scope.'],
-            ])]]></code>
-    </MissingThrowsDocblock>
     <MixedArrayAccess>
       <code><![CDATA[$team->attributes['name']]]></code>
     </MixedArrayAccess>
@@ -1160,24 +1675,187 @@
       <code><![CDATA[$decoded]]></code>
       <code><![CDATA[$name]]></code>
       <code><![CDATA[$nameRaw]]></code>
-      <code><![CDATA[$stringValue]]></code>
-      <code><![CDATA[$type]]></code>
     </MixedAssignment>
-    <TypeDoesNotContainNull>
-      <code><![CDATA[$team->name]]></code>
-    </TypeDoesNotContainNull>
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[array<string, string>]]></code>
+      <code><![CDATA[collect($decoded)
+            ->filter(static fn ($value, $key): bool => is_string($key) && is_string($value))
+            ->toArray()]]></code>
+    </MixedReturnTypeCoercion>
     <UndefinedMagicPropertyFetch>
       <code><![CDATA[$team->name]]></code>
-      <code><![CDATA[$team->name]]></code>
-      <code><![CDATA[$team->parent_id]]></code>
     </UndefinedMagicPropertyFetch>
-    <UndefinedMethod>
-      <code><![CDATA[orWhere]]></code>
-      <code><![CDATA[orWhere]]></code>
-      <code><![CDATA[orWhereJsonContains]]></code>
-    </UndefinedMethod>
+  </file>
+  <file src="app/Services/TeamOrganisationFinderService.php">
+    <MixedReturnStatement>
+      <code><![CDATA[$this->getAncestry($team)
+            ->first(static fn (Team $ancestor): bool => $ancestor->type === TeamType::ORGANISATION)]]></code>
+      <code><![CDATA[$this->getAncestry($team)
+            ->first(static fn (Team $ancestor): bool => $ancestor->type === TeamType::ORGANISATION)]]></code>
+    </MixedReturnStatement>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$sourceOrg->id]]></code>
+      <code><![CDATA[$targetOrg->id]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Services/TeamTypeResolutionService.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$team::class]]></code>
+    </ArgumentTypeCoercion>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$team->getAttribute('type')]]></code>
+    </DocblockTypeContradiction>
+    <MixedAssignment>
+      <code><![CDATA[$type]]></code>
+    </MixedAssignment>
+  </file>
+  <file src="app/Services/UserProtectionService.php">
+    <InvalidCast>
+      <code><![CDATA[$pivotTable]]></code>
+      <code><![CDATA[$pivotTable]]></code>
+      <code><![CDATA[$pivotTable]]></code>
+      <code><![CDATA[$pivotTable]]></code>
+      <code><![CDATA[$rolesTable]]></code>
+      <code><![CDATA[$rolesTable]]></code>
+      <code><![CDATA[$rolesTable]]></code>
+      <code><![CDATA[$teamKey]]></code>
+    </InvalidCast>
+    <MixedArgumentTypeCoercion>
+      <code><![CDATA[$pivotTable]]></code>
+      <code><![CDATA[$pivotTable]]></code>
+      <code><![CDATA[$rolesTable]]></code>
+      <code><![CDATA[$teamKey]]></code>
+    </MixedArgumentTypeCoercion>
+    <TooManyArguments>
+      <code><![CDATA[select]]></code>
+    </TooManyArguments>
+  </file>
+  <file src="app/Support/AsyncResult.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[AsyncResult]]></code>
+    </ClassMustBeFinal>
+    <MissingTemplateParam>
+      <code><![CDATA[AsyncResult]]></code>
+    </MissingTemplateParam>
+    <MixedAssignment>
+      <code><![CDATA[$mergedValue[$key]]]></code>
+      <code><![CDATA[$mergedValue[$key]]]></code>
+    </MixedAssignment>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[allParallel]]></code>
+    </PossiblyUnusedMethod>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[AsyncResult]]></code>
+      <code><![CDATA[AsyncResult]]></code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="app/Support/Html/TeamBioRenderer.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[Purify::clean($html)]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[string|null]]></code>
+    </InvalidReturnType>
+    <MissingThrowsDocblock>
+      <code><![CDATA[throw $e]]></code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="app/Support/Result.php">
+    <MixedArgument>
+      <code><![CDATA[$this->value]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$firstMessage]]></code>
+      <code><![CDATA[$result]]></code>
+      <code><![CDATA[$value]]></code>
+    </MixedAssignment>
+    <PossiblyNullArgument>
+      <code><![CDATA[$this->error]]></code>
+    </PossiblyNullArgument>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[$isFailure]]></code>
+      <code><![CDATA[$isSuccess]]></code>
+    </PropertyNotSetInConstructor>
+    <UndefinedClass>
+      <code><![CDATA[Telescope]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="app/Support/Validation/TeamHierarchy/CycleValidator.php">
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$team->id]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="app/Support/Validation/TeamHierarchy/DepthValidator.php">
+    <DocblockTypeContradiction>
+      <code><![CDATA[! $parent]]></code>
+      <code><![CDATA[$parent]]></code>
+    </DocblockTypeContradiction>
+  </file>
+  <file src="app/Support/Validation/TeamHierarchyValidator.php">
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[Result::failure(
+                    'Enterprises cannot have a parent.',
+                    ['Enterprise hierarchy validation failed']
+                )]]></code>
+      <code><![CDATA[Result::failure(
+                "{$childType->value} must belong to a {$validParentType->value}, but belongs to {$parent->type->value}.",
+                ['Type compatibility validation failed']
+            )]]></code>
+      <code><![CDATA[Result::failure(
+                'Team hierarchy depth cannot exceed 10 levels.',
+                ['Depth validation failed']
+            )]]></code>
+      <code><![CDATA[Result::failure(
+                'This team type requires a parent team.',
+                ['Orphan team validation failed']
+            )]]></code>
+      <code><![CDATA[Result::success(true, ['Enterprise hierarchy validated'])]]></code>
+      <code><![CDATA[Result::success(true, ['Hierarchy validation passed'])]]></code>
+      <code><![CDATA[Result<bool, string>]]></code>
+    </MixedReturnTypeCoercion>
+    <TooManyTemplateParams>
+      <code><![CDATA[Result<bool, string>]]></code>
+    </TooManyTemplateParams>
+  </file>
+  <file src="app/Support/Validation/TeamName/ArrayNameQueryBuilder.php">
+    <MixedAssignment>
+      <code><![CDATA[$driver]]></code>
+    </MixedAssignment>
+    <ParamNameMismatch>
+      <code><![CDATA[$names]]></code>
+    </ParamNameMismatch>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[getDriverName]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="app/Support/Validation/TeamName/StringNameQueryBuilder.php">
+    <MixedAssignment>
+      <code><![CDATA[$driver]]></code>
+    </MixedAssignment>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[getDriverName]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="app/Support/Validation/TeamNameValidator.php">
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[Result::failure(
+                'The team name has already been taken within this scope.',
+                ['Name uniqueness validation failed']
+            )]]></code>
+      <code><![CDATA[Result::success(true, ['Name uniqueness validated'])]]></code>
+      <code><![CDATA[Result<bool, string>]]></code>
+    </MixedReturnTypeCoercion>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <TooManyTemplateParams>
+      <code><![CDATA[Result<bool, string>]]></code>
+    </TooManyTemplateParams>
   </file>
   <file src="bootstrap/app.php">
+    <InvalidArgument>
+      <code><![CDATA[['trace' => 'Captured by Global Handler', 'file' => $e->getFile(), 'line' => $e->getLine()]]]></code>
+    </InvalidArgument>
     <UndefinedClass>
       <code><![CDATA[EnsureFrontendRequestsAreStateful]]></code>
     </UndefinedClass>
@@ -1185,6 +1863,19 @@
   <file src="config/broadcasting.php">
     <MixedOperand>
       <code><![CDATA[env('PUSHER_APP_CLUSTER', 'mt1')]]></code>
+    </MixedOperand>
+  </file>
+  <file src="config/database.php">
+    <MixedArgumentTypeCoercion>
+      <code><![CDATA[[
+                env('DB_SCHEMA', 'public'),
+                env('DB_SEARCH_SCHEMA', 'search'),
+                'public',
+            ]]]></code>
+    </MixedArgumentTypeCoercion>
+    <MixedOperand>
+      <code><![CDATA[env('DB_SCHEMA', 'public')]]></code>
+      <code><![CDATA[env('DB_SEARCH_SCHEMA', 'search')]]></code>
     </MixedOperand>
   </file>
   <file src="config/filesystems.php">
@@ -1238,7 +1929,48 @@
       <code><![CDATA[ProjectFactory]]></code>
     </UnusedClass>
   </file>
+  <file src="database/factories/TeamFactory.php">
+    <UndefinedDocblockClass>
+      <code><![CDATA[array{type: App\Enums\TeamType::ORGANISATION, name: array{en: string}, state: Active::class, status: App\Enums\TeamStatus::ONLINE, bio: string}]]></code>
+      <code><![CDATA[array{type: App\Enums\TeamType::ORGANISATION, name: array{en: string}, state: Active::class, status: App\Enums\TeamStatus::ONLINE, bio: string}]]></code>
+    </UndefinedDocblockClass>
+    <UnusedClass>
+      <code><![CDATA[TeamFactory]]></code>
+    </UnusedClass>
+  </file>
+  <file src="database/factories/TeamMoveApprovalFactory.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[[
+            'team_id' => Team::factory(),
+            'from_parent_id' => static fn (array $attributes) => Team::factory()->create()->id,
+            'to_parent_id' => static fn (array $attributes) => Team::factory()->create()->id,
+            'requested_by_id' => User::factory(),
+            'status' => 'pending',
+            'reason' => fake()->optional()->sentence(),
+            'required_approvers' => null,
+            'approvals' => null,
+            'approved_at' => null,
+            'rejected_at' => null,
+            'rejected_by_id' => null,
+            'rejection_reason' => null,
+        ]]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[array{team_id: Factory, from_parent_id: Closure(array):mixed, to_parent_id: Closure(array):mixed, requested_by_id: UserFactory, status: 'pending', reason: string, required_approvers: null, approvals: null, approved_at: null, rejected_at: null, rejected_by_id: null, rejection_reason: null}]]></code>
+    </InvalidReturnType>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn (array $attributes) => Team::factory()->create()->id]]></code>
+      <code><![CDATA[static fn (array $attributes) => Team::factory()->create()->id]]></code>
+    </MissingClosureReturnType>
+    <UnusedClass>
+      <code><![CDATA[TeamMoveApprovalFactory]]></code>
+    </UnusedClass>
+  </file>
   <file src="database/factories/UserFactory.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[unverified]]></code>
+      <code><![CDATA[withoutTwoFactor]]></code>
+    </PossiblyUnusedMethod>
     <PossiblyUnusedProperty>
       <code><![CDATA[$password]]></code>
     </PossiblyUnusedProperty>
@@ -1247,106 +1979,61 @@
       <code><![CDATA[array{name: string, email: string, email_verified_at: Carbon, password: string, remember_token: string, two_factor_secret: string, two_factor_recovery_codes: string, two_factor_confirmed_at: Carbon, bio: string, state: App\Enums\UserState::ACTIVE, status: App\Enums\UserStatus::OFFLINE, tenant_id: null, current_context_id: null}]]></code>
     </UndefinedDocblockClass>
   </file>
-  <file src="database/migrations/2025_12_23_153239_create_permission_tables.php">
-    <DocblockTypeContradiction>
-      <code><![CDATA[$tableNames === null]]></code>
-      <code><![CDATA[$tableNames === null]]></code>
-    </DocblockTypeContradiction>
-    <InvalidArrayAccess>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['permission_pivot_key']]]></code>
-      <code><![CDATA[$columnNames['role_pivot_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$tableNames['model_has_permissions']]]></code>
-      <code><![CDATA[$tableNames['model_has_permissions']]]></code>
-      <code><![CDATA[$tableNames['model_has_roles']]]></code>
-      <code><![CDATA[$tableNames['model_has_roles']]]></code>
-      <code><![CDATA[$tableNames['permissions']]]></code>
-      <code><![CDATA[$tableNames['permissions']]]></code>
-      <code><![CDATA[$tableNames['permissions']]]></code>
-      <code><![CDATA[$tableNames['permissions']]]></code>
-      <code><![CDATA[$tableNames['role_has_permissions']]]></code>
-      <code><![CDATA[$tableNames['role_has_permissions']]]></code>
-      <code><![CDATA[$tableNames['roles']]]></code>
-      <code><![CDATA[$tableNames['roles']]]></code>
-      <code><![CDATA[$tableNames['roles']]]></code>
-      <code><![CDATA[$tableNames['roles']]]></code>
-    </InvalidArrayAccess>
-    <InvalidCast>
-      <code><![CDATA[config('permission.cache.key')]]></code>
-    </InvalidCast>
-    <MixedArgument>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['model_morph_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$columnNames['team_foreign_key']]]></code>
-      <code><![CDATA[$pivotPermission]]></code>
-      <code><![CDATA[$pivotPermission]]></code>
-      <code><![CDATA[$pivotPermission]]></code>
-      <code><![CDATA[$pivotPermission]]></code>
-      <code><![CDATA[$pivotRole]]></code>
-      <code><![CDATA[$pivotRole]]></code>
-      <code><![CDATA[$pivotRole]]></code>
-      <code><![CDATA[$pivotRole]]></code>
-      <code><![CDATA[$tableNames['model_has_permissions']]]></code>
-      <code><![CDATA[$tableNames['model_has_permissions']]]></code>
-      <code><![CDATA[$tableNames['model_has_roles']]]></code>
-      <code><![CDATA[$tableNames['model_has_roles']]]></code>
-      <code><![CDATA[$tableNames['permissions']]]></code>
-      <code><![CDATA[$tableNames['permissions']]]></code>
-      <code><![CDATA[$tableNames['permissions']]]></code>
-      <code><![CDATA[$tableNames['permissions']]]></code>
-      <code><![CDATA[$tableNames['role_has_permissions']]]></code>
-      <code><![CDATA[$tableNames['role_has_permissions']]]></code>
-      <code><![CDATA[$tableNames['roles']]]></code>
-      <code><![CDATA[$tableNames['roles']]]></code>
-      <code><![CDATA[$tableNames['roles']]]></code>
-      <code><![CDATA[$tableNames['roles']]]></code>
-    </MixedArgument>
-    <MixedArgumentTypeCoercion>
-      <code><![CDATA[config('permission.cache.key')]]></code>
-      <code><![CDATA[config('permission.cache.store') !== 'default' ? config('permission.cache.store') : null]]></code>
-    </MixedArgumentTypeCoercion>
-    <MixedAssignment>
-      <code><![CDATA[$pivotPermission]]></code>
-      <code><![CDATA[$pivotRole]]></code>
-    </MixedAssignment>
-  </file>
-  <file src="database/migrations/2025_12_26_113258_create_super_admin_role_and_system_administrator.php">
-    <MissingThrowsDocblock>
-      <code><![CDATA[make]]></code>
-    </MissingThrowsDocblock>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$superAdminRole]]></code>
-    </PossiblyInvalidArgument>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[!$systemAdministrator->hasRole('Super Admin')]]></code>
-    </RiskyTruthyFalsyComparison>
-  </file>
   <file src="database/seeders/DatabaseSeeder.php">
     <UnusedClass>
       <code><![CDATA[DatabaseSeeder]]></code>
     </UnusedClass>
+  </file>
+  <file src="database/seeders/DepartmentSeeder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[run]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="database/seeders/DivisionSeeder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[run]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="database/seeders/DomainSeeder.php">
+    <MixedArgument>
+      <code><![CDATA[$enterprise->getTranslation('name', 'en')]]></code>
+    </MixedArgument>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$enterprise->id]]></code>
+    </UndefinedMagicPropertyFetch>
+    <UnusedClass>
+      <code><![CDATA[DomainSeeder]]></code>
+    </UnusedClass>
+  </file>
+  <file src="database/seeders/EnterpriseSeeder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[run]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="database/seeders/OrganisationSeeder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[run]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="database/seeders/ProjectSeeder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[run]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="database/seeders/RoleSeeder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[run]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="database/seeders/TeamMoveApprovalSeeder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[run]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="database/seeders/UserSeeder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[run]]></code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="resources/views/flux/navlist/group.blade.php">
     <UndefinedGlobalVariable>
@@ -1355,21 +2042,7 @@
       <code><![CDATA[$heading]]></code>
     </UndefinedGlobalVariable>
   </file>
-  <file src="resources/views/pages/chrrps.blade.php">
-    <InvalidReturnStatement>
-      <code><![CDATA[[
-            ['author' => 'Jane Doe', 'message' => 'Just deployed my first Laravel app! 🚀', 'time' => '5 minutes ago'],
-            ['author' => 'John Smith', 'message' => 'Laravel makes web development fun again!', 'time' => '1 hour ago'],
-            ['author' => 'Alice
-Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3 hours ago'],
-        ]]]></code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[list{array{author: 'Jane Doe', message: 'Just deployed my first Laravel app! 🚀', time: '5 minutes ago'}, array{author: 'John Smith', message: 'Laravel makes web development fun again!', time: '1 hour ago'}, array{author: 'Alice
-     * Johnson', message: 'Working on something cool with Chrrprr...', time: '3 hours ago'}}]]></code>
-    </InvalidReturnType>
-  </file>
-  <file src="resources/views/pages/teams/[ulid].blade.php">
+  <file src="resources/views/livewire/teams/[ulid].blade.php">
     <MissingThrowsDocblock>
       <code><![CDATA[firstOrFail]]></code>
       <code><![CDATA[firstOrFail]]></code>
@@ -1381,20 +2054,20 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this->name]]></code>
     </MixedAssignment>
     <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$team->parent_id]]></code>
       <code><![CDATA[$this->parent_id]]></code>
     </RiskyTruthyFalsyComparison>
     <UndefinedMagicPropertyFetch>
       <code><![CDATA[$currentTeam->id]]></code>
       <code><![CDATA[$team->id]]></code>
-      <code><![CDATA[$team->parent_id]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
-  <file src="resources/views/pages/teams/create.blade.php">
+  <file src="resources/views/livewire/teams/create.blade.php">
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$this->parent_id]]></code>
     </RiskyTruthyFalsyComparison>
   </file>
-  <file src="resources/views/pages/teams/index.blade.php">
+  <file src="resources/views/livewire/teams/index.blade.php">
     <MixedMethodCall>
       <code><![CDATA[get]]></code>
     </MixedMethodCall>
@@ -1402,7 +2075,7 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[Team::query()->inContext()->get()]]></code>
     </MixedReturnStatement>
   </file>
-  <file src="resources/views/pages/teams/switch-context.blade.php">
+  <file src="resources/views/livewire/teams/switch-context.blade.php">
     <MissingConstructor>
       <code><![CDATA[$organisations]]></code>
     </MissingConstructor>
@@ -1424,20 +2097,42 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$user->current_context_id]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
-  <file src="resources/views/pages/users/[ulid].blade.php">
+  <file src="resources/views/livewire/teams/ulid.blade.php">
+    <MissingThrowsDocblock>
+      <code><![CDATA[firstOrFail]]></code>
+      <code><![CDATA[firstOrFail]]></code>
+      <code><![CDATA[firstOrFail]]></code>
+      <code><![CDATA[throw $e]]></code>
+    </MissingThrowsDocblock>
+    <MixedAssignment>
+      <code><![CDATA[$this->bio]]></code>
+      <code><![CDATA[$this->name]]></code>
+    </MixedAssignment>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$team->parent_id]]></code>
+      <code><![CDATA[$this->parent_id]]></code>
+    </RiskyTruthyFalsyComparison>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$currentTeam->id]]></code>
+      <code><![CDATA[$team->id]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="resources/views/livewire/users/[ulid].blade.php">
+    <MissingThrowsDocblock>
+      <code><![CDATA[firstOrFail]]></code>
+      <code><![CDATA[firstOrFail]]></code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="resources/views/livewire/users/ulid.blade.php">
     <MissingThrowsDocblock>
       <code><![CDATA[firstOrFail]]></code>
       <code><![CDATA[firstOrFail]]></code>
     </MissingThrowsDocblock>
   </file>
   <file src="routes/channels.php">
-    <MissingClosureParamType>
-      <code><![CDATA[$id]]></code>
-      <code><![CDATA[$user]]></code>
-    </MissingClosureParamType>
-    <MixedPropertyFetch>
-      <code><![CDATA[$user->id]]></code>
-    </MixedPropertyFetch>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$user->ulid]]></code>
+    </UndefinedMagicPropertyFetch>
   </file>
   <file src="routes/console.php">
     <InvalidScope>
@@ -1452,12 +2147,19 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
   <file src="routes/web.php">
     <MixedArgument>
       <code><![CDATA[when(
-        Features::canManageTwoFactorAuthentication()
-        && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
-        ['password.confirm'],
-        [],
-    )]]></code>
+            Features::canManageTwoFactorAuthentication()
+            && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
+            ['password.confirm'],
+            [],
+        )]]></code>
     </MixedArgument>
+    <MixedMethodCall>
+      <code><![CDATA[name]]></code>
+      <code><![CDATA[name]]></code>
+      <code><![CDATA[name]]></code>
+      <code><![CDATA[name]]></code>
+      <code><![CDATA[name]]></code>
+    </MixedMethodCall>
     <PossiblyInvalidMethodCall>
       <code><![CDATA[name]]></code>
       <code><![CDATA[name]]></code>
@@ -1467,6 +2169,593 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[name]]></code>
     </UncaughtThrowInGlobalScope>
   </file>
+  <file src="tests/Arch/ApplicationLayerDependenciesTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/AuthorizationEventDependenciesTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/ClassStructureTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toBeClasses]]></code>
+      <code><![CDATA[toBeFinal]]></code>
+      <code><![CDATA[toBeFinal]]></code>
+      <code><![CDATA[toBeFinal]]></code>
+      <code><![CDATA[toExtend]]></code>
+      <code><![CDATA[toImplement]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/CoreApplicationDependenciesTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/DomainLayerDependenciesTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/HttpLayerDependenciesTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/NamingConventionsTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[classes]]></code>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toHaveSuffix]]></code>
+      <code><![CDATA[toHaveSuffix]]></code>
+      <code><![CDATA[toHaveSuffix]]></code>
+      <code><![CDATA[toHaveSuffix]]></code>
+      <code><![CDATA[toHaveSuffix]]></code>
+      <code><![CDATA[toHaveSuffix]]></code>
+      <code><![CDATA[toHaveSuffix]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/NegativeDependenciesTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[ignoring]]></code>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toUse]]></code>
+      <code><![CDATA[toUse]]></code>
+      <code><![CDATA[toUse]]></code>
+      <code><![CDATA[toUse]]></code>
+      <code><![CDATA[toUse]]></code>
+      <code><![CDATA[toUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/StateManagementDependenciesTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/TestStructureTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toUse]]></code>
+      <code><![CDATA[toUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Arch/UiLayerDependenciesTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[laravel]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+      <code><![CDATA[toOnlyUse]]></code>
+    </MixedMethodCall>
+    <UndefinedMagicMethod>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[expect]]></code>
+      <code><![CDATA[preset]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Browser/AuthenticationTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$page]]></code>
+      <code><![CDATA[$page]]></code>
+      <code><![CDATA[$page]]></code>
+      <code><![CDATA[$page]]></code>
+      <code><![CDATA[$page]]></code>
+      <code><![CDATA[$page]]></code>
+      <code><![CDATA[$page]]></code>
+      <code><![CDATA[$page]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertPathIs]]></code>
+      <code><![CDATA[assertPathIs]]></code>
+      <code><![CDATA[assertPathIs]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[click]]></code>
+      <code><![CDATA[click]]></code>
+      <code><![CDATA[click]]></code>
+      <code><![CDATA[click]]></code>
+      <code><![CDATA[click]]></code>
+      <code><![CDATA[create]]></code>
+      <code><![CDATA[create]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+    </MixedMethodCall>
+    <MixedPropertyFetch>
+      <code><![CDATA[$user->email]]></code>
+      <code><![CDATA[$user->email]]></code>
+      <code><![CDATA[$user->email]]></code>
+    </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+    <UndefinedFunction>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+    </UndefinedFunction>
+    <UndefinedMagicMethod>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[click]]></code>
+      <code><![CDATA[click]]></code>
+      <code><![CDATA[click]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+      <code><![CDATA[fill]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Browser/ComponentsTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="tests/Browser/DarkModeTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this->actingAs($user)]]></code>
+    </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[actingAs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+    <UndefinedFunction>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+    </UndefinedFunction>
+  </file>
+  <file src="tests/Browser/ExampleTest.php">
+    <MixedMethodCall>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+    </MixedMethodCall>
+    <UndefinedFunction>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+    </UndefinedFunction>
+    <UndefinedMagicMethod>
+      <code><![CDATA[assertSee]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Browser/PagesTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$otherUser]]></code>
+      <code><![CDATA[$otherUser]]></code>
+      <code><![CDATA[$otherUser]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+    <UndefinedFunction>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+    </UndefinedFunction>
+    <UndefinedMagicMethod>
+      <code><![CDATA[assertPathIs]]></code>
+      <code><![CDATA[assertPathIs]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Browser/ResponsiveTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="tests/Browser/SettingsTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[create]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="tests/Browser/SmokeTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$otherUser]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+    <UndefinedFunction>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser(
+        $page->assertSee('Laravel')
+    )]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser(
+        $page->assertSee('Log in to your account')
+    )]]></code>
+      <code><![CDATA[assert_no_javascript_errors_except_csp_parser($page)]]></code>
+    </UndefinedFunction>
+    <UndefinedMagicMethod>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+      <code><![CDATA[assertSee]]></code>
+    </UndefinedMagicMethod>
+  </file>
   <file src="tests/Feature/Auth/AuthenticationTest.php">
     <InvalidScope>
       <code><![CDATA[$this]]></code>
@@ -1475,6 +2764,19 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[create]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Auth/EmailVerificationTest.php">
     <InvalidScope>
@@ -1485,16 +2787,37 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     <MixedArgument>
       <code><![CDATA[$user->email]]></code>
     </MixedArgument>
-    <UndefinedMagicPropertyFetch>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[create]]></code>
+      <code><![CDATA[create]]></code>
+      <code><![CDATA[create]]></code>
+    </MixedMethodCall>
+    <MixedPropertyFetch>
       <code><![CDATA[$user->email]]></code>
       <code><![CDATA[$user->id]]></code>
       <code><![CDATA[$user->id]]></code>
-    </UndefinedMagicPropertyFetch>
+    </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Auth/PasswordConfirmationTest.php">
     <InvalidScope>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Auth/PasswordResetTest.php">
     <InvalidScope>
@@ -1503,6 +2826,16 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Auth/RegistrationTest.php">
     <InvalidScope>
@@ -1517,15 +2850,20 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     </InvalidScope>
   </file>
   <file src="tests/Feature/ChrrpsTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
     <MixedArgument>
-      <code><![CDATA[$user->name]]></code>
+      <code><![CDATA[$this->user]]></code>
+      <code><![CDATA[$this->user]]></code>
+      <code><![CDATA[$this->user]]></code>
     </MixedArgument>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$user = User::factory()->create()]]></code>
-    </PossiblyInvalidArgument>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$user->name]]></code>
-    </UndefinedMagicPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Context/ContextBypassTest.php">
     <InvalidScope>
@@ -1553,6 +2891,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this->enterprise->id]]></code>
       <code><![CDATA[$this->enterprise->id]]></code>
     </MixedArgument>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Context/ContextPersistenceTest.php">
     <InvalidScope>
@@ -1572,6 +2913,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Context/ContextRestorationTest.php">
     <InvalidScope>
@@ -1591,6 +2935,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Context/ContextScopingTest.php">
     <InvalidScope>
@@ -1611,6 +2958,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Context/InvalidContextAutoCorrectionTest.php">
     <InvalidScope>
@@ -1635,6 +2985,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Context/InvalidContextTest.php">
     <InvalidScope>
@@ -1655,6 +3008,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/DashboardTest.php">
     <InvalidScope>
@@ -1934,11 +3290,506 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
 })]]></code>
     </UndefinedDocblockClass>
   </file>
+  <file src="tests/Feature/SchemaArchitectureTest.php">
+    <InternalMethod>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toHaveKeys]]></code>
+      <code><![CDATA[toHaveKeys]]></code>
+    </InternalMethod>
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <MixedArrayAccess>
+      <code><![CDATA[$searchable['bio']]]></code>
+      <code><![CDATA[$searchable['bio']]]></code>
+      <code><![CDATA[$searchable['email']]]></code>
+      <code><![CDATA[$searchable['name']]]></code>
+      <code><![CDATA[$searchable['name']]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code><![CDATA[$searchable]]></code>
+      <code><![CDATA[$searchable]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[toSearchableArray]]></code>
+    </MixedMethodCall>
+    <PossiblyUndefinedMethod>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+      <code><![CDATA[group]]></code>
+    </PossiblyUndefinedMethod>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[test('core models resolve to the application schema', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    $team = new Team();
+    $user = new User();
+    $teamMoveApproval = new TeamMoveApproval();
+    $schema = Config::get('database.connections.pgsql.schema');
+
+    expect($team->getTable())->toBe("{$schema}.teams");
+    expect($user->getTable())->toBe("{$schema}.users");
+    expect($teamMoveApproval->getTable())->toBe("{$schema}.team_move_approvals");
+})]]></code>
+      <code><![CDATA[test('database connection prioritizes custom schemas', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    $path = DB::selectOne('SHOW search_path')->search_path;
+    $schema = Config::get('database.connections.pgsql.schema');
+    $searchSchema = Config::get('database.connections.pgsql.search_schema');
+
+    expect($path)->toContain($schema)
+        ->toContain($searchSchema)
+        ->toContain('public');
+})]]></code>
+      <code><![CDATA[test('domain model is excluded from schema prefixing', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    // Domain extends Stancl BaseDomain and usually expects a specific setup
+    $domain = new Domain();
+    $schema = Config::get('database.connections.pgsql.schema');
+
+    // Should NOT contain the custom schema prefix 'chrrprr.'
+    expect($domain->getTable())->not->toContain("{$schema}.");
+})]]></code>
+      <code><![CDATA[test('role model resolves to the application schema', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    $role = new Role();
+    $schema = Config::get('database.connections.pgsql.schema');
+
+    expect($role->getTable())->toBe("{$schema}.roles");
+})]]></code>
+      <code><![CDATA[test('spatie permission package role queries work with schema scoping', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    setPermissionsTeamId(0);
+
+    // Get count before creating new roles to account for any existing roles
+    $initialCount = Role::query()->count();
+
+    $role1 = Role::create([
+        'name' => 'admin',
+        'guard_name' => 'web',
+    ]);
+
+    $role2 = Role::create([
+        'name' => 'editor',
+        'guard_name' => 'web',
+    ]);
+
+    // Test various query methods from Spatie package
+    // Expect 2 new roles plus any existing roles
+    $allRoles = Role::all();
+    expect($allRoles)->toHaveCount($initialCount + 2);
+
+    $adminRole = Role::query()->where('name', 'admin')->first();
+    expect($adminRole->id)->toBe($role1->id);
+
+    // Test permission assignment (uses pivot table)
+    $permission = Permission::create([
+        'name' => 'edit-posts',
+        'guard_name' => 'web',
+    ]);
+
+    $role1->givePermissionTo($permission);
+    expect($role1->hasPermissionTo('edit-posts'))->toBeTrue();
+})]]></code>
+      <code><![CDATA[test('spatie permission package works with schema scoped role model', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    // Create a role using the schema-scoped model
+    $role = Role::create([
+        'name' => 'test-role',
+        'guard_name' => 'web',
+    ]);
+
+    expect($role->id)->toBeInt();
+    expect($role->name)->toBe('test-role');
+
+    // Verify role can be retrieved
+    $foundRole = Role::findByName('test-role');
+    expect($foundRole->id)->toBe($role->id);
+
+    // Verify role can be assigned to user
+    $user = User::factory()->create();
+    setPermissionsTeamId(0);
+    $user->assignRole($role);
+
+    expect($user->hasRole('test-role'))->toBeTrue();
+    expect($user->roles)->toHaveCount(1);
+})]]></code>
+      <code><![CDATA[test('team model supports full-text search', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    $team = Enterprise::factory()->create([
+        'name' => ['en' => 'Engineering Team'],
+        'bio' => ['en' => 'We build amazing software'],
+    ]);
+
+    $results = Team::query()->fullTextSearch('engineering')->get();
+
+    expect($results)->toHaveCount(1);
+    expect($results->first()->id)->toBe($team->id);
+})]]></code>
+      <code><![CDATA[test('team model supports fuzzy search', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    $team = Enterprise::factory()->create([
+        'name' => ['en' => 'Engineering Team'],
+    ]);
+
+    $results = Team::query()->fuzzySearch('Enginering')->get();
+
+    expect($results)->toHaveCount(1);
+    expect($results->first()->id)->toBe($team->id);
+})]]></code>
+      <code><![CDATA[test('team model toSearchableArray returns correct structure', function (): void {
+    $team = Enterprise::factory()->create([
+        'name' => ['en' => 'Engineering Team'],
+        'bio' => ['en' => 'We build amazing software'],
+    ]);
+
+    $searchable = $team->toSearchableArray();
+
+    expect($searchable)->toHaveKeys(['id', 'ulid', 'name', 'bio', 'type', 'status']);
+    expect($searchable['name'])->toBe('Engineering Team');
+    expect($searchable['bio'])->toBe('We build amazing software');
+})]]></code>
+      <code><![CDATA[test('user model supports full-text search', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    // Ensure search_vector column exists and is properly configured
+    $schema = config('database.connections.pgsql.schema', 'public');
+    $columnInfo = DB::selectOne("
+        SELECT column_name, is_generated
+        FROM information_schema.columns
+        WHERE table_schema = ? AND table_name = 'users' AND column_name = 'search_vector'
+    ", [$schema]);
+
+    if (! $columnInfo || $columnInfo->is_generated !== 'ALWAYS') {
+        $this->markTestSkipped('search_vector column is not properly configured as GENERATED ALWAYS');
+    }
+
+    $user = User::factory()->create([
+        'name' => 'John Doe',
+        'email' => 'john@example.com',
+    ]);
+
+    // For GENERATED ALWAYS columns, the value should be populated automatically on insert
+    // Query search_vector directly from database
+    $searchVector = DB::selectOne('SELECT search_vector FROM users WHERE id = ?', [$user->id]);
+
+    // If search_vector is NULL, the GENERATED ALWAYS column isn't working
+    // This can happen if the migration didn't run correctly or the column wasn't created properly
+    if ($searchVector->search_vector === null) {
+        $this->markTestSkipped('search_vector is NULL - GENERATED ALWAYS column is not populating. This may be a test environment issue where the migration did not run correctly.');
+    }
+
+    $results = User::query()->fullTextSearch('john')->get();
+
+    expect($results)->toHaveCount(1);
+    expect($results->first()->id)->toBe($user->id);
+})]]></code>
+      <code><![CDATA[test('user model supports fuzzy search', function (): void {
+    if (DB::getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    $user = User::factory()->create(['name' => 'John Doe']);
+
+    $results = User::query()->fuzzySearch('Jon')->get();
+
+    expect($results)->toHaveCount(1);
+    expect($results->first()->id)->toBe($user->id);
+})]]></code>
+      <code><![CDATA[test('user model toSearchableArray returns correct structure', function (): void {
+    $user = User::factory()->create([
+        'name' => 'John Doe',
+        'email' => 'john@example.com',
+        'bio' => ['en' => 'Software engineer'],
+    ]);
+
+    $searchable = $user->toSearchableArray();
+
+    expect($searchable)->toHaveKeys(['id', 'ulid', 'name', 'email', 'bio', 'status']);
+    expect($searchable['name'])->toBe('John Doe');
+    expect($searchable['email'])->toBe('john@example.com');
+    expect($searchable['bio'])->toBe('Software engineer');
+})]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="tests/Feature/Services/TeamHierarchyTraversalServiceTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toHaveCount]]></code>
+      <code><![CDATA[toHaveCount]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$org]]></code>
+      <code><![CDATA[$org]]></code>
+      <code><![CDATA[$org1]]></code>
+      <code><![CDATA[$org1]]></code>
+      <code><![CDATA[$org2]]></code>
+      <code><![CDATA[$org2]]></code>
+    </InvalidArgument>
+    <InvalidTemplateParam>
+      <code><![CDATA[expect($descendants)->toHaveCount(2)]]></code>
+    </InvalidTemplateParam>
+    <MixedPropertyFetch>
+      <code><![CDATA[$ancestry->first()->id]]></code>
+    </MixedPropertyFetch>
+    <PossiblyNullPropertyFetch>
+      <code><![CDATA[$ancestry->first()->id]]></code>
+    </PossiblyNullPropertyFetch>
+  </file>
+  <file src="tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$org]]></code>
+      <code><![CDATA[$org]]></code>
+      <code><![CDATA[$org]]></code>
+      <code><![CDATA[$org]]></code>
+    </InvalidArgument>
+    <MissingParamType>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$newParent]]></code>
+      <code><![CDATA[$newParent]]></code>
+      <code><![CDATA[$newParent]]></code>
+      <code><![CDATA[$newParent]]></code>
+      <code><![CDATA[$newParent]]></code>
+      <code><![CDATA[$team]]></code>
+      <code><![CDATA[$team]]></code>
+      <code><![CDATA[$team]]></code>
+      <code><![CDATA[$team]]></code>
+      <code><![CDATA[$team]]></code>
+    </MissingParamType>
+    <MissingThrowsDocblock>
+      <code><![CDATA[throw new RuntimeException('Should not be called')]]></code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="tests/Feature/Services/TeamNameNormalizationServiceTest.php">
+    <InaccessibleProperty>
+      <code><![CDATA[$team->attributes]]></code>
+      <code><![CDATA[$team->attributes]]></code>
+      <code><![CDATA[$team->attributes]]></code>
+      <code><![CDATA[$team->attributes]]></code>
+    </InaccessibleProperty>
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBeArray]]></code>
+      <code><![CDATA[toBeArray]]></code>
+      <code><![CDATA[toHaveKey]]></code>
+      <code><![CDATA[toHaveKey]]></code>
+      <code><![CDATA[toHaveKey]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$team]]></code>
+    </InvalidArgument>
+    <UndefinedMagicMethod>
+      <code><![CDATA[toHaveKey]]></code>
+      <code><![CDATA[toHaveKey]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Feature/Services/TeamOrganisationFinderServiceTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeInstanceOf]]></code>
+      <code><![CDATA[toBeInstanceOf]]></code>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$division]]></code>
+      <code><![CDATA[$division]]></code>
+      <code><![CDATA[$division]]></code>
+      <code><![CDATA[$division]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$org]]></code>
+      <code><![CDATA[$org]]></code>
+      <code><![CDATA[$org1]]></code>
+      <code><![CDATA[$org2]]></code>
+    </InvalidArgument>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$service->findOrganisation($division)?->id]]></code>
+      <code><![CDATA[$service->findOrganisation($org)?->id]]></code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="tests/Feature/Services/TeamTypeResolutionServiceTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBeNull]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$division]]></code>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[Department::factory()->make()]]></code>
+      <code><![CDATA[Division::factory()->make()]]></code>
+      <code><![CDATA[Enterprise::factory()->make()]]></code>
+      <code><![CDATA[Organisation::factory()->make()]]></code>
+      <code><![CDATA[Project::factory()->make()]]></code>
+    </InvalidArgument>
+  </file>
+  <file src="tests/Feature/Services/UserProtectionServiceTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+    </InternalMethod>
+    <MixedArgument>
+      <code><![CDATA[$org->id]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user1]]></code>
+      <code><![CDATA[$user2]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user1]]></code>
+      <code><![CDATA[$user2]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[assignRole]]></code>
+      <code><![CDATA[refresh]]></code>
+      <code><![CDATA[refresh]]></code>
+      <code><![CDATA[refresh]]></code>
+      <code><![CDATA[refresh]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+    <UndefinedMagicPropertyAssignment>
+      <code><![CDATA[$role->is_key]]></code>
+      <code><![CDATA[$role->is_key]]></code>
+    </UndefinedMagicPropertyAssignment>
+    <UndefinedPropertyAssignment>
+      <code><![CDATA[$role->is_key]]></code>
+      <code><![CDATA[$role->is_key]]></code>
+    </UndefinedPropertyAssignment>
+  </file>
   <file src="tests/Feature/Settings/PasswordUpdateTest.php">
     <InvalidScope>
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Settings/ProfileUpdateTest.php">
     <InvalidScope>
@@ -1948,6 +3799,18 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Settings/TwoFactorAuthenticationTest.php">
     <InvalidScope>
@@ -1957,24 +3820,42 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
     <MixedMethodCall>
+      <code><![CDATA[create]]></code>
+      <code><![CDATA[forceFill]]></code>
       <code><![CDATA[save]]></code>
     </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/SfcTest.php">
     <InternalMethod>
       <code><![CDATA[skip]]></code>
     </InternalMethod>
+    <MixedArgument>
+      <code><![CDATA[$user = User::factory()->create()]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
     <MixedMethodCall>
       <code><![CDATA[skip]]></code>
     </MixedMethodCall>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$user = User::factory()->create()]]></code>
-    </PossiblyInvalidArgument>
     <PossiblyUndefinedMethod>
       <code><![CDATA[skip]]></code>
     </PossiblyUndefinedMethod>
     <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
       <code><![CDATA[it('renders the sfc correctly on a manual route', function (): void {
     actingAs($user = User::factory()->create());
 
@@ -2006,9 +3887,47 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[toBeTrue]]></code>
       <code><![CDATA[toBeTrue]]></code>
     </InternalMethod>
+    <MixedAssignment>
+      <code><![CDATA[$editor]]></code>
+      <code><![CDATA[$superAdmin]]></code>
+      <code><![CDATA[$superAdmin]]></code>
+      <code><![CDATA[$targetUser]]></code>
+      <code><![CDATA[$targetUser]]></code>
+      <code><![CDATA[$targetUser]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[assignRole]]></code>
+      <code><![CDATA[assignRole]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[givePermissionTo]]></code>
+    </MixedMethodCall>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[! $systemAdministrator->hasRole('Super Admin')]]></code>
     </RiskyTruthyFalsyComparison>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
     <UndefinedMagicMethod>
       <code><![CDATA[toBeNull]]></code>
     </UndefinedMagicMethod>
@@ -2016,7 +3935,115 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$superAdminRole?->is_key]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
+  <file src="tests/Feature/Support/Html/TeamBioRendererTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toThrow]]></code>
+    </InternalMethod>
+    <UndefinedMagicMethod>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toContain]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/Feature/Support/Validation/TeamHierarchy/CycleValidatorTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$org]]></code>
+    </InvalidArgument>
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <UndefinedPropertyAssignment>
+      <code><![CDATA[$enterprise->parent_id]]></code>
+      <code><![CDATA[$enterprise->parent_id]]></code>
+    </UndefinedPropertyAssignment>
+  </file>
+  <file src="tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toThrow]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$org]]></code>
+    </InvalidArgument>
+  </file>
+  <file src="tests/Feature/Support/Validation/TeamHierarchy/EnterpriseParentValidatorTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBeNull]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$enterprise]]></code>
+      <code><![CDATA[$org]]></code>
+    </InvalidArgument>
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <UndefinedPropertyAssignment>
+      <code><![CDATA[$enterprise->parent_id]]></code>
+    </UndefinedPropertyAssignment>
+  </file>
+  <file src="tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$department]]></code>
+      <code><![CDATA[$org]]></code>
+      <code><![CDATA[$project]]></code>
+    </InvalidArgument>
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+  </file>
+  <file src="tests/Feature/Support/Validation/TeamName/ArrayNameQueryBuilderTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+    </InternalMethod>
+  </file>
+  <file src="tests/Feature/Support/Validation/TeamName/StringNameQueryBuilderTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+    </InternalMethod>
+  </file>
   <file src="tests/Feature/Teams/BulkTeamOperationsTest.php">
+    <InvalidArgument>
+      <code><![CDATA[fn (Organisation $org, int $index): array => [
+            'id' => $org->id,
+            'name' => 'Updated Team '.($index + 1),
+            'type' => TeamType::ORGANISATION->value,
+            'parent_id' => $this->enterprise->id,
+            'lock_version' => $org->lock_version,
+        ]]]></code>
+    </InvalidArgument>
+    <InvalidReturnStatement>
+      <code><![CDATA[[
+                'name' => $name,
+                'type' => TeamType::ORGANISATION->value,
+                'parent_id' => $this->enterprise->id,
+            ]]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[array{name: 'Team 1'|'Team 2'|'Team 3', type: 'organisation', parent_id: mixed}]]></code>
+    </InvalidReturnType>
     <InvalidScope>
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
@@ -2040,14 +4067,13 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$org->id]]></code>
+    </UndefinedMagicPropertyFetch>
   </file>
   <file src="tests/Feature/Teams/ContextSwitchingTest.php">
     <InvalidScope>
@@ -2072,6 +4098,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     <MixedArgument>
       <code><![CDATA[$this->enterprise->id]]></code>
     </MixedArgument>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Teams/CreateTeamComponentTest.php">
     <InternalMethod>
@@ -2093,11 +4122,27 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[skip]]></code>
     </PossiblyUndefinedMethod>
     <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
       <code><![CDATA[it('renders the create team page', function (): void {
     // Skip: Folio pages with anonymous Livewire components cannot be tested directly
     // The functionality is tested through CreateTeam action tests
     $this->markTestIncomplete('Folio pages with anonymous Livewire components require route registration in tests');
 })]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="tests/Feature/Teams/CreateTeamWithVerbsTest.php">
+    <InvalidScope>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
+    </InvalidScope>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Teams/DepartmentCreationTest.php">
@@ -2152,6 +4197,7 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[skip]]></code>
     </PossiblyUndefinedMethod>
     <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
       <code><![CDATA[it('renders the edit team page', function (): void {
     // Skip: Folio pages with anonymous Livewire components cannot be tested directly
     // The functionality is tested through UpdateTeam action tests
@@ -2202,6 +4248,23 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$org->id]]></code>
       <code><![CDATA[$org->id]]></code>
     </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$user1]]></code>
+      <code><![CDATA[$user1]]></code>
+      <code><![CDATA[$user2]]></code>
+      <code><![CDATA[$user2]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[hasRole]]></code>
+      <code><![CDATA[hasRole]]></code>
+      <code><![CDATA[hasRole]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Teams/HierarchicalSlugTest.php">
     <InternalMethod>
@@ -2214,12 +4277,12 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     </InternalMethod>
   </file>
   <file src="tests/Feature/Teams/HierarchyValidationTest.php">
-    <InvalidScope>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-      <code><![CDATA[$this]]></code>
-    </InvalidScope>
+    <InternalMethod>
+      <code><![CDATA[toThrow]]></code>
+      <code><![CDATA[toThrow]]></code>
+      <code><![CDATA[toThrow]]></code>
+      <code><![CDATA[toThrow]]></code>
+    </InternalMethod>
   </file>
   <file src="tests/Feature/Teams/OptimisticLockingTest.php">
     <MissingThrowsDocblock>
@@ -2229,12 +4292,11 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[id]]></code>
       <code><![CDATA[lock_version]]></code>
       <code><![CDATA[lock_version]]></code>
-      <code><![CDATA[lock_version]]></code>
       <code><![CDATA[save]]></code>
       <code><![CDATA[save]]></code>
       <code><![CDATA[save]]></code>
       <code><![CDATA[self::assertSame('Updated Name 1', $team1->fresh()->getTranslation('name', 'en'))]]></code>
-      <code><![CDATA[self::assertSame(1, $team->fresh()->lock_version)]]></code>
+      <code><![CDATA[self::assertSame(1, $team->fresh()?->lock_version)]]></code>
       <code><![CDATA[self::assertSame(1, $team->lock_version)]]></code>
       <code><![CDATA[self::assertSame(1, $team1->fresh()->lock_version)]]></code>
       <code><![CDATA[setTranslation]]></code>
@@ -2242,7 +4304,6 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[setTranslation]]></code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyFetch>
-      <code><![CDATA[$team->fresh()->lock_version]]></code>
       <code><![CDATA[$team1->fresh()->lock_version]]></code>
     </PossiblyNullPropertyFetch>
     <PossiblyNullReference>
@@ -2318,6 +4379,24 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[toBeTrue]]></code>
       <code><![CDATA[toBeTrue]]></code>
     </InternalMethod>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+      <code><![CDATA[can]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Teams/TeamBioSanitizationTest.php">
     <InternalMethod>
@@ -2370,6 +4449,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     </UndefinedMagicMethod>
   </file>
   <file src="tests/Feature/Teams/TeamMoveApprovalTest.php">
+    <DeprecatedClass>
+      <code><![CDATA[TeamMoveService::class]]></code>
+    </DeprecatedClass>
     <InvalidScope>
       <code><![CDATA[$this]]></code>
       <code><![CDATA[$this]]></code>
@@ -2385,6 +4467,37 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$org1->id]]></code>
       <code><![CDATA[$org2->id]]></code>
     </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$approver]]></code>
+      <code><![CDATA[$approver1]]></code>
+      <code><![CDATA[$approver2]]></code>
+      <code><![CDATA[$requester]]></code>
+      <code><![CDATA[$requester]]></code>
+      <code><![CDATA[$requester]]></code>
+      <code><![CDATA[$unauthorizedUser]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[assignRole]]></code>
+      <code><![CDATA[assignRole]]></code>
+      <code><![CDATA[assignRole]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Teams/TeamMoveCyclePreventionTest.php">
     <MissingThrowsDocblock>
@@ -2452,15 +4565,40 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     <MixedArgument>
       <code><![CDATA[$org->id]]></code>
     </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user1]]></code>
+      <code><![CDATA[$user2]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[assignRole]]></code>
+      <code><![CDATA[delete]]></code>
+      <code><![CDATA[delete]]></code>
+      <code><![CDATA[delete]]></code>
+      <code><![CDATA[isProtectable]]></code>
+      <code><![CDATA[isProtectable]]></code>
+      <code><![CDATA[refresh]]></code>
+      <code><![CDATA[refresh]]></code>
+      <code><![CDATA[refresh]]></code>
+    </MixedMethodCall>
+    <MixedPropertyFetch>
+      <code><![CDATA[$user->id]]></code>
+      <code><![CDATA[$user->id]]></code>
+      <code><![CDATA[$user1->id]]></code>
+    </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
     <UndefinedMagicPropertyAssignment>
       <code><![CDATA[$role->is_key]]></code>
       <code><![CDATA[$role->is_key]]></code>
     </UndefinedMagicPropertyAssignment>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$user->id]]></code>
-      <code><![CDATA[$user->id]]></code>
-      <code><![CDATA[$user1->id]]></code>
-    </UndefinedMagicPropertyFetch>
     <UndefinedPropertyAssignment>
       <code><![CDATA[$role->is_key]]></code>
       <code><![CDATA[$role->is_key]]></code>
@@ -2480,6 +4618,14 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     <MixedArgument>
       <code><![CDATA[$user->ulid]]></code>
     </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user1]]></code>
+      <code><![CDATA[$user2]]></code>
+    </MixedAssignment>
     <MixedMethodCall>
       <code><![CDATA[and]]></code>
       <code><![CDATA[and]]></code>
@@ -2488,13 +4634,7 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[toBe]]></code>
       <code><![CDATA[toBe]]></code>
     </MixedMethodCall>
-    <UndefinedMagicMethod>
-      <code><![CDATA[toBe]]></code>
-      <code><![CDATA[toBeNull]]></code>
-      <code><![CDATA[toBeNull]]></code>
-    </UndefinedMagicMethod>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$user->id]]></code>
+    <MixedPropertyFetch>
       <code><![CDATA[$user->id]]></code>
       <code><![CDATA[$user->id]]></code>
       <code><![CDATA[$user->id]]></code>
@@ -2503,6 +4643,22 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[$user->ulid]]></code>
       <code><![CDATA[$user1->ulid]]></code>
       <code><![CDATA[$user2->ulid]]></code>
+    </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+    <UndefinedMagicMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toBeNull]]></code>
+    </UndefinedMagicMethod>
+    <UndefinedMagicPropertyFetch>
+      <code><![CDATA[$user->id]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
   <file src="tests/Feature/Users/TranslatableAttributesTest.php">
@@ -2517,10 +4673,32 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     </InternalMethod>
     <MixedAssignment>
       <code><![CDATA[$translation]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
     </MixedAssignment>
-    <UndefinedMagicPropertyFetch>
+    <MixedMethodCall>
+      <code><![CDATA[getTranslation]]></code>
+      <code><![CDATA[getTranslation]]></code>
+      <code><![CDATA[getTranslation]]></code>
+      <code><![CDATA[getTranslation]]></code>
+      <code><![CDATA[save]]></code>
+      <code><![CDATA[save]]></code>
+      <code><![CDATA[save]]></code>
+      <code><![CDATA[setTranslation]]></code>
+      <code><![CDATA[setTranslation]]></code>
+      <code><![CDATA[setTranslation]]></code>
+      <code><![CDATA[setTranslation]]></code>
+      <code><![CDATA[setTranslation]]></code>
+    </MixedMethodCall>
+    <MixedPropertyFetch>
       <code><![CDATA[$user->bio]]></code>
-    </UndefinedMagicPropertyFetch>
+    </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Users/UlidRouteBindingTest.php">
     <InternalMethod>
@@ -2533,22 +4711,31 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     </InvalidScope>
     <MixedAssignment>
       <code><![CDATA[$found]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
     </MixedAssignment>
     <MixedMethodCall>
       <code><![CDATA[and]]></code>
       <code><![CDATA[first]]></code>
+      <code><![CDATA[getRouteKeyName]]></code>
       <code><![CDATA[toBe]]></code>
     </MixedMethodCall>
     <MixedPropertyFetch>
       <code><![CDATA[$found->id]]></code>
+      <code><![CDATA[$user->id]]></code>
+      <code><![CDATA[$user->ulid]]></code>
     </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
     <UndefinedMagicMethod>
       <code><![CDATA[toBeNull]]></code>
     </UndefinedMagicMethod>
     <UndefinedMagicPropertyFetch>
       <code><![CDATA[$user->id]]></code>
-      <code><![CDATA[$user->id]]></code>
-      <code><![CDATA[$user->ulid]]></code>
     </UndefinedMagicPropertyFetch>
   </file>
   <file src="tests/Feature/Users/UserEnterpriseRelationshipsTest.php">
@@ -2559,6 +4746,9 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     </InternalMethod>
     <MixedAssignment>
       <code><![CDATA[$tenant]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
     </MixedAssignment>
     <MixedMethodCall>
       <code><![CDATA[and]]></code>
@@ -2569,15 +4759,20 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     <MixedPropertyFetch>
       <code><![CDATA[$tenant->id]]></code>
       <code><![CDATA[$tenant->type]]></code>
+      <code><![CDATA[$tenant->type->value]]></code>
+      <code><![CDATA[$user->tenant]]></code>
+      <code><![CDATA[$user->tenant]]></code>
+      <code><![CDATA[$user->tenant]]></code>
       <code><![CDATA[$user->tenant->id]]></code>
     </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
     <UndefinedMagicMethod>
       <code><![CDATA[toBeNull]]></code>
     </UndefinedMagicMethod>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$tenant->id]]></code>
-      <code><![CDATA[$user->tenant->id]]></code>
-    </UndefinedMagicPropertyFetch>
   </file>
   <file src="tests/Feature/Users/UserStateTransitionsTest.php">
     <InternalMethod>
@@ -2589,23 +4784,31 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[toBe]]></code>
       <code><![CDATA[toBeInstanceOf]]></code>
     </InternalMethod>
-    <PossiblyNullPropertyFetch>
-      <code><![CDATA[$user->fresh()->state]]></code>
-      <code><![CDATA[$user->fresh()->state]]></code>
-    </PossiblyNullPropertyFetch>
-    <UndefinedMagicPropertyAssignment>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[save]]></code>
+      <code><![CDATA[save]]></code>
+    </MixedMethodCall>
+    <MixedPropertyAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedPropertyAssignment>
+    <MixedPropertyFetch>
+      <code><![CDATA[$user->fresh()?->state]]></code>
+      <code><![CDATA[$user->fresh()?->state]]></code>
       <code><![CDATA[$user->state]]></code>
-      <code><![CDATA[$user->state]]></code>
-    </UndefinedMagicPropertyAssignment>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$user->fresh()->state]]></code>
-      <code><![CDATA[$user->fresh()->state]]></code>
-      <code><![CDATA[$user->state]]></code>
-    </UndefinedMagicPropertyFetch>
-    <UndefinedPropertyAssignment>
-      <code><![CDATA[$user->state]]></code>
-      <code><![CDATA[$user->state]]></code>
-    </UndefinedPropertyAssignment>
+    </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Feature/Users/UserStatusTest.php">
     <InternalMethod>
@@ -2622,50 +4825,115 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[toBeInstanceOf]]></code>
       <code><![CDATA[toBeNull]]></code>
     </InternalMethod>
-    <PossiblyNullPropertyFetch>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-    </PossiblyNullPropertyFetch>
-    <UndefinedMagicPropertyAssignment>
+    <MixedAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[fresh]]></code>
+      <code><![CDATA[save]]></code>
+      <code><![CDATA[save]]></code>
+      <code><![CDATA[save]]></code>
+      <code><![CDATA[save]]></code>
+      <code><![CDATA[save]]></code>
+    </MixedMethodCall>
+    <MixedPropertyAssignment>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedPropertyAssignment>
+    <MixedPropertyFetch>
+      <code><![CDATA[$user->fresh()?->status]]></code>
+      <code><![CDATA[$user->fresh()?->status]]></code>
+      <code><![CDATA[$user->fresh()?->status]]></code>
+      <code><![CDATA[$user->fresh()?->status]]></code>
+      <code><![CDATA[$user->fresh()?->status]]></code>
+      <code><![CDATA[$user->fresh()?->status]]></code>
       <code><![CDATA[$user->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-    </UndefinedMagicPropertyAssignment>
-    <UndefinedMagicPropertyFetch>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->fresh()->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-    </UndefinedMagicPropertyFetch>
-    <UndefinedPropertyAssignment>
-      <code><![CDATA[$user->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-      <code><![CDATA[$user->status]]></code>
-    </UndefinedPropertyAssignment>
+    </MixedPropertyFetch>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
   </file>
   <file src="tests/Pest.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$e]]></code>
+    </ArgumentTypeCoercion>
     <InternalMethod>
+      <code><![CDATA[beforeEach]]></code>
+      <code><![CDATA[extend]]></code>
       <code><![CDATA[extend]]></code>
       <code><![CDATA[in]]></code>
+      <code><![CDATA[in]]></code>
+      <code><![CDATA[in]]></code>
+      <code><![CDATA[new AssertionFailedError(
+                    "Expected no JavaScript errors on the page, but found:\n".
+                    implode("\n", array_map(fn (string $error): string => "- {$error}", $realErrors))
+                )]]></code>
+      <code><![CDATA[new AssertionFailedError(
+                "Expected no JavaScript errors on the page, but found:\n".
+                implode("\n", array_map(fn (string $error): string => "- {$error}", $realErrors))
+            )]]></code>
+      <code><![CDATA[new AssertionFailedError(
+            "Expected no console logs on the page, but found:\n".
+            implode("\n", array_map(fn (string $log): string => "- {$log}", $realLogs))
+        )]]></code>
+      <code><![CDATA[use]]></code>
       <code><![CDATA[use]]></code>
     </InternalMethod>
     <InvalidScope>
       <code><![CDATA[$this]]></code>
+      <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[is_array($matches[1] ?? null) ? $matches[1] : []]]></code>
+    </LessSpecificReturnStatement>
     <MissingClosureReturnType>
       <code><![CDATA[fn () => $this->toBe(1)]]></code>
     </MissingClosureReturnType>
+    <MissingThrowsDocblock>
+      <code><![CDATA[throw $e]]></code>
+      <code><![CDATA[throw new AssertionFailedError(
+                    "Expected no JavaScript errors on the page, but found:\n".
+                    implode("\n", array_map(fn (string $error): string => "- {$error}", $realErrors))
+                )]]></code>
+      <code><![CDATA[throw new AssertionFailedError(
+                "Expected no JavaScript errors on the page, but found:\n".
+                implode("\n", array_map(fn (string $error): string => "- {$error}", $realErrors))
+            )]]></code>
+      <code><![CDATA[throw new AssertionFailedError(
+            "Expected no console logs on the page, but found:\n".
+            implode("\n", array_map(fn (string $log): string => "- {$log}", $realLogs))
+        )]]></code>
+    </MissingThrowsDocblock>
+    <MoreSpecificReturnType>
+      <code><![CDATA[list<non-empty-string>]]></code>
+    </MoreSpecificReturnType>
+    <UndefinedMagicMethod>
+      <code><![CDATA[assertNoConsoleLogs]]></code>
+      <code><![CDATA[assertNoJavascriptErrors]]></code>
+    </UndefinedMagicMethod>
+  </file>
+  <file src="tests/TestCase.php">
+    <InvalidCast>
+      <code><![CDATA[config('database.connections.pgsql.schema', 'public')]]></code>
+      <code><![CDATA[config('database.connections.pgsql.search_schema', 'search')]]></code>
+    </InvalidCast>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[beforeRefreshingDatabase]]></code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="tests/Unit/DummyTest.php">
     <InternalMethod>
@@ -2750,6 +5018,11 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[toBeTrue]]></code>
     </InternalMethod>
   </file>
+  <file src="tests/Unit/Handlers/Commands/Teams/UpdateTeamHandlerTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBeTrue]]></code>
+    </InternalMethod>
+  </file>
   <file src="tests/Unit/Models/Concerns/HasTranslatableAttributesTest.php">
     <InternalMethod>
       <code><![CDATA[toBe]]></code>
@@ -2823,6 +5096,7 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[toBe]]></code>
       <code><![CDATA[toBe]]></code>
       <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
       <code><![CDATA[toContain]]></code>
       <code><![CDATA[toContain]]></code>
       <code><![CDATA[toContain]]></code>
@@ -2832,9 +5106,18 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
       <code><![CDATA[toContain]]></code>
       <code><![CDATA[toContain]]></code>
     </InternalMethod>
+    <MixedAssignment>
+      <code><![CDATA[$expectedSource]]></code>
+      <code><![CDATA[$slugField]]></code>
+      <code><![CDATA[$sourceFields]]></code>
+    </MixedAssignment>
   </file>
   <file src="tests/Unit/Models/UserTest.php">
     <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
       <code><![CDATA[toBe]]></code>
       <code><![CDATA[toBe]]></code>
       <code><![CDATA[toContain]]></code>
@@ -2844,5 +5127,137 @@ Johnson', 'message' => 'Working on something cool with Chrrprr...', 'time' => '3
     <InvalidScope>
       <code><![CDATA[$this]]></code>
     </InvalidScope>
+    <MixedAssignment>
+      <code><![CDATA[$expectedSource]]></code>
+      <code><![CDATA[$slugField]]></code>
+      <code><![CDATA[$sourceFields]]></code>
+      <code><![CDATA[$user]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[getTranslation]]></code>
+    </MixedMethodCall>
+    <UndefinedDocblockClass>
+      <code><![CDATA[User::factory()]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="tests/Unit/Support/ResultTest.php">
+    <InternalMethod>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBe]]></code>
+      <code><![CDATA[toBeArray]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeFalse]]></code>
+      <code><![CDATA[toBeInstanceOf]]></code>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toBeNull]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toBeTrue]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toHaveCount]]></code>
+      <code><![CDATA[toHaveKeys]]></code>
+      <code><![CDATA[toThrow]]></code>
+    </InternalMethod>
+    <InvalidArgument>
+      <code><![CDATA[$tasks]]></code>
+    </InvalidArgument>
+    <MissingClosureParamType>
+      <code><![CDATA[$x]]></code>
+      <code><![CDATA[$x]]></code>
+      <code><![CDATA[$x]]></code>
+      <code><![CDATA[$x]]></code>
+    </MissingClosureParamType>
+    <MixedArrayAccess>
+      <code><![CDATA[$result->value['task1']]]></code>
+      <code><![CDATA[$result->value['task2']]]></code>
+      <code><![CDATA[$result->value['task3']]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[toArray]]></code>
+    </MixedMethodCall>
+    <MixedOperand>
+      <code><![CDATA[$val]]></code>
+      <code><![CDATA[$val]]></code>
+      <code><![CDATA[$val]]></code>
+      <code><![CDATA[$val]]></code>
+      <code><![CDATA[$x]]></code>
+      <code><![CDATA[$x]]></code>
+      <code><![CDATA[$x]]></code>
+      <code><![CDATA[$x]]></code>
+      <code><![CDATA[$x]]></code>
+      <code><![CDATA[$x]]></code>
+    </MixedOperand>
+    <MixedReturnStatement>
+      <code><![CDATA[$x * 2]]></code>
+      <code><![CDATA[$x * 2]]></code>
+      <code><![CDATA[$x + 3]]></code>
+    </MixedReturnStatement>
+    <UndefinedMagicMethod>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[toContain]]></code>
+      <code><![CDATA[unknownMethod]]></code>
+    </UndefinedMagicMethod>
   </file>
 </files>

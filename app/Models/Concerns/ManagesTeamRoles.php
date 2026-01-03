@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Models\Concerns;
 
 use App\Models\User;
+use App\Support\Result;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\ValidationException;
-use Spatie\Permission\Exceptions\RoleDoesNotExist;
+use RuntimeException;
 
 trait ManagesTeamRoles
 {
@@ -49,22 +50,51 @@ trait ManagesTeamRoles
         $this->validateExecutiveDeputyConstraints($user, 'executive');
 
         $this->withTeamContext(static function () use ($user): void {
-            try {
-                $existing = User::query()
-                    ->role('executive')
-                    ->where('id', '!=', $user->id)
-                    ->first();
+            // Use Result monad to handle RoleDoesNotExist as "error as value"
+            $result = Result::try(
+                static function () use ($user): ?User {
+                    /** @var int|string $userId */
+                    $userId = $user->getKey();
 
-                if ($existing) {
-                    throw ValidationException::withMessages([
-                        'executive' => ['This team already has an executive assigned.'],
-                    ]);
+                    /** @var User|null */
+                    return User::query()
+                        ->role('executive')
+                        ->where('id', '!=', $userId)
+                        ->first();
+                },
+                ['Checking for existing executive']
+            );
+
+            // If RoleDoesNotExist was thrown, that's fine - no existing executive to check
+            // Otherwise, check if we got a result (existing executive)
+            $result->match(
+                onSuccess: static function ($existing): void {
+                    if ($existing !== null) {
+                        throw ValidationException::withMessages([
+                            'executive' => ['This team already has an executive assigned.'],
+                        ]);
+                    }
+                },
+                onFailure: static function (string $error, array $logs): void {
+                    // Check if the exception was RoleDoesNotExist by examining logs
+                    $isRoleDoesNotExist = false;
+                    foreach ($logs as $log) {
+                        if (! str_contains($log, 'RoleDoesNotExist')) {
+                            continue;
+                        }
+
+                        $isRoleDoesNotExist = true;
+
+                        break;
+                    }
+
+                    // Role doesn't exist yet in team context, so no existing executive to check
+                    // This is fine - we can proceed with assignment
+                    // The role will be assigned when assignRole is called
+                    // Only ignore RoleDoesNotExist, re-throw other exceptions
+                    throw_unless($isRoleDoesNotExist, RuntimeException::class, $error);
                 }
-            } catch (RoleDoesNotExist) {
-                // Role doesn't exist yet in team context, so no existing executive to check
-                // This is fine - we can proceed with assignment
-                // The role will be assigned when assignRole is called
-            }
+            );
 
             $user->assignRole('executive');
         });
@@ -90,13 +120,37 @@ trait ManagesTeamRoles
      */
     public function hasExecutive(): bool
     {
-        // Closure executes query logic, cannot use first-class callable syntax
+        // Use Result monad to handle RoleDoesNotExist as "error as value"
         return $this->withTeamContext(static function (): bool {
-            try {
-                return User::query()->role('executive')->exists();
-            } catch (RoleDoesNotExist) {
-                return false;
-            }
+            $result = Result::try(
+                static fn (): bool => User::query()->role('executive')->exists(),
+                ['Checking for executive existence']
+            );
+
+            /** @var bool */
+            return $result->match(
+                // @mago-expect Identity function in monadic context, not a boolean flag parameter
+                onSuccess: static fn (mixed $exists, array $logs): bool => (bool) $exists,
+                onFailure: static function (string $error, array $logs): bool {
+                    // Check if the exception was RoleDoesNotExist by examining logs
+                    $isRoleDoesNotExist = false;
+                    foreach ($logs as $log) {
+                        if (! str_contains($log, 'RoleDoesNotExist')) {
+                            continue;
+                        }
+
+                        $isRoleDoesNotExist = true;
+
+                        break;
+                    }
+
+                    // Role doesn't exist yet, so no executive
+                    // Only return false for RoleDoesNotExist, re-throw other exceptions
+                    throw_unless($isRoleDoesNotExist, RuntimeException::class, $error);
+
+                    return false;
+                }
+            );
         });
     }
 
@@ -127,7 +181,7 @@ trait ManagesTeamRoles
      */
     public function deputies(): Collection
     {
-        // Closure executes query logic, cannot use first-class callable syntax
+        // @mago-expect Closure executes query logic, not forwarding arguments - first-class callable syntax not applicable
         return $this->withTeamContext(static fn (): Collection => User::query()->role('deputy')->get());
     }
 
@@ -155,26 +209,52 @@ trait ManagesTeamRoles
     {
         $conflictingRole = $role === 'executive' ? 'deputy' : 'executive';
 
-        if (! $this->userHasRole($user, $conflictingRole)) {
+        // Use Result monad to handle RoleDoesNotExist as "error as value"
+        // @mago-expect Closure captures variables from outer scope ($conflictingRole, $user)
+        // Cannot use static without use() clause - non-static closure is appropriate here
+        $result = Result::try(
+            static function () use ($conflictingRole, $user): bool {
+                /** @var int|string $userId */
+                $userId = $user->getKey();
+
+                /** @var bool */
+                return User::query()->role($conflictingRole)->where('id', $userId)->exists();
+            },
+            ['Checking for role conflict']
+        );
+
+        /** @var bool $hasConflictingRole */
+        $hasConflictingRole = $result->match(
+            // @mago-expect Identity function in monadic context, not a boolean flag parameter
+            onSuccess: static fn (mixed $exists, array $logs): bool => (bool) $exists,
+            onFailure: static function (string $error, array $logs): bool {
+                // Check if the exception was RoleDoesNotExist by examining logs
+                $isRoleDoesNotExist = false;
+                foreach ($logs as $log) {
+                    if (! str_contains($log, 'RoleDoesNotExist')) {
+                        continue;
+                    }
+
+                    $isRoleDoesNotExist = true;
+
+                    break;
+                }
+
+                // Role doesn't exist yet, so no conflict to check
+                // This is expected behavior when roles haven't been created yet
+                // Only return false for RoleDoesNotExist, re-throw other exceptions
+                throw_unless($isRoleDoesNotExist, RuntimeException::class, $error);
+
+                return false;
+            }
+        );
+
+        if (! $hasConflictingRole) {
             return;
         }
 
         throw ValidationException::withMessages([
             $role => ['A user cannot be both executive and deputy of the same team.'],
         ]);
-    }
-
-    /**
-     * Check if the user has the given role in the current team context.
-     */
-    private function userHasRole(User $user, string $role): bool
-    {
-        try {
-            return User::query()->role($role)->where('id', $user->id)->exists();
-        } catch (RoleDoesNotExist) {
-            // Role doesn't exist yet, so no conflict to check
-            // This is expected behavior when roles haven't been created yet
-            return false;
-        }
     }
 }

@@ -5,10 +5,10 @@ declare(strict_types=1);
 use App\Enums\UserState;
 use App\Enums\UserStatus;
 use App\Models\Concerns\HasTranslatableAttributes;
+use App\Models\Concerns\HasTranslatableSlug;
 use App\Models\Concerns\HasUlid;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Sluggable\HasSlug;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
@@ -19,7 +19,7 @@ test('user model has expected traits', function (): void {
     expect($traits)
         ->toContain(HasUlid::class)
         ->toContain(HasTranslatableAttributes::class)
-        ->toContain(HasSlug::class);
+        ->toContain(HasTranslatableSlug::class);
 });
 
 test('user model casts attributes correctly', function (): void {
@@ -30,7 +30,12 @@ test('user model casts attributes correctly', function (): void {
     // We can inspect method return or use getCasts()
     $casts = $model->getCasts();
 
-    expect($casts['state'])->toBe(UserState::class)->and($casts['status'])->toBe(UserStatus::class);
+    expect($casts['state'])
+        ->toBe(UserState::class)
+        ->and($casts['status'])
+        ->toBe(UserStatus::class)
+        ->and($casts['slug'])
+        ->toBe('array');
 });
 
 test('user model is translatable', function (): void {
@@ -40,7 +45,9 @@ test('user model is translatable', function (): void {
         $this->fail('User model missing translatable property');
     }
 
-    expect($model->translatable)->toContain('bio');
+    expect($model->translatable)
+        ->toContain('bio')
+        ->toContain('slug');
 });
 
 test('user model has sluggable configuration', function (): void {
@@ -50,11 +57,9 @@ test('user model has sluggable configuration', function (): void {
     // Use reflection to access SlugOptions properties
     $reflection = new ReflectionClass($slugOptions);
     $slugFieldProperty = $reflection->getProperty('slugField');
-    $slugFieldProperty->setAccessible(true);
     $slugField = $slugFieldProperty->getValue($slugOptions);
 
     $generateSlugFromProperty = $reflection->getProperty('generateSlugFrom');
-    $generateSlugFromProperty->setAccessible(true);
     $sourceFields = $generateSlugFromProperty->getValue($slugOptions);
 
     // generateSlugFrom can be a string or array
@@ -69,5 +74,5 @@ test('user model generates slug from name', function (): void {
         'name' => 'John Doe',
     ]);
 
-    expect($user->slug)->toBe('john-doe');
+    expect($user->getTranslation('slug', 'en'))->toBe('john-doe');
 });

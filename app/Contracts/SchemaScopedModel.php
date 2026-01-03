@@ -9,5 +9,5 @@ interface SchemaScopedModel
     /**
      * Get the table associated with the model, scoped to the app schema.
      */
-    public function getTable();
+    public function getTable(): string;
 }

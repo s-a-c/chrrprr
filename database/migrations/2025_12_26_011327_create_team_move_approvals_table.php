@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,8 +18,8 @@ return new class extends Migration {
         }
 
         // Get schema name for foreign key references
-        $schema = \Illuminate\Support\Facades\Config::get('database.connections.pgsql.schema');
-        if ($schema && str_contains($schema, '${APP_ID}')) {
+        $schema = Config::get('database.connections.pgsql.schema');
+        if ($schema && str_contains((string) $schema, '${APP_ID}')) {
             $appId = env('APP_ID', 'chrrprr');
             $schema = str_replace('${APP_ID}', $appId, $schema);
         }

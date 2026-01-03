@@ -5,24 +5,25 @@ declare(strict_types=1);
 namespace App\Livewire\Teams;
 
 use App\Http\Requests\MoveTeamRequest;
+use App\Livewire\Concerns\HandlesResults;
 use App\Models\Team;
 use App\Models\TeamMoveApproval;
 use App\Services\TeamMove\TeamMoveRequestService;
-use Exception;
+use App\Support\Result;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 
 final class MoveTeam extends Component
 {
+    use HandlesResults;
+
     public string $teamUlid = '';
 
     public ?string $parent_id = null;
 
     public string $reason = '';
-
-    public string $errorMessage = '';
 
     public TeamMoveApproval|Team|null $result = null;
 
@@ -30,39 +31,49 @@ final class MoveTeam extends Component
     {
         $team = Team::query()->where('ulid', $ulid)->firstOrFail();
         $this->teamUlid = $ulid;
-        $this->parent_id = $team->parent_id ? (string) $team->parent_id : null;
+        $this->parent_id = $team->parent_id !== null ? (string) $team->parent_id : null;
     }
 
+    /**
+     * @throws ModelNotFoundException
+     */
     public function submit(): void
     {
-        $this->errorMessage = '';
         $this->result = null;
 
         $rules = new MoveTeamRequest()->rules();
         $this->validate($rules);
 
-        try {
-            $team = Team::query()->where('ulid', $this->teamUlid)->firstOrFail();
-            $service = resolve(TeamMoveRequestService::class);
+        $team = Team::query()->where('ulid', $this->teamUlid)->firstOrFail();
+        $service = resolve(TeamMoveRequestService::class);
 
-            $this->result = $service->requestMove(
-                $team,
-                $this->parent_id ? (int) $this->parent_id : null,
-                auth()->user(),
-                $this->reason !== null && $this->reason !== '' ? $this->reason : null,
-            );
+        // Service now returns Result directly - no need for Result::try()
+        $result = $service->requestMove(
+            $team,
+            $this->parent_id ? (int) $this->parent_id : null,
+            auth()->user(),
+            $this->reason !== null && $this->reason !== '' ? $this->reason : null,
+        )->flatMap(function (TeamMoveApproval|Team $moveResult): Result {
+            $this->result = $moveResult;
 
-            $statusMessage = $this->result instanceof TeamMoveApproval
+            $statusMessage = $moveResult instanceof TeamMoveApproval
                 ? 'Team move request submitted for approval.'
                 : 'Team moved successfully.';
 
-            session()->flash('status', $statusMessage);
+            return Result::success($moveResult, [$statusMessage]);
+        });
 
+        // Handle the result using the trait method
+        /** @var TeamMoveApproval|Team|null $moveResult */
+        $moveResult = $this->handleResult(
+            $result,
+            $this->result instanceof TeamMoveApproval
+                ? 'Team move request submitted for approval.'
+                : 'Team moved successfully.'
+        );
+
+        if ($moveResult !== null) {
             $this->redirect(route('teams.index'));
-        } catch (ValidationException $e) {
-            throw $e; // Let Livewire handle standard validation errors
-        } catch (Exception $e) {
-            $this->errorMessage = 'An error occurred: '.$e->getMessage();
         }
     }
 

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Controller;
+
 /*
  * |--------------------------------------------------------------------------
  * | HTTP Layer Dependency Rules
@@ -28,7 +30,7 @@ arch('Controllers should only depend on Models, Requests, Resources, and framewo
         'Illuminate',
         'Laravel',
     ])
-    ->ignoring('App\Http\Controllers\Controller');
+    ->ignoring(Controller::class);
 
 arch('Form Requests should only use Enums, Models, and framework classes')
     ->expect('App\Http\Requests')

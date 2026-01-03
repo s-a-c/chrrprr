@@ -10,12 +10,15 @@ use App\Enums\TeamType;
 use App\Models\Builders\TeamBuilder;
 use App\Models\Concerns\HasCustomSchema;
 use App\Models\Concerns\HasTeamHierarchy;
+use App\Models\Concerns\HasTeamSearch;
 use App\Models\Concerns\HasTranslatableAttributes;
 use App\Models\Concerns\HasTranslatableSlug;
 use App\Models\Concerns\HasUlid;
 use App\Models\Concerns\ManagesTeamRoles;
+use App\Observers\TeamObserver;
 use App\States\Team\TeamState;
 use App\Support\Html\TeamBioRenderer;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,14 +33,18 @@ use Spatie\ModelStates\HasStates;
 use Spatie\Sluggable\SlugOptions;
 
 /**
+ * @property string|null $parent_id
+ * @property string|null $tenant_id
  * @property self|null $parent
  * @property TeamType $type
  * @property TeamState $state
  * @property TeamStatus $status
  * @property int<0, max> $lock_version
+ * @property string $ulid
  *
  * @use HasFactory<Factory>
  */
+#[ObservedBy(TeamObserver::class)]
 class Team extends Model implements SchemaScopedModel
 {
     use HasChildren;
@@ -45,6 +52,7 @@ class Team extends Model implements SchemaScopedModel
     use HasFactory;
     use HasStates;
     use HasTeamHierarchy;
+    use HasTeamSearch;
     use HasTranslatableAttributes;
     use HasTranslatableSlug;
     use HasUlid;
@@ -105,9 +113,9 @@ class Team extends Model implements SchemaScopedModel
     }
 
     /**
-     * @psalm-return \Illuminate\Database\Eloquent\Builder<TRelatedModel>
+     * @psalm-return BelongsTo<self, self>
      */
-    public function parent(): \Illuminate\Database\Eloquent\Builder
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id')->withoutGlobalScopes();
     }
@@ -132,7 +140,8 @@ class Team extends Model implements SchemaScopedModel
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+            ->saveSlugsTo('slug')
+            ->allowDuplicateSlugs(); // Uniqueness is handled per-locale in HasTranslatableSlug trait
     }
 
     /**
@@ -152,25 +161,6 @@ class Team extends Model implements SchemaScopedModel
     }
 
     /**
-     * Typo-tolerant fuzzy search scope using pg_trgm.
-     */
-    public function scopeFuzzySearch($query, string $term)
-    {
-        // Extract English name from JSON for comparison
-        return $query->whereRaw("(name->>'en') % ?", [$term])
-            ->orderByRaw("similarity((name->>'en'), ?) DESC", [$term]);
-    }
-
-    /**
-     * Full-text search scope using weighted search_vector.
-     */
-    public function scopeFullTextSearch($query, string $term)
-    {
-        return $query->whereRaw('search_vector @@ to_tsquery(?, ?)', ['english', $term])
-            ->orderByRaw('ts_rank(search_vector, to_tsquery(?, ?)) DESC', ['english', $term]);
-    }
-
-    /**
      * Scout: Define the indexable data array.
      */
     public function toSearchableArray(): array
@@ -179,6 +169,7 @@ class Team extends Model implements SchemaScopedModel
             'id' => $this->id,
             'ulid' => $this->ulid,
             'name' => $this->getTranslation('name', 'en'),
+            'slug' => $this->slug,
             'bio' => $this->getTranslation('bio', 'en'),
             'type' => $this->type->value,
             'status' => $this->status->value,
@@ -190,7 +181,7 @@ class Team extends Model implements SchemaScopedModel
      *
      * @return string[]
      *
-     * @psalm-return array{type: TeamType::class, state: TeamState::class, status: TeamStatus::class, name: 'array', slug: 'array', bio: 'array', lock_version: 'integer'}
+     * @psalm-return array{type: TeamType::class, state: TeamState::class, status: TeamStatus::class, name: 'array', slug: 'string', bio: 'array', lock_version: 'integer'}
      */
     #[Override]
     protected function casts(): array
@@ -213,8 +204,24 @@ class Team extends Model implements SchemaScopedModel
      */
     protected function getBioHtmlAttribute(): ?string
     {
-        $bio = $this->getTranslation('bio', app()->getLocale());
+        // Get bio in current locale, with fallback to default locale
+        // The third parameter (true) enables fallback to default locale
+        $bio = $this->getTranslation('bio', app()->getLocale(), true);
 
-        return resolve(TeamBioRenderer::class)->render($bio, app()->getLocale());
+        // If bio is still null/empty, try accessing it directly as an attribute
+        // This handles cases where bio might be set as a string directly (Spatie should handle this, but this is a safety net)
+        if (($bio === null || $bio === '') && $this->bio !== null && $this->bio !== '') {
+            if (is_string($this->bio)) {
+                $bio = $this->bio;
+            } elseif (is_array($this->bio)) {
+                // If bio is an array (from translatable cast), get the value for current locale
+                $locale = app()->getLocale();
+                $bio = $this->bio[$locale] ?? $this->bio['en'] ?? $this->bio[array_key_first($this->bio)] ?? null;
+            } else {
+                $bio = (string) $this->bio;
+            }
+        }
+
+        return resolve(TeamBioRenderer::class)->render($bio);
     }
 }

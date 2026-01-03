@@ -36,8 +36,10 @@ trait ManagesUserContext
     {
         $validOrg = $this->accessibleOrganisations()
             ->where('organisation_id', $this->current_context_id)
-            ->first() ?? $this->accessibleOrganisations()->first();
+            ->first() ?? $this->accessibleOrganisations()
+            ->orderBy('organisation_id')
+            ->first();
 
-        $this->update(['current_context_id' => $validOrg->id]);
+        $this->update(['current_context_id' => $validOrg?->id]);
     }
 }

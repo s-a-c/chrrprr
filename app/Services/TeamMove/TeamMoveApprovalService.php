@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services\TeamMove;
 
-use App\Actions\Teams\MoveTeam;
+use App\Handlers\Commands\Teams\MoveTeamCommand;
+use App\Handlers\Commands\Teams\MoveTeamHandler;
+use App\Models\Team;
 use App\Models\TeamMoveApproval;
 use App\Models\User;
+use App\Support\Result;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 /**
  * Service for approving/rejecting team move requests.
@@ -16,25 +20,44 @@ use Illuminate\Validation\ValidationException;
 final readonly class TeamMoveApprovalService
 {
     public function __construct(
-        private MoveTeam $moveTeamAction,
+        private MoveTeamHandler $moveTeamHandler,
     ) {}
 
     /**
      * Approve a team move request using collection-based approval tracking.
+     *
+     * @return Result<bool, string>
      */
-    public function approve(TeamMoveApproval $approval, User $approver): void
+    public function approve(TeamMoveApproval $approval, User $approver): Result
     {
-        $this->validateApprovalRequest($approval, $approver);
+        return Result::try(
+            function () use ($approval, $approver): bool {
+                $this->validateApprovalRequest($approval, $approver);
 
-        DB::transaction(function () use ($approval, $approver): void {
-            $this->recordApproval($approval, $approver);
+                return true;
+            },
+            ['Validating approval request']
+        )->flatMap(fn (): Result => Result::try(
+            fn (): bool => DB::transaction(function () use ($approval, $approver): bool {
+                $this->recordApproval($approval, $approver);
 
-            if ($this->allApproversHaveApproved($approval)) {
-                $this->executeMove($approval);
-            }
+                // If all approvers have approved, we need to execute the move
+                // But executeMove returns Result, and we're in a transaction
+                // So we'll call it and unwrap the Result (throwing on failure to rollback transaction)
+                if ($this->allApproversHaveApproved($approval)) {
+                    $executeResult = $this->executeMove($approval);
+                    if ($executeResult->isFailure) {
+                        // Throw to rollback transaction - Result::try will catch and convert to failure Result
+                        throw new RuntimeException($executeResult->error);
+                    }
+                }
 
-            $approval->save();
-        });
+                $approval->save();
+
+                return true;
+            }),
+            ['Recording approval and executing move if needed']
+        ));
     }
 
     /**
@@ -77,7 +100,7 @@ final readonly class TeamMoveApprovalService
         }
 
         $requiredApprovers = collect($approval->required_approvers ?? []);
-        if (! $requiredApprovers->contains($approver->id)) {
+        if ($requiredApprovers->doesntContain($approver->id)) {
             throw ValidationException::withMessages([
                 'approver' => ['You are not authorized to approve this request.'],
             ]);
@@ -96,7 +119,7 @@ final readonly class TeamMoveApprovalService
         }
 
         $requiredApprovers = collect($approval->required_approvers ?? []);
-        if (! $requiredApprovers->contains($rejector->id)) {
+        if ($requiredApprovers->doesntContain($rejector->id)) {
             throw ValidationException::withMessages([
                 'rejector' => ['You are not authorized to reject this request.'],
             ]);
@@ -121,13 +144,24 @@ final readonly class TeamMoveApprovalService
 
     /**
      * Execute the team move and mark approval as complete.
+     *
+     * @return Result<bool, string>
      */
-    private function executeMove(TeamMoveApproval $approval): void
+    private function executeMove(TeamMoveApproval $approval): Result
     {
-        $team = $approval->team;
-        $this->moveTeamAction->handle($team, $approval->to_parent_id);
+        $team = Team::query()->withoutGlobalScopes()->find($approval->team_id);
+        if (! $team instanceof Team) {
+            return Result::failure('Team not found for approval', ['Team move execution failed']);
+        }
 
-        $approval->status = 'approved';
-        $approval->approved_at = now();
+        $moveCommand = new MoveTeamCommand($team, $approval->to_parent_id);
+        $moveResult = $this->moveTeamHandler->handle($moveCommand);
+
+        return $moveResult->flatMap(static function () use ($approval): Result {
+            $approval->status = 'approved';
+            $approval->approved_at = now();
+
+            return Result::success(true, ['Team move executed and approval marked as complete']);
+        });
     }
 }

@@ -37,6 +37,9 @@ jobs:
         with:
           bun-version: 1.1.17
 
+      - name: Install Playwright Browsers
+        run: bunx playwright install chromium --with-deps
+
       - name: Configure Composer Auth
         env:
           FLUXUI_PRO_USERNAME: ${{ secrets.FLUXUI_PRO_USERNAME }}
@@ -60,8 +63,54 @@ jobs:
       - name: Generate Application Key
         run: php artisan key:generate
 
+      - name: Setup Test Environment
+        run: |
+          cp .env.example .env.testing
+          php artisan key:generate --env=testing
+
       - name: Build Assets
         run: bun run build
 
       - name: Run Tests
         run: composer run test:all
+
+      - name: Setup Test Database
+        run: |
+          php artisan migrate:fresh --env=testing --force
+
+      - name: Run Pest Tests
+        run: composer run test:core
+
+      - name: Run Behat Unit Tests
+        run: composer behat:unit
+
+      - name: Run Behat API Tests
+        run: composer behat:api
+
+      - name: Setup Browser Server for Behat
+        run: |
+          google-chrome --version || echo "Chrome not found, will use Playwright"
+          google-chrome --remote-debugging-port=9222 --headless --no-sandbox --disable-dev-shm-usage --disable-gpu > /dev/null 2>&1 &
+          sleep 2
+
+      - name: Run Behat Browser Tests
+        run: composer behat:browser
+        continue-on-error: true
+
+      - name: Upload Behat Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-screenshots
+          path: tests/Browser/Screenshots/
+          if-no-files-found: ignore
+
+      - name: Upload Behat Output
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-output
+          path: |
+            features/**/*.feature
+            behat.yml
+          if-no-files-found: ignore

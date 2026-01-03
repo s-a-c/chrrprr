@@ -49,6 +49,9 @@ final class BulkTeamRequest extends FormRequest
      */
     public function getTeams(): array
     {
-        return $this->validated()['teams'] ?? [];
+        /** @var array<string, mixed> $validated */
+        $validated = $this->validated();
+
+        return $validated['teams'] ?? [];
     }
 }

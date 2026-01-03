@@ -13,10 +13,14 @@ use App\Services\TeamMove\TeamMoveApprovalService;
 use App\Services\TeamMove\TeamMoveRequestService;
 use App\Services\TeamOrganisationFinderService;
 use Carbon\CarbonImmutable;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -42,7 +46,7 @@ final class AppServiceProvider extends ServiceProvider
             $env = config('app.env', 'production');
 
             // Logic: Append env unless production
-            $source = $env === 'production' ? $name : "$name $env";
+            $source = $env === 'production' ? $name : "{$name} {$env}";
 
             // Set the config at runtime
             config(['app.slug' => Str::slug($source)]);
@@ -84,8 +88,10 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureCommands();
         $this->configureModels();
         $this->configurePasswordRules();
+        $this->configureRateLimiters();
         $this->configureUrl();
         $this->configureVite();
+        $this->configureGate();
     }
 
     /**
@@ -132,25 +138,47 @@ final class AppServiceProvider extends ServiceProvider
         /** @var bool $isLocal */
         $isLocal = $this->app->environment('local');
         if (! $isLocal) {
-            Password::defaults(function () {
-                return Password::min(12)
-                    ->letters()
-                    ->numbers()
-                    ->symbols()
-                    ->mixedCase()
-                    ->uncompromised();
-            });
-        } else {
-            Password::defaults(function () {
-                return Password::min(8)
-                    ->letters()
-                    ->numbers()
-                    ->symbols()
-                    ->mixedCase();
-            });
+            Password::defaults($this->getProductionPasswordRule(...));
+
+            return;
         }
 
-        // config(['auth.password_timeout' => 60])
+        Password::defaults($this->getLocalPasswordRule(...));
+    }
+
+    /**
+     * Get the production password rule configuration.
+     */
+    private function getProductionPasswordRule(): Password
+    {
+        return Password::min(12)
+            ->letters()
+            ->numbers()
+            ->symbols()
+            ->mixedCase()
+            ->uncompromised();
+    }
+
+    /**
+     * Get the local development password rule configuration.
+     */
+    private function getLocalPasswordRule(): Password
+    {
+        return Password::min(8)
+            ->letters()
+            ->numbers()
+            ->symbols()
+            ->mixedCase();
+    }
+
+    /**
+     * Configure the application's rate limiters.
+     */
+    private function configureRateLimiters(): void
+    {
+        RateLimiter::for('login', static fn (Request $request): Limit => Limit::perMinute(5)->by($request->input('email').$request->ip()));
+
+        RateLimiter::for('two-factor', static fn (Request $request): Limit => Limit::perMinute(5)->by($request->session()->get('login.id')));
     }
 
     /**
@@ -174,5 +202,25 @@ final class AppServiceProvider extends ServiceProvider
             ->withEntryPoints([
                 'resources/js/app.js',
             ]);
+    }
+
+    /**
+     * Configure the application's gate.
+     */
+    private function configureGate(): void
+    {
+        // Allow users with key roles (e.g., Super Admin) to bypass all permission checks
+        Gate::before(static function ($user, $ability): ?bool {
+            if ($user === null) {
+                return null;
+            }
+
+            // Check if user has any key role assigned
+            $hasKeyRole = $user->roles()
+                ->where('is_key', true)
+                ->exists();
+
+            return $hasKeyRole ? true : null;
+        });
     }
 }

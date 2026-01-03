@@ -2,20 +2,18 @@
 
 declare(strict_types=1);
 
+use App\Models\Enterprise;
 use Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper;
-use Stancl\Tenancy\Bootstrappers\DatabaseTenancyBootstrapper;
 use Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper;
 use Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper;
 use Stancl\Tenancy\Database\Models\Domain;
-use Stancl\Tenancy\Database\Models\Tenant;
 use Stancl\Tenancy\TenantDatabaseManagers\MySQLDatabaseManager;
 use Stancl\Tenancy\TenantDatabaseManagers\PostgreSQLDatabaseManager;
 use Stancl\Tenancy\TenantDatabaseManagers\SQLiteDatabaseManager;
-use Stancl\Tenancy\UUIDGenerator;
 
 return [
-    'tenant_model' => Tenant::class,
-    'id_generator' => UUIDGenerator::class,
+    'tenant_model' => Enterprise::class,
+    'id_generator' => null, // ULID is handled by HasUlid trait
     'domain_model' => Domain::class,
     /**
      * The list of domains hosting your central app.
@@ -30,10 +28,14 @@ return [
      * Tenancy bootstrappers are executed when tenancy is initialized.
      * Their responsibility is making Laravel features tenant-aware.
      *
+     * Note: DatabaseTenancyBootstrapper is disabled for single-database tenancy.
+     * All tenants share the same database and are isolated via tenant_id column
+     * and the BelongsToTenant trait's automatic query scoping.
+     *
      * To configure their behavior, see the config keys below.
      */
     'bootstrappers' => [
-        DatabaseTenancyBootstrapper::class,
+        // DatabaseTenancyBootstrapper::class, // Disabled for single-database tenancy
         CacheTenancyBootstrapper::class,
         FilesystemTenancyBootstrapper::class,
         QueueTenancyBootstrapper::class,

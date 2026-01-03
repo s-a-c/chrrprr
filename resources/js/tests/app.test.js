@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, test as it, vi } from 'bun:test';
 
 // Mock highlight.js - must use factory function that returns the mock
 vi.mock('highlight.js', () => {

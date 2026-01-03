@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Actions\Users\UpdateUserProfile;
+
 /*
  * |--------------------------------------------------------------------------
  * | Application Layer Dependency Rules
@@ -36,7 +38,7 @@ arch('Actions should only use Enums, Models, Requests, Services, and framework')
         'Stevebauman',
     ])
     ->ignoring([
-        'App\Actions\Users\UpdateUserProfile', // Uses Hash and Purify facades
+        UpdateUserProfile::class, // Uses Hash and Purify facades
     ]);
 
 arch('Services should only use Actions, Enums, Models, other Services, and framework')

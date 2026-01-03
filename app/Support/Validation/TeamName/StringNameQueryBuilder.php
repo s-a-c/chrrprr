@@ -29,11 +29,27 @@ final class StringNameQueryBuilder implements NameQueryBuilderInterface
             return;
         }
 
-        $query->where(static function (Builder $q) use ($name): void {
-            collect(self::LOCALES)
-                ->each(static fn (string $locale) => $q->orWhere("name->{$locale}", $name));
+        $connection = $query->getConnection();
+        $driver = $connection->getDriverName();
 
-            $q->orWhereJsonContains('name', $name);
+        $query->where(static function (Builder $q) use ($name, $driver): void {
+            collect(self::LOCALES)
+                ->each(static function (string $locale) use ($q, $name, $driver): void {
+                    if ($driver === 'pgsql') {
+                        // Cast to JSONB for PostgreSQL to handle JSON operations on VARCHAR columns
+                        $q->orWhereRaw("CAST(name AS JSONB)->>'{$locale}' = ?", [$name]);
+                    } else {
+                        // For other databases, use standard JSON path syntax
+                        $q->orWhere("name->{$locale}", $name);
+                    }
+                });
+
+            if ($driver === 'pgsql') {
+                // For PostgreSQL, use JSONB contains operator
+                $q->orWhereRaw('CAST(name AS JSONB) @> ?::jsonb', [json_encode($name)]);
+            } else {
+                $q->orWhereJsonContains('name', $name);
+            }
         });
     }
 }

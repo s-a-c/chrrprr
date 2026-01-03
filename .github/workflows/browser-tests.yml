@@ -63,6 +63,11 @@ jobs:
 
       - name: Setup Test Environment
         run: |
+          cp .env.example .env.testing
+          php artisan key:generate --env=testing
+
+      - name: Setup Behat Test Environment
+        run: |
           cp vendor/laravel-labs/starter-kit-browser-tests/phpunit.xml.dist .
           rm phpunit.xml
           rm -Rf tests/
@@ -168,5 +173,37 @@ HELPER_EOF
       - name: Build Assets
         run: bun run build
 
+      - name: Setup Test Database for Behat
+        run: |
+          php artisan migrate:fresh --env=testing --force
+
+      - name: Setup Browser Server for Behat
+        run: |
+          google-chrome --version || echo "Chrome not found, will use Playwright"
+          google-chrome --remote-debugging-port=9222 --headless --no-sandbox --disable-dev-shm-usage --disable-gpu > /dev/null 2>&1 &
+          sleep 2
+
       - name: Tests
         run: composer run test:browser
+
+      - name: Run Behat Browser Tests
+        run: composer behat:browser
+        continue-on-error: true
+
+      - name: Upload Behat Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-browser-screenshots
+          path: tests/Browser/Screenshots/
+          if-no-files-found: ignore
+
+      - name: Upload Behat Output
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-browser-output
+          path: |
+            features/**/*.feature
+            behat.yml
+          if-no-files-found: ignore

@@ -10,7 +10,9 @@ use App\Enums\UserStatus;
 use App\Models\Builders\UserBuilder;
 use App\Models\Concerns\HasCustomSchema;
 use App\Models\Concerns\HasTranslatableAttributes;
+use App\Models\Concerns\HasTranslatableSlug;
 use App\Models\Concerns\HasUlid;
+use App\Models\Concerns\HasUserSearch;
 use App\Models\Concerns\ManagesUserContext;
 use App\Models\Concerns\ProtectsKeyRoles;
 use App\Observers\UserObserver;
@@ -28,10 +30,13 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Scout\Searchable;
 use Override;
 use Spatie\Permission\Traits\HasRoles;
-use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 #[ObservedBy(UserObserver::class)]
+/**
+ * @mago-expect All methods are necessary: relationship methods, required interface methods (Searchable, HasTranslatableSlug),
+ * and model lifecycle methods. Methods have been organized into traits where possible (HasUserSearch).
+ */
 final class User extends Authenticatable implements MustVerifyEmail, SchemaScopedModel
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -43,9 +48,10 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
     use ProtectsKeyRoles;
     use HasCustomSchema;
     use HasRoles;
-    use HasSlug;
     use HasTranslatableAttributes;
+    use HasTranslatableSlug;
     use HasUlid;
+    use HasUserSearch;
     use ManagesUserContext;
     use Notifiable;
     use Searchable;
@@ -54,6 +60,7 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
     /** @var array<int, string> */
     public array $translatable = [
         'bio',
+        'slug',
     ];
 
     /**
@@ -84,6 +91,15 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var list<string>
+     */
+    protected $appends = [
+        'bio_html',
     ];
 
     /**
@@ -171,7 +187,8 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+            ->saveSlugsTo('slug')
+            ->allowDuplicateSlugs(); // Uniqueness is handled per-locale in HasTranslatableSlug trait
     }
 
     /**
@@ -191,24 +208,6 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
     }
 
     /**
-     * Typo-tolerant fuzzy search scope using pg_trgm.
-     */
-    public function scopeFuzzySearch($query, string $term)
-    {
-        return $query->whereRaw('name % ?', [$term])
-            ->orderByRaw('similarity(name, ?) DESC', [$term]);
-    }
-
-    /**
-     * Full-text search scope using weighted search_vector.
-     */
-    public function scopeFullTextSearch($query, string $term)
-    {
-        return $query->whereRaw('search_vector @@ to_tsquery(?, ?)', ['english', $term])
-            ->orderByRaw('ts_rank(search_vector, to_tsquery(?, ?)) DESC', ['english', $term]);
-    }
-
-    /**
      * Scout: Define the indexable data array.
      */
     public function toSearchableArray(): array
@@ -223,6 +222,16 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
         ];
     }
 
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new \Illuminate\Auth\Notifications\ResetPassword($token));
+    }
+
     #[Override]
     protected static function booted(): void
     {
@@ -231,11 +240,39 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
     }
 
     /**
+     * Get the rendered HTML version of the user bio.
+     *
+     * Delegates to TeamBioRenderer for improved testability and separation of concerns.
+     */
+    protected function getBioHtmlAttribute(): ?string
+    {
+        // Get bio in current locale, with fallback to default locale
+        // The third parameter (true) enables fallback to default locale
+        $bio = $this->getTranslation('bio', app()->getLocale(), true);
+
+        // If bio is still null/empty, try accessing it directly as an attribute
+        // This handles cases where bio might be set as a string directly (Spatie should handle this, but this is a safety net)
+        if (($bio === null || $bio === '') && $this->bio !== null && $this->bio !== '') {
+            if (is_string($this->bio)) {
+                $bio = $this->bio;
+            } elseif (is_array($this->bio)) {
+                // If bio is an array (from translatable cast), get the value for current locale
+                $locale = app()->getLocale();
+                $bio = $this->bio[$locale] ?? $this->bio['en'] ?? $this->bio[array_key_first($this->bio)] ?? null;
+            } else {
+                $bio = (string) $this->bio;
+            }
+        }
+
+        return resolve(\App\Support\Html\TeamBioRenderer::class)->render($bio);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return string[]
      *
-     * @psalm-return array{email_verified_at: 'datetime', password: 'hashed', state: UserState::class, status: UserStatus::class, tenant_id: 'integer', current_context_id: 'integer', bio: 'array'}
+     * @psalm-return array{email_verified_at: 'datetime', password: 'hashed', state: UserState::class, status: UserStatus::class, tenant_id: 'integer', current_context_id: 'integer', bio: 'array', slug: 'array'}
      */
     #[Override]
     protected function casts(): array
@@ -248,6 +285,7 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
             'tenant_id' => 'integer',
             'current_context_id' => 'integer',
             'bio' => 'array',
+            'slug' => 'array',
         ];
     }
 }

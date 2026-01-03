@@ -28,7 +28,7 @@ final class MoveTeam
             $this->validateNoCycle($team, $newParent);
 
             $oldTenantId = (string) $team->tenant_id;
-            $team->parent_id = $newParentId;
+            $team->parent_id = $newParentId !== null ? (string) $newParentId : null;
             $team->tenant_id = $this->calculateNewTenantId($team, $newParent);
             $team->saveQuietly(); // Avoid triggering observers
 
@@ -41,7 +41,7 @@ final class MoveTeam
      */
     private function validateNoCycle(Team $team, ?Team $newParent): void
     {
-        if ($newParent && $newParent->isDescendantOf($team)) {
+        if ($newParent instanceof Team && $newParent->isDescendantOf($team)) {
             throw ValidationException::withMessages([
                 'parent_id' => ['Cannot move a team into its own descendant.'],
             ]);

@@ -8,6 +8,10 @@ use App\Models\Concerns\HasTranslatableAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int|null $id
+ * @property array<string, string>|string|null $name
+ */
 final class TranslatableTestModel extends Model
 {
     use HasFactory;

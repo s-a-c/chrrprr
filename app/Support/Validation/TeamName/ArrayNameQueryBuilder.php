@@ -27,10 +27,21 @@ final class ArrayNameQueryBuilder implements NameQueryBuilderInterface
             return;
         }
 
-        $query->where(static function (Builder $q) use ($names): void {
+        $connection = $query->getConnection();
+        $driver = $connection->getDriverName();
+
+        $query->where(static function (Builder $q) use ($names, $driver): void {
             collect($names)
                 ->filter() // Automatically removes null/empty values
-                ->each(static fn ($value, $locale) => $q->orWhere("name->{$locale}", $value));
+                ->each(static function ($value, $locale) use ($q, $driver): void {
+                    if ($driver === 'pgsql') {
+                        // Cast to JSONB for PostgreSQL to handle JSON operations on VARCHAR columns
+                        $q->orWhereRaw("CAST(name AS JSONB)->>'{$locale}' = ?", [$value]);
+                    } else {
+                        // For other databases, use standard JSON path syntax
+                        $q->orWhere("name->{$locale}", $value);
+                    }
+                });
         });
     }
 }

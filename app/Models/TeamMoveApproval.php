@@ -9,6 +9,7 @@ use App\Models\Concerns\HasCustomSchema;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Override;
 
@@ -60,6 +61,16 @@ class TeamMoveApproval extends Model implements SchemaScopedModel
     public function isPending(): bool
     {
         return $this->status === 'pending';
+    }
+
+    /**
+     * Get the team that is being moved.
+     *
+     * @psalm-return BelongsTo<Team, Team>
+     */
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'team_id')->withoutGlobalScopes();
     }
 
     /**

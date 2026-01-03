@@ -26,9 +26,7 @@ final readonly class UserProtectionService
     {
         $userKeyRoles = $this->getUserKeyRoles($user);
 
-        return $userKeyRoles->contains(function ($row) use ($user): bool {
-            return $this->isUniqueRoleAssignment($user, $row);
-        });
+        return $userKeyRoles->contains(fn (object $row): bool => $this->isUniqueRoleAssignment($user, $row));
     }
 
     /**

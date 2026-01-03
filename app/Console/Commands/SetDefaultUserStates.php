@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Enums\UserState;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 final class SetDefaultUserStates extends Command
@@ -56,7 +57,7 @@ final class SetDefaultUserStates extends Command
 
         $this->info("Setting default state to '{$state->value}' for users without a state...");
 
-        /** @var \Illuminate\Database\Eloquent\Builder<User> $query */
+        /** @var Builder<User> $query */
         $query = User::query()->whereNull('state');
         $total = (int) $query->count();
 

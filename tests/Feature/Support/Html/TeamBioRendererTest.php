@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 use App\Support\Html\TeamBioRenderer;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Mockery;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
 
 test('returns null for empty bio', function (): void {
     $renderer = new TeamBioRenderer(
-        app(MarkdownRenderer::class)
+        resolve(MarkdownRenderer::class)
     );
 
     expect($renderer->render(null))->toBeNull();
@@ -19,7 +18,7 @@ test('returns null for empty bio', function (): void {
 
 test('renders markdown to html', function (): void {
     $renderer = new TeamBioRenderer(
-        app(MarkdownRenderer::class)
+        resolve(MarkdownRenderer::class)
     );
 
     $html = $renderer->render('# Heading');
@@ -29,7 +28,7 @@ test('renders markdown to html', function (): void {
 
 test('sanitizes html content', function (): void {
     $renderer = new TeamBioRenderer(
-        app(MarkdownRenderer::class)
+        resolve(MarkdownRenderer::class)
     );
 
     $html = $renderer->render('Hello <script>alert("XSS")</script>');
@@ -56,5 +55,5 @@ test('rethrows non-config binding resolution exceptions', function (): void {
 
     $renderer = new TeamBioRenderer($mockRenderer);
 
-    expect(fn () => $renderer->render('test'))->toThrow(BindingResolutionException::class);
+    expect(fn (): ?string => $renderer->render('test'))->toThrow(BindingResolutionException::class);
 });

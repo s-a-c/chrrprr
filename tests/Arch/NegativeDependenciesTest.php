@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Teams\BulkTeamController;
+use App\Services\TeamHierarchyTraversalService;
+use App\Services\TeamMove\TeamMoveApprovalService;
+use App\Services\TeamMove\TeamMoveRequestService;
+use Illuminate\Support\Facades\DB;
+
 /*
  * |--------------------------------------------------------------------------
  * | Negative Dependency Rules
@@ -28,8 +35,8 @@ arch('Controllers should not use facades directly')
         'Illuminate\Support\Facades',
     ])
     ->ignoring([
-        'App\Http\Controllers\Controller',
-        'App\Http\Controllers\Teams\BulkTeamController', // Uses Auth facade
+        Controller::class,
+        BulkTeamController::class, // Uses Auth facade
     ]);
 
 arch('Services should not use facades (DB facade is allowed for transactions)')
@@ -38,9 +45,9 @@ arch('Services should not use facades (DB facade is allowed for transactions)')
         'Illuminate\Support\Facades',
     ])
     ->ignoring([
-        'App\Services\TeamMove\TeamMoveRequestService',
-        'App\Services\TeamMove\TeamMoveApprovalService',
-        'App\Services\TeamHierarchyTraversalService',
+        TeamMoveRequestService::class,
+        TeamMoveApprovalService::class,
+        TeamHierarchyTraversalService::class,
     ]);
 
 // ============================================================================
@@ -75,7 +82,7 @@ arch('Console Commands should not depend on HTTP layer')
 arch('DB facade usage should be limited to Actions and Services (for transactions)')
     ->expect('App')
     ->not->toUse([
-        'Illuminate\Support\Facades\DB',
+        DB::class,
     ])
     ->ignoring([
         'App\Actions',
