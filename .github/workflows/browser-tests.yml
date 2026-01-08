@@ -23,7 +23,7 @@ jobs:
         image: postgres:15
         env:
           POSTGRES_DB: chrrprr
-          POSTGRES_USER: root
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
@@ -87,82 +87,74 @@ jobs:
           php artisan key:generate --env=testing
         env:
           DB_PASSWORD: password
+          DB_USERNAME: postgres
 
       - name: Setup Behat Test Environment
+        env:
+          PEST_HELPER: |
+
+            \Laravel\Dusk\Browser::macro('assert_no_javascript_errors_except_csp_parser', function () {
+                try {
+                    $this->assertNoJavaScriptErrors();
+                } catch (\PHPUnit\Framework\AssertionFailedError $e) {
+                    $message = $e->getMessage();
+
+                    // 2. "Expected no JavaScript errors..., but found 1: Uncaught Error: CSP Parser Error: ..."
+                    preg_match_all('/- (.+)/m', $message, $matches);
+                    /** @var list<non-empty-string> $errors */
+                    /** @phpstan-ignore-next-line */
+                    $errors = is_array($matches[1] ?? null) ? $matches[1] : [];
+
+                    // Also check the main message for CSP errors (format: "but found 1: Uncaught Error: CSP Parser Error: ...")
+                    $mainErrorIsCsp = false;
+                    if (preg_match('/but found \d+:\s*(.+?)(?:\n|$)/s', $message, $mainMatch) === 1) {
+                        /** @var array{0: non-falsy-string, 1: non-empty-string} $mainMatch */
+                        $mainError = $mainMatch[1];
+                        $mainErrorIsCsp = str_contains($mainError, 'CSP Parser Error') ||
+                            (bool) preg_match('/CSP.*Parser.*Error/i', $mainError);
+                    }
+
+                    // If no errors were extracted from the list format, check if the main message contains only CSP errors
+                    if ($errors === [] && $mainErrorIsCsp) {
+                        return $this;
+                    }
+
+                    // Filter out CSP parser errors (check for various CSP error patterns)
+                    $realErrors = array_filter($errors, function (string $error): bool {
+                        $isCspErrorInList = str_contains($error, 'CSP Parser Error') ||
+                            (bool) preg_match('/CSP.*Parser.*Error/i', $error);
+                        return ! $isCspErrorInList;
+                    });
+
+                    // If there are real errors, throw them
+                    if ($realErrors !== []) {
+                        /** @phpstan-ignore-next-line */
+                        throw new \PHPUnit\Framework\AssertionFailedError(
+                            "Expected no JavaScript errors on the page, but found:\n".
+                            implode("\n", array_map(fn (string $error): string => "- {$error}", $realErrors))
+                        );
+                    }
+
+                    // If only CSP parser errors (either in list or main message), ignore them
+                    return $this;
+                }
+
+                return $this;
+            });
         run: |
           cp vendor/laravel-labs/starter-kit-browser-tests/phpunit.xml.dist .
           rm phpunit.xml
           rm -Rf tests/
           cp -rf vendor/laravel-labs/starter-kit-browser-tests/tests/ tests/
-          # Add our CSP helper function to the copied Pest.php
-          # First, add required imports if not present
-          if ! grep -q "use Pest\\\\Browser\\\\Api\\\\AwaitableWebpage" tests/Pest.php; then
-            sed -i '/^<?php/a use Pest\\Browser\\Api\\AwaitableWebpage;' tests/Pest.php
-          fi
-          if ! grep -q "use Pest\\\\Browser\\\\Api\\\\PendingAwaitablePage" tests/Pest.php; then
-            sed -i '/^<?php/a use Pest\\Browser\\Api\\PendingAwaitablePage;' tests/Pest.php
-          fi
-          if ! grep -q "use Pest\\\\Browser\\\\Api\\\\Webpage" tests/Pest.php; then
-            sed -i '/^<?php/a use Pest\\Browser\\Api\\Webpage;' tests/Pest.php
-          fi
+
+          # Add imports to Pest.php
           if ! grep -q "use PHPUnit\\\\Framework\\\\AssertionFailedError" tests/Pest.php; then
             sed -i '/^<?php/a use PHPUnit\\Framework\\AssertionFailedError;' tests/Pest.php
           fi
-          # Add the CSP helper function at the end of Pest.php
-          cat >> tests/Pest.php << 'HELPER_EOF'
 
-            // 2. "Expected no JavaScript errors..., but found 1: Uncaught Error: CSP Parser Error: ..."
-            preg_match_all('/- (.+)/m', $message, $matches);
-            /** @var list<non-empty-string> $errors */
-            /** @phpstan-ignore-next-line */
-            $errors = is_array($matches[1] ?? null) ? $matches[1] : [];
+          # Append the helper macro
+          echo "$PEST_HELPER" >> tests/Pest.php
 
-            // Also check the main message for CSP errors (format: "but found 1: Uncaught Error: CSP Parser Error: ...")
-            $mainErrorIsCsp = false;
-            if (preg_match('/but found \d+:\s*(.+?)(?:\n|$)/s', $message, $mainMatch) === 1) {
-                /** @var array{0: non-falsy-string, 1: non-empty-string} $mainMatch */
-                $mainError = $mainMatch[1];
-                $mainErrorIsCsp = str_contains($mainError, 'CSP Parser Error') ||
-                    (bool) preg_match('/CSP.*Parser.*Error/i', $mainError);
-            }
-
-            // If no errors were extracted from the list format, check if the main message contains only CSP errors
-            if ($errors === [] && $mainErrorIsCsp) {
-                // It's a CSP error in the main message, ignore it
-                return $page;
-            }
-
-            // Filter out CSP parser errors (check for various CSP error patterns)
-            $realErrors = array_filter($errors, function (string $error): bool {
-                // Filter out all CSP parser errors - they contain "CSP Parser Error" or match CSP error patterns
-                // Check both exact string match and regex pattern match
-                $isCspErrorInList = str_contains($error, 'CSP Parser Error') ||
-                    (bool) preg_match('/CSP.*Parser.*Error/i', $error);
-
-                return ! $isCspErrorInList;
-            });
-
-            // If there are real errors, throw them
-            if ($realErrors !== []) {
-                /** @phpstan-ignore-next-line */
-                throw new AssertionFailedError(
-                    "Expected no JavaScript errors on the page, but found:\n".
-                    implode("\n", array_map(fn (string $error): string => "- {$error}", $realErrors))
-                );
-            }
-
-            // If only CSP parser errors (either in list or main message), ignore them (they're false positives)
-            // If all errors were filtered out, it means they were all CSP errors
-            return $page;
-        }
-
-        // Re-throw if it's not a CSP parser error
-        throw $e;
-    }
-
-    return $page;
-}
-HELPER_EOF
           # Replace assertNoJavaScriptErrors() with assert_no_javascript_errors_except_csp_parser() in all test files
           find tests/ -name "*.php" -type f -exec sed -i.bak 's/->assertNoJavaScriptErrors()/->assert_no_javascript_errors_except_csp_parser()/g' {} \;
           find tests/ -name "*.bak" -type f -delete

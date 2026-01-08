@@ -22,7 +22,7 @@ jobs:
         image: postgres:15
         env:
           POSTGRES_DB: chrrprr
-          POSTGRES_USER: root
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
@@ -86,6 +86,7 @@ jobs:
           php artisan key:generate --env=testing
         env:
           DB_PASSWORD: password
+          DB_USERNAME: postgres
 
       - name: Run Core Workflow Suite
         run: composer run test:core
