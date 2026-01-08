@@ -17,7 +17,7 @@ test('password can be updated', function (): void {
 
     $response = Livewire::test(Password::class)
         ->set('current_password', 'password')
-        ->set('password', $password = Str::password(16))
+        ->set('password', $password = 'P@ssword123!')
         ->set('password_confirmation', $password)
         ->call('updatePassword');
 

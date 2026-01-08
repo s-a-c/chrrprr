@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Str;
-
 test('registration screen can be rendered', function (): void {
     $response = $this->get(route('register'));
 
@@ -15,7 +13,7 @@ test('new users can register', function (): void {
         ->post(route('register.store'), [
             'name' => 'John Doe',
             'email' => 'test@example.com',
-            'password' => $password = Str::password(16),
+            'password' => $password = 'P@ssword123!',
             'password_confirmation' => $password,
         ]);
 

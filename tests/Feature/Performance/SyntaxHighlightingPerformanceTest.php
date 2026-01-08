@@ -3,9 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Enterprise;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 test('syntax highlighting initialization completes in less than 500ms after page load', function (): void {
     // This test validates SC-012: syntax highlighting performance

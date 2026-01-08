@@ -20,6 +20,9 @@ it('returns true when any rule requires approval', function (): void {
 
     $rule = new class implements ApprovalRuleInterface
     {
+        /**
+         * @return true
+         */
         #[Override]
         /**
          * @return true
@@ -44,6 +47,9 @@ it('returns false when no rules require approval', function (): void {
 
     $rule = new class implements ApprovalRuleInterface
     {
+        /**
+         * @return false
+         */
         #[Override]
         /**
          * @return false
@@ -68,6 +74,9 @@ it('stops at first rule that requires approval', function (): void {
 
     $rule1 = new class implements ApprovalRuleInterface
     {
+        /**
+         * @return true
+         */
         #[Override]
         /**
          * @return true
@@ -80,6 +89,9 @@ it('stops at first rule that requires approval', function (): void {
 
     $rule2 = new class implements ApprovalRuleInterface
     {
+        /**
+         * @return never
+         */
         #[Override]
         /**
          * @return never
@@ -105,6 +117,9 @@ it('returns false when enterprise is not provided', function (): void {
 
     $rule = new class implements ApprovalRuleInterface
     {
+        /**
+         * @return true
+         */
         #[Override]
         /**
          * @return true

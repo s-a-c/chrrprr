@@ -10,10 +10,10 @@ cd "${ROOT_DIR}"
 STAMP="$(date +"%Y-%m")"
 REPORT_PATH="base-platform/dependency-reports/${STAMP}-dependency-review.json"
 
-echo "Running dependency review and writing report to storage/app/${REPORT_PATH}"
+printf "Running dependency review and writing report to storage/app/%s\n" "${REPORT_PATH}"
 
 php artisan platform:dependency-review --output="${REPORT_PATH}"
 
 php artisan platform:dependency-review-performance-report --report="${REPORT_PATH}"
 
-echo "Dependency review automation complete. Attach storage/app/${REPORT_PATH} and storage/app/base-platform/dependency-performance.log to the monthly governance ticket."
+printf "Dependency review automation complete. Attach storage/app/%s and storage/app/base-platform/dependency-performance.log to the monthly governance ticket.\n" "${REPORT_PATH}"

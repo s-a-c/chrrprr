@@ -6,10 +6,7 @@ use App\Enums\TeamType;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 use App\Models\Enterprise;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
-
-uses(RefreshDatabase::class);
 
 test('enforces soft limit default 10000 characters in store request', function (): void {
     // Default soft limit should be 10,000 characters (from spec)

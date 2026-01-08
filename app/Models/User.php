@@ -18,6 +18,8 @@ use App\Models\Concerns\ProtectsKeyRoles;
 use App\Observers\UserObserver;
 use App\Presenters\UserPresenter;
 use App\Services\UserProtectionService;
+use App\Support\Html\TeamBioRenderer;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +31,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Scout\Searchable;
 use Override;
+use SensitiveParameter;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Sluggable\SlugOptions;
 
@@ -39,14 +42,14 @@ use Spatie\Sluggable\SlugOptions;
  */
 final class User extends Authenticatable implements MustVerifyEmail, SchemaScopedModel
 {
+    use HasCustomSchema;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     // Must be before HasRoles to run before role detachment
-    // @phpstan-ignore-next-line
     use ProtectsKeyRoles;
-    use HasCustomSchema;
     use HasRoles;
     use HasTranslatableAttributes;
     use HasTranslatableSlug;
@@ -209,6 +212,8 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
 
     /**
      * Scout: Define the indexable data array.
+     *
+     * @psalm-return array{id: mixed, ulid: mixed, name: mixed, email: mixed, bio: mixed, status: mixed}
      */
     public function toSearchableArray(): array
     {
@@ -227,9 +232,10 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
      *
      * @param  string  $token
      */
-    public function sendPasswordResetNotification($token): void
+    #[Override]
+    public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
     {
-        $this->notify(new \Illuminate\Auth\Notifications\ResetPassword($token));
+        $this->notify(new ResetPassword($token));
     }
 
     #[Override]
@@ -258,13 +264,13 @@ final class User extends Authenticatable implements MustVerifyEmail, SchemaScope
             } elseif (is_array($this->bio)) {
                 // If bio is an array (from translatable cast), get the value for current locale
                 $locale = app()->getLocale();
-                $bio = $this->bio[$locale] ?? $this->bio['en'] ?? $this->bio[array_key_first($this->bio)] ?? null;
+                $bio = $this->bio[$locale] ?? $this->bio['en'] ?? array_first($this->bio) ?? null;
             } else {
                 $bio = (string) $this->bio;
             }
         }
 
-        return resolve(\App\Support\Html\TeamBioRenderer::class)->render($bio);
+        return resolve(TeamBioRenderer::class)->render($bio);
     }
 
     /**

@@ -7,13 +7,10 @@ use App\Enums\UserStatus;
 use App\Models\Role;
 use App\Models\User;
 use App\Policies\UserPolicy;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
     // Reset cached roles and permissions

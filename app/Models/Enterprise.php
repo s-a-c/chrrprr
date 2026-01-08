@@ -20,6 +20,9 @@ final class Enterprise extends Team implements SchemaScopedModel, TenantContract
     use HasInternalKeys;
     use HasParent;
 
+    /**
+     * @return false
+     */
     public function canHaveParent(): bool
     {
         return false;
@@ -27,7 +30,11 @@ final class Enterprise extends Team implements SchemaScopedModel, TenantContract
 
     /**
      * Get the tenant key name (ULID field).
+     *
+     *
+     * @psalm-return 'ulid'
      */
+    #[Override]
     public function getTenantKeyName(): string
     {
         return 'ulid';
@@ -36,6 +43,7 @@ final class Enterprise extends Team implements SchemaScopedModel, TenantContract
     /**
      * Get the tenant key value (ULID).
      */
+    #[Override]
     public function getTenantKey(): string
     {
         return $this->ulid;
@@ -47,6 +55,7 @@ final class Enterprise extends Team implements SchemaScopedModel, TenantContract
      * @param  array<static>  $models
      * @return TenantCollection<static>
      */
+    #[Override]
     public function newCollection(array $models = []): TenantCollection
     {
         return new TenantCollection($models);

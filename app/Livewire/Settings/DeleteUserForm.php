@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Settings;
 
-use Illuminate\Contracts\View\Factory;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -13,13 +13,17 @@ final class DeleteUserForm extends Component
 {
     public string $password = '';
 
+    /**
+     * Delete the currently authenticated user.
+     */
     public function deleteUser(): void
     {
         $this->validate([
-            'password' => ['required', 'current_password'],
+            'password' => ['required', 'string', 'current_password'],
         ]);
 
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
 
         Auth::logout();
 
@@ -28,10 +32,13 @@ final class DeleteUserForm extends Component
         session()->invalidate();
         session()->regenerateToken();
 
-        $this->redirect('/');
+        $this->redirect('/', navigate: true);
     }
 
-    public function render(): Factory|View
+    /**
+     * Render the component.
+     */
+    public function render(): View
     {
         return view('livewire.settings.delete-user-form');
     }

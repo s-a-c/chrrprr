@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Projections\Teams;
 
-use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Team Projection Read Model.
@@ -46,15 +44,4 @@ final class TeamProjection extends Model
      * @var string
      */
     // protected $table = 'team_projections';
-
-    /**
-     * Get the related Team model.
-     *
-     * In the current architecture, the Team model itself is the projection.
-     * This method demonstrates how to link a projection to the source model.
-     */
-    public function team(): BelongsTo
-    {
-        return $this->belongsTo(Team::class, 'team_id');
-    }
 }

@@ -15,6 +15,7 @@ use App\Models\Concerns\HasTranslatableAttributes;
 use App\Models\Concerns\HasTranslatableSlug;
 use App\Models\Concerns\HasUlid;
 use App\Models\Concerns\ManagesTeamRoles;
+use App\Models\Concerns\ProtectsKeyRoles;
 use App\Observers\TeamObserver;
 use App\States\Team\TeamState;
 use App\Support\Html\TeamBioRenderer;
@@ -30,6 +31,7 @@ use Laravel\Scout\Searchable;
 use Override;
 use Parental\HasChildren;
 use Spatie\ModelStates\HasStates;
+use Spatie\Permission\Traits\HasRoles;
 use Spatie\Sluggable\SlugOptions;
 
 /**
@@ -50,6 +52,7 @@ class Team extends Model implements SchemaScopedModel
     use HasChildren;
     use HasCustomSchema;
     use HasFactory;
+    use HasRoles;
     use HasStates;
     use HasTeamHierarchy;
     use HasTeamSearch;
@@ -57,6 +60,9 @@ class Team extends Model implements SchemaScopedModel
     use HasTranslatableSlug;
     use HasUlid;
     use ManagesTeamRoles;
+
+    // Must be before HasRoles to run before role detachment
+    use ProtectsKeyRoles;
     use Searchable;
     use SoftDeletes;
 
@@ -162,6 +168,10 @@ class Team extends Model implements SchemaScopedModel
 
     /**
      * Scout: Define the indexable data array.
+     *
+     * @return (mixed|string)[]
+     *
+     * @psalm-return array{id: mixed, ulid: string, name: mixed, slug: mixed, bio: mixed, type: string, status: string}
      */
     public function toSearchableArray(): array
     {
@@ -181,7 +191,7 @@ class Team extends Model implements SchemaScopedModel
      *
      * @return string[]
      *
-     * @psalm-return array{type: TeamType::class, state: TeamState::class, status: TeamStatus::class, name: 'array', slug: 'string', bio: 'array', lock_version: 'integer'}
+     * @psalm-return array{type: TeamType::class, state: TeamState::class, status: TeamStatus::class, name: 'array', slug: 'array', bio: 'array', lock_version: 'integer'}
      */
     #[Override]
     protected function casts(): array
@@ -216,7 +226,7 @@ class Team extends Model implements SchemaScopedModel
             } elseif (is_array($this->bio)) {
                 // If bio is an array (from translatable cast), get the value for current locale
                 $locale = app()->getLocale();
-                $bio = $this->bio[$locale] ?? $this->bio['en'] ?? $this->bio[array_key_first($this->bio)] ?? null;
+                $bio = $this->bio[$locale] ?? $this->bio['en'] ?? array_first($this->bio) ?? null;
             } else {
                 $bio = (string) $this->bio;
             }

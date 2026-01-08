@@ -135,9 +135,9 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function configurePasswordRules(): void
     {
-        /** @var bool $isLocal */
-        $isLocal = $this->app->environment('local');
-        if (! $isLocal) {
+        /** @var bool $isLocalOrTesting */
+        $isLocalOrTesting = $this->app->environment(['local', 'testing']);
+        if (! $isLocalOrTesting) {
             Password::defaults($this->getProductionPasswordRule(...));
 
             return;
@@ -210,17 +210,20 @@ final class AppServiceProvider extends ServiceProvider
     private function configureGate(): void
     {
         // Allow users with key roles (e.g., Super Admin) to bypass all permission checks
-        Gate::before(static function ($user, $ability): ?bool {
-            if ($user === null) {
-                return null;
-            }
+        Gate::before(/**
+         * @return null|true
+         */
+            static function ($user, $ability): ?bool {
+                if ($user === null) {
+                    return null;
+                }
 
-            // Check if user has any key role assigned
-            $hasKeyRole = $user->roles()
-                ->where('is_key', true)
-                ->exists();
+                // Check if user has any key role assigned
+                $hasKeyRole = $user->roles()
+                    ->where('is_key', true)
+                    ->exists();
 
-            return $hasKeyRole ? true : null;
-        });
+                return $hasKeyRole ? true : null;
+            });
     }
 }

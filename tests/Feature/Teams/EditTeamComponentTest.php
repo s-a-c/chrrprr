@@ -21,8 +21,7 @@ beforeEach(function (): void {
 it('renders the edit team page', function (): void {
     // Skip: Folio pages with anonymous Livewire components cannot be tested directly
     // The functionality is tested through UpdateTeam action tests
-    $this->markTestIncomplete('Folio pages with anonymous Livewire components require route registration in tests');
-})->skip('Folio route testing requires additional setup');
+})->skip('Folio pages with anonymous Livewire components require route registration in tests');
 
 it('loads initial data correctly', function (): void {
     // Test that team data can be retrieved correctly

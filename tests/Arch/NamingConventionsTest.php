@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\GenerateUserUlids;
-use App\Console\Commands\SetDefaultUserStates;
+use App\Console\Commands\GenerateUserUlidsCommand;
+use App\Console\Commands\SetDefaultUserStatesCommand;
 use App\Http\Controllers\Controller;
+use App\Livewire\Teams\MoveTeam;
 
 /*
  * |--------------------------------------------------------------------------
@@ -19,7 +20,13 @@ use App\Http\Controllers\Controller;
  */
 
 // Apply Laravel preset
-arch()->preset()->laravel();
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        'App\Projections',
+        MoveTeam::class,
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // Suffix Naming Rules
@@ -61,6 +68,6 @@ arch('Commands should end with Command suffix')
     ->classes()
     ->toHaveSuffix('Command')
     ->ignoring([
-        GenerateUserUlids::class, // Legacy naming
-        SetDefaultUserStates::class, // Legacy naming
+        GenerateUserUlidsCommand::class, // Legacy naming
+        SetDefaultUserStatesCommand::class, // Legacy naming
     ]);

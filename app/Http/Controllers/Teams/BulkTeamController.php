@@ -112,14 +112,24 @@ final readonly class BulkTeamController
             $result = $this->updateTeamHandler->handle($command);
 
             return $result->match(
-                onSuccess: static fn (Team $updatedTeam): array => [
+                onSuccess: /**
+                 * @return (int|mixed|string|true)[]
+                 *
+                 * @psalm-return array{index: int, success: true, team_id: mixed, team_ulid: string, action: 'update'}
+                 */
+                static fn (Team $updatedTeam): array => [
                     'index' => $index,
                     'success' => true,
                     'team_id' => $updatedTeam->id,
                     'team_ulid' => $updatedTeam->ulid,
                     'action' => 'update',
                 ],
-                onFailure: static fn (string $error): array => [
+                onFailure: /**
+                 * @return (false|int|string)[]
+                 *
+                 * @psalm-return array{index: int, success: false, error: string, action: 'update'}
+                 */
+                static fn (string $error): array => [
                     'index' => $index,
                     'success' => false,
                     'error' => $error,
@@ -133,14 +143,24 @@ final readonly class BulkTeamController
         $result = $this->createTeamHandler->handle($command);
 
         return $result->match(
-            onSuccess: static fn (Team $team): array => [
+            onSuccess: /**
+             * @return (int|mixed|string|true)[]
+             *
+             * @psalm-return array{index: int, success: true, team_id: mixed, team_ulid: string, action: 'create'}
+             */
+            static fn (Team $team): array => [
                 'index' => $index,
                 'success' => true,
                 'team_id' => $team->id,
                 'team_ulid' => $team->ulid,
                 'action' => 'create',
             ],
-            onFailure: static fn (string $error): array => [
+            onFailure: /**
+             * @return (false|int|string)[]
+             *
+             * @psalm-return array{index: int, success: false, error: string, action: 'create'}
+             */
+            static fn (string $error): array => [
                 'index' => $index,
                 'success' => false,
                 'error' => $error,

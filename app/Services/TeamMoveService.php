@@ -38,7 +38,7 @@ final readonly class TeamMoveService
 
         return $result->match(
             onSuccess: static fn (TeamMoveApproval|Team $value): TeamMoveApproval|Team => $value,
-            onFailure: static fn (string $error): TeamMoveApproval|Team => throw new RuntimeException($error)
+            onFailure: static fn (string $error): never => throw new RuntimeException($error)
         );
     }
 

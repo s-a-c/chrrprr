@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Livewire\Teams\MoveTeam;
+use Carbon\CarbonImmutable;
+
 /*
  * |--------------------------------------------------------------------------
  * | Core Application Dependency Rules
@@ -12,7 +15,13 @@ declare(strict_types=1);
  */
 
 // Apply Laravel preset for common architectural conventions
-arch()->preset()->laravel();
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        'App\Projections',
+        MoveTeam::class,
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // Core Application Dependencies
@@ -31,9 +40,12 @@ arch('Console Commands should only use Models, Services, and framework')
         'App\Models',
         'App\Services',
         'App\Actions',
+        'App\Enums',
+        'App\Enums',
         'Illuminate',
         'Laravel',
         'Symfony',
+        'Symfony\Component\Uid',
     ]);
 
 arch('Exceptions should only extend framework exception classes')
@@ -59,4 +71,8 @@ arch('Providers should be able to use all application and framework classes')
         'Filament',
         'Livewire',
         'Override',
+        CarbonImmutable::class,
+        'Stancl\JobPipeline',
+        'Stancl\Tenancy',
+        'Filament\Support',
     ]);

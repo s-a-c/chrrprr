@@ -11,6 +11,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Folio\Folio;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
@@ -19,6 +20,7 @@ use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -64,6 +66,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // This allows the UI to handle a "Crashed Command" exactly the same way
         // it handles a "Validation Failure"
         $exceptions->render(function (Throwable $e, Request $request) {
+            if ($e instanceof ValidationException) {
+                return null; // Let Laravel handle validation errors normally (422)
+            }
+
             if ($request->is('api/*') || $request->wantsJson()) {
                 // Convert any exception into a Failure Monad for the response
                 $result = Result::failure(
@@ -71,13 +77,17 @@ return Application::configure(basePath: dirname(__DIR__))
                     ['trace' => 'Captured by Global Handler', 'file' => $e->getFile(), 'line' => $e->getLine()]
                 );
 
+                $statusCode = $e instanceof HttpExceptionInterface
+                    ? $e->getStatusCode()
+                    : 500;
+
                 return $result->match(
                     onSuccess: fn (): null => null, // Should not happen
                     onFailure: fn (string $error, array $logs) => response()->json([
                         'status' => 'exception',
                         'error' => $error,
                         'audit' => $logs,
-                    ], 500)
+                    ], $statusCode)
                 );
             }
 

@@ -17,7 +17,7 @@ test('users can authenticate using the login screen', function (): void {
     $response = $this->from(route('login'))
         ->post(route('login.store'), [
             'email' => $user->email,
-            'password' => 'password',
+            'password' => 'Password123!',
         ]);
 
     $response->assertSessionHasNoErrors()->assertRedirect(route('dashboard', absolute: false));
@@ -54,7 +54,7 @@ test('users with two factor enabled are redirected to two factor challenge', fun
     $response = $this->from(route('login'))
         ->post(route('login.store'), [
             'email' => $user->email,
-            'password' => 'password',
+            'password' => 'Password123!',
         ]);
 
     $response->assertRedirect(route('two-factor.login'));

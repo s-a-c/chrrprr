@@ -131,7 +131,10 @@ trait ManagesTeamRoles
             return $result->match(
                 // @mago-expect Identity function in monadic context, not a boolean flag parameter
                 onSuccess: static fn (mixed $exists, array $logs): bool => (bool) $exists,
-                onFailure: static function (string $error, array $logs): bool {
+                onFailure: /**
+                 * @return false
+                 */
+                static function (string $error, array $logs): bool {
                     // Check if the exception was RoleDoesNotExist by examining logs
                     $isRoleDoesNotExist = false;
                     foreach ($logs as $log) {
@@ -227,7 +230,10 @@ trait ManagesTeamRoles
         $hasConflictingRole = $result->match(
             // @mago-expect Identity function in monadic context, not a boolean flag parameter
             onSuccess: static fn (mixed $exists, array $logs): bool => (bool) $exists,
-            onFailure: static function (string $error, array $logs): bool {
+            onFailure: /**
+             * @return false
+             */
+            static function (string $error, array $logs): bool {
                 // Check if the exception was RoleDoesNotExist by examining logs
                 $isRoleDoesNotExist = false;
                 foreach ($logs as $log) {

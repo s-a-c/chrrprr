@@ -6,13 +6,4 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-final class OrganisationSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        // Add organisation seeding logic here if needed.
-    }
-}
+final class OrganisationSeeder extends Seeder {}

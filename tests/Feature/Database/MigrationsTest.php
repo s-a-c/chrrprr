@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
-
-uses(RefreshDatabase::class);
 
 test('database migrations run successfully', function (): void {
     // RefreshDatabase trait MigrationsTest runs migrations.

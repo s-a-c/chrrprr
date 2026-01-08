@@ -20,6 +20,11 @@ final class Role extends SpatieRole implements SchemaScopedModel
     use HasFactory;
 
     // Allow mass assignment for the new column
+    /**
+     * @var string[]
+     *
+     * @psalm-var list{'name', 'guard_name', 'is_key', 'team_id'}
+     */
     protected $fillable = ['name', 'guard_name', 'is_key', 'team_id'];
 
     /**

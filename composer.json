@@ -3,22 +3,29 @@
     "description": "The official Laravel starter kit for Livewire.",
     "license": "MIT",
     "type": "project",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "require": {
         "php": "^8.5",
         "cviebrock/eloquent-sluggable": "^12.0",
+        "cybercog/laravel-love": "^10.1",
         "filament/filament": "^5.0@beta",
         "hirethunk/verbs": "^0.7.0",
         "laravel/folio": "^1.1.12",
         "laravel/fortify": "^1.33",
-        "laravel/framework": "^12.44.0",
-        "laravel/reverb": "^1.6.3",
+        "laravel/framework": "^12.45.1",
+        "laravel/reverb": "^1.7.0",
         "laravel/scout": "^10.23",
-        "laravel/tinker": "^2.10.2",
+        "laravel/tinker": "^2.11.0",
         "livewire/flux": "^2.10.2",
         "livewire/flux-pro": "^2.10.2",
         "livewire/livewire": "^4.0",
         "pusher/pusher-php-server": "^7.2.7",
+        "spatie/laravel-activitylog": "^4.10.2",
+        "spatie/laravel-comments": "^2.3",
+        "spatie/laravel-comments-livewire": "dev-s-a-c",
         "spatie/laravel-markdown": "^2.7.1",
         "spatie/laravel-model-states": "^2.12.2",
         "spatie/laravel-model-status": "^1.18.1",
@@ -29,7 +36,7 @@
         "staudenmeir/laravel-adjacency-list": "^1.25.2",
         "stevebauman/purify": "^6.3.1",
         "symfony/uid": "^7.4",
-        "tightenco/parental": "^1.4.3"
+        "tightenco/parental": "^1.5.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16.3",
@@ -51,17 +58,21 @@
         "laravel-shift/blueprint": "^2.13",
         "laravel/boost": "^1.8.7",
         "laravel/pail": "^1.2.4",
-        "laravel/pint": "^1.26",
-        "laravel/sail": "^1.51",
+        "laravel/pint": "^1.27",
+        "laravel/sail": "^1.52",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.8.3",
-        "pestphp/pest": "^4.3.0",
+        "peckphp/peck": "^0.2.0",
+        "pestphp/pest": "^4.3.1",
         "pestphp/pest-plugin-arch": "^4.0",
         "pestphp/pest-plugin-browser": "^4.1.1",
         "pestphp/pest-plugin-faker": "^4.0",
         "pestphp/pest-plugin-laravel": "^4.0",
         "pestphp/pest-plugin-profanity": "^4.2.1",
         "pestphp/pest-plugin-type-coverage": "^4.0.3",
+        "php-parallel-lint/php-console-color": "^1.0.1",
+        "php-parallel-lint/php-console-highlighter": "^1.0",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan": "^2.1.33",
         "phpstan/phpstan-deprecation-rules": "^2.0.3",
@@ -81,7 +92,7 @@
         "spatie/laravel-ray": "^1.43.2",
         "spatie/laravel-web-tinker": "^1.10.1",
         "spatie/pest-plugin-snapshots": "^2.2.1",
-        "symfony/http-client": "^8.0",
+        "symfony/http-client": "^8.0.3",
         "vimeo/psalm": "^7.0@dev"
     },
     "repositories": [
@@ -99,6 +110,11 @@
             "type": "composer",
             "url": "https://composer.fluxui.dev",
             "name": "fluxui-pro"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/s-a-c/laravel-comments-livewire",
+            "name": "laravel-comments-livewire"
         },
         {
             "type": "composer",
@@ -159,189 +175,260 @@
         }
     },
     "scripts": {
-        "post-update-cmd": ["@php artisan vendor:publish --tag=laravel-assets --ansi --force", "@php artisan boost:update --ansi"],
-        "pre-package-uninstall": ["Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"],
-        "post-autoload-dump": ["Illuminate\\Foundation\\ComposerScripts::postAutoloadDump", "@php artisan package:discover --ansi"],
-        "post-root-package-install": ["@php -r \"file_exists('.env') || copy('.env.example', '.env');\""],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan boost:update --ansi"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "analyze": ["@cache:clear", "composer normalize", "@analyze:mago", "@analyze:phpstan", "@analyze:psalm", "@analyze:psalm:stats"],
-        "analyze:fix": ["@analyze:fix:mago", "@analyze:fix:phpstan", "@analyze:fix:psalm"],
+        "analyze": [
+            "@cache:clear",
+            "composer normalize",
+            "@analyze:mago",
+            "@analyze:phpstan",
+            "@analyze:psalm",
+            "@analyze:psalm:stats"
+        ],
+        "analyze:fix": [
+            "@cache:clear",
+            "composer normalize",
+            "@analyze:fix:mago",
+            "@analyze:fix:phpstan",
+            "@analyze:fix:psalm",
+            "@analyze:psalm:stats"
+        ],
         "analyze:fix:mago": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Mago\\ Types\\ Fix 2>/dev/null') ?: shell_exec('figlet Mago\\ Types\\ Fix 2>/dev/null') ?: 'Mago Types Fix' . PHP_EOL; echo chr(27) . '[1;32m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && \"$MAGO_BIN\" analyze --fix --baseline mago-analysis-baseline.toml 2>/dev/null || (echo 'Skipping mago analyze --fix (mago not installed or baseline missing)' && exit 0)"
+            "@banner \"Mago Types Fix\" \"1;32\"",
+            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m analyze --fix --baseline mago-analysis-baseline.toml 2>/dev/null\"); else printf(\"Skipping mago analyze --fix (not found)\\n\");' "
         ],
         "analyze:fix:phpstan": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard PHPStan\\ Fix 2>/dev/null') ?: shell_exec('figlet PHPStan\\ Fix 2>/dev/null') ?: 'PHPStan Fix' . PHP_EOL; echo chr(27) . '[1;94m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d memory_limit=2G vendor/bin/phpstan analyse --memory-limit=2G --fix || true"
+            "@banner \"PHPStan Fix\" \"1;94\"",
+            "@php vendor/bin/phpstan analyse --fix || true"
         ],
         "analyze:fix:psalm": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Psalm\\ Alter 2>/dev/null') ?: shell_exec('figlet Psalm\\ Alter 2>/dev/null') ?: 'Psalm Alter' . PHP_EOL; echo chr(27) . '[1;95m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=2G vendor/bin/psalm --no-cache --threads=1 --alter --issues=all || true"
+            "@banner \"Psalm Alter\" \"1;95\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/psalm --no-cache --threads=1 --alter --issues=all || true"
         ],
         "analyze:mago": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Mago\\ Types 2>/dev/null') ?: shell_exec('figlet Mago\\ Types 2>/dev/null') ?: 'Mago Types' . PHP_EOL; echo chr(27) . '[1;96m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && \"$MAGO_BIN\" analyze --baseline mago-analysis-baseline.toml 2>/dev/null || (echo 'Skipping mago analyze (mago not installed or baseline missing)' && exit 0)"
+            "@banner \"Mago Types\" \"1;96\"",
+            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m analyze --baseline mago-analysis-baseline.toml 2>/dev/null\"); else printf(\"Skipping mago analyze (not found)\\n\");' "
         ],
         "analyze:phpstan": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard PHPStan 2>/dev/null') ?: shell_exec('figlet PHPStan 2>/dev/null') ?: 'PHPStan' . PHP_EOL; echo chr(27) . '[1;91m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d memory_limit=2G vendor/bin/phpstan analyse --memory-limit=2G"
+            "@banner \"PHPStan\" \"1;91\"",
+            "@php vendor/bin/phpstan analyse"
         ],
         "analyze:psalm": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Psalm 2>/dev/null') ?: shell_exec('figlet Psalm 2>/dev/null') ?: 'Psalm' . PHP_EOL; echo chr(27) . '[1;95m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=2G vendor/bin/psalm --no-cache --threads=1"
+            "@banner \"Psalm\" \"1;95\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/psalm --no-cache --threads=1"
         ],
         "analyze:psalm:stats": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Psalm\\ Stats 2>/dev/null') ?: shell_exec('figlet Psalm\\ Stats 2>/dev/null') ?: 'Psalm Stats' . PHP_EOL; echo chr(27) . '[1;93m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=1G vendor/bin/psalm --no-cache --show-info=true --stats"
+            "@banner \"Psalm Stats\" \"1;93\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/psalm --no-cache --show-info=true --stats"
         ],
-        "behat:all": ["@behat:unit", "@behat:api", "@behat:browser"],
+        "banner": [
+            "@php -r 'require \"vendor/autoload.php\"; App\\Support\\Console\\Banner::display(array_slice($argv, 1));' -- "
+        ],
+        "behat:all": [
+            "@behat:unit",
+            "@behat:api",
+            "@behat:browser"
+        ],
         "behat:api": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Behat\\ API\\ Tests 2>/dev/null') ?: shell_exec('figlet Behat\\ API 2>/dev/null') ?: 'Behat API Tests' . PHP_EOL; echo chr(27) . '[1;34m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "vendor/bin/behat --config=behat.yml --suite=api"
+            "@banner \"Behat API Tests\" \"1;34\"",
+            "@php vendor/bin/behat --config=behat.yml --suite=api"
         ],
         "behat:browser": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Behat\\ Browser\\ Tests 2>/dev/null') ?: shell_exec('figlet Behat\\ Browser 2>/dev/null') ?: 'Behat Browser Tests' . PHP_EOL; echo chr(27) . '[1;35m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "vendor/bin/behat --config=behat.yml --suite=browser"
+            "@banner \"Behat Browser Tests\" \"1;35\"",
+            "@php vendor/bin/behat --config=behat.yml --suite=browser"
         ],
         "behat:unit": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Behat\\ Unit\\ Tests 2>/dev/null') ?: shell_exec('figlet Behat\\ Unit 2>/dev/null') ?: 'Behat Unit Tests' . PHP_EOL; echo chr(27) . '[1;33m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "vendor/bin/behat --config=behat.yml --suite=unit"
+            "@banner \"Behat Unit Tests\" \"1;33\"",
+            "@php vendor/bin/behat --config=behat.yml --suite=unit"
         ],
         "blueprint:build": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Blueprint\\ Build 2>/dev/null') ?: shell_exec('figlet Blueprint\\ Build 2>/dev/null') ?: 'Blueprint Build' . PHP_EOL; echo chr(27) . '[1;94m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Blueprint Build\" \"1;94\"",
             "php artisan blueprint:build"
         ],
         "blueprint:trace": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Blueprint\\ Trace 2>/dev/null') ?: shell_exec('figlet Blueprint\\ Trace 2>/dev/null') ?: 'Blueprint Trace' . PHP_EOL; echo chr(27) . '[1;92m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Blueprint Trace\" \"1;92\"",
             "php artisan blueprint:trace"
         ],
         "cache:clear": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Cache\\ Clear 2>/dev/null') ?: shell_exec('figlet Cache\\ Clear 2>/dev/null') ?: 'Cache Clear' . PHP_EOL; echo chr(27) . '[1;90m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Cache Clear\" \"1;90\"",
             "@cache:clear:phpstan",
             "@cache:clear:psalm",
             "@cache:clear:rector",
             "@cache:clear:pest",
             "@cache:clear:laravel",
             "@cache:clear:views",
-            "php -r \"echo chr(27) . '[0;32m\u2713 All caches cleared successfully\\033[0m' . PHP_EOL;\""
+            "@log \"✓ All caches cleared successfully\" \"0;32\""
         ],
         "cache:clear:all": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Deep\\ Clean 2>/dev/null') ?: shell_exec('figlet Deep\\ Clean 2>/dev/null') ?: 'Deep Clean' . PHP_EOL; echo chr(27) . '[1;90;41m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Deep Clean\" \"1;90;41\"",
             "@cache:clear",
             "@cache:clear:tmp",
-            "php -r \"echo chr(27) . '[0;32m\u2713 Deep clean complete\\033[0m' . PHP_EOL;\""
+            "@log \"✓ Deep clean complete\" \"0;32\""
         ],
-        "cache:clear:laravel": ["bash -c 'printf \"\\033[0;36mClearing Laravel cache...\\033[0m\\n\" && @php artisan optimize:clear --ansi 2>/dev/null || true'"],
-        "cache:clear:pest": ["bash -c 'printf \"\\033[0;36mClearing Pest cache...\\033[0m\\n\" && rm -rf .phpunit.result.cache .phpunit.cache .pest.cache 2>/dev/null || true'"],
-        "cache:clear:phpstan": ["bash -c 'printf \"\\033[0;36mClearing PHPStan cache...\\033[0m\\n\" && rm -rf tmp/phpstan 2>/dev/null || true'"],
-        "cache:clear:psalm": ["bash -c 'printf \"\\033[0;36mClearing Psalm cache...\\033[0m\\n\" && rm -rf tmp/psalm 2>/dev/null || true'"],
-        "cache:clear:rector": ["bash -c 'printf \"\\033[0;36mClearing Rector cache...\\033[0m\\n\" && rm -rf tmp/rector 2>/dev/null || true'"],
-        "cache:clear:tmp": ["bash -c 'printf \"\\033[0;36mClearing temporary files...\\033[0m\\n\" && find tmp -type f -delete 2>/dev/null || true'"],
-        "cache:clear:views": ["bash -c 'printf \"\\033[0;36mClearing compiled views...\\033[0m\\n\" && rm -rf storage/framework/views/* 2>/dev/null || true'"],
+        "cache:clear:laravel": [
+            "@log \"Clearing Laravel cache...\" \"0;36\"",
+            "php artisan optimize:clear --ansi 2>/dev/null || true"
+        ],
+        "cache:clear:pest": [
+            "@log \"Clearing Pest cache...\" \"0;36\"",
+            "@php -r 'array_map(\"unlink\", glob(\".phpunit.result.cache\")); if(is_dir(\".phpunit.cache\")) passthru(\"rm -rf .phpunit.cache\"); if(is_dir(\".pest.cache\")) passthru(\"rm -rf .pest.cache\");' "
+        ],
+        "cache:clear:phpstan": [
+            "@log \"Clearing PHPStan cache...\" \"0;36\"",
+            "rm -rf tmp/phpstan 2>/dev/null || true"
+        ],
+        "cache:clear:psalm": [
+            "@log \"Clearing Psalm cache...\" \"0;36\"",
+            "rm -rf tmp/psalm 2>/dev/null || true"
+        ],
+        "cache:clear:rector": [
+            "@log \"Clearing Rector cache...\" \"0;36\"",
+            "rm -rf tmp/rector 2>/dev/null || true"
+        ],
+        "cache:clear:tmp": [
+            "@log \"Clearing temporary files...\" \"0;36\"",
+            "find tmp -type f -delete 2>/dev/null || true"
+        ],
+        "cache:clear:views": [
+            "@log \"Clearing compiled views...\" \"0;36\"",
+            "rm -rf storage/framework/views/* 2>/dev/null || true"
+        ],
         "ci:local:browser-tests": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard CI\\ Local\\ Browser-Tests 2>/dev/null') ?: shell_exec('figlet CI\\ Local\\ Pre-Commit 2>/dev/null') ?: 'CI Local Browser Tests' . PHP_EOL; echo chr(27) . '[1;31m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"CI Local Browser-Tests\" \"1;31\"",
             "act -W .github/workflows/browser-tests.yml"
         ],
         "ci:local:lint": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard CI\\ Local\\ Lint 2>/dev/null') ?: shell_exec('figlet CI\\ Local\\ Lint 2>/dev/null') ?: 'CI Local Lint' . PHP_EOL; echo chr(27) . '[1;36m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"CI Local Lint\" \"1;36\"",
             "act -W .github/workflows/lint.yml"
         ],
         "ci:local:nightlu-heavy": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard CI\\ Local\\ Heavy 2>/dev/null') ?: shell_exec('figlet CI\\ Local\\ Heavy 2>/dev/null') ?: 'CI Local Heavy' . PHP_EOL; echo chr(27) . '[1;35m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"CI Local Heavy\" \"1;35\"",
             "act -W .github/workflows/nightly-heavy.yml"
         ],
         "ci:local:pre-commit": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard CI\\ Local\\ Pre-Commit 2>/dev/null') ?: shell_exec('figlet CI\\ Local\\ Pre-Commit 2>/dev/null') ?: 'CI Local Pre-Commit' . PHP_EOL; echo chr(27) . '[1;32m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"CI Local Pre-Commit\" \"1;32\"",
             "act -W .github/workflows/pre-commit.yml"
         ],
         "ci:local:tests": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard CI\\ Local\\ Tests 2>/dev/null') ?: shell_exec('figlet CI\\ Local\\ Tests 2>/dev/null') ?: 'CI Local Tests' . PHP_EOL; echo chr(27) . '[1;94m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"CI Local Tests\" \"1;94\"",
             "act -W .github/workflows/tests.yml"
         ],
         "dev": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Dev\\ Server 2>/dev/null') ?: shell_exec('figlet Dev\\ Server 2>/dev/null') ?: 'Dev Server' . PHP_EOL; echo chr(27) . '[1;96;47m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Dev Server\" \"1;96;47\"",
             "Composer\\Config::disableProcessTimeout",
             "bunx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"bun run dev\" --names=server,queue,logs,vite --kill-others"
         ],
         "dev:solo": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Dev\\ Server\\ (Solo) 2>/dev/null') ?: shell_exec('figlet Dev\\ Server\\ (Solo) 2>/dev/null') ?: 'Dev Server (Solo)' . PHP_EOL; echo chr(27) . '[1;95;47m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Dev Server (Solo)\" \"1;95;47\"",
             "Composer\\Config::disableProcessTimeout",
             "php artisan solo"
         ],
         "ide-helper:generate": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard IDE\\ Helper 2>/dev/null') ?: shell_exec('figlet IDE\\ Helper 2>/dev/null') ?: 'IDE Helper' . PHP_EOL; echo chr(27) . '[1;93m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"IDE Helper\" \"1;93\"",
             "php artisan ide-helper:generate"
         ],
-        "lint": ["@cache:clear", "composer normalize", "@lint:mago", "@lint:rector", "@lint:pint", "@lint:js"],
-        "lint:fix": ["@lint:fix:mago", "@lint:fix:rector", "@lint:fix:pint", "@lint:fix:js"],
+        "lint": [
+            "@lint:syntax",
+            "@lint:rector",
+            "@lint:mago",
+            "@lint:pint",
+            "composer normalize --dry-run",
+            "@lint:js"
+        ],
+        "lint:fix": [
+            "@lint:syntax",
+            "composer normalize",
+            "@lint:fix:rector",
+            "@lint:fix:mago",
+            "@lint:fix:pint",
+            "@lint:fix:js"
+        ],
         "lint:fix:js": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Lint\\ JS\\ Fix 2>/dev/null') ?: shell_exec('figlet Lint\\ JS\\ Fix 2>/dev/null') ?: 'Lint JS Fix' . PHP_EOL; echo chr(27) . '[1;34m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Lint JS Fix\" \"1;34\"",
             "bun run lintfix"
         ],
         "lint:fix:mago": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Lint\\ Mago\\ Fix 2>/dev/null') ?: shell_exec('figlet Lint\\ Mago\\ Fix 2>/dev/null') ?: 'Lint Mago Fix' . PHP_EOL; echo chr(27) . '[1;31m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && \"$MAGO_BIN\" --config mago.toml lint --fix --baseline mago-lint-baseline.toml || (echo 'Skipping mago lint --fix (mago not installed or baseline missing)' && exit 0)"
+            "@banner \"Lint Mago Fix\" \"1;31\"",
+            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m --config mago.toml lint --fix --baseline mago-lint-baseline.toml\"); else printf(\"Skipping mago lint --fix (not found)\\n\");' "
         ],
         "lint:fix:pint": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Pint\\ Fix 2>/dev/null') ?: shell_exec('figlet Pint\\ Fix 2>/dev/null') ?: 'Pint Fix' . PHP_EOL; echo chr(27) . '[1;33m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d memory_limit=1G vendor/bin/pint --parallel"
+            "@banner \"Pint Fix\" \"1;33\"",
+            "@php vendor/bin/pint --parallel --dirty"
         ],
         "lint:fix:rector": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Rector\\ Fix 2>/dev/null') ?: shell_exec('figlet Rector\\ Fix 2>/dev/null') ?: 'Rector Fix' . PHP_EOL; echo chr(27) . '[1;36m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d memory_limit=1G vendor/bin/rector"
+            "@banner \"Rector Fix\" \"1;36\"",
+            "@php vendor/bin/rector"
         ],
         "lint:js": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Lint\\ JS 2>/dev/null') ?: shell_exec('figlet Lint\\ JS 2>/dev/null') ?: 'Lint JS' . PHP_EOL; echo chr(27) . '[1;93m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Lint JS\" \"1;93\"",
             "bun run lint"
         ],
         "lint:mago": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Lint\\ Mago\\ Dry-Run 2>/dev/null') ?: shell_exec('figlet Lint\\ Mago 2>/dev/null') ?: 'Lint Mago' . PHP_EOL; echo chr(27) . '[1;91m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && \"$MAGO_BIN\" --config mago.toml lint --baseline mago-lint-baseline.toml || (echo 'Skipping mago lint (mago not installed or baseline missing)' && exit 0)"
+            "@banner \"Lint Mago\" \"1;91\"",
+            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m --config mago.toml lint --baseline mago-lint-baseline.toml\"); else printf(\"Skipping mago lint (not found)\\n\");' "
         ],
         "lint:mago:pedantic": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Mago\\ Pedantic\\ Report 2>/dev/null') ?: shell_exec('figlet Mago\\ Pedantic 2>/dev/null') ?: 'Mago Pedantic Report' . PHP_EOL; echo chr(27) . '[1;35m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "mkdir -p tmp",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && \"$MAGO_BIN\" --config mago.toml lint --pedantic >| tmp/lint-mago-pedantic-report.log 2>&1 || (echo 'Skipping mago lint --pedantic (mago not installed)' && exit 0)",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && echo \"Report saved to tmp/lint-mago-pedantic-report.log\" || true"
+            "@banner \"Mago Pedantic Report\" \"1;35\"",
+            "@php -r 'if (!is_dir(\"tmp\")) mkdir(\"tmp\"); $m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) { passthru(\"$m --config mago.toml lint --pedantic >| tmp/lint-mago-pedantic-report.log 2>&1\"); printf(\"Report saved to tmp/lint-mago-pedantic-report.log\\n\"); } else printf(\"Skipping (not found)\\n\");' "
         ],
         "lint:pint": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Pint\\ Dry-Run 2>/dev/null') ?: shell_exec('figlet Pint 2>/dev/null') ?: 'Pint' . PHP_EOL; echo chr(27) . '[1;94m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d memory_limit=1G vendor/bin/pint --parallel --test"
+            "@banner \"Pint Dry-Run\" \"1;94\"",
+            "@php vendor/bin/pint --parallel --dirty --test"
         ],
         "lint:rector": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Rector\\ Dry-Run 2>/dev/null') ?: shell_exec('figlet Rector 2>/dev/null') ?: 'Rector' . PHP_EOL; echo chr(27) . '[1;92m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d memory_limit=1G vendor/bin/rector --dry-run"
+            "@banner \"Rector Dry-Run\" \"1;92\"",
+            "@php vendor/bin/rector --dry-run"
+        ],
+        "lint:syntax": [
+            "@banner \"Lint Syntax\" \"1;96\"",
+            "@php vendor/bin/parallel-lint --no-progress --colors --show-deprecated app config database public resources routes tests"
         ],
         "local:ghaction:clean": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Clean\\ Act\\ Cache 2>/dev/null') ?: shell_exec('figlet Clean\\ Act\\ Cache 2>/dev/null') ?: 'Clean Act Cache' . PHP_EOL; echo chr(27) . '[1;90m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "bash -c 'if [ -d \"\\$HOME/.cache/act\" ]; then printf \"\\033[0;36mClearing act cache...\\033[0m\\n\"; rm -rf \"\\$HOME/.cache/act\" && printf \"\\033[0;32m\u2713 Act cache cleared successfully\\033[0m\\n\" || printf \"\\033[0;31m\u2717 Failed to clear act cache\\033[0m\\n\"; else printf \"\\033[0;33mAct cache directory not found (may already be clean)\\033[0m\\n\"; fi'"
+            "@banner \"Clean Act Cache\" \"1;90\"",
+            "@php -r '$cache = $_SERVER[\"HOME\"] . \"/.cache/act\"; if (is_dir($cache)) { printf(\"Clearing act cache...\\n\"); passthru(\"rm -rf $cache\"); } else printf(\"Act cache not found\\n\");' "
         ],
         "local:ghaction:quality:solo": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Quality\\ Checks\\ (Solo) 2>/dev/null') ?: shell_exec('figlet Quality\\ Checks\\ (Solo) 2>/dev/null') ?: 'Quality Checks (Solo)' . PHP_EOL; echo chr(27) . '[1;97m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "bash -c 'printf \"\\033[0;36mStarting Solo with quality check commands...\\033[0m\\n\"; printf \"\\033[0;33mNote: Lint and PHPMD are lazy commands. Press \\\"s\\\" on their tabs to start them.\\033[0m\\n\"; php artisan solo'"
+            "@banner \"Quality Checks (Solo)\" \"1;97\"",
+            "@php -r 'printf(\"Starting Solo with quality check commands...\\n\"); passthru(\"php artisan solo\");' "
+        ],
+        "log": [
+            "@php -r 'require \"vendor/autoload.php\"; App\\Support\\Console\\Banner::log(array_slice($argv, 1));' -- "
         ],
         "mago:guard": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Mago\\ Guard 2>/dev/null') ?: shell_exec('figlet Mago\\ Guard 2>/dev/null') ?: 'Mago Guard' . PHP_EOL; echo chr(27) . '[1;91m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && \"$MAGO_BIN\" --config mago.toml guard --baseline mago-guard-baseline.toml || (echo 'Skipping mago guard (mago not installed)' && exit 0)"
+            "@banner \"Mago Guard\" \"1;91\"",
+            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m --config mago.toml guard --baseline mago-guard-baseline.toml\"); else printf(\"Skipping mago guard (not found)\\n\");' "
         ],
         "mago:guard:fix": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Mago\\ Guard\\ Fix 2>/dev/null') ?: shell_exec('figlet Mago\\ Guard\\ Fix 2>/dev/null') ?: 'Mago Guard Fix' . PHP_EOL; echo chr(27) . '[1;32m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && \"$MAGO_BIN\" guard --fix || (echo 'Skipping mago guard --fix (mago not installed)' && exit 0)"
+            "@banner \"Mago Guard Fix\" \"1;32\"",
+            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m guard --fix\"); else printf(\"Skipping mago guard --fix (not found)\\n\");' "
         ],
         "mago:list-files": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Mago\\ List\\ Files 2>/dev/null') ?: shell_exec('figlet Mago\\ List\\ Files 2>/dev/null') ?: 'Mago List Files' . PHP_EOL; echo chr(27) . '[1;96m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "MAGO_BIN=$(command -v mago 2>/dev/null || echo '/usr/local/bin/mago'); [ -x \"$MAGO_BIN\" ] && \"$MAGO_BIN\" list-files || (echo 'Skipping mago list-files (mago not installed)' && exit 0)"
+            "@banner \"Mago List Files\" \"1;96\"",
+            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m list-files\"); else printf(\"Skipping mago list-files (not found)\\n\");' "
         ],
         "security:audit": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Security\\ Audit 2>/dev/null') ?: shell_exec('figlet Security\\ Audit 2>/dev/null') ?: 'Security Audit' . PHP_EOL; echo chr(27) . '[7;1;91m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Security Audit\" \"7;1;91\"",
             "composer audit --locked || true"
         ],
         "setup": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Setup 2>/dev/null') ?: shell_exec('figlet Setup 2>/dev/null') ?: 'Setup' . PHP_EOL; echo chr(27) . '[1;94m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Setup\" \"1;94\"",
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
@@ -349,102 +436,178 @@
             "bun install",
             "bun run build"
         ],
-        "test:all": ["@test:core", "test:heavy"],
-        "test:arch": ["@test:arch:mago"],
-        "test:arch:full": ["@test:arch:mago", "@test:arch:pest"],
-        "test:arch:mago": ["@mago:guard"],
+        "test": "@test:core",
+        "test:all": [
+            "@test:core",
+            "@test:heavy"
+        ],
+        "test:arch": [
+            "@test:arch:full"
+        ],
+        "test:arch:full": [
+            "@lint:syntax",
+            "@test:arch:mago",
+            "@test:arch:pest"
+        ],
+        "test:arch:mago": [
+            "@mago:guard"
+        ],
         "test:arch:pest": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Architecture\\ Tests\\ Pest 2>/dev/null') ?: shell_exec('figlet Architecture\\ Tests\\ Pest 2>/dev/null') ?: 'Architecture Tests: Pest' . PHP_EOL; echo chr(27) . '[1;95m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Architecture Tests: Pest\" \"1;95\"",
             "@cache:clear:pest",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=4G -d max_execution_time=900 vendor/bin/pest --testsuite=Arch --cache-directory=.pest-cache"
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/pest --testsuite=Arch --cache-directory=.pest-cache"
         ],
         "test:behat": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Behat\\ Tests 2>/dev/null') ?: shell_exec('figlet Behat\\ Tests 2>/dev/null') ?: 'Behat Tests' . PHP_EOL; echo chr(27) . '[1;36m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "vendor/bin/behat --config=behat.yml"
+            "@banner \"Behat Tests\" \"1;36\"",
+            "@lint:syntax",
+            "@php vendor/bin/behat --config=behat.yml"
         ],
         "test:behat:api": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Behat\\ API\\ Tests 2>/dev/null') ?: shell_exec('figlet Behat\\ API 2>/dev/null') ?: 'Behat API Tests' . PHP_EOL; echo chr(27) . '[1;34m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "vendor/bin/behat --config=behat.yml --suite=api"
+            "@banner \"Behat API Tests\" \"1;34\"",
+            "@lint:syntax",
+            "@php vendor/bin/behat --config=behat.yml --suite=api"
         ],
         "test:behat:browser": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Behat\\ Browser\\ Tests 2>/dev/null') ?: shell_exec('figlet Behat\\ Browser 2>/dev/null') ?: 'Behat Browser Tests' . PHP_EOL; echo chr(27) . '[1;35m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "vendor/bin/behat --config=behat.yml --suite=browser"
+            "@banner \"Behat Browser Tests\" \"1;35\"",
+            "@lint:syntax",
+            "@php vendor/bin/behat --config=behat.yml --suite=browser"
         ],
-        "test:behat:watch": ["vendor/bin/behat --config=behat.yml --watch"],
-        "test:browser": ["@test:browser:pest", "@test:browser:js"],
+        "test:behat:watch": [
+            "@php vendor/bin/behat --config=behat.yml --watch"
+        ],
+        "test:browser": [
+            "@lint:syntax",
+            "@test:browser:pest",
+            "@test:browser:js"
+        ],
         "test:browser-server": [
-            "php -r \"if (PHP_OS_FAMILY === 'Darwin') { exec('open -a \\\"Google Chrome\\\" --args --remote-debugging-port=9222 --headless 2>&1', \\$output, \\$return); } elseif (PHP_OS_FAMILY === 'Linux') { exec('google-chrome --remote-debugging-port=9222 --headless --no-sandbox --disable-dev-shm-usage 2>&1 &', \\$output, \\$return); } else { echo 'Browser server setup not supported on this OS' . PHP_EOL; exit(1); }\""
+            "@php -r \"if (PHP_OS_FAMILY === 'Darwin') { exec('open -a \\\"Google Chrome\\\" --args --remote-debugging-port=9222 --headless 2>&1', \\$output, \\$return); } elseif (PHP_OS_FAMILY === 'Linux') { exec('google-chrome --remote-debugging-port=9222 --headless --no-sandbox --disable-dev-shm-usage 2>&1 &', \\$output, \\$return); } else { printf('Browser server setup not supported on this OS\\n'); exit(1); }\""
         ],
         "test:browser:js": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard JS\\ Coverage 2>/dev/null') ?: shell_exec('figlet Browser\\ Tests:\\ JS 2>/dev/null') ?: 'Browser Tests: JS' . PHP_EOL; echo chr(27) . '[1;35;47m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Browser Tests: JS\" \"1;35;47\"",
             "bun run test:browser 2>&1 || true"
         ],
         "test:browser:pest": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Browser\\ Tests:\\ Pest 2>/dev/null') ?: shell_exec('figlet Browser\\ Tests 2>/dev/null') ?: 'Browser Tests: Pest' . PHP_EOL; echo chr(27) . '[1;31;47m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Browser Tests: Pest\" \"1;31;47\"",
             "rm -rf tests/Browser/Screenshots 2>/dev/null || true",
             "@cache:clear:pest",
             "@cache:clear:views",
             "@cache:clear:laravel",
-            "DB_CONNECTION=sqlite DB_DATABASE=:memory: php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=1G vendor/bin/pest --testsuite=Browser"
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/pest --testsuite=Browser"
         ],
-        "test:core": ["@cache:clear:laravel", "@lint", "@security:audit", "@test:arch:mago", "@test:profanity", "@test:type-coverage", "@test:unit", "@test:feature", "@test:coverage"],
-        "test:coverage": ["@test:coverage:pcov", "@test:coverage:js"],
+        "test:core": [
+            "@cache:clear:laravel",
+            "@lint:fix",
+            "@security:audit",
+            "@test:arch:mago",
+            "@test:profanity",
+            "@test:type-coverage",
+            "@test:unit",
+            "@test:feature",
+            "@test:coverage"
+        ],
+        "test:coverage": [
+            "@lint:syntax",
+            "@test:coverage:pcov",
+            "@test:coverage:js"
+        ],
         "test:coverage:js": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard JS\\ Coverage 2>/dev/null') ?: shell_exec('figlet JS\\ Coverage 2>/dev/null') ?: 'JS Coverage' . PHP_EOL; echo chr(27) . '[1;31m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"JS Coverage\" \"1;31\"",
             "LARAVEL_BYPASS_ENV_CHECK=1 bun run test:coverage 2>&1 || true"
         ],
         "test:coverage:pcov": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard PHP\\ Coverage\\ \\(PCOV\\) 2>/dev/null') ?: shell_exec('figlet PHP\\ Coverage\\ \\(PCOV\\) 2>/dev/null') ?: 'PHP Coverage (PCOV)' . PHP_EOL; echo chr(27) . '[1;35m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=1G -d xdebug.mode=off -d pcov.enabled=1 vendor/bin/pest --coverage --min=99.4 2>&1 || true"
+            "@banner \"PHP Coverage (PCOV)\" \"1;35\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d xdebug.mode=off -d pcov.enabled=1 vendor/bin/pest --coverage --min=99.4 2>&1 || true"
         ],
         "test:coverage:xdebug": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard PHP\\ Coverage\\ \\(XDEBUG\\) 2>/dev/null') ?: shell_exec('figlet PHP\\ Coverage\\ \\(XDEBUG\\) 2>/dev/null') ?: 'PHP Coverage (XDEBUG)' . PHP_EOL; echo chr(27) . '[1;95m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=1G -d xdebug.mode=coverage -d pcov.enabled=0 -r \"if (!extension_loaded('xdebug') || ini_get('xdebug.mode') !== 'coverage') { echo 'xdebug driver not available' . PHP_EOL; exit(0); } if (extension_loaded('pcov')) { echo 'Warning: pcov is loaded, Pest will prefer pcov over xdebug. Consider disabling pcov extension for xdebug coverage.' . PHP_EOL; }\" && vendor/bin/pest --coverage --min=99.4 2>&1 || php -r \"echo 'xdebug driver not available' . PHP_EOL;\" || true"
+            "@banner \"PHP Coverage (XDEBUG)\" \"1;95\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d xdebug.mode=coverage -d pcov.enabled=0 -r \"if (!extension_loaded('xdebug') || ini_get('xdebug.mode') !== 'coverage') { printf('xdebug driver not available\\n'); exit(0); } if (extension_loaded('pcov')) { printf('Warning: pcov is loaded, Pest will prefer pcov over xdebug.\\n'); }\" && @php vendor/bin/pest --coverage --min=99.4 2>&1 || true"
+        ],
+        "test:e2e": [
+            "@banner \"Test:E2E\" \"1;96\"",
+            "@lint:syntax",
+            "php artisan migrate:fresh --seed --env=testing --ansi",
+            "bunx concurrently --kill-others --success command-1 --names \"SERVER,TESTS\" --prefix-colors \"auto\" \"php -d variables_order=EGPCS artisan serve --env=testing --port=8001 --no-reload\" \"bunx wait-on http://127.0.0.1:8001 && APP_URL=http://127.0.0.1:8001 vendor/bin/pest --testsuite=Browser\""
         ],
         "test:feature": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Feature\\ Tests 2>/dev/null') ?: shell_exec('figlet Feature\\ Tests 2>/dev/null') ?: 'Feature Tests' . PHP_EOL; echo chr(27) . '[1;32;47m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=1G -d xdebug.mode=off -d pcov.enabled=1 vendor/bin/pest --testsuite=Feature --min=99",
+            "@banner \"Feature Tests\" \"1;32;47\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d xdebug.mode=off -d pcov.enabled=1 vendor/bin/pest --testsuite=Feature --min=99",
             "bun run test 2>&1 || true"
         ],
-        "test:heavy": ["@test:browser", "@test:coverage", "@test:mutation"],
-        "test:heavy:nightly": ["@test:browser", "@test:coverage", "@test:mutation:infection"],
-        "test:mutation": ["@test:mutation:infection", "@test:mutation:pest"],
+        "test:heavy": [
+            "@test:browser",
+            "@test:coverage"
+        ],
+        "test:heavy:nightly": [
+            "@test:heavy",
+            "@test:mutation"
+        ],
+        "test:mutation": [
+            "@test:mutation:infection",
+            "@test:mutation:pest:php84"
+        ],
         "test:mutation:infection": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Mutation\\ Testing\\ Infection 2>/dev/null') ?: shell_exec('figlet Mutation\\ Testing\\ Infection 2>/dev/null') ?: 'Mutation Testing: Infection' . PHP_EOL; echo chr(27) . '[1;93;46m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Mutation Testing: Infection\" \"1;93;46\"",
             "@cache:clear:pest",
             "@cache:clear:views",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=2G vendor/bin/infection"
+            "./scripts/mutation-infection-php84.sh"
         ],
         "test:mutation:pest": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Mutation\\ Testing 2>/dev/null') ?: shell_exec('figlet Mutation\\ Testing 2>/dev/null') ?: 'Mutation Testing' . PHP_EOL; echo chr(27) . '[1;93;46m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Mutation Testing\" \"1;93;46\"",
             "rm -rf vendor/pestphp/pest-plugin-mutate/.temp/mutations 2>/dev/null || true",
             "@cache:clear:pest",
             "@cache:clear:views",
-            "./scripts/mutation-test-wrapper.sh"
+            "./scripts/mutation-pest.sh"
+        ],
+        "test:mutation:pest:php84": [
+            "@banner \"Mutation Testing (PHP 8.4)\" \"1;93;46\"",
+            "rm -rf vendor/pestphp/pest-plugin-mutate/.temp/mutations 2>/dev/null || true",
+            "@cache:clear:pest",
+            "@cache:clear:views",
+            "./scripts/mutation-pest-php84.sh"
         ],
         "test:profanity": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Profanity\\ Check 2>/dev/null') ?: shell_exec('figlet Profanity\\ Check 2>/dev/null') ?: 'Profanity Check' . PHP_EOL; echo chr(27) . '[1;91m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=1G vendor/bin/pest --filter=profanity"
+            "@banner \"Profanity Check\" \"1;91\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/pest --filter=profanity"
         ],
-        "test:setup": ["@php -r \"file_exists('.env.testing') || copy('.env.example', '.env.testing');\"", "php artisan key:generate --env=testing"],
+        "test:setup": [
+            "@php -r \"file_exists('.env.testing') || copy('.env.example', '.env.testing');\"",
+            "php artisan key:generate --env=testing"
+        ],
         "test:type-coverage": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Type\\ Coverage 2>/dev/null') ?: shell_exec('figlet Type\\ Coverage 2>/dev/null') ?: 'Type Coverage' . PHP_EOL; echo chr(27) . '[7;1;96m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=1G vendor/bin/pest --type-coverage --min=99.1"
+            "@banner \"Type Coverage\" \"7;1;96\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/pest --type-coverage --min=99.1"
         ],
-        "test:unit": ["@test:unit:php", "@test:unit:js"],
+        "test:unit": [
+            "@test:unit:php",
+            "@test:unit:js"
+        ],
         "test:unit:js": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard JS\\ Unit\\ Tests 2>/dev/null') ?: shell_exec('figlet JS\\ Unit\\ Tests 2>/dev/null') ?: 'JS Unit Tests' . PHP_EOL; echo chr(27) . '[1;33;47m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"JS Unit Tests\" \"1;33;47\"",
             "bun run test 2>&1 || true"
         ],
         "test:unit:php": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Unit\\ Tests 2>/dev/null') ?: shell_exec('figlet Unit\\ Tests 2>/dev/null') ?: 'Unit Tests' . PHP_EOL; echo chr(27) . '[1;32;47m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
-            "php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d memory_limit=1G -d xdebug.mode=off -d pcov.enabled=1 vendor/bin/pest --testsuite=Unit --min=99"
+            "@banner \"Unit Tests\" \"1;32;47\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d xdebug.mode=off -d pcov.enabled=1 vendor/bin/pest --testsuite=Unit --min=99"
         ],
         "update:requirements": [
-            "php -r \"\\$banner = shell_exec('figlet -w 120 -k -f standard Update\\ Requirements 2>/dev/null') ?: shell_exec('figlet Update\\ Requirements 2>/dev/null') ?: 'Update Requirements' . PHP_EOL; echo chr(27) . '[1;97m' . \\$banner . chr(27) . '[0m' . PHP_EOL;\"",
+            "@banner \"Update Requirements\" \"1;97\"",
             "composer bump",
             "bunx npm-check-updates -u"
         ]
+    },
+    "scripts-descriptions": {
+        "analyze": "Run all static analysis tools (PHPStan, Psalm, Mago) to find potential bugs.",
+        "cache:clear": "Clears all application and utility caches (Pest, PHPStan, Psalm, etc.).",
+        "ci:local:pre-commit": "Runs the GitHub Actions pre-commit workflow locally using 'act'.",
+        "dev": "Starts the full local development stack (Server, Queue, Vite, Pail).",
+        "lint:fix": "Automatically fixes code style and linting issues for PHP and JS.",
+        "setup": "Automated project initialization for a fresh installation.",
+        "test": "Runs the core test suite (Unit, Feature, Arch, Security).",
+        "test:browser-server": "Spins up a headless Chrome instance for remote E2E testing.",
+        "test:core": "Executes core tests: Unit, Feature, Architecture, and Security Audit.",
+        "test:e2e": "Runs full E2E tests with a separate testing server and database.",
+        "test:heavy": "Runs long-running tasks: Browser tests and Coverage analysis."
     },
     "$schema": "https://getcomposer.org/schema.json"
 }

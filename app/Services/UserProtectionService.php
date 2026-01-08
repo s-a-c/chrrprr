@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Collection;
+use stdClass;
 
 /**
  * Service for determining if a user is protected from deletion.
@@ -32,7 +33,7 @@ final readonly class UserProtectionService
     /**
      * Get all key roles held by this user, including their team context.
      *
-     * @return Collection<int, object{role_id: int, team_id: int|null}>
+     * @psalm-return Collection<int, stdClass>
      */
     private function getUserKeyRoles(User $user): Collection
     {

@@ -26,8 +26,8 @@ REQUIRED_SECRETS=("FLUX_API_TOKEN")
 
 for secret in "${REQUIRED_SECRETS[@]}"; do
   if [[ -z "${!secret:-}" ]]; then
-    echo "Missing required secret: ${secret}" >&2
-    echo "Consult docs/base-platform/credential-onboarding.md for recovery steps." >&2
+    printf "Missing required secret: %s\n" "${secret}" >&2
+    printf "Consult docs/base-platform/credential-onboarding.md for recovery steps.\n" >&2
     exit 2
   fi
 done
@@ -36,10 +36,10 @@ if [[ "${FORCE_CLEAN}" == "1" ]]; then
   rm -rf "${ROOT_DIR}/vendor" "${ROOT_DIR}/node_modules" "${ROOT_DIR}/bootstrap/cache" || true
 fi
 
-echo "Running Base Platform bootstrap for profile: ${PROFILE}"
+printf "Running Base Platform bootstrap for profile: %s\n" "${PROFILE}"
 
 composer install --working-dir "${ROOT_DIR}" --no-interaction --ansi >/dev/null
 php "${ROOT_DIR}/artisan" migrate --force --ansi >/dev/null
 bun install --cwd "${ROOT_DIR}" >/dev/null
 
-echo "Bootstrap tasks completed for ${PROFILE}"
+printf "Bootstrap tasks completed for %s\n" "${PROFILE}"

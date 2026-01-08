@@ -1,15 +1,4 @@
 import { beforeEach, describe, expect, test as it, vi } from 'bun:test';
-
-// Mock highlight.js - must use factory function that returns the mock
-vi.mock('highlight.js', () => {
-    const mockHighlightElement = vi.fn();
-    return {
-        default: {
-            highlightElement: mockHighlightElement,
-        },
-    };
-});
-
 import hljs from 'highlight.js';
 // Import after mocking
 import { highlightCodeBlocks } from '../app.js';

@@ -2,33 +2,22 @@ import { GlobalRegistrator } from '@happy-dom/global-registrator';
 import '@testing-library/jest-dom';
 import { mock } from 'bun:test';
 
-// Register Happy DOM globals (window, document, etc.)
 GlobalRegistrator.register();
 
-// Mock pusher-js before any imports - using mock.module() for setup files
 mock.module('pusher-js', () => ({
-    default: class MockPusher {
-        constructor() {}
+    default: class {
         subscribe() {
-            return {
-                bind: () => {},
-                unbind: () => {},
-            };
+            return { bind: () => {}, unbind: () => {} };
         }
         unsubscribe() {}
         disconnect() {}
     },
 }));
 
-// Mock laravel-echo before any imports - using mock.module() for setup files
 mock.module('laravel-echo', () => ({
-    default: class MockEcho {
-        constructor() {}
+    default: class {
         channel() {
-            return {
-                listen: () => {},
-                subscribed: () => {},
-            };
+            return { listen: () => {}, subscribed: () => {} };
         }
         private() {
             return this.channel();
@@ -43,11 +32,24 @@ mock.module('laravel-echo', () => ({
     },
 }));
 
-// Mock ResizeObserver if not available
-if (!global.ResizeObserver) {
-    global.ResizeObserver = class ResizeObserver {
-        observe() {}
-        unobserve() {}
-        disconnect() {}
+mock.module('highlight.js', () => ({
+    default: { highlightElement: mock(() => {}) },
+}));
+
+if (typeof process !== 'undefined') {
+    const fix = (s) => {
+        if (s && !Object.getOwnPropertyDescriptor(s, 'isTTY')) {
+            Object.defineProperty(s, 'isTTY', { get: () => false, configurable: true });
+        }
     };
+    fix(process.stdout);
+    fix(process.stderr);
 }
+
+export class FallbackResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+}
+
+global.ResizeObserver = global.ResizeObserver || FallbackResizeObserver;

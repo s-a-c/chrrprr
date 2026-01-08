@@ -6,11 +6,8 @@ use App\Models\Enterprise;
 use App\Models\Role;
 use App\Models\User;
 use App\Policies\TeamPolicy;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\PermissionRegistrar;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
     // Ensure roles exist

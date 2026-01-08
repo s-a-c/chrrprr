@@ -18,8 +18,7 @@ beforeEach(function (): void {
 it('renders the create team page', function (): void {
     // Skip: Folio pages with anonymous Livewire components cannot be tested directly
     // The functionality is tested through CreateTeam action tests
-    $this->markTestIncomplete('Folio pages with anonymous Livewire components require route registration in tests');
-})->skip('Folio route testing requires additional setup');
+})->skip('Folio pages with anonymous Livewire components require route registration in tests');
 
 it('validates required fields', function (): void {
     // Test validation through the StoreTeamRequest instead

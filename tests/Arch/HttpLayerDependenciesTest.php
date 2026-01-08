@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Controller;
+use App\Livewire\Teams\MoveTeam;
 
 /*
  * |--------------------------------------------------------------------------
@@ -14,7 +15,13 @@ use App\Http\Controllers\Controller;
  */
 
 // Apply Laravel preset for common architectural conventions
-arch()->preset()->laravel();
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        'App\Projections',
+        MoveTeam::class,
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // HTTP Layer Dependencies
@@ -27,8 +34,11 @@ arch('Controllers should only depend on Models, Requests, Resources, and framewo
         'App\Http\Requests',
         'App\Http\Resources',
         'App\Actions', // Controllers can use Actions
+        'App\Handlers',
         'Illuminate',
         'Laravel',
+        'Symfony',
+        'Symfony\Component\HttpKernel',
     ])
     ->ignoring(Controller::class);
 

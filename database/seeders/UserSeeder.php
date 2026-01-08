@@ -6,13 +6,4 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-final class UserSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        // Add user seeding logic here if needed.
-    }
-}
+final class UserSeeder extends Seeder {}

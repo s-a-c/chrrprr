@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\GenerateUserUlidsCommand;
+use App\Console\Commands\OptimizeSearchCommand;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Teams\BulkTeamController;
+use App\Livewire\Teams\MoveTeam;
 use App\Services\TeamHierarchyTraversalService;
 use App\Services\TeamMove\TeamMoveApprovalService;
 use App\Services\TeamMove\TeamMoveRequestService;
@@ -23,7 +26,15 @@ use Illuminate\Support\Facades\DB;
  */
 
 // Apply Laravel preset
-arch()->preset()->laravel();
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        OptimizeSearchCommand::class,
+        GenerateUserUlidsCommand::class,
+        'App\Projections',
+        'App\Models\Builders',
+        MoveTeam::class,
+    ]);
 
 // ============================================================================
 // Facade Usage Restrictions

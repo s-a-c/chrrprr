@@ -13,36 +13,36 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-echo -e "${YELLOW}Running CI checks locally...${NC}\n"
+printf "${YELLOW}Running CI checks locally...${NC}\n"
 
 # Version checks
-echo -e "${YELLOW}=== Version Checks ===${NC}\n"
+printf "${YELLOW}=== Version Checks ===${NC}\n"
 
 # Check PHP version from composer.json
 PHP_REQUIREMENT=$(grep '"php"' composer.json | sed 's/.*"php": *"\([^"]*\)".*/\1/' | head -1)
 if [ -z "$PHP_REQUIREMENT" ]; then
-    echo -e "${RED}✗ Could not determine PHP requirement from composer.json${NC}\n"
+    printf "${RED}✗ Could not determine PHP requirement from composer.json${NC}\n"
     exit 1
 fi
 
 # Extract minimum PHP version (e.g., ^8.5 -> 8.5)
-PHP_MIN=$(echo "$PHP_REQUIREMENT" | sed 's/\^//' | sed 's/~//' | sed 's/>=//' | cut -d. -f1,2)
-CURRENT_PHP=$(php -r "echo PHP_VERSION;" | cut -d. -f1,2)
+PHP_MIN=$(printf "%s" "$PHP_REQUIREMENT" | sed 's/\^//' | sed 's/~//' | sed 's/>=//' | cut -d. -f1,2)
+CURRENT_PHP=$(php -r "printf PHP_VERSION;" | cut -d. -f1,2)
 
 # Compare versions (simple numeric comparison for major.minor)
-PHP_MIN_MAJOR=$(echo "$PHP_MIN" | cut -d. -f1)
-PHP_MIN_MINOR=$(echo "$PHP_MIN" | cut -d. -f2)
-CURRENT_PHP_MAJOR=$(echo "$CURRENT_PHP" | cut -d. -f1)
-CURRENT_PHP_MINOR=$(echo "$CURRENT_PHP" | cut -d. -f2)
+PHP_MIN_MAJOR=$(printf "%s" "$PHP_MIN" | cut -d. -f1)
+PHP_MIN_MINOR=$(printf "%s" "$PHP_MIN" | cut -d. -f2)
+CURRENT_PHP_MAJOR=$(printf "%s" "$CURRENT_PHP" | cut -d. -f1)
+CURRENT_PHP_MINOR=$(printf "%s" "$CURRENT_PHP" | cut -d. -f2)
 
 if [ "$CURRENT_PHP_MAJOR" -lt "$PHP_MIN_MAJOR" ] || ([ "$CURRENT_PHP_MAJOR" -eq "$PHP_MIN_MAJOR" ] && [ "$CURRENT_PHP_MINOR" -lt "$PHP_MIN_MINOR" ]); then
-    echo -e "${RED}✗ PHP version mismatch${NC}"
-    echo -e "  Required: ${PHP_REQUIREMENT} (minimum ${PHP_MIN})"
-    echo -e "  Current: ${CURRENT_PHP}"
-    echo -e "  Please use PHP ${PHP_MIN} or higher\n"
+    printf "${RED}✗ PHP version mismatch\n"
+    printf "  Required: %s (minimum %s)\n" "${PHP_REQUIREMENT}" "${PHP_MIN}"
+    printf "  Current: %s\n" "${CURRENT_PHP}"
+    printf "  Please use PHP %s or higher\n" "${PHP_MIN}"
     exit 1
 else
-    echo -e "${GREEN}✓ PHP version OK${NC} (${CURRENT_PHP}, required: ${PHP_REQUIREMENT})\n"
+    printf "${GREEN}✓ PHP version OK${NC} (%s, required: %s)\n" "${CURRENT_PHP}" "${PHP_REQUIREMENT}"
 fi
 
 # Check Node version from package.json
@@ -51,17 +51,17 @@ if command -v node &> /dev/null; then
     if [ -n "$NODE_REQUIREMENT" ]; then
         CURRENT_NODE=$(node -v | sed 's/v//' | cut -d. -f1)
         if [ "$CURRENT_NODE" -lt "$NODE_REQUIREMENT" ]; then
-            echo -e "${RED}✗ Node version mismatch${NC}"
-            echo -e "  Required: >=${NODE_REQUIREMENT}"
-            echo -e "  Current: ${CURRENT_NODE}"
-            echo -e "  Please use Node ${NODE_REQUIREMENT} or higher\n"
+            printf "${RED}✗ Node version mismatch${NC}\n"
+            printf "  Required: >=${NODE_REQUIREMENT}\n"
+            printf "  Current: ${CURRENT_NODE}\n"
+            printf "  Please use Node ${NODE_REQUIREMENT} or higher\n"
             exit 1
         else
-            echo -e "${GREEN}✓ Node version OK${NC} (${CURRENT_NODE}, required: >=${NODE_REQUIREMENT})\n"
+            printf "${GREEN}✓ Node version OK${NC} (${CURRENT_NODE}, required: >=${NODE_REQUIREMENT})\n"
         fi
     fi
 else
-    echo -e "${YELLOW}⚠ Node not found, skipping Node version check${NC}\n"
+    printf "${YELLOW}⚠ Node not found, skipping Node version check${NC}\n"
 fi
 
 # Check Bun version from package.json
@@ -69,23 +69,23 @@ if command -v bun &> /dev/null; then
     BUN_REQUIREMENT=$(grep '"bun"' package.json | sed 's/.*"bun": *">=\([^"]*\)".*/\1/' | head -1)
     if [ -n "$BUN_REQUIREMENT" ]; then
         CURRENT_BUN=$(bun -v | cut -d. -f1,2)
-        BUN_MIN_MAJOR=$(echo "$BUN_REQUIREMENT" | cut -d. -f1)
-        BUN_MIN_MINOR=$(echo "$BUN_REQUIREMENT" | cut -d. -f2)
-        CURRENT_BUN_MAJOR=$(echo "$CURRENT_BUN" | cut -d. -f1)
-        CURRENT_BUN_MINOR=$(echo "$CURRENT_BUN" | cut -d. -f2)
+        BUN_MIN_MAJOR=$(printf "%s" "$BUN_REQUIREMENT" | cut -d. -f1)
+        BUN_MIN_MINOR=$(printf "%s" "$BUN_REQUIREMENT" | cut -d. -f2)
+        CURRENT_BUN_MAJOR=$(printf "%s" "$CURRENT_BUN" | cut -d. -f1)
+        CURRENT_BUN_MINOR=$(printf "%s" "$CURRENT_BUN" | cut -d. -f2)
 
         if [ "$CURRENT_BUN_MAJOR" -lt "$BUN_MIN_MAJOR" ] || ([ "$CURRENT_BUN_MAJOR" -eq "$BUN_MIN_MAJOR" ] && [ "$CURRENT_BUN_MINOR" -lt "$BUN_MIN_MINOR" ]); then
-            echo -e "${RED}✗ Bun version mismatch${NC}"
-            echo -e "  Required: >=${BUN_REQUIREMENT}"
-            echo -e "  Current: ${CURRENT_BUN}"
-            echo -e "  Please use Bun ${BUN_REQUIREMENT} or higher\n"
+            printf "${RED}✗ Bun version mismatch${NC}\n"
+            printf "  Required: >=${BUN_REQUIREMENT}\n"
+            printf "  Current: ${CURRENT_BUN}\n"
+            printf "  Please use Bun ${BUN_REQUIREMENT} or higher\n"
             exit 1
         else
-            echo -e "${GREEN}✓ Bun version OK${NC} (${CURRENT_BUN}, required: >=${BUN_REQUIREMENT})\n"
+            printf "${GREEN}✓ Bun version OK${NC} (${CURRENT_BUN}, required: >=${BUN_REQUIREMENT})\n"
         fi
     fi
 else
-    echo -e "${YELLOW}⚠ Bun not found, skipping Bun version check${NC}\n"
+    printf "${YELLOW}⚠ Bun not found, skipping Bun version check${NC}\n"
 fi
 
 # Track failures
@@ -96,38 +96,38 @@ run_check() {
     local name=$1
     local command=$2
 
-    echo -e "${YELLOW}Running: ${name}...${NC}"
+    printf "${YELLOW}Running: ${name}...${NC}\n"
     if eval "$command"; then
-        echo -e "${GREEN}✓ ${name} passed${NC}\n"
+        printf "${GREEN}✓ ${name} passed${NC}\n"
     else
-        echo -e "${RED}✗ ${name} failed${NC}\n"
+        printf "${RED}✗ ${name} failed${NC}\n"
         FAILED=1
         return 1
     fi
 }
 
 # Build Assets (required for tests that render views with @vite)
-echo -e "${YELLOW}=== Build Assets ===${NC}\n"
+printf "${YELLOW}=== Build Assets ===${NC}\n"
 
 # Check if bun is available before attempting build
 if command -v bun &> /dev/null; then
     # Check if node_modules exists, if not install dependencies first
     if [ ! -d "node_modules" ]; then
-        echo -e "${YELLOW}Installing Bun dependencies...${NC}"
+        printf "${YELLOW}Installing Bun dependencies...${NC}\n"
         if ! bun install --frozen-lockfile; then
-            echo -e "${RED}✗ Failed to install Bun dependencies${NC}\n"
+            printf "${RED}✗ Failed to install Bun dependencies${NC}\n"
             FAILED=1
         fi
     fi
 
     run_check "Build Frontend Assets" "bun run build" || FAILED=1
 else
-    echo -e "${YELLOW}⚠ Bun not found, skipping asset build${NC}"
-    echo -e "${YELLOW}  Tests that render views may fail without built assets${NC}\n"
+    printf "${YELLOW}⚠ Bun not found, skipping asset build${NC}\n"
+    printf "${YELLOW}  Tests that render views may fail without built assets${NC}\n"
 fi
 
 # Core Quality Checks (same as GitHub Actions)
-echo -e "${YELLOW}=== Core Quality Checks ===${NC}\n"
+printf "${YELLOW}=== Core Quality Checks ===${NC}\n"
 
 run_check "Linting (Pint, Rector, JS)" "composer test:lint" || FAILED=1
 
@@ -138,19 +138,19 @@ run_check "Type Checking (PHPStan)" "composer test:types" || FAILED=1
 run_check "Security Audit" "composer security:audit" || FAILED=1
 
 # Policy Checksum Monitor
-echo -e "${YELLOW}=== Policy Checks ===${NC}\n"
+printf "${YELLOW}=== Policy Checks ===${NC}\n"
 # Skip Policy Checksum Monitor on PHP 8.4 due to Monolog compatibility issue
-PHP_VERSION=$(php -r "echo PHP_VERSION;" | cut -d. -f1,2)
+PHP_VERSION=$(php -r "printf PHP_VERSION;" | cut -d. -f1,2)
 if [ "$PHP_VERSION" = "8.4" ]; then
-    echo -e "${YELLOW}⚠ Policy Checksum Monitor skipped: Monolog compatibility issue with PHP 8.4${NC}\n"
-    echo -e "${YELLOW}  This is a known issue: PHP 8.4's native PSR interfaces conflict with Monolog${NC}\n"
-    echo -e "${YELLOW}  Consider using PHP 8.3 or wait for Monolog PHP 8.4 compatibility update${NC}\n"
+    printf "${YELLOW}⚠ Policy Checksum Monitor skipped: Monolog compatibility issue with PHP 8.4${NC}\n"
+    printf "${YELLOW}  This is a known issue: PHP 8.4's native PSR interfaces conflict with Monolog${NC}\n"
+    printf "${YELLOW}  Consider using PHP 8.3 or wait for Monolog PHP 8.4 compatibility update${NC}\n"
 else
     run_check "Policy Checksum Monitor" "php artisan policy:checksum-monitor" || FAILED=1
 fi
 
 # Environment Validation (matches tests.yml environment-validation job)
-echo -e "${YELLOW}=== Environment Validation ===${NC}\n"
+printf "${YELLOW}=== Environment Validation ===${NC}\n"
 # Check if .env exists and database is accessible
 if [ -f ".env" ]; then
     # Try to run environment validation
@@ -158,47 +158,47 @@ if [ -f ".env" ]; then
     if php artisan platform:validate-profiles --all &> /dev/null 2>&1; then
         run_check "Validate Environment Profiles" "php artisan platform:validate-profiles --all" || FAILED=1
     else
-        echo -e "${YELLOW}⚠ Environment validation skipped${NC}"
-        echo -e "${YELLOW}  Database may not be configured or BasePlatformSeeder not run${NC}"
-        echo -e "${YELLOW}  Run 'php artisan migrate --force && php artisan db:seed --class=BasePlatformSeeder' to enable${NC}\n"
+        printf "${YELLOW}⚠ Environment validation skipped${NC}\n"
+        printf "${YELLOW}  Database may not be configured or BasePlatformSeeder not run${NC}\n"
+        printf "${YELLOW}  Run 'php artisan migrate --force && php artisan db:seed --class=BasePlatformSeeder' to enable${NC}\n"
     fi
 else
-    echo -e "${YELLOW}⚠ .env file not found, skipping environment validation${NC}"
-    echo -e "${YELLOW}  Copy .env.example to .env and configure database to enable${NC}\n"
+    printf "${YELLOW}⚠ .env file not found, skipping environment validation${NC}\n"
+    printf "${YELLOW}  Copy .env.example to .env and configure database to enable${NC}\n"
 fi
 
 # Heavy Tier Workflow (matches nightly-heavy.yml)
 # Runs mutation tests and Playwright browser tests
 # Set CI_FULL=1 to enable (e.g., CI_FULL=1 composer ci:local)
 if [ "${CI_FULL:-0}" = "1" ]; then
-    echo -e "${YELLOW}=== Heavy Tier Workflow ===${NC}\n"
+    printf "${YELLOW}=== Heavy Tier Workflow ===${NC}\n"
 
     # Check if Infection is available for mutation testing
     if [ -f "vendor/bin/infection" ]; then
         run_check "Mutation Tests" "composer test:mutation" || FAILED=1
     else
-        echo -e "${YELLOW}⚠ Mutation tests skipped: Infection not found${NC}"
-        echo -e "${YELLOW}  Install Infection with: composer require --dev infection/infection${NC}\n"
+        printf "${YELLOW}⚠ Mutation tests skipped: Infection not found${NC}\n"
+        printf "${YELLOW}  Install Infection with: composer require --dev infection/infection${NC}\n"
     fi
 
     # Check if Playwright is available
     if command -v bun &> /dev/null && ([ -f "node_modules/.bin/playwright" ] || [ -f "node_modules/@playwright/test/package.json" ]); then
         # Install Playwright browsers if not already installed
         if ! bunx playwright --version &> /dev/null 2>&1; then
-            echo -e "${YELLOW}Installing Playwright browsers...${NC}"
+            printf "${YELLOW}Installing Playwright browsers...${NC}\n"
             bunx playwright install --with-deps || {
-                echo -e "${YELLOW}⚠ Failed to install Playwright browsers, skipping browser tests${NC}\n"
+                printf "${YELLOW}⚠ Failed to install Playwright browsers, skipping browser tests${NC}\n"
             }
         fi
 
         if bunx playwright --version &> /dev/null 2>&1; then
             run_check "Playwright Browser Tests" "bunx playwright test" || FAILED=1
         else
-            echo -e "${YELLOW}⚠ Playwright browser tests skipped: browsers not installed${NC}\n"
+            printf "${YELLOW}⚠ Playwright browser tests skipped: browsers not installed${NC}\n"
         fi
     else
-        echo -e "${YELLOW}⚠ Playwright tests skipped: Playwright not found in node_modules${NC}"
-        echo -e "${YELLOW}  Run 'bun install' to install dependencies${NC}\n"
+        printf "${YELLOW}⚠ Playwright tests skipped: Playwright not found in node_modules${NC}\n"
+        printf "${YELLOW}  Run 'bun install' to install dependencies${NC}\n"
     fi
 
     # Run Policy Checksum Monitor again (matches nightly-heavy.yml)
@@ -206,16 +206,16 @@ if [ "${CI_FULL:-0}" = "1" ]; then
         run_check "Policy Checksum Monitor (Heavy)" "php artisan policy:checksum-monitor" || FAILED=1
     fi
 else
-    echo -e "${YELLOW}=== Heavy Tier Workflow (Skipped) ===${NC}\n"
-    echo -e "${YELLOW}⚠ Heavy tier workflow skipped (mutation tests, browser tests)${NC}"
-    echo -e "${YELLOW}  Set CI_FULL=1 to enable: CI_FULL=1 composer ci:local${NC}\n"
+    printf "${YELLOW}=== Heavy Tier Workflow (Skipped) ===${NC}\n"
+    printf "${YELLOW}⚠ Heavy tier workflow skipped (mutation tests, browser tests)${NC}\n"
+    printf "${YELLOW}  Set CI_FULL=1 to enable: CI_FULL=1 composer ci:local${NC}\n"
 fi
 
 # Browser Tests (matches browser-tests.yml)
 # Uses starter-kit-browser-tests package for Pest browser testing
 # Set CI_FULL=1 to enable (e.g., CI_FULL=1 composer ci:local)
 if [ "${CI_FULL:-0}" = "1" ]; then
-    echo -e "${YELLOW}=== Browser Tests (Starter Kit) ===${NC}\n"
+    printf "${YELLOW}=== Browser Tests (Starter Kit) ===${NC}\n"
 
     # Check if starter-kit-browser-tests package exists
     if [ -d "vendor/laravel-labs/starter-kit-browser-tests" ]; then
@@ -223,9 +223,9 @@ if [ "${CI_FULL:-0}" = "1" ]; then
         if command -v bun &> /dev/null; then
             # Install Playwright browsers if not already installed
             if ! bunx playwright --version &> /dev/null 2>&1; then
-                echo -e "${YELLOW}Installing Playwright browsers...${NC}"
+                printf "${YELLOW}Installing Playwright browsers...${NC}\n"
                 bunx playwright install --with-deps || {
-                    echo -e "${YELLOW}⚠ Failed to install Playwright browsers, skipping browser tests${NC}\n"
+                    printf "${YELLOW}⚠ Failed to install Playwright browsers, skipping browser tests${NC}\n"
                 }
             fi
 
@@ -260,34 +260,34 @@ if [ "${CI_FULL:-0}" = "1" ]; then
                             FAILED=1
                         fi
                     else
-                        echo -e "${YELLOW}⚠ Failed to create phpunit.xml.starter-kit-browser${NC}\n"
+                        printf "${YELLOW}⚠ Failed to create phpunit.xml.starter-kit-browser${NC}\n"
                         rm -rf tests.starter-kit-browser/ 2>/dev/null || true
                         FAILED=1
                     fi
                 else
-                    echo -e "${YELLOW}⚠ Failed to copy browser tests to tests.starter-kit-browser/${NC}\n"
+                    printf "${YELLOW}⚠ Failed to copy browser tests to tests.starter-kit-browser/${NC}\n"
                     rm -rf tests.starter-kit-browser/ phpunit.xml.starter-kit-browser 2>/dev/null || true
                     FAILED=1
                 fi
             else
-                echo -e "${YELLOW}⚠ Playwright browser tests skipped: browsers not installed${NC}\n"
+                printf "${YELLOW}⚠ Playwright browser tests skipped: browsers not installed${NC}\n"
             fi
         else
-            echo -e "${YELLOW}⚠ Browser tests skipped: Bun not found${NC}\n"
+            printf "${YELLOW}⚠ Browser tests skipped: Bun not found${NC}\n"
         fi
     else
-        echo -e "${YELLOW}⚠ Browser tests skipped: starter-kit-browser-tests not found${NC}"
-        echo -e "${YELLOW}  Package should be installed via composer require-dev${NC}\n"
+        printf "${YELLOW}⚠ Browser tests skipped: starter-kit-browser-tests not found${NC}\n"
+        printf "${YELLOW}  Package should be installed via composer require-dev${NC}\n"
     fi
 fi
 
 # Summary
-echo -e "\n${YELLOW}=== Summary ===${NC}\n"
+printf "\n${YELLOW}=== Summary ===${NC}\n"
 
 if [ $FAILED -eq 0 ]; then
-    echo -e "${GREEN}All CI checks passed! ✓${NC}\n"
+    printf "${GREEN}All CI checks passed! ✓${NC}\n"
     exit 0
 else
-    echo -e "${RED}CI checks failed. Please fix the issues above.${NC}\n"
+    printf "${RED}CI checks failed. Please fix the issues above.${NC}\n"
     exit 1
 fi

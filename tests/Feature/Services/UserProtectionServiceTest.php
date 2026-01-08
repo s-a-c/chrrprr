@@ -62,7 +62,7 @@ test('user with non-key role is not protectable', function (): void {
     $org = Organisation::factory()->create(['parent_id' => $enterprise->id]);
     $user = User::factory()->create();
 
-    $role = Role::query()->firstOrCreate(['name' => 'employee', 'guard_name' => 'web'], ['is_key' => false]);
+    Role::query()->firstOrCreate(['name' => 'employee', 'guard_name' => 'web'], ['is_key' => false]);
 
     setPermissionsTeamId($org->id);
     $user->assignRole('employee');

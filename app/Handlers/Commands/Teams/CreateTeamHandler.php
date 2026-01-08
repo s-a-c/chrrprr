@@ -7,10 +7,10 @@ namespace App\Handlers\Commands\Teams;
 use App\Contracts\CommandHandler;
 use App\Enums\TeamType;
 use App\Events\Teams\TeamCreated;
-use App\Events\Teams\TeamCreatedData;
 use App\Handlers\BaseHandler;
 use App\Models\Team;
 use App\Support\Result;
+use App\Support\Validation\TeamHierarchyValidator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Override;
@@ -84,24 +84,28 @@ final class CreateTeamHandler extends BaseHandler implements CommandHandler
             ? Team::query()->withoutGlobalScopes()->find($parentId)
             : null;
 
+        // Validate hierarchy rules
+        $hierarchyResult = TeamHierarchyValidator::validate($type, $parent);
+        if ($hierarchyResult->isFailure) {
+            throw ValidationException::withMessages([
+                'parent_id' => [$hierarchyResult->error],
+            ]);
+        }
+
         // Fire Verbs event - validates hierarchy rules via event's validate() method
         // If validation fails, EventNotValid exception is thrown and caught by Result::try()
         $parentIdInt = $parentId !== null ? (int) $parentId : null;
         $state = isset($command->data['state']) && is_string($command->data['state']) ? $command->data['state'] : null;
         $status = isset($command->data['status']) && is_string($command->data['status']) ? $command->data['status'] : null;
 
-        $eventData = new TeamCreatedData(
-            parent_id: $parentIdInt,
-            tenant_id: null, // Will be calculated below
-            state: $state,
-            status: $status,
-        );
-
         TeamCreated::fire(
             type: $type,
             name: $command->data['name'] ?? '',
             bio: $command->data['bio'] ?? null,
-            data: $eventData,
+            parent_id: $parentIdInt,
+            tenant_id: null, // Will be calculated below or handled by projection
+            state: $state,
+            status: $status,
         );
 
         // Commit the event to persist it to verb_events table

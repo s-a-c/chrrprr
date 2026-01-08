@@ -12,9 +12,6 @@ use App\States\Team\TeamState;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Parental\HasChildren;
 use Spatie\ModelStates\HasStates;
-use Tests\TestCase;
-
-uses(TestCase::class);
 
 test('team model has expected traits', function (): void {
     $traits = class_uses(Team::class);

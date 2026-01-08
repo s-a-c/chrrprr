@@ -57,24 +57,4 @@ abstract class BaseHandler
 
         return Result::failure($error, ["Guard failed: {$error}"]);
     }
-
-    /**
-     * Validates multiple conditions using guard logic.
-     *
-     * Returns the first failure encountered, or Success if all pass.
-     *
-     * @param  array<string, bool>  $conditions  Array of condition name => condition result
-     * @return Result Success if all conditions pass, Failure with first error otherwise
-     */
-    protected function guardAll(array $conditions): Result
-    {
-        foreach ($conditions as $error => $condition) {
-            $result = $this->guard($condition, $error);
-            if ($result->isFailure) {
-                return $result;
-            }
-        }
-
-        return Result::success(true);
-    }
 }

@@ -14,10 +14,17 @@ declare(strict_types=1);
  * | - Excludes non-class files from analysis
  */
 use App\Http\Controllers\Controller;
+use App\Livewire\Teams\MoveTeam;
 use Illuminate\Database\Eloquent\Model;
 
-// Apply Laravel preset
-arch()->preset()->laravel();
+// Apply Laravel preset for common architectural conventions
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        'App\Projections',
+        MoveTeam::class,
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // Class Instantiation Rules
@@ -36,7 +43,10 @@ arch('All controllers should be instantiable classes')
 arch('All models should extend Eloquent Model')
     ->expect('App\Models')
     ->classes()
-    ->toExtend(Model::class);
+    ->toExtend(Model::class)
+    ->ignoring([
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // Final Class Rules

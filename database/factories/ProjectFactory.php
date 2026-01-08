@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\TeamStatus;
+use App\Models\Department;
 use App\Models\Project;
 use App\States\Team\Active;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -26,7 +27,8 @@ final class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->words(3, true).' Project'],
+            'parent_id' => Department::factory(),
+            'name' => ['en' => fake()->unique()->words(3, true).' Project'],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

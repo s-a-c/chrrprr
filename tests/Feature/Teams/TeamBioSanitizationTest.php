@@ -3,9 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Enterprise;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 test('sanitizes script tags from bio content', function (): void {
     $team = Enterprise::factory()->create([

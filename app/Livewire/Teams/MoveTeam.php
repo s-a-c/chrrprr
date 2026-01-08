@@ -31,7 +31,7 @@ final class MoveTeam extends Component
     {
         $team = Team::query()->where('ulid', $ulid)->firstOrFail();
         $this->teamUlid = $ulid;
-        $this->parent_id = $team->parent_id !== null ? (string) $team->parent_id : null;
+        $this->parent_id = $team->parent_id;
     }
 
     /**

@@ -72,13 +72,18 @@ it('updates multiple teams in bulk', function (): void {
     ]);
 
     $teams = collect([$org1, $org2])
-        ->map(fn (Organisation $org, int $index): array => [
-            'id' => $org->id,
-            'name' => 'Updated Team '.($index + 1),
-            'type' => TeamType::ORGANISATION->value,
-            'parent_id' => $this->enterprise->id,
-            'lock_version' => $org->lock_version,
-        ])
+        ->map(/**
+         * @return (int|mixed|string)[]
+         *
+         * @psalm-return array{id: mixed, name: string, type: 'organisation', parent_id: mixed, lock_version: int<0, max>}
+         */
+            fn (Organisation $org, int $index): array => [
+                'id' => $org->id,
+                'name' => 'Updated Team '.($index + 1),
+                'type' => TeamType::ORGANISATION->value,
+                'parent_id' => $this->enterprise->id,
+                'lock_version' => $org->lock_version,
+            ])
         ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
@@ -111,10 +116,15 @@ it('handles partial success when some teams fail validation', function (): void 
         ['name' => $org->getTranslation('name', app()->getLocale())], // Duplicate name
         ['name' => 'Another Valid Team'],
     ])
-        ->map(fn (array $team): array => array_merge($team, [
-            'type' => TeamType::ORGANISATION->value,
-            'parent_id' => $this->enterprise->id,
-        ]))
+        ->map(/**
+         * @return (mixed|string)[]
+         *
+         * @psalm-return array{name: 'Another Valid Team'|'Valid Team'|mixed, type: 'organisation', parent_id: mixed}
+         */
+            fn (array $team): array => array_merge($team, [
+                'type' => TeamType::ORGANISATION->value,
+                'parent_id' => $this->enterprise->id,
+            ]))
         ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
@@ -155,6 +165,11 @@ it('returns error when batch size exceeds enterprise limit', function (): void {
          *
          * @psalm-return array{name: string, type: 'organisation', parent_id: mixed}
          */
+            /**
+             * @return (mixed|string)[]
+             *
+             * @psalm-return array{name: string, type: 'organisation', parent_id: mixed}
+             */
             fn (int $i): array => [
                 'name' => "Team {$i}",
                 'type' => TeamType::ORGANISATION->value,
@@ -187,10 +202,15 @@ it('handles mixed create and update operations', function (): void {
         ],
         ['name' => 'New Team 2'],
     ])
-        ->map(fn (array $team): array => array_merge($team, [
-            'type' => TeamType::ORGANISATION->value,
-            'parent_id' => $this->enterprise->id,
-        ]))
+        ->map(/**
+         * @return (mixed|string)[]
+         *
+         * @psalm-return array{name: 'New Team 1'|'New Team 2'|'Updated Existing Team', id?: mixed, lock_version?: mixed, type: 'organisation', parent_id: mixed}
+         */
+            fn (array $team): array => array_merge($team, [
+                'type' => TeamType::ORGANISATION->value,
+                'parent_id' => $this->enterprise->id,
+            ]))
         ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
@@ -224,16 +244,20 @@ it('returns failure status when all operations fail', function (): void {
     // Try to create teams with invalid parent_id that doesn't exist
     $invalidParentId = 99999; // Non-existent parent
     $teams = collect(['Team 1', 'Team 2'])
-        ->map(fn (string $name): array => [
-            'name' => $name,
-            'type' => TeamType::ORGANISATION->value,
-            'parent_id' => $invalidParentId,
-        ])
+        ->map(/**
+         * @return (int|string)[]
+         *
+         * @psalm-return array{name: 'Team 1'|'Team 2', type: 'organisation', parent_id: 99999}
+         */
+            fn (string $name): array => [
+                'name' => $name,
+                'type' => TeamType::ORGANISATION->value,
+                'parent_id' => $invalidParentId,
+            ])
         ->all();
 
     $response = $this->postJson('/api/teams/bulk', ['teams' => $teams]);
 
-    // Currently returns 500 (server error) when handler throws exception
-    // TODO: Fix validation to catch invalid parent_id and return 422 instead
-    $response->assertStatus(500);
+    // Validation catches invalid parent_id and returns 422
+    $response->assertStatus(422);
 });

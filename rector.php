@@ -74,6 +74,7 @@ return RectorConfig::configure()
         RectorLaravel\Rector\If_\ThrowIfRector::class => [
             __DIR__.'/app/Models/Concerns/ProtectsKeyRoles.php',
         ],
+        Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector::class,
     ])
     ->withPreparedSets(
         deadCode: true,

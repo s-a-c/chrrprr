@@ -6,10 +6,7 @@ use App\Enums\TeamType;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 use App\Models\Enterprise;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
-
-uses(RefreshDatabase::class);
 
 it('renders bio as markdown', function (): void {
     $team = Enterprise::factory()->create([

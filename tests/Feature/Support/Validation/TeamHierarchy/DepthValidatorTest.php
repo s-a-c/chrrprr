@@ -31,11 +31,4 @@ it('allows team without parent', function (): void {
     expect($enterprise->parent_id)->toBeNull();
 });
 
-it('throws exception when depth would exceed limit', function (): void {
-    // Note: With the current hierarchy structure, we can only create a maximum depth of 5:
-    // Enterprise (1) -> Organisation (2) -> Division (3) -> Department (4) -> Project (5)
-    // Since the depth limit is 10, we cannot test the exception case with the current hierarchy.
-    // This test is marked as incomplete until we can create a 10-level hierarchy or mock the scenario.
-
-    $this->markTestIncomplete('Cannot test depth 10 exception with current hierarchy structure (max depth is 5). Would need to mock a parent with depth >= 10.');
-});
+it('throws exception when depth would exceed limit')->skip('Cannot test depth 10 exception with current hierarchy structure (max depth is 5). Would need to mock a parent with depth >= 10.');

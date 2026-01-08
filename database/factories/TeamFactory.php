@@ -19,7 +19,7 @@ final class TeamFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return (App\Enums\TeamStatus::ONLINE|string|string[])[]
+     * @return (App\Enums\TeamStatus::ONLINE|App\Enums\TeamType::ORGANISATION|string|string[])[]
      *
      * @psalm-return array{type: App\Enums\TeamType::ORGANISATION, name: array{en: string}, state: Active::class, status: App\Enums\TeamStatus::ONLINE, bio: string}
      */

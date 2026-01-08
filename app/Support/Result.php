@@ -46,7 +46,7 @@ class Result
      * @param  string|null  $error  The error message (null if success)
      * @param  array<string>  $logs  Writer Monad: Internal audit trail
      */
-    protected function __construct(
+    private function __construct(
         public mixed $value = null,
         public ?string $error = null,
         public array $logs = []
@@ -238,9 +238,11 @@ class Result
      * This decouples business logic from infrastructure logging.
      * Also integrates with Telescope if available.
      *
-     * @return self Returns self for method chaining
+     * @return static Returns self for method chaining
+     *
+     * @psalm-return static<TValue>
      */
-    public function logInternal(): self
+    public function logInternal(): static
     {
         if ($this->logs !== []) {
             Log::channel('audit')->info('Command Execution Path', [

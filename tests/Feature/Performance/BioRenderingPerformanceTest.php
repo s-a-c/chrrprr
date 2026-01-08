@@ -3,9 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Enterprise;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 test('bio markdown rendering completes in less than 100ms for 95 percent of requests', function (): void {
     // Create a team with a moderately complex bio (typical use case)

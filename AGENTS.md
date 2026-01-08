@@ -1,3 +1,105 @@
+<details>
+<summary>Expand for Table of Contents</summary>
+
+## Table of Contents
+
+- [1. Laravel Boost Guidelines](#1-laravel-boost-guidelines)
+  - [1.1. Foundational Context](#11-foundational-context)
+  - [1.2. Conventions](#12-conventions)
+  - [1.3. Verification Scripts](#13-verification-scripts)
+  - [1.4. Application Structure \& Architecture](#14-application-structure--architecture)
+  - [1.5. Frontend Bundling](#15-frontend-bundling)
+  - [1.6. Replies](#16-replies)
+  - [1.7. Documentation Files](#17-documentation-files)
+  - [1.8. Laravel Boost](#18-laravel-boost)
+  - [1.9. Artisan](#19-artisan)
+  - [1.10. URLs](#110-urls)
+  - [1.11. Tinker / Debugging](#111-tinker--debugging)
+  - [1.12. Reading Browser Logs With the `browser-logs` Tool](#112-reading-browser-logs-with-the-browser-logs-tool)
+  - [1.13. Searching Documentation (Critically Important)](#113-searching-documentation-critically-important)
+    - [1.13.1. Available Search Syntax](#1131-available-search-syntax)
+  - [1.14. PHP](#114-php)
+    - [1.14.1. Constructors](#1141-constructors)
+    - [1.14.2. Type Declarations](#1142-type-declarations)
+  - [1.15. Comments](#115-comments)
+  - [1.16. PHPDoc Blocks](#116-phpdoc-blocks)
+  - [1.17. Enums](#117-enums)
+  - [1.18. Laravel Herd](#118-laravel-herd)
+  - [1.19. Laravel Folio](#119-laravel-folio)
+    - [1.19.1. New Pages \& Routes](#1191-new-pages--routes)
+    - [1.19.2. Support \& Documentation](#1192-support--documentation)
+  - [1.20. Do Things the Laravel Way](#120-do-things-the-laravel-way)
+    - [1.20.1. Database](#1201-database)
+    - [1.20.2. Model Creation](#1202-model-creation)
+    - [1.20.3. APIs \& Eloquent Resources](#1203-apis--eloquent-resources)
+    - [1.20.4. Controllers \& Validation](#1204-controllers--validation)
+    - [1.20.5. Queues](#1205-queues)
+    - [1.20.6. Authentication \& Authorization](#1206-authentication--authorization)
+    - [1.20.7. URL Generation](#1207-url-generation)
+    - [1.20.8. Configuration](#1208-configuration)
+    - [1.20.9. Testing](#1209-testing)
+    - [1.20.10. Vite Error](#12010-vite-error)
+  - [1.21. Laravel 12](#121-laravel-12)
+    - [1.21.1. Laravel 12 Structure](#1211-laravel-12-structure)
+    - [1.21.2. Database](#1212-database)
+    - [1.21.3. Models](#1213-models)
+  - [1.22. Flux UI Pro](#122-flux-ui-pro)
+    - [1.22.1. Available Components](#1221-available-components)
+  - [1.23. Livewire Core](#123-livewire-core)
+  - [1.24. Livewire Best Practices](#124-livewire-best-practices)
+  - [1.25. Testing Livewire](#125-testing-livewire)
+  - [1.26. Laravel Pint Code Formatter](#126-laravel-pint-code-formatter)
+  - [1.27. Pest](#127-pest)
+    - [1.27.1. Testing](#1271-testing)
+    - [1.27.2. Pest Tests](#1272-pest-tests)
+    - [1.27.3. Running Tests](#1273-running-tests)
+    - [1.27.4. Pest Assertions](#1274-pest-assertions)
+    - [1.27.5. Mocking](#1275-mocking)
+    - [1.27.6. Datasets](#1276-datasets)
+  - [1.28. Pest 4](#128-pest-4)
+    - [1.28.1. Browser Testing](#1281-browser-testing)
+    - [1.28.2. Example Tests](#1282-example-tests)
+  - [1.29. Tailwind Core](#129-tailwind-core)
+    - [1.29.1. Spacing](#1291-spacing)
+    - [1.29.2. Dark Mode](#1292-dark-mode)
+  - [1.30. Tailwind 4](#130-tailwind-4)
+  - [1.31. Filament](#131-filament)
+    - [1.31.1. Artisan](#1311-artisan)
+    - [1.31.2. Filament's Core Features](#1312-filaments-core-features)
+    - [1.31.3. Relationships](#1313-relationships)
+  - [1.32. Testing](#132-testing)
+    - [1.32.1. Example Tests](#1321-example-tests)
+    - [1.32.2. Important Version 4 Changes](#1322-important-version-4-changes)
+    - [1.32.3. Organize Component Classes Structure](#1323-organize-component-classes-structure)
+  - [1.33. Laravel Fortify](#133-laravel-fortify)
+    - [1.33.1. Configuration \& Setup](#1331-configuration--setup)
+    - [1.33.2. Customization](#1332-customization)
+  - [1.34. Available Features](#134-available-features)
+- [2. Workflow Instruction](#2-workflow-instruction)
+  - [2.1. user-centric](#21-user-centric)
+  - [2.2. Daily Flow](#22-daily-flow)
+  - [2.3. Playbook Guideline](#23-playbook-guideline)
+  - [2.4. CLI Usage Notes](#24-cli-usage-notes)
+- [3. ByteRover CLI Command Reference](#3-byterover-cli-command-reference)
+  - [3.1. Memory Commands](#31-memory-commands)
+    - [3.1.1. `brv add`](#311-brv-add)
+    - [3.1.2. `brv retrieve`](#312-brv-retrieve)
+    - [3.1.3. `brv push`](#313-brv-push)
+    - [3.1.4. `brv complete`](#314-brv-complete)
+    - [3.1.5. `brv status`](#315-brv-status)
+  - [3.2. Best Practices](#32-best-practices)
+    - [3.2.1. Efficient Workflow](#321-efficient-workflow)
+    - [3.2.2. Memory Management](#322-memory-management)
+- [Global Agent Rules](#global-agent-rules)
+  - [Shell Environment](#shell-environment)
+    - [Rationale](#rationale)
+
+---
+
+</details>
+
+---
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
@@ -587,3 +689,244 @@ Fortify is a headless authentication backend that provides authentication routes
 - `Features::updatePasswords()` to let users change their passwords.
 - `Features::resetPasswords()` for password reset via email.
 </laravel-boost-guidelines>
+
+---
+
+# 2. Workflow Instruction
+
+You are a coding agent focused on one codebase. Use the brv CLI to manage working context.
+Core Rules:
+
+- Start from memory. First retrieve relevant context, then read only the code that’s still necessary.
+- Keep a local playbook. playbook.json is your local memory store—update it with what you learn.
+
+## 2.1. user-centric
+
+Before running any `brv` command, ask the user to choose:
+
+1. **Accept** - Review the command, then run if approved
+2. **Auto-run** - Execute immediately (remember this preference for the session)
+3. **No** - Cancel the command and continue without alternative
+4. **Custom** - Skip the command and provide different instruction
+
+Once the user chooses "Auto-run", apply that preference to all subsequent `brv` commands in this conversation without asking again.
+
+## 2.2. Daily Flow
+
+1. Always attempt to retrieve relevant context from ByteRover first by running `brv retrieve`.
+
+2. Do the work with minimal code reads
+
+3. Record new or refined knowledge in the playbook
+
+    - Add only specific, actionable, contextual items; avoid secrets. Redact when in doubt.
+
+4. Sync policy (manual by default)
+
+    - Do not auto-push.
+    - When the playbook has meaningful updates, prompt the user to run the command
+    - If the user has explicitly allowed auto-push, proceed non-interactively by running `brv push -y`.
+
+## 2.3. Playbook Guideline
+
+- Be specific (“Use React Query for data fetching in web modules”).
+- Be actionable (clear instruction a future agent/dev can apply).
+- Be contextual (mention module/service, constraints, links to source).
+- Include source (file + lines or commit) when possible.
+
+## 2.4. CLI Usage Notes
+
+- Use --help on any command to discover flags. Provide exact arguments for the scenario.
+
+---
+
+# 3. ByteRover CLI Command Reference
+
+## 3.1. Memory Commands
+
+### 3.1.1. `brv add`
+
+**Description:** Add or update a bullet in the playbook (bypasses ACE workflow for direct agent usage)
+
+**Flags:**
+
+- `-s, --section <string>`: Section name for the bullet (required)
+- `-c, --content <string>`: Content of the bullet (required)
+- `-b, --bullet-id <string>`: Bullet ID to update (optional, creates new if omitted)
+
+**Examples:**
+
+```bash
+brv add --section "Common Errors" --content "Authentication fails when token expires"
+brv add --section "Common Errors" --bullet-id "common-00001" --content "Updated: Auth fails when token expires"
+brv add -s "Best Practices" -c "Always validate user input before processing"
+
+```
+
+**Suggested Sections:** Common Errors, Best Practices, Strategies, Lessons Learned, Project Structure and Dependencies, Testing, Code Style and Quality, Styling and Design
+
+**Behavior:**
+
+- Warns if using non-standard section name
+- Creates new bullet with auto-generated ID if `--bullet-id` not provided
+- Updates existing bullet if `--bullet-id` matches existing bullet
+- Displays bullet ID, section, content, and tags after operation
+
+**Requirements:** Playbook must exist (run `brv init` first)
+
+---
+
+### 3.1.2. `brv retrieve`
+
+**Description:** Retrieve memories from ByteRover Memora service and save to local ACE playbook
+
+**Flags:**
+
+- `-q, --query <string>`: Search query string (required)
+- `-n, --node-keys <string>`: Comma-separated list of node keys (file paths) to filter results
+
+**Examples:**
+
+```bash
+brv retrieve --query "authentication best practices"
+brv retrieve -q "error handling" -n "src/auth/login.ts,src/auth/oauth.ts"
+brv retrieve -q "database connection issues"
+
+```
+
+**Behavior:**
+
+- **Clears existing playbook first** (destructive operation)
+- Retrieves memories and related memories from Memora service
+- Combines both result sets into playbook
+- Maps memory fields: `bulletId` → `id`, `tags` → `metadata.tags`, `nodeKeys` → `metadata.relatedFiles`
+- Displays results with score, content preview (200 chars), and related file paths
+- Fail-safe: warns on save error but still displays results
+
+**Output:** Shows count of memories and related memories, displays each with score and content
+
+**Requirements:** Must be authenticated and project initialized
+
+---
+
+### 3.1.3. `brv push`
+
+**Description:** Push playbook to ByteRover memory storage and clean up local ACE files
+
+**Flags:**
+
+- `-b, --branch <string>`: ByteRover branch name (default: "main", NOT git branch)
+- `-y, --yes`: Skip confirmation prompt
+
+**Examples:**
+
+```bash
+brv push
+brv push --branch develop
+
+```
+
+---
+
+### 3.1.4. `brv complete`
+
+**Description:** Complete ACE workflow: save executor output, generate reflection, and update playbook in one command
+
+**Arguments:**
+
+- `hint`: Short hint for naming output files (e.g., "user-auth", "bug-fix")
+- `reasoning`: Detailed reasoning and approach for completing the task
+- `finalAnswer`: The final answer/solution to the task
+
+**Flags:**
+
+- `-t, --tool-usage <string>`: Comma-separated list of tool calls with arguments (format: "ToolName:argument", required)
+- `-f, --feedback <string>`: Environment feedback about task execution (e.g., "Tests passed", "Build failed", required)
+- `-b, --bullet-ids <string>`: Comma-separated list of playbook bullet IDs referenced (optional)
+- `-u, --update-bullet <string>`: Bullet ID to update with new knowledge (if not provided, adds new bullet)
+
+**Examples:**
+
+```bash
+brv complete "user-auth" "Implemented OAuth2 flow" "Auth works" --tool-usage "Read:src/auth.ts,Edit:src/auth.ts,Bash:npm test" --feedback "All tests passed"
+brv complete "validation-fix" "Analyzed validator" "Fixed bug" --tool-usage "Grep:pattern:\"validate\",Read:src/validator.ts" --bullet-ids "bullet-123" --feedback "Tests passed"
+brv complete "auth-update" "Improved error handling" "Better errors" --tool-usage "Edit:src/auth.ts" --feedback "Tests passed" --update-bullet "bullet-5"
+
+```
+
+**Behavior:**
+
+- **Phase 1 (Executor):** Saves executor output with hint, reasoning, answer, tool usage, and bullet IDs
+- **Phase 2 (Reflector):** Auto-generates reflection based on feedback and applies tags to playbook
+- **Phase 3 (Curator):** Creates delta operation (ADD or UPDATE) and applies to playbook
+- Adds new bullet to "Lessons Learned" section with tag `['auto-generated']`
+- If `--update-bullet` provided, updates existing bullet instead of adding new one
+- Extracts file paths from tool usage and adds to bullet metadata as `relatedFiles`
+
+**Output:** Shows summary with file paths, tags applied count, and delta operations breakdown
+
+---
+
+### 3.1.5. `brv status`
+
+**Description**: Show CLI status and project information. Display local ACE context (ACE playbook) managed by ByteRover CLI.
+
+**Arguments:**
+
+- `DIRECTORY`:Project directory (defaults to current directory).
+
+**Flags:**
+
+- `-f, --format=<option>`: [default: table] Output format. <options: table|json>
+
+**Examples:**
+
+```bash
+brv status
+brv status --format json
+
+```
+
+## 3.2. Best Practices
+
+### 3.2.1. Efficient Workflow
+
+1. **Retrieve wisely:** Use `brv retrieve` with specific queries and `--node-keys` to filter
+2. **Read only what's needed:** Check playbook with `brv status` to see statistics before reading full content
+3. **Update precisely:** Use `brv add` to add/update specific bullets or `brv complete` for complete workflow
+4. **Push when appropriate:** Prompt user to run `brv push` after completing significant work
+
+### 3.2.2. Memory Management
+
+**Retrieve pattern:**
+
+- Use `brv add` to directly add/update bullets
+- `brv retrieve` **clears existing playbook** - use carefully
+- Retrieved memories use actual Memora tags (not "auto-generated")
+- Both memories and related memories are saved to playbook
+
+---
+Generated by ByteRover CLI for Gemini CLI
+
+---
+
+# Global Agent Rules
+
+## Shell Environment
+
+To replicate the user's customized environment and ensure correct tool versions (specifically PHP 8.5.1 from Laravel Herd), all shell commands must be executed within an interactive login shell with a \`TERM\` variable set.
+
+**Command Template:**
+
+```zsh
+TERM=xterm-256color zsh -i -l -c "<command>"
+
+```
+
+### Rationale
+
+- Standard non-interactive shells do not load \`.zshrc\` or the complex path configurations in \`~/.config/zsh/\`.
+- This ensures the \`PATH\` correctly prioritizes Herd's binaries over Homebrew or system installs.
+- Providing \`TERM=xterm-256color\` prevents issues with plugins or scripts that expect a terminal (like some ZSH prompt setups).
+
+---

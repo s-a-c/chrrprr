@@ -22,7 +22,7 @@
     },
     "phpUnit": {
         "configDir": ".",
-        "customPath": "bin/pest-infection"
+        "customPath": "vendor/bin/pest"
     },
     "tmpDir": "tmp/infection",
     "timeout": 10,

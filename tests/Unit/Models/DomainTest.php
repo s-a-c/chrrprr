@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Domain;
 use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
-use Tests\TestCase;
-
-uses(TestCase::class);
 
 test('domain model exists and extends tenancy base', function (): void {
     expect(class_exists(Domain::class))->toBeTrue();

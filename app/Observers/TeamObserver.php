@@ -15,25 +15,29 @@ final readonly class TeamObserver
 {
     /**
      * Handle the Team "creating" event.
-     * Validate unique name before creation.
      */
     public function creating(Team $team): void
     {
+        // Calculate tenant_id if not already set
+        if ($team->tenant_id === null) {
+            $this->updateTenantId($team);
+        }
+
+        // Validate unique name among siblings
         $this->validateUniqueName($team);
     }
 
     /**
      * Handle the Team "updating" event.
-     * Check optimistic locking, validate unique name, and update tenant_id if parent_id changes.
      */
     public function updating(Team $team): void
     {
-        // Only check if lock_version is set and the model is dirty
-        if ($team->isDirty() && $team->lock_version !== null) {
-            $currentVersion = (int) DB::table('teams')
-                ->where('id', $team->id)
-                ->value('lock_version');
-            throw_if($currentVersion !== $team->getOriginal('lock_version'), OptimisticLockingException::class, 'The team has been modified by another process.');
+        // Enforce immutability of certain fields if needed
+        // For example, tenant_id usually shouldn't change after creation
+        if ($team->isDirty('tenant_id') && $team->getOriginal('tenant_id') !== null) {
+            /** @var mixed $originalTenantId */
+            $originalTenantId = $team->getOriginal('tenant_id');
+            $team->tenant_id = $originalTenantId;
         }
 
         // Validate unique name if name is being changed
@@ -53,8 +57,16 @@ final readonly class TeamObserver
      */
     public function saving(Team $team): void
     {
+        // Only valid for existing models (updates)
+        if ($team->exists && ! $team->isDirty('lock_version')) {
+            $currentDbVersion = (int) DB::table('teams')->where('id', $team->id)->value('lock_version');
+            $originalVersion = (int) ($team->getOriginal('lock_version') ?? 0);
+            throw_if($currentDbVersion !== $originalVersion, OptimisticLockingException::class);
+        }
+
         // Only increment if the model is dirty (has changes) and we're not already setting lock_version
         if ($team->isDirty() && ! $team->isDirty('lock_version')) {
+            /** @var int $currentVersion */
             $currentVersion = (int) ($team->getOriginal('lock_version') ?? $team->lock_version ?? 0);
             $team->lock_version = $currentVersion + 1;
         }

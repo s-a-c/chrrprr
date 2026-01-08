@@ -57,18 +57,18 @@ OPTIONS:
 EXAMPLES:
   # Check task prerequisites (plan.md required)
   ./check-prerequisites.sh --json
-  
+
   # Check implementation prerequisites (plan.md + tasks.md required)
   ./check-prerequisites.sh --json --require-tasks --include-tasks
-  
+
   # Get feature paths only (no validation)
   ./check-prerequisites.sh --paths-only
-  
+
 EOF
             exit 0
             ;;
         *)
-            echo "ERROR: Unknown option '$arg'. Use --help for usage information." >&2
+            printf "ERROR: Unknown option '%s'. Use --help for usage information.\n" "$arg" >&2
             exit 1
             ;;
     esac
@@ -89,33 +89,33 @@ if $PATHS_ONLY; then
         printf '{"REPO_ROOT":"%s","BRANCH":"%s","FEATURE_DIR":"%s","FEATURE_SPEC":"%s","IMPL_PLAN":"%s","TASKS":"%s"}\n' \
             "$REPO_ROOT" "$CURRENT_BRANCH" "$FEATURE_DIR" "$FEATURE_SPEC" "$IMPL_PLAN" "$TASKS"
     else
-        echo "REPO_ROOT: $REPO_ROOT"
-        echo "BRANCH: $CURRENT_BRANCH"
-        echo "FEATURE_DIR: $FEATURE_DIR"
-        echo "FEATURE_SPEC: $FEATURE_SPEC"
-        echo "IMPL_PLAN: $IMPL_PLAN"
-        echo "TASKS: $TASKS"
+        printf "REPO_ROOT: %s\n" "$REPO_ROOT"
+        printf "BRANCH: %s\n" "$CURRENT_BRANCH"
+        printf "FEATURE_DIR: %s\n" "$FEATURE_DIR"
+        printf "FEATURE_SPEC: %s\n" "$FEATURE_SPEC"
+        printf "IMPL_PLAN: %s\n" "$IMPL_PLAN"
+        printf "TASKS: %s\n" "$TASKS"
     fi
     exit 0
 fi
 
 # Validate required directories and files
 if [[ ! -d "$FEATURE_DIR" ]]; then
-    echo "ERROR: Feature directory not found: $FEATURE_DIR" >&2
-    echo "Run /speckit.specify first to create the feature structure." >&2
+    printf "ERROR: Feature directory not found: %s\n" "$FEATURE_DIR" >&2
+    printf "Run /speckit.specify first to create the feature structure.\n" >&2
     exit 1
 fi
 
 if [[ ! -f "$IMPL_PLAN" ]]; then
-    echo "ERROR: plan.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit.plan first to create the implementation plan." >&2
+    printf "ERROR: plan.md not found in %s\n" "$FEATURE_DIR" >&2
+    printf "Run /speckit.plan first to create the implementation plan.\n" >&2
     exit 1
 fi
 
 # Check for tasks.md if required
 if $REQUIRE_TASKS && [[ ! -f "$TASKS" ]]; then
-    echo "ERROR: tasks.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit.tasks first to create the task list." >&2
+    printf "ERROR: tasks.md not found in %s\n" "$FEATURE_DIR" >&2
+    printf "Run /speckit.tasks first to create the task list.\n" >&2
     exit 1
 fi
 
@@ -147,19 +147,19 @@ if $JSON_MODE; then
         json_docs=$(printf '"%s",' "${docs[@]}")
         json_docs="[${json_docs%,}]"
     fi
-    
+
     printf '{"FEATURE_DIR":"%s","AVAILABLE_DOCS":%s}\n' "$FEATURE_DIR" "$json_docs"
 else
     # Text output
-    echo "FEATURE_DIR:$FEATURE_DIR"
-    echo "AVAILABLE_DOCS:"
-    
+    printf "FEATURE_DIR:%s\n" "$FEATURE_DIR"
+    printf "AVAILABLE_DOCS:\n"
+
     # Show status of each potential document
     check_file "$RESEARCH" "research.md"
     check_file "$DATA_MODEL" "data-model.md"
     check_dir "$CONTRACTS_DIR" "contracts/"
     check_file "$QUICKSTART" "quickstart.md"
-    
+
     if $INCLUDE_TASKS; then
         check_file "$TASKS" "tasks.md"
     fi

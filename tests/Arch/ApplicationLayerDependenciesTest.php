@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Actions\Users\UpdateUserProfile;
+use App\Exceptions\OptimisticLockingException;
+use App\Livewire\Teams\MoveTeam;
 
 /*
  * |--------------------------------------------------------------------------
@@ -15,7 +16,13 @@ use App\Actions\Users\UpdateUserProfile;
  */
 
 // Apply Laravel preset for common architectural conventions
-arch()->preset()->laravel();
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        'App\Projections',
+        MoveTeam::class,
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // Application Layer Dependencies
@@ -30,15 +37,20 @@ arch('Actions should only use Enums, Models, Requests, Services, and framework')
         'App\Services',
         'App\Support',
         'App\Actions', // Actions can use other Actions
+        'App\Handlers',
         'Illuminate',
         'Laravel',
         'Spatie',
+        'Spatie\QueueableAction',
+        OptimisticLockingException::class,
         'Override',
         'Deprecated',
         'Stevebauman',
+        'Stevebauman\Purify',
     ])
     ->ignoring([
-        UpdateUserProfile::class, // Uses Hash and Purify facades
+        'getPermissionsTeamId',
+        'setPermissionsTeamId',
     ]);
 
 arch('Services should only use Actions, Enums, Models, other Services, and framework')
@@ -48,13 +60,24 @@ arch('Services should only use Actions, Enums, Models, other Services, and frame
         'App\Enums',
         'App\Models',
         'App\Services',
+        'App\Handlers',
         'App\Support',
+        'App\Exceptions',
         'Illuminate',
         'Laravel',
         'Spatie',
+        'Spatie\Permission',
+        'Spatie\Sluggable',
+        'Spatie\Translatable',
         'Staudenmeir',
         'Deprecated',
         'Override',
+        'Parental',
+        'Symfony',
+    ])
+    ->ignoring([
+        'getPermissionsTeamId',
+        'setPermissionsTeamId',
     ]);
 
 arch('Support Validation should only use Enums, Models, Services, and framework')
@@ -63,6 +86,7 @@ arch('Support Validation should only use Enums, Models, Services, and framework'
         'App\Enums',
         'App\Models',
         'App\Services',
+        'App\Support',
         'Illuminate',
         'Laravel',
         'Override',

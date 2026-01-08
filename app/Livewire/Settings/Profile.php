@@ -6,9 +6,8 @@ namespace App\Livewire\Settings;
 
 use App\Handlers\Commands\Users\UpdateUserProfileCommand;
 use App\Handlers\Commands\Users\UpdateUserProfileHandler;
-use Illuminate\Contracts\View\Factory;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 final class Profile extends Component
@@ -17,20 +16,28 @@ final class Profile extends Component
 
     public string $email = '';
 
+    /**
+     * Initialize the component.
+     */
     public function mount(): void
     {
+        /** @var User $user */
         $user = auth()->user();
         $this->name = $user->name;
         $this->email = $user->email;
     }
 
+    /**
+     * Update the user's profile information.
+     */
     public function updateProfileInformation(): void
     {
+        /** @var User $user */
         $user = auth()->user();
 
         $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
         ]);
 
         $handler = resolve(UpdateUserProfileHandler::class);
@@ -41,26 +48,35 @@ final class Profile extends Component
 
         $result = $handler->handle($command);
 
-        if ($result->isFailure) {
-            $this->addError('email', $result->getError());
-        } else {
-            session()->flash('status', __('Profile updated successfully.'));
+        if ($result->isSuccess) {
             $this->dispatch('profile-updated');
+            session()->flash('status', 'Profile updated successfully');
+        } else {
+            $this->addError('email', $result->error);
         }
     }
 
+    /**
+     * Resend the email verification notification.
+     */
     public function resendVerificationNotification(): void
     {
-        if (auth()->user()->hasVerifiedEmail()) {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if ($user->hasVerifiedEmail()) {
             return;
         }
 
-        auth()->user()->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
 
         session()->flash('status', 'verification-link-sent');
     }
 
-    public function render(): Factory|View
+    /**
+     * Render the component.
+     */
+    public function render(): View
     {
         return view('livewire.settings.profile');
     }

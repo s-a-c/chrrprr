@@ -7,11 +7,11 @@ ENV_SOURCE="${ROOT_DIR}/.env.container"
 ENV_TARGET="${ROOT_DIR}/.env"
 
 if [[ ! -f "${ENV_SOURCE}" ]]; then
-  echo "Missing ${ENV_SOURCE}. Copy .env.example to .env.container and configure container credentials." >&2
+  printf "Missing %s. Copy .env.example to .env.container and configure container credentials.\n" "${ENV_SOURCE}" >&2
   exit 1
 fi
 
 ln -sf "${ENV_SOURCE}" "${ENV_TARGET}"
 export BASE_PLATFORM_PROFILE="container"
 
-echo "Switched to the container profile. BASE_PLATFORM_PROFILE=container"
+printf "Switched to the container profile. BASE_PLATFORM_PROFILE=container\n"

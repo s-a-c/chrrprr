@@ -14,7 +14,7 @@ final readonly class UpdateTeam
 {
     public function __construct(
         private MoveTeam $moveTeamAction,
-        private TeamNameValidator $nameValidator,
+        private TeamNameValidator $nameValidator
     ) {}
 
     /**

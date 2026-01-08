@@ -46,9 +46,9 @@ describe('Password Settings', function (): void {
 
         $this->actingAs($user);
         $page = visit('/settings/password')
-            ->fill('current_password', 'password')
-            ->fill('password', 'new-password')
-            ->fill('password_confirmation', 'new-password')
+            ->fill('current_password', 'Password123!')
+            ->fill('password', 'NewPassword123!')
+            ->fill('password_confirmation', 'NewPassword123!')
             ->click('Save');
 
         $page->assertSee('Password updated successfully');
@@ -61,8 +61,8 @@ describe('Password Settings', function (): void {
         $this->actingAs($user);
         $page = visit('/settings/password')
             ->fill('current_password', 'wrong-password')
-            ->fill('password', 'new-password')
-            ->fill('password_confirmation', 'new-password')
+            ->fill('password', 'NewPassword123!')
+            ->fill('password_confirmation', 'NewPassword123!')
             ->click('Save');
 
         $page->assertSee('The password is incorrect');

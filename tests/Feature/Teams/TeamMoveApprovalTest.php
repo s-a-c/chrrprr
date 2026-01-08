@@ -12,10 +12,7 @@ use App\Models\Role;
 use App\Models\TeamMoveApproval;
 use App\Models\User;
 use App\Services\TeamMoveService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use RuntimeException;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
     $this->service = resolve(TeamMoveService::class);

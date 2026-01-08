@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Concerns;
 
 use App\Models\Builders\TeamBuilder;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 
 trait HasTeamSearch
@@ -13,6 +14,8 @@ trait HasTeamSearch
      * Typo-tolerant fuzzy search scope using pg_trgm.
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via Laravel's Scope attribute
+     *
+     * @psalm-return TeamBuilder<Team>
      */
     #[Scope]
     protected function fuzzySearch(TeamBuilder $query, string $term): TeamBuilder
@@ -28,6 +31,8 @@ trait HasTeamSearch
      * Full-text search scope using weighted search_vector.
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via Laravel's Scope attribute
+     *
+     * @psalm-return TeamBuilder<Team>
      */
     #[Scope]
     protected function fullTextSearch(TeamBuilder $query, string $term): TeamBuilder

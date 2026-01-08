@@ -23,9 +23,9 @@ final readonly class TeamBioRenderer
      * Render team bio markdown to sanitized HTML.
      *
      * @param  string|null  $bio  The markdown bio text
-     * @return string|null The rendered HTML or null if bio is empty
+     * @return array|null|string The rendered HTML or null if bio is empty
      */
-    public function render(?string $bio): ?string
+    public function render(?string $bio): array|string|null
     {
         if ($bio === null || $bio === '') {
             return null;

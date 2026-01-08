@@ -31,6 +31,9 @@ final readonly class TeamMoveApprovalService
     public function approve(TeamMoveApproval $approval, User $approver): Result
     {
         return Result::try(
+            /**
+             * @return true
+             */
             function () use ($approval, $approver): bool {
                 $this->validateApprovalRequest($approval, $approver);
 
@@ -38,24 +41,27 @@ final readonly class TeamMoveApprovalService
             },
             ['Validating approval request']
         )->flatMap(fn (): Result => Result::try(
-            fn (): bool => DB::transaction(function () use ($approval, $approver): bool {
-                $this->recordApproval($approval, $approver);
+            fn (): bool => DB::transaction(/**
+             * @return true
+             */
+                function () use ($approval, $approver): bool {
+                    $this->recordApproval($approval, $approver);
 
-                // If all approvers have approved, we need to execute the move
-                // But executeMove returns Result, and we're in a transaction
-                // So we'll call it and unwrap the Result (throwing on failure to rollback transaction)
-                if ($this->allApproversHaveApproved($approval)) {
-                    $executeResult = $this->executeMove($approval);
-                    if ($executeResult->isFailure) {
-                        // Throw to rollback transaction - Result::try will catch and convert to failure Result
-                        throw new RuntimeException($executeResult->error);
+                    // If all approvers have approved, we need to execute the move
+                    // But executeMove returns Result, and we're in a transaction
+                    // So we'll call it and unwrap the Result (throwing on failure to rollback transaction)
+                    if ($this->allApproversHaveApproved($approval)) {
+                        $executeResult = $this->executeMove($approval);
+                        if ($executeResult->isFailure) {
+                            // Throw to rollback transaction - Result::try will catch and convert to failure Result
+                            throw new RuntimeException($executeResult->error);
+                        }
                     }
-                }
 
-                $approval->save();
+                    $approval->save();
 
-                return true;
-            }),
+                    return true;
+                }),
             ['Recording approval and executing move if needed']
         ));
     }

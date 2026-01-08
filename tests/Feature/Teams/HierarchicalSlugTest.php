@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Enterprise;
 use App\Models\Organisation;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 it('generates a slug from the name', function (): void {
     $enterprise = Enterprise::factory()->create(['name' => 'Acme Corp']);

@@ -37,7 +37,7 @@ final class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => self::$password ??= Hash::make('password'),
+            'password' => self::$password ??= Hash::make('Password123!'),
             'remember_token' => Str::random(10),
             'two_factor_secret' => Str::random(10),
             'two_factor_recovery_codes' => Str::random(10),
@@ -55,38 +55,36 @@ final class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Indicate that the user is unverified.
      */
     public function unverified(): static
     {
-        return $this->state(
-            /**
-             * @return null[]
-             *
-             * @psalm-return array{email_verified_at: null}
-             */
-            fn (array $attributes): array => [
-                'email_verified_at' => null,
-            ],
-        );
+        return $this->state(fn (array $attributes): array => [
+            'email_verified_at' => null,
+        ]);
     }
 
     /**
-     * Indicate that the model does not have two-factor authentication configured.
+     * Indicate that the user does not have two factor authentication enabled.
      */
     public function withoutTwoFactor(): static
     {
-        return $this->state(
-            /**
-             * @return null[]
-             *
-             * @psalm-return array{two_factor_secret: null, two_factor_recovery_codes: null, two_factor_confirmed_at: null}
-             */
-            fn (array $attributes): array => [
-                'two_factor_secret' => null,
-                'two_factor_recovery_codes' => null,
-                'two_factor_confirmed_at' => null,
-            ],
-        );
+        return $this->state(fn (array $attributes): array => [
+            'two_factor_secret' => null,
+            'two_factor_recovery_codes' => null,
+            'two_factor_confirmed_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user has two factor authentication enabled.
+     */
+    public function withTwoFactor(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'two_factor_secret' => 'secret',
+            'two_factor_recovery_codes' => 'codes',
+            'two_factor_confirmed_at' => now(),
+        ]);
     }
 }

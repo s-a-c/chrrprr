@@ -14,6 +14,11 @@ use Spatie\ModelStates\StateConfig;
  */
 abstract class TeamState extends State
 {
+    /**
+     * Get the human-readable label for the state.
+     */
+    abstract public function label(): string;
+
     #[Override]
     final public static function config(): StateConfig
     {

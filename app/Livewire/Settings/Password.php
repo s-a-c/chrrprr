@@ -4,39 +4,56 @@ declare(strict_types=1);
 
 namespace App\Livewire\Settings;
 
-use Illuminate\Contracts\View\Factory;
+use App\Actions\Fortify\PasswordValidationRules;
+use App\Handlers\Commands\Users\UpdateUserProfileCommand;
+use App\Handlers\Commands\Users\UpdateUserProfileHandler;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password as PasswordRule;
 use Livewire\Component;
 
 final class Password extends Component
 {
+    use PasswordValidationRules;
+
     public string $current_password = '';
 
     public string $password = '';
 
     public string $password_confirmation = '';
 
+    /**
+     * Update the user's password.
+     */
     public function updatePassword(): void
     {
+        /** @var User $user */
+        $user = auth()->user();
+
         $this->validate([
-            'current_password' => ['required', 'current_password'],
-            'password' => ['required', 'string', PasswordRule::defaults(), 'confirmed'],
+            'current_password' => ['required', 'string', 'current_password'],
+            'password' => $this->passwordRules(),
         ]);
 
-        auth()->user()->update([
-            'password' => Hash::make($this->password),
+        $handler = resolve(UpdateUserProfileHandler::class);
+        $command = new UpdateUserProfileCommand($user, [
+            'password' => $this->password,
         ]);
 
-        $this->reset(['current_password', 'password', 'password_confirmation']);
+        $result = $handler->handle($command);
 
-        session()->flash('status', __('Password updated successfully.'));
-
-        $this->dispatch('password-updated');
+        if ($result->isSuccess) {
+            $this->reset(['current_password', 'password', 'password_confirmation']);
+            $this->dispatch('password-updated');
+            session()->flash('status', 'Password updated successfully');
+        } else {
+            $this->addError('password', $result->error);
+        }
     }
 
-    public function render(): Factory|View
+    /**
+     * Render the component.
+     */
+    public function render(): View
     {
         return view('livewire.settings.password');
     }

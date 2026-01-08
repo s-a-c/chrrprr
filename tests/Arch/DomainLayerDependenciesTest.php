@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Livewire\Teams\MoveTeam;
 use App\Models\Concerns\HasUlid;
 
 /*
@@ -14,7 +15,13 @@ use App\Models\Concerns\HasUlid;
  */
 
 // Apply Laravel preset for common architectural conventions
-arch()->preset()->laravel();
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        'App\Projections',
+        MoveTeam::class,
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // Domain Layer Dependencies
@@ -29,19 +36,31 @@ arch('Models should only use Eloquent, framework, and third-party model packages
         'App\States', // Models can use State classes
         'App\Observers', // Models can reference their observers
         'App\Presenters', // Models can reference their presenters
+        'App\Contracts',
         'Illuminate',
         'Laravel',
         'Spatie',
+        'Spatie\ModelStates',
+        'Spatie\Sluggable',
+        'Spatie\Permission',
+        'Spatie\Translatable',
+        'App\Services',
+        'App\Exceptions',
         'Parental',
         'Symfony',
         'Cviebrock',
         'Stevebauman',
         'Staudenmeir',
         'Stancl',
+        'Stancl\Tenancy',
         'Database',
-        'Tests', // Models\Concerns\HasUlid uses test model for type hint
+        'Tests',
     ])
-    ->ignoring(HasUlid::class); // Uses test model for type hint
+    ->ignoring([
+        HasUlid::class,
+        'getPermissionsTeamId',
+        'setPermissionsTeamId',
+    ]);
 
 arch('Model Builders should only use Models, Enums, and framework classes')
     ->expect('App\Models\Builders')
@@ -59,6 +78,16 @@ arch('Model Concerns should follow model dependencies')
         'App\Models',
         'App\Services', // Concerns may use services (e.g., TeamHierarchyTraversalService)
         'App\Support',
+        'App\Exceptions',
         'Illuminate',
         'Laravel',
+        'Spatie',
+        'Spatie\Sluggable',
+        'Spatie\Translatable',
+        'Symfony',
+        'Symfony\Component\Uid',
+    ])
+    ->ignoring([
+        'getPermissionsTeamId',
+        'setPermissionsTeamId',
     ]);

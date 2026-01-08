@@ -55,7 +55,4 @@ test('can assign deputies to a team', function (): void {
     expect($org->deputies())->toHaveCount(2);
 });
 
-test('can replace executive if explicitly handled', function (): void {
-    // This might be T058 part 2, but for now we focus on the constraint.
-    $this->markTestIncomplete('Replacement logic not yet tested');
-});
+test('can replace executive if explicitly handled')->skip('Replacement logic not yet tested');

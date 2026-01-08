@@ -7,11 +7,11 @@ ENV_SOURCE="${ROOT_DIR}/.env.native"
 ENV_TARGET="${ROOT_DIR}/.env"
 
 if [[ ! -f "${ENV_SOURCE}" ]]; then
-  echo "Missing ${ENV_SOURCE}. Copy .env.example to .env.native and configure native credentials." >&2
+  printf "Missing %s. Copy .env.example to .env.native and configure native credentials.\n" "${ENV_SOURCE}" >&2
   exit 1
 fi
 
 ln -sf "${ENV_SOURCE}" "${ENV_TARGET}"
 export BASE_PLATFORM_PROFILE="native"
 
-echo "Switched to the native profile. BASE_PLATFORM_PROFILE=native"
+printf "Switched to the native profile. BASE_PLATFORM_PROFILE=native\n"

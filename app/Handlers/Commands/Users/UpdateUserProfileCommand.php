@@ -6,6 +6,7 @@ namespace App\Handlers\Commands\Users;
 
 use App\Models\User;
 
+final
 /**
  * Update User Profile Command.
  *

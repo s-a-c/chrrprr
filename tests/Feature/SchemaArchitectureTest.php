@@ -8,12 +8,9 @@ use App\Models\Role;
 use App\Models\Team;
 use App\Models\TeamMoveApproval;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
-
-uses(RefreshDatabase::class);
 
 test('database connection prioritizes custom schemas', function (): void {
     if (DB::getDriverName() !== 'pgsql') {
@@ -220,7 +217,7 @@ test('spatie permission package role queries work with schema scoping', function
         'guard_name' => 'web',
     ]);
 
-    $role2 = Role::create([
+    Role::create([
         'name' => 'editor',
         'guard_name' => 'web',
     ]);

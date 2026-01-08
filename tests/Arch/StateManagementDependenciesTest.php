@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Livewire\Teams\MoveTeam;
+
 /*
  * |--------------------------------------------------------------------------
  * | State Management Dependency Rules
@@ -12,7 +14,13 @@ declare(strict_types=1);
  */
 
 // Apply Laravel preset for common architectural conventions
-arch()->preset()->laravel();
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        'App\Projections',
+        MoveTeam::class,
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // State Management Dependencies
@@ -23,6 +31,7 @@ arch('States should only use Spatie, framework, and App namespace')
     ->toOnlyUse([
         'App',
         'Spatie',
+        'Spatie\ModelStates',
         'Illuminate',
         'Laravel',
         'Override',

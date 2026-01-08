@@ -35,7 +35,7 @@ it('can login with valid credentials', function (): void {
 
     $page = visit('/login')
         ->fill('email', $user->email)
-        ->fill('password', 'password')
+        ->fill('password', 'Password123!')
         ->click('Log in');
 
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
@@ -59,8 +59,8 @@ it('can register a new user', function (): void {
     $page = visit('/register')
         ->fill('name', 'John Doe')
         ->fill('email', 'john@example.com')
-        ->fill('password', 'password')
-        ->fill('password_confirmation', 'password')
+        ->fill('password', 'Password123!')
+        ->fill('password_confirmation', 'Password123!')
         ->click('Create account');
 
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
@@ -83,7 +83,7 @@ it('validates password confirmation on registration', function (): void {
     $page = visit('/register')
         ->fill('name', 'John Doe')
         ->fill('email', 'john@example.com')
-        ->fill('password', 'password')
+        ->fill('password', 'Password123!')
         ->fill('password_confirmation', 'different-password')
         ->click('Create account');
 
@@ -115,7 +115,7 @@ it('redirects to dashboard after login', function (): void {
 
     $page = visit('/login')
         ->fill('email', $user->email)
-        ->fill('password', 'password')
+        ->fill('password', 'Password123!')
         ->click('Log in');
 
     $page->assertPathIs('/dashboard');

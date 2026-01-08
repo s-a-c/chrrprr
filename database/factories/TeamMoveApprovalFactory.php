@@ -19,9 +19,9 @@ final class TeamMoveApprovalFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return (Factory|UserFactory|Closure|null|string)[]
+     * @return (Closure|Factory|\App\Models\UserFactory|null|string)[]
      *
-     * @psalm-return array{team_id: Factory, from_parent_id: Closure(array):mixed, to_parent_id: Closure(array):mixed, requested_by_id: UserFactory, status: 'pending', reason: string, required_approvers: null, approvals: null, approved_at: null, rejected_at: null, rejected_by_id: null, rejection_reason: null}
+     * @psalm-return array{team_id: Factory, from_parent_id: Closure(array):mixed, to_parent_id: Closure(array):mixed, requested_by_id: \App\Models\UserFactory, status: 'pending', reason: string, required_approvers: null, approvals: null, approved_at: null, rejected_at: null, rejected_by_id: null, rejection_reason: null}
      */
     #[Override]
     public function definition(): array

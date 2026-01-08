@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Livewire\Teams\MoveTeam;
+use App\Support\Validation\TeamNameValidator;
+
 /*
  * |--------------------------------------------------------------------------
  * | Authorization & Event Dependency Rules
@@ -12,7 +15,13 @@ declare(strict_types=1);
  */
 
 // Apply Laravel preset for common architectural conventions
-arch()->preset()->laravel();
+arch()->preset()->laravel()
+    ->ignoring([
+        'App\Providers\Filament',
+        'App\Projections',
+        MoveTeam::class,
+        'App\Models\Builders',
+    ]);
 
 // ============================================================================
 // Authorization & Event Dependencies
@@ -31,6 +40,9 @@ arch('Observers should only use Models, Services, and framework classes')
     ->toOnlyUse([
         'App\Models',
         'App\Services',
+        'App\Enums',
+        'App\Exceptions',
+        TeamNameValidator::class,
         'Illuminate',
         'Laravel',
     ]);

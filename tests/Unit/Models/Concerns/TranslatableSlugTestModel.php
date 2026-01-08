@@ -40,6 +40,7 @@ final class TranslatableSlugTestModel extends Model
      *
      * @psalm-return SlugOptions
      */
+    #[\Override]
     #[Override]
     public function getSlugOptions(): SlugOptions
     {

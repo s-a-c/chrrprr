@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Concerns;
 
 use App\Models\Builders\UserBuilder;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 
 trait HasUserSearch
@@ -13,6 +14,8 @@ trait HasUserSearch
      * Typo-tolerant fuzzy search scope using pg_trgm.
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via Laravel's Scope attribute
+     *
+     * @psalm-return UserBuilder<User>
      */
     #[Scope]
     protected function fuzzySearch(UserBuilder $query, string $term): UserBuilder
@@ -27,6 +30,8 @@ trait HasUserSearch
      * Full-text search scope using weighted search_vector.
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via Laravel's Scope attribute
+     *
+     * @psalm-return UserBuilder<User>
      */
     #[Scope]
     protected function fullTextSearch(UserBuilder $query, string $term): UserBuilder

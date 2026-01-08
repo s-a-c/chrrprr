@@ -6,13 +6,4 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-final class TeamMoveApprovalSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        // Add team move approval seeding logic here if needed.
-    }
-}
+final class TeamMoveApprovalSeeder extends Seeder {}
