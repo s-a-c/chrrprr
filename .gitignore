@@ -260,3 +260,4 @@ tmp-run.php
 .kiro/steering/byterover-rules.md
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
+phpunit.xml
