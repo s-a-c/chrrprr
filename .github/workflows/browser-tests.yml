@@ -40,14 +40,18 @@ jobs:
           FLUXUI_PRO_USERNAME: ${{ secrets.FLUXUI_PRO_USERNAME }}
           FLUXUI_PRO_KEY: ${{ secrets.FLUXUI_PRO_KEY }}
           GH_COMPOSER_TOKEN: ${{ secrets.GH_COMPOSER_TOKEN }}
+          SPATIE_USERNAME: ${{ secrets.SPATIE_USERNAME }}
+          SPATIE_PASSWORD: ${{ secrets.SPATIE_PASSWORD }}
         run: |
-          if [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" || -z "$GH_COMPOSER_TOKEN" ]]; then
-            echo "::error::Missing FLUXUI_PRO_... or GH_COMPOSER_TOKEN secrets"
+          if [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" || -z "$GH_COMPOSER_TOKEN" || -z "$SPATIE_USERNAME" || -z "$SPATIE_PASSWORD" ]]; then
+            echo "::error::Missing Composer auth secrets"
             exit 1
           fi
 
           composer config http-basic.composer.fluxui.dev "$FLUXUI_PRO_USERNAME" "$FLUXUI_PRO_KEY"
           composer config github-oauth.github.com "$GH_COMPOSER_TOKEN"
+          composer config http-basic.satis.spatie.be "$SPATIE_USERNAME" "$SPATIE_PASSWORD"
+          composer config http-basic.composer.satis.spatie.be "$SPATIE_USERNAME" "$SPATIE_PASSWORD"
 
       - name: Install Playwright Browsers
         run: bunx playwright install --with-deps
