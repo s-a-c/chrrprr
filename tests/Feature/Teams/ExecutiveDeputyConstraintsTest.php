@@ -55,4 +55,27 @@ test('can assign deputies to a team', function (): void {
     expect($org->deputies())->toHaveCount(2);
 });
 
-test('can replace executive if explicitly handled')->skip('Replacement logic not yet tested');
+test('can replace executive if explicitly handled', function (): void {
+    $enterprise = Enterprise::factory()->create();
+    $org = Organisation::factory()->create(['parent_id' => $enterprise->id]);
+
+    $user1 = User::factory()->create();
+    $user2 = User::factory()->create();
+
+    Role::query()->firstOrCreate(['name' => 'executive', 'guard_name' => 'web']);
+
+    // Assign first executive
+    $org->assignExecutive($user1);
+
+    setPermissionsTeamId($org->id);
+    expect($user1->hasRole('executive'))->toBeTrue();
+    setPermissionsTeamId(null);
+
+    // Replace with second executive using replaceExecutive
+    $org->replaceExecutive($user2);
+
+    setPermissionsTeamId($org->id);
+    expect($user2->hasRole('executive'))->toBeTrue();
+    expect($user1->refresh()->hasRole('executive'))->toBeFalse();
+    setPermissionsTeamId(null);
+});

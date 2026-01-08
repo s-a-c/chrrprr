@@ -578,6 +578,10 @@
             "@banner \"Type Coverage\" \"7;1;96\"",
             "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/pest --type-coverage --min=99.1"
         ],
+        "test:performance": [
+            "@banner \"Performance Tests\" \"1;35\"",
+            "RUN_PERF_TESTS=1 php artisan test --group=performance"
+        ],
         "test:unit": [
             "@test:unit:php",
             "@test:unit:js"

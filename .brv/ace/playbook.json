@@ -21,15 +21,29 @@
         "timestamp": "2026-01-07T19:09:08.150Z"
       },
       "section": "Best Practices"
+    },
+    "lessons-00003": {
+      "id": "lessons-00003",
+      "metadata": {
+        "relatedFiles": [],
+        "tags": [
+          "manual"
+        ],
+        "timestamp": "2026-01-08T08:38:12.946Z"
+      },
+      "section": "Lessons Learned"
     }
   },
-  "nextId": 3,
+  "nextId": 4,
   "sections": {
     "quicksort": [
       "quicksort-00001"
     ],
     "Best Practices": [
       "best-00002"
+    ],
+    "Lessons Learned": [
+      "lessons-00003"
     ]
   }
 }

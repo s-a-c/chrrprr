@@ -101,6 +101,21 @@ trait ManagesTeamRoles
     }
 
     /**
+     * Replace the current executive with a new user.
+     *
+     * Removes existing executive (if any) and assigns the new user.
+     */
+    public function replaceExecutive(User $user): void
+    {
+        $this->validateExecutiveDeputyConstraints($user, 'executive');
+
+        $this->withTeamContext(function () use ($user): void {
+            $this->removeExecutive();
+            $user->assignRole('executive');
+        });
+    }
+
+    /**
      * Remove the executive from this team.
      *
      * Uses collection each for functional approach.
