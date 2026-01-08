@@ -18,6 +18,9 @@ permissions:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      DB_PASSWORD: password
+      DB_USERNAME: postgres
     services:
       postgres:
         image: postgres:15
@@ -86,9 +89,7 @@ jobs:
         run: |
           cp .env.example .env.testing
           php artisan key:generate --env=testing
-        env:
-          DB_PASSWORD: password
-          DB_USERNAME: postgres
+
 
       - name: Setup Behat Test Environment
         env:
