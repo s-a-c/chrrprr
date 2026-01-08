@@ -310,6 +310,13 @@
             "@log \"Clearing compiled views...\" \"0;36\"",
             "rm -rf storage/framework/views/* 2>/dev/null || true"
         ],
+        "ci:local": [
+            "@banner \"CI Local\" \"1;94\"",
+            "@ci:local:lint",
+            "@ci:local:tests",
+            "@ci:local:browser-tests",
+            "@ci:local:pre-commit"
+        ],
         "ci:local:browser-tests": [
             "@banner \"CI Local Browser-Tests\" \"1;31\"",
             "act -W .github/workflows/browser-tests.yml"

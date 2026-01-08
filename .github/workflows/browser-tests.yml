@@ -95,31 +95,6 @@ jobs:
           # Add the CSP helper function at the end of Pest.php
           cat >> tests/Pest.php << 'HELPER_EOF'
 
-function assert_no_javascript_errors_except_csp_parser(PendingAwaitablePage|AwaitableWebpage|Webpage $page): PendingAwaitablePage|AwaitableWebpage|Webpage
-{
-    try {
-        $page->assertNoJavaScriptErrors();
-    } catch (Throwable $e) {
-        // Only handle AssertionFailedError exceptions (use string to avoid internal-class errors).
-        // Use string literal with is_a() to avoid PHPStan internal class warnings
-        // Rector prefers throw_unless, which works fine with is_a() and string literals
-        throw_unless(is_a($e, 'PHPUnit\Framework\AssertionFailedError'), $e);
-
-        $message = $e->getMessage();
-
-        // Check if the error contains CSP parser errors (various formats)
-        // CSP parser errors can appear as:
-        // - "CSP Parser Error: Unexpected token: input"
-        // - "CSP Parser Error: Expected PUNCTUATION ":" but got PUNCTUATION "(""
-        // - "Uncaught Error: CSP Parser Error: ..."
-        // - In the main message: "but found 1: Uncaught Error: CSP Parser Error: ..."
-        $isCspError = str_contains($message, 'CSP Parser Error') ||
-            (bool) preg_match('/CSP.*Parser.*Error/i', $message);
-
-        if ($isCspError) {
-            // Extract all errors from the message
-            // The message format can be:
-            // 1. "Expected no JavaScript errors..., but found X:\n- Error 1\n- Error 2"
             // 2. "Expected no JavaScript errors..., but found 1: Uncaught Error: CSP Parser Error: ..."
             preg_match_all('/- (.+)/m', $message, $matches);
             /** @var list<non-empty-string> $errors */

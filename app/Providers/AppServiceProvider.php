@@ -215,7 +215,7 @@ final class AppServiceProvider extends ServiceProvider
          * @return null|true
          */
             static function (?User $user, string $ability): ?bool {
-                if ($user === null) {
+                if (! $user instanceof User) {
                     return null;
                 }
 
