@@ -6,7 +6,6 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Contracts\ConfirmPasswordViewResponse;
