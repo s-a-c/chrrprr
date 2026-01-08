@@ -34,7 +34,10 @@ final class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(LoginViewResponse::class, static fn (): object => new class implements LoginViewResponse
         {
             #[Override]
-            public function toResponse(Request $request): Response
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
             {
                 return response()->view('livewire.auth.login');
             }
@@ -43,7 +46,10 @@ final class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(RegisterViewResponse::class, static fn (): object => new class implements RegisterViewResponse
         {
             #[Override]
-            public function toResponse(Request $request): Response
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
             {
                 return response()->view('livewire.auth.register');
             }
@@ -52,7 +58,10 @@ final class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(RequestPasswordResetLinkViewResponse::class, static fn (): object => new class implements RequestPasswordResetLinkViewResponse
         {
             #[Override]
-            public function toResponse(Request $request): Response
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
             {
                 return response()->view('livewire.auth.forgot-password');
             }
@@ -61,7 +70,10 @@ final class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(ResetPasswordViewResponse::class, static fn (): object => new class implements ResetPasswordViewResponse
         {
             #[Override]
-            public function toResponse(Request $request): Response
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
             {
                 return response()->view('livewire.auth.reset-password', ['request' => $request]);
             }
@@ -70,7 +82,10 @@ final class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(VerifyEmailViewResponse::class, static fn (): object => new class implements VerifyEmailViewResponse
         {
             #[Override]
-            public function toResponse(Request $request): Response
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
             {
                 return response()->view('livewire.auth.verify-email');
             }
@@ -79,7 +94,10 @@ final class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(ConfirmPasswordViewResponse::class, static fn (): object => new class implements ConfirmPasswordViewResponse
         {
             #[Override]
-            public function toResponse(Request $request): Response
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
             {
                 return response()->view('livewire.auth.confirm-password');
             }
@@ -88,7 +106,10 @@ final class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(TwoFactorLoginResponse::class, static fn (): object => new class implements TwoFactorLoginResponse
         {
             #[Override]
-            public function toResponse(Request $request): RedirectResponse
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): RedirectResponse
             {
                 return to_route('two-factor.login');
             }
