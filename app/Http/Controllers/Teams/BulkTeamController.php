@@ -49,7 +49,7 @@ final readonly class BulkTeamController
             ->values();
 
         $partitioned = $results->partition(
-            static fn ($result): bool => ($result['success'] ?? false) === true
+            static fn (array $result): bool => ($result['success'] ?? false) === true
         );
 
         /** @var Collection<int, array<string, mixed>> $successes */

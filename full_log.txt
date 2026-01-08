@@ -1,0 +1,563 @@
+Run Core Workflow	Set up job	﻿2026-01-08T16:16:24.1057107Z Current runner version: '2.330.0'
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1094730Z ##[group]Runner Image Provisioner
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1096230Z Hosted Compute Agent
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1097206Z Version: 20251211.462
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1098177Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1099469Z Build Date: 2025-12-11T16:28:49Z
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1100618Z Worker ID: {a7dafb35-1234-4488-becd-41c7be9d8829}
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1101999Z ##[endgroup]
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1103239Z ##[group]Operating System
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1104228Z Ubuntu
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1105211Z 24.04.3
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1105990Z LTS
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1106919Z ##[endgroup]
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1107963Z ##[group]Runner Image
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1108931Z Image: ubuntu-24.04
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1109990Z Version: 20260105.202.1
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1111926Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260105.202/images/ubuntu/Ubuntu2404-Readme.md
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1115037Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260105.202
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1117349Z ##[endgroup]
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1119288Z ##[group]GITHUB_TOKEN Permissions
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1121788Z Contents: read
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1123101Z Metadata: read
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1123994Z ##[endgroup]
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1127433Z Secret source: Actions
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1130059Z Prepare workflow directory
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1618617Z Prepare all required actions
+Run Core Workflow	Set up job	2026-01-08T16:16:24.1676482Z Getting action download info
+Run Core Workflow	Set up job	2026-01-08T16:16:24.4258135Z Download action repository 'actions/checkout@v5' (SHA:93cb6efe18208431cddfb8368fd83d5badbf9bfd)
+Run Core Workflow	Set up job	2026-01-08T16:16:24.5305094Z Download action repository 'shivammathur/setup-php@v2' (SHA:44454db4f0199b8b9685a5d763dc37cbf79108e1)
+Run Core Workflow	Set up job	2026-01-08T16:16:25.0629342Z Download action repository 'oven-sh/setup-bun@v2' (SHA:b7a1c7ccf290d58743029c4f6903da283811b979)
+Run Core Workflow	Set up job	2026-01-08T16:16:25.4541143Z Complete job name: Run Core Workflow
+Run Core Workflow	Checkout	﻿2026-01-08T16:16:25.5416472Z ##[group]Run actions/checkout@v5
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5417829Z with:
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5418575Z   repository: s-a-c/chrrprr
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5419743Z   token: ***
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5420479Z   ssh-strict: true
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5421249Z   ssh-user: git
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5422026Z   persist-credentials: true
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5423304Z   clean: true
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5424112Z   sparse-checkout-cone-mode: true
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5425094Z   fetch-depth: 1
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5425865Z   fetch-tags: false
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5426645Z   show-progress: true
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5427449Z   lfs: false
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5428189Z   submodules: false
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5428999Z   set-safe-directory: true
+Run Core Workflow	Checkout	2026-01-08T16:16:25.5430167Z ##[endgroup]
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6360211Z Syncing repository: s-a-c/chrrprr
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6363105Z ##[group]Getting Git version info
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6364717Z Working directory is '/home/runner/work/chrrprr/chrrprr'
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6366840Z [command]/usr/bin/git version
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6438558Z git version 2.52.0
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6496393Z ##[endgroup]
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6514030Z Temporarily overriding HOME='/home/runner/work/_temp/e55224b7-413e-4850-85e3-ac6d1299fc51' before making global git config changes
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6518790Z Adding repository directory to the temporary git global config as a safe directory
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6522778Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/chrrprr/chrrprr
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6569377Z Deleting the contents of '/home/runner/work/chrrprr/chrrprr'
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6573616Z ##[group]Initializing the repository
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6578992Z [command]/usr/bin/git init /home/runner/work/chrrprr/chrrprr
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6721890Z hint: Using 'master' as the name for the initial branch. This default branch name
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6725226Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6728172Z hint: to use in all of your new repositories, which will suppress this warning,
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6730001Z hint: call:
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6730714Z hint:
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6731633Z hint: 	git config --global init.defaultBranch <name>
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6733132Z hint:
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6734730Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6736559Z hint: 'development'. The just-created branch can be renamed via this command:
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6738338Z hint:
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6739559Z hint: 	git branch -m <name>
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6741059Z hint:
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6743144Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6746405Z Initialized empty Git repository in /home/runner/work/chrrprr/chrrprr/.git/
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6749993Z [command]/usr/bin/git remote add origin https://github.com/s-a-c/chrrprr
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6779412Z ##[endgroup]
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6781868Z ##[group]Disabling automatic garbage collection
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6784463Z [command]/usr/bin/git config --local gc.auto 0
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6813756Z ##[endgroup]
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6816060Z ##[group]Setting up auth
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6821172Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Run Core Workflow	Checkout	2026-01-08T16:16:25.6854845Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Run Core Workflow	Checkout	2026-01-08T16:16:25.7219364Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Run Core Workflow	Checkout	2026-01-08T16:16:25.7251552Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Run Core Workflow	Checkout	2026-01-08T16:16:25.7473491Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Run Core Workflow	Checkout	2026-01-08T16:16:25.7504383Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Run Core Workflow	Checkout	2026-01-08T16:16:25.7730152Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Run Core Workflow	Checkout	2026-01-08T16:16:25.7767490Z ##[endgroup]
+Run Core Workflow	Checkout	2026-01-08T16:16:25.7768968Z ##[group]Fetching the repository
+Run Core Workflow	Checkout	2026-01-08T16:16:25.7777372Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +93110c2f39ded51fd473c87e8e30dc8cb4bfb559:refs/remotes/pull/3/merge
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6287952Z From https://github.com/s-a-c/chrrprr
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6289623Z  * [new ref]         93110c2f39ded51fd473c87e8e30dc8cb4bfb559 -> pull/3/merge
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6321429Z ##[endgroup]
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6322106Z ##[group]Determining the checkout info
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6324421Z ##[endgroup]
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6329266Z [command]/usr/bin/git sparse-checkout disable
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6371391Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6397011Z ##[group]Checking out the ref
+Run Core Workflow	Checkout	2026-01-08T16:16:26.6400428Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/3/merge
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7701707Z Note: switching to 'refs/remotes/pull/3/merge'.
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7702727Z 
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7703186Z You are in 'detached HEAD' state. You can look around, make experimental
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7704161Z changes and commit them, and you can discard any commits you make in this
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7705102Z state without impacting any branches by switching back to a branch.
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7705653Z 
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7706099Z If you want to create a new branch to retain commits you create, you may
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7707133Z do so (now or later) by using -c with the switch command. Example:
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7707711Z 
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7708031Z   git switch -c <new-branch-name>
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7708551Z 
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7708862Z Or undo this operation with:
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7709361Z 
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7710050Z   git switch -
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7710428Z 
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7710940Z Turn off this advice by setting config variable advice.detachedHead to false
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7711604Z 
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7712561Z HEAD is now at 93110c2 Merge 4f6d48bc64cfad182cd3f1fcfa36250e6f468840 into 454d9fb2ac7a0c0bcf85cfe14e51b1e0fde0fc47
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7727472Z ##[endgroup]
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7772153Z [command]/usr/bin/git log -1 --format=%H
+Run Core Workflow	Checkout	2026-01-08T16:16:26.7795999Z 93110c2f39ded51fd473c87e8e30dc8cb4bfb559
+Run Core Workflow	Setup PHP	﻿2026-01-08T16:16:26.8099904Z ##[group]Run shivammathur/setup-php@v2
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.8100446Z with:
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.8100800Z   php-version: 8.5
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.8101164Z   tools: composer:v2
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.8101537Z   coverage: pcov
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.8101927Z   ini-file: production
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.8102709Z   github-token: ***
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.8103097Z ##[endgroup]
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.8833852Z [command]/usr/bin/bash /home/runner/work/_actions/shivammathur/setup-php/v2/src/scripts/run.sh
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.9254308Z 
+Run Core Workflow	Setup PHP	2026-01-08T16:16:26.9255716Z [90;1m==> [0m[37;1mSetup PHP[0m
+Run Core Workflow	Setup PHP	2026-01-08T16:16:30.5480984Z [32;1m✓ [0m[34;1mPHP [0m[90;1mInstalled PHP 8.5.0[0m
+Run Core Workflow	Setup PHP	2026-01-08T16:16:30.5481584Z 
+Run Core Workflow	Setup PHP	2026-01-08T16:16:30.5481860Z [90;1m==> [0m[37;1mSetup Tools[0m
+Run Core Workflow	Setup PHP	2026-01-08T16:16:30.9430405Z [32;1m✓ [0m[34;1mcomposer [0m[90;1mAdded composer 2.9.3[0m
+Run Core Workflow	Setup PHP	2026-01-08T16:16:30.9431276Z 
+Run Core Workflow	Setup PHP	2026-01-08T16:16:30.9432691Z [90;1m==> [0m[37;1mSetup Coverage[0m
+Run Core Workflow	Setup PHP	2026-01-08T16:16:31.4304653Z [32;1m✓ [0m[34;1mpcov.enabled=1 [0m[90;1mAdded to php.ini[0m
+Run Core Workflow	Setup PHP	2026-01-08T16:16:31.5477284Z [32;1m✓ [0m[34;1mpcov [0m[90;1mPCOV 1.0.12 enabled as coverage driver[0m
+Run Core Workflow	Setup PHP	2026-01-08T16:16:31.5478304Z 
+Run Core Workflow	Setup PHP	2026-01-08T16:16:31.5478680Z [90;1m==> [0m[37;1mSponsor setup-php[0m
+Run Core Workflow	Setup PHP	2026-01-08T16:16:31.5479492Z [32;1m✓ [0m[34;1msetup-php [0m[90;1mhttps://setup-php.com/sponsor[0m
+Run Core Workflow	Setup Bun	﻿2026-01-08T16:16:31.5705448Z ##[group]Run oven-sh/setup-bun@v2
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.5705758Z with:
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.5705952Z   bun-version: 1.1.17
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.5706176Z   no-cache: false
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.5706389Z env:
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.5706562Z   COMPOSER_PROCESS_TIMEOUT: 0
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.5706805Z   COMPOSER_NO_INTERACTION: 1
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.5707029Z   COMPOSER_NO_AUDIT: 1
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.5707235Z ##[endgroup]
+Run Core Workflow	Setup Bun	2026-01-08T16:16:31.8734734Z Downloading a new version of Bun: https://bun.sh/download/1.1.17/linux/x64?avx2=true&profile=false
+Run Core Workflow	Setup Bun	2026-01-08T16:16:32.3410326Z [command]/usr/bin/unzip -o -q /home/runner/work/_temp/5dbb1b49-83c8-4eba-826e-d722ae2f091b.zip
+Run Core Workflow	Setup Bun	2026-01-08T16:16:33.0513425Z [command]/home/runner/.bun/bin/bun --revision
+Run Core Workflow	Setup Bun	2026-01-08T16:16:33.0573410Z 1.1.17+bb66bba1b
+Run Core Workflow	Configure Composer Auth	﻿2026-01-08T16:16:33.0714987Z ##[group]Run if [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" || -z "$GH_COMPOSER_TOKEN" || -z "$SPATIE_USERNAME" || -z "$SPATIE_COMMENTS_KEY" ]]; then
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0715978Z [36;1mif [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" || -z "$GH_COMPOSER_TOKEN" || -z "$SPATIE_USERNAME" || -z "$SPATIE_COMMENTS_KEY" ]]; then[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0716604Z [36;1m  echo "::error::Missing Composer auth secrets"[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0716894Z [36;1m  exit 1[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0717073Z [36;1mfi[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0717267Z [36;1m[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0717642Z [36;1mcomposer config http-basic.composer.fluxui.dev "$FLUXUI_PRO_USERNAME" "$FLUXUI_PRO_KEY"[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0718188Z [36;1mcomposer config github-oauth.github.com "$GH_COMPOSER_TOKEN"[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0718700Z [36;1mcomposer config http-basic.satis.spatie.be "$SPATIE_USERNAME" "$SPATIE_COMMENTS_KEY"[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0719349Z [36;1mcomposer config http-basic.composer.satis.spatie.be "$SPATIE_USERNAME" "$SPATIE_COMMENTS_KEY"[0m
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0758660Z shell: /usr/bin/bash -e {0}
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0758935Z env:
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0759134Z   COMPOSER_PROCESS_TIMEOUT: 0
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0759385Z   COMPOSER_NO_INTERACTION: 1
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0759606Z   COMPOSER_NO_AUDIT: 1
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0760245Z   FLUXUI_PRO_USERNAME: ***
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0760598Z   FLUXUI_PRO_KEY: ***
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0760966Z   GH_COMPOSER_TOKEN: ***
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0761246Z   SPATIE_USERNAME: ***
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0761650Z   SPATIE_COMMENTS_KEY: ***
+Run Core Workflow	Configure Composer Auth	2026-01-08T16:16:33.0761869Z ##[endgroup]
+Run Core Workflow	Install Composer Dependencies	﻿2026-01-08T16:16:33.7944224Z ##[group]Run composer install --no-interaction --prefer-dist --optimize-autoloader
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:33.7944848Z [36;1mcomposer install --no-interaction --prefer-dist --optimize-autoloader[0m
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:33.7977483Z shell: /usr/bin/bash -e {0}
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:33.7977727Z env:
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:33.7977917Z   COMPOSER_PROCESS_TIMEOUT: 0
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:33.7978161Z   COMPOSER_NO_INTERACTION: 1
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:33.7978377Z   COMPOSER_NO_AUDIT: 1
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:33.7978577Z ##[endgroup]
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:33.9668155Z Installing dependencies from lock file (including require-dev)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.0134938Z Verifying lock file contents can be installed on current platform.
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1078351Z Package operations: 350 installs, 0 updates, 0 removals
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1100192Z   - Downloading infection/extension-installer (0.1.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1110954Z   - Downloading pestphp/pest-plugin (v4.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1115199Z   - Downloading composer/package-versions-deprecated (1.11.99.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1119253Z   - Downloading phpstan/phpstan (2.1.33)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1123526Z   - Downloading localheinz/diff (1.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1127591Z   - Downloading marc-mabe/php-enum (v4.7.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1131601Z   - Downloading justinrainbow/json-schema (6.6.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1135621Z   - Downloading ergebnis/json-printer (3.8.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1139078Z   - Downloading ergebnis/json-pointer (3.7.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1142614Z   - Downloading ergebnis/json (1.6.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1146155Z   - Downloading ergebnis/json-schema-validator (4.5.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1149449Z   - Downloading ergebnis/json-normalizer (4.10.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1153043Z   - Downloading ergebnis/composer-normalize (2.48.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1155443Z   - Downloading phpstan/extension-installer (1.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1158205Z   - Downloading revolt/event-loop (v1.0.8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1161179Z   - Downloading symfony/polyfill-ctype (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1163896Z   - Downloading daverandom/libdns (v2.1.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1166636Z   - Downloading amphp/serialization (v1.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1168910Z   - Downloading amphp/amp (v3.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1171159Z   - Downloading amphp/pipeline (v1.2.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1173965Z   - Downloading amphp/sync (v2.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1176085Z   - Downloading amphp/parser (v1.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1178418Z   - Downloading amphp/byte-stream (v2.1.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1180635Z   - Downloading amphp/process (v2.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1183104Z   - Downloading amphp/cache (v2.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1185374Z   - Downloading amphp/dns (v2.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1192762Z   - Downloading psr/http-message (2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1195910Z   - Downloading league/uri-interfaces (7.7.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1203123Z   - Downloading psr/http-factory (1.1.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1209665Z   - Downloading league/uri (7.7.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1212002Z   - Downloading league/uri-components (7.7.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1215097Z   - Downloading kelunik/certificate (v1.1.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1217383Z   - Downloading amphp/socket (v2.3.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1219731Z   - Downloading amphp/hpack (v3.2.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1222177Z   - Downloading amphp/http (v2.1.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1224813Z   - Downloading amphp/http-client (v5.3.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1227026Z   - Downloading amphp/websocket (v2.0.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1229882Z   - Downloading voku/portable-ascii (2.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1236490Z   - Downloading symfony/polyfill-php80 (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1242635Z   - Downloading symfony/polyfill-iconv (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1245107Z   - Downloading symfony/polyfill-mbstring (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1247968Z   - Downloading phpoption/phpoption (1.9.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1250826Z   - Downloading graham-campbell/result-type (v1.1.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1253858Z   - Downloading vlucas/phpdotenv (v5.6.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1256222Z   - Downloading symfony/css-selector (v8.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1259087Z   - Downloading tijsverkoyen/css-to-inline-styles (v2.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1261494Z   - Downloading symfony/deprecation-contracts (v3.6.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1264025Z   - Downloading symfony/var-dumper (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1266383Z   - Downloading symfony/polyfill-uuid (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1268629Z   - Downloading symfony/uid (v7.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1270928Z   - Downloading symfony/routing (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1273547Z   - Downloading symfony/process (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1275887Z   - Downloading symfony/polyfill-php85 (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1278217Z   - Downloading symfony/polyfill-php84 (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1280509Z   - Downloading symfony/polyfill-php83 (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1283026Z   - Downloading symfony/polyfill-intl-normalizer (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1285345Z   - Downloading symfony/polyfill-intl-idn (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1287590Z   - Downloading symfony/mime (v7.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1292113Z   - Downloading psr/container (2.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1294789Z   - Downloading symfony/service-contracts (v3.6.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1297046Z   - Downloading psr/event-dispatcher (1.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1299401Z   - Downloading symfony/event-dispatcher-contracts (v3.6.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1301843Z   - Downloading symfony/event-dispatcher (v7.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1304328Z   - Downloading psr/log (3.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1307118Z   - Downloading doctrine/lexer (3.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1309953Z   - Downloading egulias/email-validator (4.0.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1312159Z   - Downloading symfony/mailer (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1314688Z   - Downloading symfony/http-foundation (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1316951Z   - Downloading symfony/error-handler (v7.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1319213Z   - Downloading symfony/http-kernel (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1321482Z   - Downloading symfony/finder (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1324084Z   - Downloading symfony/polyfill-intl-grapheme (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1326355Z   - Downloading symfony/string (v8.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1328666Z   - Downloading symfony/console (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1331412Z   - Downloading ramsey/collection (2.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1334416Z   - Downloading brick/math (0.14.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1336628Z   - Downloading ramsey/uuid (4.9.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1338946Z   - Downloading psr/simple-cache (3.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1341694Z   - Downloading nunomaduro/termwind (v2.3.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1344601Z   - Downloading symfony/translation-contracts (v3.6.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1346698Z   - Downloading symfony/translation (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1349074Z   - Downloading psr/clock (1.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1351369Z   - Downloading symfony/clock (v8.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1354536Z   - Downloading carbonphp/carbon-doctrine-types (3.2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1357175Z   - Downloading nesbot/carbon (3.11.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1359893Z   - Downloading monolog/monolog (3.10.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1362416Z   - Downloading league/mime-type-detection (1.16.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1364782Z   - Downloading league/flysystem-local (3.30.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1367020Z   - Downloading league/flysystem (3.30.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1369718Z   - Downloading nette/utils (v4.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1371957Z   - Downloading nette/schema (v1.3.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1374937Z   - Downloading dflydev/dot-access-data (v3.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1377172Z   - Downloading league/config (v1.2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1379453Z   - Downloading league/commonmark (2.8.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1382434Z   - Downloading laravel/serializable-closure (v2.0.7)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1384707Z   - Downloading laravel/prompts (v0.3.8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1387503Z   - Downloading guzzlehttp/uri-template (v1.0.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1389848Z   - Downloading psr/http-client (1.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1392800Z   - Downloading ralouphie/getallheaders (3.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1395058Z   - Downloading guzzlehttp/psr7 (2.8.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1397353Z   - Downloading guzzlehttp/promises (2.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1399725Z   - Downloading guzzlehttp/guzzle (7.10.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1402670Z   - Downloading fruitcake/php-cors (v1.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1405552Z   - Downloading dragonmantank/cron-expression (v3.6.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1407926Z   - Downloading doctrine/inflector (2.1.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1410250Z   - Downloading laravel/framework (v12.45.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1413246Z   - Downloading anourvalar/eloquent-serialize (1.3.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1416019Z   - Downloading php-debugbar/php-debugbar (v2.2.6)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1418805Z   - Downloading barryvdh/laravel-debugbar (v3.16.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1421147Z   - Downloading barryvdh/reflection-docblock (v2.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1424090Z   - Downloading behat/gherkin (v4.16.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1426869Z   - Downloading blade-ui-kit/blade-icons (1.8.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1429189Z   - Downloading blade-ui-kit/blade-heroicons (2.6.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1431926Z   - Downloading sebastian/environment (8.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1434958Z   - Downloading staabm/side-effects-detector (1.0.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1437187Z   - Downloading sebastian/version (6.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1439564Z   - Downloading sebastian/type (6.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1441906Z   - Downloading sebastian/recursion-context (7.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1444482Z   - Downloading sebastian/object-reflector (5.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1446825Z   - Downloading sebastian/object-enumerator (7.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1449134Z   - Downloading sebastian/global-state (8.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1451465Z   - Downloading sebastian/exporter (7.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1453962Z   - Downloading sebastian/diff (7.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1456289Z   - Downloading sebastian/comparator (7.1.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1458617Z   - Downloading sebastian/cli-parser (4.2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1461466Z   - Downloading phpunit/php-timer (8.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1464004Z   - Downloading phpunit/php-text-template (5.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1466347Z   - Downloading phpunit/php-invoker (6.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1468697Z   - Downloading phpunit/php-file-iterator (6.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1471475Z   - Downloading theseer/tokenizer (2.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1474465Z   - Downloading nikic/php-parser (v5.7.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1476761Z   - Downloading sebastian/lines-of-code (4.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1479143Z   - Downloading sebastian/complexity (5.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1481702Z   - Downloading phpunit/php-code-coverage (12.5.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1484680Z   - Downloading phar-io/version (3.2.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1486924Z   - Downloading phar-io/manifest (2.0.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1489816Z   - Downloading myclabs/deep-copy (1.13.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1492047Z   - Downloading phpunit/phpunit (12.5.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1495315Z   - Downloading jean85/pretty-package-versions (2.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1498190Z   - Downloading fidry/cpu-core-counter (1.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1501247Z   - Downloading brianium/paratest (v7.16.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1503997Z   - Downloading symfony/filesystem (v7.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1508884Z   - Downloading symfony/config (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1511202Z   - Downloading behat/mink (v1.13.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1513773Z   - Downloading symfony/yaml (v7.4.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1516160Z   - Downloading symfony/var-exporter (v8.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1518542Z   - Downloading symfony/dependency-injection (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1520744Z   - Downloading composer/pcre (3.3.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1523209Z   - Downloading composer/xdebug-handler (3.0.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1525482Z   - Downloading behat/behat (v3.29.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1528518Z   - Downloading friends-of-behat/mink-extension (v2.7.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1530726Z   - Downloading symfony/dom-crawler (v8.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1533241Z   - Downloading symfony/browser-kit (v8.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1535658Z   - Downloading behat/mink-browserkit-driver (v2.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1538497Z   - Downloading cevinio/behat-laravel-extension (4.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1541342Z   - Downloading chillerlan/php-settings-container (3.2.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1544391Z   - Downloading clue/redis-protocol (v0.3.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1546730Z   - Downloading composer/ca-bundle (1.5.10)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1549038Z   - Downloading composer/class-map-generator (1.7.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1551324Z   - Downloading composer/metadata-minifier (1.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1553880Z   - Downloading composer/spdx-licenses (1.5.9)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1556703Z   - Downloading cocur/slugify (v4.7.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1559590Z   - Downloading cviebrock/eloquent-sluggable (12.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1562601Z   - Downloading cybercog/laravel-love (10.1.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1565555Z   - Downloading danharrin/date-format-converter (v0.3.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1567905Z   - Downloading danharrin/livewire-rate-limiting (v2.1.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1570608Z   - Downloading dasprid/enum (1.0.7)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1573792Z   - Downloading phrity/util-errorhandler (1.2.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1576044Z   - Downloading phrity/net-uri (1.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1578350Z   - Downloading phrity/net-stream (1.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1580648Z   - Downloading phrity/websocket (1.7.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1586995Z   - Downloading dmore/chrome-mink-driver (2.10.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1589402Z   - Downloading dmore/behat-chrome-extension (1.4.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1592438Z   - Downloading webmozart/assert (1.12.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1595304Z   - Downloading rector/rector (2.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1598332Z   - Downloading driftingly/rector-laravel (2.1.9)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1601119Z   - Downloading paragonie/constant_time_encoding (v3.1.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1604201Z   - Downloading pragmarx/google2fa (v9.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1606543Z   - Downloading pragmarx/google2fa-qrcode (v3.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1609454Z   - Downloading masterminds/html5 (2.10.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1611869Z   - Downloading symfony/html-sanitizer (v7.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1614867Z   - Downloading spatie/laravel-package-tools (1.92.7)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1617141Z   - Downloading spatie/invade (2.1.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1620170Z   - Downloading ryangjchandler/blade-capture-directive (v1.1.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1622550Z   - Downloading nette/php-generator (v4.2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1625498Z   - Downloading livewire/livewire (v4.0.0-beta.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1628482Z   - Downloading kirschbaum-development/eloquent-power-joins (4.2.11)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1631236Z   - Downloading filament/support (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1634189Z   - Downloading openspout/openspout (v4.32.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1636472Z   - Downloading league/csv (9.28.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1638804Z   - Downloading filament/actions (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1641166Z   - Downloading filament/notifications (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1643666Z   - Downloading filament/schemas (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1646091Z   - Downloading filament/infolists (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1648482Z   - Downloading spatie/shiki-php (2.3.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1651399Z   - Downloading scrivo/highlight.php (v9.18.1.10)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1654483Z   - Downloading ueberdosis/tiptap-php (2.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1656828Z   - Downloading filament/forms (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1659252Z   - Downloading filament/widgets (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1661654Z   - Downloading filament/query-builder (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1664223Z   - Downloading filament/tables (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1666652Z   - Downloading chillerlan/php-qrcode (5.0.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1668990Z   - Downloading filament/filament (v5.0.0-beta8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1671836Z   - Downloading hamcrest/hamcrest-php (v2.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1674564Z   - Downloading symfony/serializer (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1677052Z   - Downloading symfony/type-info (v8.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1679744Z   - Downloading symfony/property-info (v8.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1682073Z   - Downloading symfony/property-access (v7.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1684653Z   - Downloading symfony/polyfill-php81 (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1687096Z   - Downloading symfony/polyfill-php73 (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1689948Z   - Downloading seld/signal-handler (2.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1692403Z   - Downloading seld/phar-utils (1.2.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1694769Z   - Downloading seld/jsonlint (1.11.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1697667Z   - Downloading react/promise (v3.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1700012Z   - Downloading composer/semver (3.4.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1702486Z   - Downloading composer/composer (2.9.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1705316Z   - Downloading internachi/modular (2.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1708041Z   - Downloading glhd/bits (0.6.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1710908Z   - Downloading hirethunk/verbs (v0.7.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1713953Z   - Downloading thecodingmachine/safe (v3.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1716724Z   - Downloading sanmai/pipeline (7.6)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1718984Z   - Downloading sanmai/later (0.1.7)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1721218Z   - Downloading sanmai/duoclock (0.1.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1723749Z   - Downloading sanmai/di-container (0.1.8)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1726600Z   - Downloading ondram/ci-detector (4.2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1731127Z   - Downloading infection/mutator (0.4.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1733644Z   - Downloading infection/include-interceptor (0.2.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1736026Z   - Downloading infection/abstract-testframework-adapter (0.5.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1738769Z   - Downloading colinodell/json5 (v3.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1741041Z   - Downloading infection/infection (0.31.9)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1744044Z   - Downloading mockery/mockery (1.6.12)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1746984Z   - Downloading jasonmccreary/laravel-test-assertions (v2.8.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1749722Z   - Downloading iamcal/sql-parser (v0.6)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1752671Z   - Downloading larastan/larastan (v3.8.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1755079Z   - Downloading pestphp/pest-plugin-profanity (v4.2.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1757392Z   - Downloading pestphp/pest-plugin-mutate (v4.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1759693Z   - Downloading phpstan/phpdoc-parser (2.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1762771Z   - Downloading phpdocumentor/reflection-common (2.2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1765059Z   - Downloading doctrine/deprecations (1.1.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1767308Z   - Downloading phpdocumentor/type-resolver (1.12.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1769671Z   - Downloading phpdocumentor/reflection-docblock (5.6.6)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1772689Z   - Downloading ta-tikoma/phpunit-architecture-test (0.8.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1774996Z   - Downloading pestphp/pest-plugin-arch (v4.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1777762Z   - Downloading filp/whoops (2.18.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1780288Z   - Downloading nunomaduro/collision (v8.8.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1782607Z   - Downloading pestphp/pest (v4.3.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1785025Z   - Downloading pestphp/pest-plugin-laravel (v4.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1787349Z   - Downloading amphp/websocket-client (v2.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1789955Z   - Downloading amphp/http-server (v3.4.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1792115Z   - Downloading pestphp/pest-plugin-browser (v4.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1795392Z   - Downloading laravel-labs/starter-kit-browser-tests (dev-main 2f099fc)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1798099Z   - Downloading laravel-shift/faker-registry (v0.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1800795Z   - Downloading laravel-shift/blueprint (v2.13.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1802847Z   - Downloading laravel/roster (v0.2.9)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1805154Z   - Downloading laravel/mcp (v0.5.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1807390Z   - Downloading laravel/boost (v1.8.7)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1809922Z   - Downloading laravel/folio (v1.1.12)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1812776Z   - Downloading bacon/bacon-qr-code (v3.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1815066Z   - Downloading laravel/fortify (v1.33.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1817482Z   - Downloading laravel/pail (v1.2.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1819819Z   - Downloading laravel/pint (v1.27.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1822060Z   - Downloading react/event-loop (v1.6.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1825079Z   - Downloading evenement/evenement (v3.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1827423Z   - Downloading react/stream (v1.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1829692Z   - Downloading react/cache (v1.2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1831923Z   - Downloading react/dns (v1.14.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1834390Z   - Downloading react/socket (v1.17.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1836796Z   - Downloading react/promise-timer (v1.11.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1839655Z   - Downloading ratchet/rfc6455 (v0.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1841928Z   - Downloading paragonie/sodium_compat (v2.5.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1844991Z   - Downloading pusher/pusher-php-server (7.2.7)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1847242Z   - Downloading clue/redis-react (v2.8.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1849597Z   - Downloading laravel/reverb (v1.7.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1851847Z   - Downloading laravel/sail (v1.52.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1854293Z   - Downloading laravel/scout (v10.23.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1856517Z   - Downloading livewire/flux (v2.10.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1859093Z   - Downloading livewire/flux-pro (2.10.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1861779Z   - Downloading orchestra/sidekick (v1.2.19)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1864868Z   - Downloading peckphp/peck (v0.2.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1867704Z   - Downloading fakerphp/faker (v1.24.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1870031Z   - Downloading pestphp/pest-plugin-faker (v4.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1873021Z   - Downloading tomasvotruba/type-coverage (2.1.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1875261Z   - Downloading nunomaduro/pokio (v0.1.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1877657Z   - Downloading pestphp/pest-plugin-type-coverage (v4.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1880446Z   - Downloading php-di/invoker (2.3.7)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1883618Z   - Downloading php-parallel-lint/php-console-color (v1.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1886069Z   - Downloading php-parallel-lint/php-console-highlighter (v1.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1888494Z   - Downloading php-parallel-lint/php-parallel-lint (v1.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1890861Z   - Downloading phpstan/phpstan-deprecation-rules (2.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1893278Z   - Downloading phpstan/phpstan-phpunit (2.0.11)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1895654Z   - Downloading phpstan/phpstan-strict-rules (2.0.7)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1897904Z   - Downloading spatie/array-to-xml (3.4.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1900779Z   - Downloading netresearch/jsonmapper (v5.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1903860Z   - Downloading felixfbecker/language-server-protocol (v1.5.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1906644Z   - Downloading dnoegel/php-xdg-base-dir (v0.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1909471Z   - Downloading danog/advanced-json-rpc (v3.2.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1911720Z   - Downloading amphp/parallel (v2.3.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1914928Z   - Downloading vimeo/psalm (dev-master 6d1a223)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1917254Z   - Downloading orchestra/testbench-core (v10.8.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1919558Z   - Downloading barryvdh/laravel-ide-helper (v3.6.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1922678Z   - Downloading psalm/plugin-laravel (dev-master e042006)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1925026Z   - Downloading psalm/plugin-mockery (dev-master 684e5b5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1927369Z   - Downloading psalm/plugin-phpunit (dev-master ed7b870)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1930154Z   - Downloading psy/psysh (v0.12.18)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1932591Z   - Downloading rector/type-perfect (2.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1937258Z   - Downloading soloterm/grapheme (v1.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1939548Z   - Downloading soloterm/dumps (v1.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1942670Z   - Downloading joetannenbaum/chewie (0.1.11)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1947107Z   - Downloading soloterm/solo (v0.5.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1949374Z   - Downloading spatie/laravel-activitylog (4.10.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1951872Z   - Downloading spatie/commonmark-shiki-highlighter (2.5.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1954350Z   - Downloading spatie/laravel-markdown (2.7.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1956627Z   - Downloading spatie/laravel-comments (2.3.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1959186Z   - Downloading spatie/laravel-comments-livewire (dev-s-a-c 5f6af37)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1961471Z   - Downloading spatie/laravel-login-link (1.6.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1963957Z   - Downloading spatie/macroable (2.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1966226Z   - Downloading spatie/url (2.4.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1968728Z   - Downloading spatie/laravel-missing-page-redirector (2.11.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1971060Z   - Downloading spatie/php-structure-discoverer (2.3.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.1974074Z   - Downloading facade/ignition-contracts (1.0.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2046621Z   - Downloading spatie/laravel-model-states (2.12.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2047353Z   - Downloading spatie/laravel-model-status (1.18.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2047948Z   - Downloading spatie/laravel-permission (6.24.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2048551Z   - Downloading spatie/laravel-queueable-action (2.16.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2049106Z   - Downloading zbateson/mb-wrapper (2.0.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2049620Z   - Downloading zbateson/stream-decorators (2.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2050124Z   - Downloading php-di/php-di (7.1.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2050607Z   - Downloading zbateson/mail-mime-parser (3.0.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2051115Z   - Downloading symfony/stopwatch (v8.0.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2051581Z   - Downloading spatie/backtrace (1.8.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2052066Z   - Downloading spatie/ray (1.44.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2052727Z   - Downloading spatie/laravel-ray (1.43.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2053247Z   - Downloading spatie/laravel-sluggable (3.7.5)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2053831Z   - Downloading spatie/laravel-translatable (6.12.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2054361Z   - Downloading laravel/tinker (v2.11.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2054861Z   - Downloading spatie/laravel-web-tinker (1.10.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2055456Z   - Downloading spatie/phpunit-snapshot-assertions (5.2.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2056056Z   - Downloading spatie/pest-plugin-snapshots (2.2.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2056605Z   - Downloading stancl/virtualcolumn (v1.5.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2057116Z   - Downloading stancl/jobpipeline (v1.8.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2057583Z   - Downloading stancl/tenancy (v3.9.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2058064Z   - Downloading staudenmeir/laravel-cte (v1.12.4)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2058706Z   - Downloading staudenmeir/eloquent-has-many-deep-contracts (v1.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2059442Z   - Downloading staudenmeir/laravel-adjacency-list (v1.25.2)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2060028Z   - Downloading ezyang/htmlpurifier (v4.19.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2060511Z   - Downloading stevebauman/purify (v6.3.1)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2061031Z   - Downloading symfony/http-client-contracts (v3.6.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2061567Z   - Downloading symfony/http-client (v8.0.3)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:34.2062047Z   - Downloading tightenco/parental (v1.5.0)
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3579216Z ##[error]The 'https://composer.fluxui.dev/download/a0a0798f-1cf8-4999-8f57-8688c21f2d59/flux-pro-2.10.2.zip' URL required authentication (HTTP 401).
+Run Core Workflow	Install Composer Dependencies	You must be using the interactive console to authenticate
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3590237Z 
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3592548Z In AuthHelper.php line 205:
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3593032Z                                                                                
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3593761Z   The 'https://composer.fluxui.dev/download/a0a0798f-1cf8-4999-8f57-8688c21f2  
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3594591Z   d59/flux-pro-2.10.2.zip' URL required authentication (HTTP 401).             
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3595390Z   You must be using the interactive console to authenticate                    
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3595950Z                                                                                
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3596252Z 
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3598656Z install [--prefer-source] [--prefer-dist] [--prefer-install PREFER-INSTALL] [--dry-run] [--download-only] [--dev] [--no-suggest] [--no-dev] [--no-security-blocking] [--no-autoloader] [--no-progress] [--no-install] [--audit] [--audit-format AUDIT-FORMAT] [-v|vv|vvv|--verbose] [-o|--optimize-autoloader] [-a|--classmap-authoritative] [--apcu-autoloader] [--apcu-autoloader-prefix APCU-AUTOLOADER-PREFIX] [--ignore-platform-req IGNORE-PLATFORM-REQ] [--ignore-platform-reqs] [--] [<packages>...]
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3601595Z 
+Run Core Workflow	Install Composer Dependencies	2026-01-08T16:16:40.3886006Z ##[error]Process completed with exit code 100.
+Run Core Workflow	Post Checkout	﻿2026-01-08T16:16:40.3986900Z Post job cleanup.
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.4759167Z [command]/usr/bin/git version
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.4794890Z git version 2.52.0
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.4831588Z Temporarily overriding HOME='/home/runner/work/_temp/eb0fd47f-5ff3-4782-9366-0ed00ec9a18f' before making global git config changes
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.4833145Z Adding repository directory to the temporary git global config as a safe directory
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.4837786Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/chrrprr/chrrprr
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.4874955Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.4907538Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.5141104Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.5164273Z http.https://github.com/.extraheader
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.5174268Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.5204340Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.5457196Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Run Core Workflow	Post Checkout	2026-01-08T16:16:40.5487646Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Run Core Workflow	Complete job	﻿2026-01-08T16:16:40.5829258Z Cleaning up orphan processes

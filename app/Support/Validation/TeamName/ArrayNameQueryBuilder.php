@@ -33,7 +33,7 @@ final class ArrayNameQueryBuilder implements NameQueryBuilderInterface
         $query->where(static function (Builder $q) use ($names, $driver): void {
             collect($names)
                 ->filter() // Automatically removes null/empty values
-                ->each(static function ($value, $locale) use ($q, $driver): void {
+                ->each(static function (mixed $value, int|string $locale) use ($q, $driver): void {
                     if ($driver === 'pgsql') {
                         // Cast to JSONB for PostgreSQL to handle JSON operations on VARCHAR columns
                         $q->orWhereRaw("CAST(name AS JSONB)->>'{$locale}' = ?", [$value]);

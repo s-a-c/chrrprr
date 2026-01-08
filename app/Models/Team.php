@@ -126,11 +126,17 @@ class Team extends Model implements SchemaScopedModel
         return $this->belongsTo(self::class, 'parent_id')->withoutGlobalScopes();
     }
 
+    /**
+     * @psalm-return HasMany<Team>
+     */
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
     }
 
+    /**
+     * @psalm-return BelongsTo<Enterprise, Team>
+     */
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Enterprise::class, 'tenant_id');

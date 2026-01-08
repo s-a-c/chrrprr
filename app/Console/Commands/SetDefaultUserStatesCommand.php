@@ -80,7 +80,7 @@ final class SetDefaultUserStatesCommand extends Command
 
         $query->chunk($batchSize, static function (Collection $users) use (&$processed, $dryRun, $state, $bar): void {
             /** @var Collection<int, User> $users */
-            $users->each(static function ($user) use (&$processed, $dryRun, $state, $bar): void {
+            $users->each(static function (User $user) use (&$processed, $dryRun, $state, $bar): void {
                 if (! $dryRun) {
                     $user->state = $state;
                     $user->saveQuietly(); // Use saveQuietly to avoid triggering events

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Services\TeamMove\ApprovalDecisionEngine;
 use App\Services\TeamMove\ApproverResolverFactory;
 use App\Services\TeamMove\CrossOrganisationRule;
@@ -213,7 +214,7 @@ final class AppServiceProvider extends ServiceProvider
         Gate::before(/**
          * @return null|true
          */
-            static function ($user, $ability): ?bool {
+            static function (?User $user, string $ability): ?bool {
                 if ($user === null) {
                     return null;
                 }

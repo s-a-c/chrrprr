@@ -64,7 +64,7 @@ final readonly class TeamNameNormalizationService
     private function extractStringPairs(array $decoded): array
     {
         return collect($decoded)
-            ->filter(static fn ($value, $key): bool => is_string($key) && is_string($value))
+            ->filter(static fn (mixed $value, mixed $key): bool => is_string($key) && is_string($value))
             ->toArray();
     }
 
