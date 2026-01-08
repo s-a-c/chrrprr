@@ -46,7 +46,7 @@ test('syntax highlighting initialization completes in less than 500ms after page
     expect($html)->toContain('<pre');
     expect($html)->toContain('<code');
     expect($html)->toContain('class SyntaxHighlightingPerformanceTest');
-})->group('performance')->skip(fn () => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
+})->group('performance')->skip(fn (): bool => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
 
 test('syntax highlighting handles multiple code blocks efficiently', function (): void {
     // Create bio with multiple code blocks
@@ -71,7 +71,7 @@ test('syntax highlighting handles multiple code blocks efficiently', function ()
     // Verify structure is correct for highlighting
     expect($html)->toContain('<pre');
     expect($html)->toContain('<code');
-})->group('performance')->skip(fn () => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
+})->group('performance')->skip(fn (): bool => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
 
 test('syntax highlighting handles empty code blocks gracefully', function (): void {
     $bioWithEmptyCodeBlock = <<<'MARKDOWN'
@@ -92,4 +92,4 @@ test('syntax highlighting handles empty code blocks gracefully', function (): vo
     // Should still render code block structure even if empty
     expect($html)->toContain('<pre');
     expect($html)->toContain('<code');
-})->group('performance')->skip(fn () => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
+})->group('performance')->skip(fn (): bool => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');

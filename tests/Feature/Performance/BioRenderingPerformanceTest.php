@@ -52,7 +52,7 @@ test('bio markdown rendering completes in less than 100ms for 95 percent of requ
 
     // Assert that 95% of requests complete in less than 100ms (SC-011)
     expect($percentile95)->toBeLessThan(100.0);
-})->group('performance')->skip(fn () => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
+})->group('performance')->skip(fn (): bool => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
 
 test('bio rendering handles large content efficiently', function (): void {
     // Create bio at the soft limit (10,000 characters)
@@ -71,7 +71,7 @@ test('bio rendering handles large content efficiently', function (): void {
     // Even large content should render reasonably fast
     expect($renderTime)->toBeLessThan(500.0); // More lenient for large content
     expect($html)->not->toBeNull();
-})->group('performance')->skip(fn () => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
+})->group('performance')->skip(fn (): bool => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
 
 test('bio rendering handles empty bio efficiently', function (): void {
     $team = Enterprise::factory()->create([
@@ -87,4 +87,4 @@ test('bio rendering handles empty bio efficiently', function (): void {
     // Empty bio should be very fast
     expect($renderTime)->toBeLessThan(10.0);
     expect($html)->toBeNull();
-})->group('performance')->skip(fn () => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');
+})->group('performance')->skip(fn (): bool => ! env('CI') && ! env('RUN_PERF_TESTS'), 'Performance test - set RUN_PERF_TESTS=1 or run in CI');

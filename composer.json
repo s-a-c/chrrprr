@@ -566,6 +566,10 @@
             "@cache:clear:views",
             "./scripts/mutation-pest-php84.sh"
         ],
+        "test:performance": [
+            "@banner \"Performance Tests\" \"1;35\"",
+            "RUN_PERF_TESTS=1 php artisan test --group=performance"
+        ],
         "test:profanity": [
             "@banner \"Profanity Check\" \"1;91\"",
             "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/pest --filter=profanity"
@@ -577,10 +581,6 @@
         "test:type-coverage": [
             "@banner \"Type Coverage\" \"7;1;96\"",
             "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/pest --type-coverage --min=99.1"
-        ],
-        "test:performance": [
-            "@banner \"Performance Tests\" \"1;35\"",
-            "RUN_PERF_TESTS=1 php artisan test --group=performance"
         ],
         "test:unit": [
             "@test:unit:php",
