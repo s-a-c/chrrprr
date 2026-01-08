@@ -212,9 +212,10 @@ final class AppServiceProvider extends ServiceProvider
     {
         // Allow users with key roles (e.g., Super Admin) to bypass all permission checks
         Gate::before(/**
+         * @param  ?User  $user
          * @return null|true
          */
-            static function (?User $user, string $ability): ?bool {
+            static function ($user, string $ability): ?bool {
                 if (! $user instanceof User) {
                     return null;
                 }
