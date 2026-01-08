@@ -33,13 +33,15 @@ jobs:
         env:
           FLUXUI_PRO_USERNAME: ${{ secrets.FLUXUI_PRO_USERNAME }}
           FLUXUI_PRO_KEY: ${{ secrets.FLUXUI_PRO_KEY }}
+          GH_COMPOSER_TOKEN: ${{ secrets.GH_COMPOSER_TOKEN }}
         run: |
-          if [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" ]]; then
-            echo "::error::Missing FLUXUI_PRO_USERNAME and FLUXUI_PRO_KEY secrets required for composer.fluxui.dev"
+          if [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" || -z "$GH_COMPOSER_TOKEN" ]]; then
+            echo "::error::Missing FLUXUI_PRO_... or GH_COMPOSER_TOKEN secrets"
             exit 1
           fi
 
           composer config http-basic.composer.fluxui.dev "$FLUXUI_PRO_USERNAME" "$FLUXUI_PRO_KEY"
+          composer config github-oauth.github.com "$GH_COMPOSER_TOKEN"
 
       - name: Install Dependencies
         run: |
