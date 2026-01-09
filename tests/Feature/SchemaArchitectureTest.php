@@ -70,6 +70,12 @@ test('user model supports fuzzy search', function (): void {
         $this->markTestSkipped('This test requires PostgreSQL');
     }
 
+    // Check if pg_trgm extension is available
+    $hasPgTrgm = DB::selectOne("SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm'");
+    if (! $hasPgTrgm) {
+        $this->markTestSkipped('This test requires the pg_trgm PostgreSQL extension');
+    }
+
     $user = User::factory()->create(['name' => 'John Doe']);
 
     $results = User::query()->fuzzySearch('Jon')->get();
@@ -119,6 +125,12 @@ test('user model supports full-text search', function (): void {
 test('team model supports fuzzy search', function (): void {
     if (DB::getDriverName() !== 'pgsql') {
         $this->markTestSkipped('This test requires PostgreSQL');
+    }
+
+    // Check if pg_trgm extension is available
+    $hasPgTrgm = DB::selectOne("SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm'");
+    if (! $hasPgTrgm) {
+        $this->markTestSkipped('This test requires the pg_trgm PostgreSQL extension');
     }
 
     $team = Enterprise::factory()->create([
