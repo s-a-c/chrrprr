@@ -132,8 +132,13 @@ jobs:
           export DB_SCHEMA=public
           export DB_SEARCH_SCHEMA=public
 
-          # Update .env.testing with correct APP_URL
-          echo "APP_URL=http://127.0.0.1:8000" >> .env.testing
+          # Replace APP_URL in .env.testing (sed -i on Linux)
+          sed -i 's|^APP_URL=.*|APP_URL=http://127.0.0.1:8000|' .env.testing
+
+          # Also set DB_PORT to match CI service
+          sed -i 's|^DB_PORT=.*|DB_PORT=54321|' .env.testing
+          sed -i 's|^DB_SCHEMA=.*|DB_SCHEMA=public|' .env.testing
+          sed -i 's|^DB_SEARCH_SCHEMA=.*|DB_SEARCH_SCHEMA=public|' .env.testing
 
           # Clear any potential host-generated cache files
           rm -f bootstrap/cache/*.php
@@ -142,20 +147,7 @@ jobs:
           php artisan route:clear
           php artisan view:clear
 
-          # Start the application server in the background
-          nohup php artisan serve --env=testing --port=8000 --no-reload > /dev/null 2>&1 &
-
-          # Wait for the server to be ready
-          bunx wait-on http://127.0.0.1:8000
-
-          # Debug: Check if the server is serving content and capture error
-          curl -v http://127.0.0.1:8000/login > login_debug.html 2>&1 || true
-          cat login_debug.html
-
-          # Check if manifests exist
-          ls -la public/build || true
-
-          # Run tests with APP_URL set
+          # Run tests - Pest Browser manages its own server internally
           export APP_URL=http://127.0.0.1:8000
           composer run test:browser
 

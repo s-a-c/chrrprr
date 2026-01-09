@@ -93,6 +93,8 @@ jobs:
         run: |
           rm -f .env .env.testing
           cp .env.example .env.testing
+          # Override DB_PORT to match CI service port mapping (54321:5432)
+          sed -i 's|^DB_PORT=.*|DB_PORT=54321|' .env.testing
           php artisan key:generate --env=testing
 
       - name: Setup Test Database
