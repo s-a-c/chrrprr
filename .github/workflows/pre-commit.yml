@@ -91,6 +91,8 @@ jobs:
           sed -i 's/^DB_DATABASE=.*/DB_DATABASE=chrrprr/' .env.testing
           sed -i 's/^DB_USERNAME=.*/DB_USERNAME=postgres/' .env.testing
           sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=password/' .env.testing
+          sed -i 's/^DB_SCHEMA=.*/DB_SCHEMA=public/' .env.testing
+          sed -i 's/^DB_SEARCH_SCHEMA=.*/DB_SEARCH_SCHEMA=public/' .env.testing
           php artisan key:generate --env=testing
 
       - name: Setup Test Database
