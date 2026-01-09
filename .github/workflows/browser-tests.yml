@@ -94,6 +94,8 @@ jobs:
           sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=password/' .env.testing
           php artisan key:generate --env=testing
 
+      - name: Setup Test Database
+        run: php artisan migrate:fresh --env=testing --force
 
       - name: Setup Behat Test Environment
         env:

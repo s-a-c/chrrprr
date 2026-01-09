@@ -100,12 +100,12 @@ jobs:
       - name: Build Assets
         run: bun run build
 
-      - name: Run Tests
-        run: composer run test:all
-
       - name: Setup Test Database
         run: |
           php artisan migrate:fresh --env=testing --force
+
+      - name: Run Tests
+        run: composer run test:all
 
       - name: Run Pest Tests
         run: composer run test:core
