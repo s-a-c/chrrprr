@@ -20,6 +20,11 @@ jobs:
     env:
       DB_PASSWORD: password
       DB_USERNAME: postgres
+      DB_HOST: 127.0.0.1
+      DB_PORT: 54321
+      DB_DATABASE: chrrprr
+      DB_SCHEMA: public
+      DB_SEARCH_SCHEMA: public
     services:
       postgres:
         image: postgres:15
@@ -29,7 +34,7 @@ jobs:
           POSTGRES_PASSWORD: password
           PGUSER: postgres
         ports:
-          - 5432:5432
+          - 54321:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -86,17 +91,15 @@ jobs:
 
       - name: Setup Test Environment
         run: |
+          rm -f .env .env.testing
           cp .env.example .env.testing
-          sed -i 's/^DB_HOST=.*/DB_HOST=127.0.0.1/' .env.testing
-          sed -i 's/^DB_DATABASE=.*/DB_DATABASE=chrrprr/' .env.testing
-          sed -i 's/^DB_USERNAME=.*/DB_USERNAME=postgres/' .env.testing
-          sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=password/' .env.testing
-          sed -i 's/^DB_SCHEMA=.*/DB_SCHEMA=public/' .env.testing
-          sed -i 's/^DB_SEARCH_SCHEMA=.*/DB_SEARCH_SCHEMA=public/' .env.testing
           php artisan key:generate --env=testing
 
       - name: Setup Test Database
-        run: php artisan migrate:fresh --env=testing --force
+        run: |
+          export DB_SCHEMA=public
+          export DB_SEARCH_SCHEMA=public
+          php artisan migrate:fresh --env=testing --force
 
       - name: Run Core Workflow Suite
         run: composer run test:core
