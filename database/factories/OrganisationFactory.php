@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\TeamStatus;
-use App\Models\Enterprise;
 use App\Models\Organisation;
 use App\States\Team\Active;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -27,8 +26,7 @@ final class OrganisationFactory extends Factory
     public function definition(): array
     {
         return [
-            'parent_id' => Enterprise::factory(),
-            'name' => ['en' => fake()->unique()->company().' Organisation'],
+            'name' => ['en' => fake()->company()],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

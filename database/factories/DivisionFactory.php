@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Enums\TeamStatus;
 use App\Models\Division;
-use App\Models\Organisation;
 use App\States\Team\Active;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
@@ -27,8 +26,7 @@ final class DivisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'parent_id' => Organisation::factory(),
-            'name' => ['en' => fake()->unique()->word().' Division'],
+            'name' => ['en' => fake()->word().' Division'],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

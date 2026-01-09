@@ -26,7 +26,7 @@ final class EnterpriseFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->unique()->company()],
+            'name' => ['en' => fake()->company()],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

@@ -14,11 +14,8 @@ final class ParentTypeValidator implements HierarchyValidatorInterface
     #[Override]
     public function validate(Team $team): void
     {
-        // Teams that require a parent
-        $requiresParent = match ($team->type) {
-            TeamType::ORGANISATION, TeamType::DIVISION, TeamType::DEPARTMENT, TeamType::PROJECT => true,
-            default => false,
-        };
+        // Only Enterprise can exist without a parent
+        $requiresParent = $team->type !== TeamType::ENTERPRISE;
 
         if ($requiresParent && $team->parent_id === null) {
             throw ValidationException::withMessages([
@@ -38,18 +35,23 @@ final class ParentTypeValidator implements HierarchyValidatorInterface
             ]);
         }
 
-        $validParentType = match ($team->type) {
-            TeamType::ORGANISATION => TeamType::ENTERPRISE,
-            TeamType::DIVISION => TeamType::ORGANISATION,
-            TeamType::DEPARTMENT => TeamType::DIVISION,
-            TeamType::PROJECT => TeamType::DEPARTMENT,
-            default => null,
-        };
+        // Parent must be higher in the hierarchy than the child
+        // Hierarchy order (highest to lowest): Enterprise > Organisation > Division > Department > Project
+        $hierarchyRanks = [
+            TeamType::ENTERPRISE->value => 1,
+            TeamType::ORGANISATION->value => 2,
+            TeamType::DIVISION->value => 3,
+            TeamType::DEPARTMENT->value => 4,
+            TeamType::PROJECT->value => 5,
+        ];
 
-        if ($validParentType && $parent->type !== $validParentType) {
+        $parentRank = $hierarchyRanks[$parent->type->value] ?? 999;
+        $childRank = $hierarchyRanks[$team->type->value] ?? 0;
+
+        if ($parentRank >= $childRank) {
             throw ValidationException::withMessages([
                 'parent_id' => [
-                    "{$team->type->value} must belong to a {$validParentType->value}, but belongs to {$parent->type->value}.",
+                    "{$team->type->value} must belong to a higher-level team type, but {$parent->type->value} is not higher than {$team->type->value}.",
                 ],
             ]);
         }
