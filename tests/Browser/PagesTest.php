@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Enterprise;
-use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -79,7 +78,6 @@ describe('Chrrps Page', function (): void {
 });
 
 describe('Teams Index Page', function (): void {
-
 
     it('displays teams in a table', function (): void {
         $team = Enterprise::factory()->create();

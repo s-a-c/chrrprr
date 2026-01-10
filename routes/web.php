@@ -7,6 +7,7 @@ use App\Livewire\Settings\DeleteUserForm;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
+use App\Livewire\Teams\Index;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 use Laravel\Fortify\Features;
@@ -18,7 +19,7 @@ Route::view('dashboard', 'dashboard')->middleware(['auth', 'auth.session', 'veri
 Route::middleware(['auth', 'auth.session', 'verified'])->group(function (): void {
     // Livewire SFC routes
     Route::livewire('/chrrps', 'chrrps.index');
-    Route::get('/teams', \App\Livewire\Teams\Index::class)->name('teams.index');
+    Route::get('/teams', Index::class)->name('teams.index');
     Route::livewire('/teams/create', 'teams.create')->name('teams.create');
     // Switch-context route must come before {ulid} route to avoid route conflict
     Route::livewire('/teams/switch-context', 'teams.switch-context')->name('teams.switch-context');
