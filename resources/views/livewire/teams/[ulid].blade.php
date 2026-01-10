@@ -33,7 +33,7 @@ new class extends Component {
         $this->typeLabel = $team->type->label();
         $this->bio = $team->getTranslation('bio', app()->getLocale()) ?? '';
         $this->lockVersion = $team->lock_version;
-        $this->parent_id = $team->parent_id ?: null;
+        $this->parent_id = $team->parent_id !== null ? (string) $team->parent_id : null;
     }
 
     public function save(): void

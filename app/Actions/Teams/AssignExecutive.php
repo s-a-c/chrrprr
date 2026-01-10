@@ -19,7 +19,7 @@ final class AssignExecutive
         $team->validateExecutiveDeputyConstraints($user, 'executive');
 
         $previousTeamId = getPermissionsTeamId();
-        setPermissionsTeamId($team->id);
+        setPermissionsTeamId((int) $team->id);
 
         try {
             // Check if team already has an executive

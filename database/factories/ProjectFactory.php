@@ -26,7 +26,7 @@ final class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->words(3, true).' Project'],
+            'name' => ['en' => fake()->words(3, true).' Project '.fake()->numerify('####-####')],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

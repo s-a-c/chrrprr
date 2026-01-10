@@ -26,7 +26,7 @@ final class DepartmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->jobTitle().' Department'],
+            'name' => ['en' => fake()->jobTitle().' Department '.fake()->numerify('####-####')],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

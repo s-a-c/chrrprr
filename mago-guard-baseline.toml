@@ -1,33 +1,22 @@
-# Mago Guard Baseline
-# ===================
-# This baseline file records known architectural violations that are acceptable in the codebase.
-# When mago runs `guard` with `--baseline`, it will ignore violations listed here and only report new violations.
-#
-# Purpose:
-# - Focus on new architectural violations introduced going forward
-# - Acknowledge existing violations that are acceptable (e.g., query builders, third-party extensions)
-# - Reduce noise from false positives due to exclusion pattern limitations
-#
-# Usage:
-#   mago --config mago.toml guard --baseline mago-guard-baseline.toml
-#
-# Regeneration:
-#   mago --config mago.toml guard --generate-baseline --baseline mago-guard-baseline.toml
-#
-# Last Updated: 2025-01-23
-
 variant = "loose"
 
-# ============================================================================
-# Known Architectural Violations (False Positives)
-# ============================================================================
-#
-# These violations are acceptable and should be ignored:
-# 1. Query Builders (TeamBuilder, UserBuilder) - These are not models, they extend Builder
-# 2. Domain model - Extends BaseDomain from Stancl\Tenancy, excluded by design
-#
-# These are excluded in mago.toml but Mago's exclusion pattern matching has limitations
-# that cause these false positives. The classes are correctly excluded in configuration.
+[[issues]]
+file = "app/Handlers/Commands/Teams/CreateTeamHandler.php"
+code = "disallowed-static-call"
+message = 'Illegal dependency on `Thunk\Verbs\Facades\Verbs`'
+count = 1
+
+[[issues]]
+file = "app/Handlers/Commands/Teams/CreateTeamHandler.php"
+code = "disallowed-use"
+message = 'Illegal dependency on `Thunk\Verbs\Facades\Verbs`'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/Teams/BulkTeamController.php"
+code = "disallowed-use"
+message = 'Illegal dependency on `Symfony\Component\HttpKernel\Exception\HttpException`'
+count = 1
 
 [[issues]]
 file = "app/Models/Builders/TeamBuilder.php"

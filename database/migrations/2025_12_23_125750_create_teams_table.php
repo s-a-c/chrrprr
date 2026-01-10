@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('teams', static function (Blueprint $table): void {
             $table->id();
             $table->char('ulid', 26)->unique();
-            $table->string('name');
+            $table->jsonb('name');
             $table->jsonb('slug')->nullable();
             $table->string('type')->index();
             $table->unsignedBigInteger('parent_id')->nullable()->index();

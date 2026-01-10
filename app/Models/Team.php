@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\SchemaScopedModel;
+use App\Enums\TeamMode;
 use App\Enums\TeamStatus;
 use App\Enums\TeamType;
 use App\Models\Builders\TeamBuilder;
@@ -96,9 +97,15 @@ class Team extends Model implements SchemaScopedModel
     /** @var array<string, class-string> */
     protected array $childTypes = [
         'enterprise' => Enterprise::class,
+        'sector' => Sector::class,
         'organisation' => Organisation::class,
+        'business_unit' => BusinessUnit::class,
         'division' => Division::class,
         'department' => Department::class,
+        'unit' => Unit::class,
+        'discipline' => Discipline::class,
+        'group' => Group::class,
+        'squad' => Squad::class,
         'project' => Project::class,
     ];
 
@@ -204,6 +211,7 @@ class Team extends Model implements SchemaScopedModel
     {
         return [
             'type' => TeamType::class,
+            'mode' => TeamMode::class,
             'state' => TeamState::class,
             'status' => TeamStatus::class,
             'name' => 'array',

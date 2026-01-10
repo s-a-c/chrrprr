@@ -126,7 +126,7 @@ __pycache__/
 *.swp
 *.tmp
 **/.DS_Store
-**/[0-9]*
+
 **/byterover-rules.md
 **/vim/undodir/*
 *~
@@ -178,8 +178,6 @@ __pycache__/
 # Specific rule overrides
 Applications/
 build/
-bun.lockb
-composer.lock
 coverage/
 Desktop/
 dist/
@@ -194,10 +192,8 @@ Movies/
 Music/
 node_modules/
 npm-debug.log*
-phpunit.xml
-phpunit.xml.starter-kit-browser
+
 Pictures/
-pnpm-lock.yaml
 Public/
 saved_macos_defaults.plist
 Session.vim
@@ -212,3 +208,5 @@ vendor/
 venv/
 yarn-debug.log*
 yarn-error.log*
+!database/migrations/*.php
+!bun.lockb

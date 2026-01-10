@@ -26,7 +26,7 @@ final readonly class DepthValidator implements HierarchyValidatorInterface
 
         $depth = $this->traversalService->getDepth($parent);
         $hardLimit = config('teams.hierarchy.hard_depth_limit', 10);
-        $softLimit = $team->tenant?->depth_limit ?? config('teams.hierarchy.default_soft_depth_limit', 5);
+        $softLimit = $team->tenant->depth_limit ?? config('teams.hierarchy.default_soft_depth_limit', 5);
 
         if ($depth >= $hardLimit) {
             throw ValidationException::withMessages([

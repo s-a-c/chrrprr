@@ -65,7 +65,7 @@ final class UserFactory extends Factory
              *
              * @psalm-return array{email_verified_at: null}
              */
-            fn (array $attributes): array => [
+            static fn (array $attributes): array => [
                 'email_verified_at' => null,
             ],
         );
@@ -82,7 +82,7 @@ final class UserFactory extends Factory
              *
              * @psalm-return array{two_factor_secret: null, two_factor_recovery_codes: null, two_factor_confirmed_at: null}
              */
-            fn (array $attributes): array => [
+            static fn (array $attributes): array => [
                 'two_factor_secret' => null,
                 'two_factor_recovery_codes' => null,
                 'two_factor_confirmed_at' => null,

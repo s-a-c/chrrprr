@@ -28,7 +28,7 @@ final class TeamFactory extends Factory
     {
         return [
             'type' => TeamType::ORGANISATION,
-            'name' => ['en' => fake()->company()],
+            'name' => ['en' => fake()->company().' '.uniqid()],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

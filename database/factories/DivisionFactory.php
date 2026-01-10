@@ -26,7 +26,7 @@ final class DivisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->word().' Division'],
+            'name' => ['en' => fake()->word().' Division '.fake()->numerify('####-####')],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

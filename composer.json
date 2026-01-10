@@ -212,7 +212,7 @@
         ],
         "analyze:fix:mago": [
             "@banner \"Mago Types Fix\" \"1;32\"",
-            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m analyze --fix --baseline mago-analysis-baseline.toml 2>/dev/null\"); else printf(\"Skipping mago analyze --fix (not found)\\n\");' "
+            "@php -r '$m = trim(shell_exec(\"command -v mago 2>/dev/null\") ?: \"\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) { passthru(\"$m analyze --fix --baseline mago-analysis-baseline.toml 2>/dev/null\", $r); exit($r); } else printf(\"Skipping mago analyze --fix (not found)\\n\");' "
         ],
         "analyze:fix:phpstan": [
             "@banner \"PHPStan Fix\" \"1;94\"",
@@ -224,7 +224,7 @@
         ],
         "analyze:mago": [
             "@banner \"Mago Types\" \"1;96\"",
-            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m analyze --baseline mago-analysis-baseline.toml 2>/dev/null\"); else printf(\"Skipping mago analyze (not found)\\n\");' "
+            "@php -r '$m = trim(shell_exec(\"command -v mago 2>/dev/null\") ?: \"\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) { passthru(\"$m analyze --baseline mago-analysis-baseline.toml 2>/dev/null\", $r); exit($r); } else printf(\"Skipping mago analyze (not found)\\n\");' "
         ],
         "analyze:phpstan": [
             "@banner \"PHPStan\" \"1;91\"",
@@ -236,7 +236,7 @@
         ],
         "analyze:psalm:stats": [
             "@banner \"Psalm Stats\" \"1;93\"",
-            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/psalm --no-cache --show-info=true --stats"
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" vendor/bin/psalm --no-cache --show-info=true --stats || true"
         ],
         "banner": [
             "@php -r 'require \"vendor/autoload.php\"; App\\Support\\Console\\Banner::display(array_slice($argv, 1));' -- "
@@ -248,15 +248,29 @@
         ],
         "behat:api": [
             "@banner \"Behat API Tests\" \"1;34\"",
+            "@behat:setup",
             "@php vendor/bin/behat --config=behat.yml --suite=api"
         ],
         "behat:browser": [
             "@banner \"Behat Browser Tests\" \"1;35\"",
+            "@behat:setup",
             "@php vendor/bin/behat --config=behat.yml --suite=browser"
+        ],
+        "behat:setup": [
+            "@banner \"Behat Setup\" \"1;36\"",
+            "@test:setup",
+            "php artisan migrate:fresh --env=testing --ansi",
+            "@test:browser-server"
         ],
         "behat:unit": [
             "@banner \"Behat Unit Tests\" \"1;33\"",
+            "@behat:setup",
             "@php vendor/bin/behat --config=behat.yml --suite=unit"
+        ],
+        "behat:watch": [
+            "@banner \"Behat Watch Tests\" \"1;33\"",
+            "@behat:setup",
+            "@php vendor/bin/behat --config=behat.yml --watch"
         ],
         "blueprint:build": [
             "@banner \"Blueprint Build\" \"1;94\"",
@@ -373,7 +387,7 @@
         ],
         "lint:fix:mago": [
             "@banner \"Lint Mago Fix\" \"1;31\"",
-            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m --config mago.toml lint --fix --baseline mago-lint-baseline.toml\"); else printf(\"Skipping mago lint --fix (not found)\\n\");' "
+            "@php -r '$m = trim(shell_exec(\"command -v mago 2>/dev/null\") ?: \"\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m --config mago.toml lint --fix --baseline mago-lint-baseline.toml\"); else printf(\"Skipping mago lint --fix (not found)\\n\");' "
         ],
         "lint:fix:pint": [
             "@banner \"Pint Fix\" \"1;33\"",
@@ -389,14 +403,14 @@
         ],
         "lint:mago": [
             "@banner \"Lint Mago\" \"1;91\"",
-            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m --config mago.toml lint --baseline mago-lint-baseline.toml\"); else printf(\"Skipping mago lint (not found)\\n\");' "
+            "@php -r '$m = trim(shell_exec(\"command -v mago 2>/dev/null\") ?: \"\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m --config mago.toml lint --baseline mago-lint-baseline.toml\"); else printf(\"Skipping mago lint (not found)\\n\");' "
         ],
         "lint:mago:pedantic": [
             "@banner \"Mago Pedantic Report\" \"1;35\"",
-            "@php -r 'if (!is_dir(\"tmp\")) mkdir(\"tmp\"); $m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) { passthru(\"$m --config mago.toml lint --pedantic >| tmp/lint-mago-pedantic-report.log 2>&1\"); printf(\"Report saved to tmp/lint-mago-pedantic-report.log\\n\"); } else printf(\"Skipping (not found)\\n\");' "
+            "@php -r '@mkdir(\"tmp\"); $m = trim(shell_exec(\"command -v mago 2>/dev/null\") ?: \"\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) { passthru(\"$m --config mago.toml lint --baseline mago-lint-baseline.toml --pedantic >| tmp/lint-mago-pedantic-report.log 2>&1\"); printf(\"Report saved to tmp/lint-mago-pedantic-report.log\\n\"); } else printf(\"Skipping (not found)\\n\");' "
         ],
         "lint:pint": [
-            "@banner \"Pint Dry-Run\" \"1;94\"",
+            "@banner \"Pint Test\" \"1;94\"",
             "@php vendor/bin/pint --parallel --dirty --test"
         ],
         "lint:rector": [
@@ -420,15 +434,15 @@
         ],
         "mago:guard": [
             "@banner \"Mago Guard\" \"1;91\"",
-            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m --config mago.toml guard --baseline mago-guard-baseline.toml\"); else printf(\"Skipping mago guard (not found)\\n\");' "
+            "@php -r '$m = trim(shell_exec(\"command -v mago 2>/dev/null\") ?: \"\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) { passthru(\"$m --config mago.toml guard --baseline mago-guard-baseline.toml\", $r); exit($r); } else printf(\"Skipping mago guard (not found)\\n\");' "
         ],
         "mago:guard:fix": [
             "@banner \"Mago Guard Fix\" \"1;32\"",
-            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m guard --fix\"); else printf(\"Skipping mago guard --fix (not found)\\n\");' "
+            "@php -r '$m = trim(shell_exec(\"command -v mago 2>/dev/null\") ?: \"\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) { passthru(\"$m guard --fix\", $r); exit($r); } else printf(\"Skipping mago guard --fix (not found)\\n\");' "
         ],
         "mago:list-files": [
             "@banner \"Mago List Files\" \"1;96\"",
-            "@php -r '$m = shell_exec(\"command -v mago 2>/dev/null\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) passthru(\"$m list-files\"); else printf(\"Skipping mago list-files (not found)\\n\");' "
+            "@php -r '$m = trim(shell_exec(\"command -v mago 2>/dev/null\") ?: \"\") ?: \"/usr/local/bin/mago\"; if (is_executable($m)) { passthru(\"$m list-files\", $r); exit($r); } else printf(\"Skipping mago list-files (not found)\\n\");' "
         ],
         "security:audit": [
             "@banner \"Security Audit\" \"7;1;91\"",
@@ -452,7 +466,7 @@
             "@test:arch:full"
         ],
         "test:arch:full": [
-            "@lint:syntax",
+            "@lint",
             "@test:arch:mago",
             "@test:arch:pest"
         ],
@@ -466,24 +480,22 @@
         ],
         "test:behat": [
             "@banner \"Behat Tests\" \"1;36\"",
-            "@lint:syntax",
-            "@php vendor/bin/behat --config=behat.yml"
+            "@behat:all"
         ],
         "test:behat:api": [
             "@banner \"Behat API Tests\" \"1;34\"",
-            "@lint:syntax",
-            "@php vendor/bin/behat --config=behat.yml --suite=api"
+            "@behat:api"
         ],
         "test:behat:browser": [
             "@banner \"Behat Browser Tests\" \"1;35\"",
-            "@lint:syntax",
-            "@php vendor/bin/behat --config=behat.yml --suite=browser"
+            "@behat:browser"
         ],
         "test:behat:watch": [
-            "@php vendor/bin/behat --config=behat.yml --watch"
+            "@banner \"Behat Watch\" \"1;36\"",
+            "@behat:watch"
         ],
         "test:browser": [
-            "@lint:syntax",
+            "@lint",
             "@test:browser:pest",
             "@test:browser:js"
         ],
@@ -509,12 +521,10 @@
             "@test:arch:mago",
             "@test:profanity",
             "@test:type-coverage",
-            "@test:unit",
-            "@test:feature",
-            "@test:coverage"
+            "@testsuite:core"
         ],
         "test:coverage": [
-            "@lint:syntax",
+            "@lint",
             "@test:coverage:pcov",
             "@test:coverage:js"
         ],
@@ -532,7 +542,7 @@
         ],
         "test:e2e": [
             "@banner \"Test:E2E\" \"1;96\"",
-            "@lint:syntax",
+            "@lint",
             "php artisan migrate:fresh --seed --env=testing --ansi",
             "bunx concurrently --kill-others --success command-1 --names \"SERVER,TESTS\" --prefix-colors \"auto\" \"php -d variables_order=EGPCS artisan serve --env=testing --port=8001 --no-reload\" \"bunx wait-on http://127.0.0.1:8001 && APP_URL=http://127.0.0.1:8001 vendor/bin/pest --testsuite=Browser\""
         ],
@@ -581,6 +591,7 @@
         ],
         "test:setup": [
             "@php -r \"file_exists('.env.testing') || copy('.env.example', '.env.testing');\"",
+            "@lint",
             "php artisan key:generate --env=testing"
         ],
         "test:type-coverage": [
@@ -598,6 +609,12 @@
         "test:unit:php": [
             "@banner \"Unit Tests\" \"1;32;47\"",
             "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d xdebug.mode=off -d pcov.enabled=1 vendor/bin/pest --testsuite=Unit --min=99"
+        ],
+        "testsuite:core": [
+            "@banner \"Core Tests with Coverage\" \"1;32;47\"",
+            "@php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" -d xdebug.mode=off -d pcov.enabled=1 vendor/bin/pest --testsuite=Unit,Feature,Arch --coverage --min=99",
+            "@test:coverage:js",
+            "@test:unit:js"
         ],
         "update:requirements": [
             "@banner \"Update Requirements\" \"1;97\"",

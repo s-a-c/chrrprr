@@ -74,6 +74,10 @@ return RectorConfig::configure()
         RectorLaravel\Rector\If_\ThrowIfRector::class => [
             __DIR__.'/app/Models/Concerns/ProtectsKeyRoles.php',
         ],
+        // Keep $classification param in EnterpriseSeeder::createEnterprise() for context/debugging
+        Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPrivateMethodParameterRector::class => [
+            __DIR__.'/database/seeders/EnterpriseSeeder.php',
+        ],
         Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector::class,
     ])
     ->withPreparedSets(

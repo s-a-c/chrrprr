@@ -10,37 +10,66 @@ final class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     *
+     * Execution order is critical for maintaining referential integrity.
+     *
+     * Hierarchical teams follow level order (Enterprise → Sector → ... → Unit).
+     * Cross-functional teams (Discipline, Group, Squad, Project) are floating.
      */
     public function run(): void
     {
-        // Seed in logical order to maintain referential integrity
+        // 1. Landlord first (creates id=0 enterprise, global roles, system admin)
+        $this->call(LandlordSeeder::class);
 
-        // 1. Roles first (needed for user assignments)
-        $this->call(RoleSeeder::class);
-
-        // 2. Enterprises (root-level teams, no dependencies)
+        // 2. Enterprises (25 tenants: 5 sole traders + 20 regular)
         $this->call(EnterpriseSeeder::class);
 
-        // 3. Users (need enterprises for tenant_id)
+        // 3. Roles (verifies all enterprises have roles)
+        $this->call(RoleSeeder::class);
+
+        // 4. Users (creates users with role assignments per enterprise type)
         $this->call(UserSeeder::class);
 
-        // 4. Organisations (need enterprises as parents)
+        // --- HIERARCHICAL TEAMS (parent-child, level order) ---
+
+        // 5. Sectors (level 2: under enterprises, large orgs only)
+        $this->call(SectorSeeder::class);
+
+        // 6. Organisations (level 3: under enterprises or sectors)
         $this->call(OrganisationSeeder::class);
 
-        // 5. Divisions (need organisations as parents)
+        // 7. Divisions (level 5: under organisations)
         $this->call(DivisionSeeder::class);
 
-        // 6. Departments (need divisions as parents)
+        // 8. BusinessUnits (level 4: under divisions, optional)
+        $this->call(BusinessUnitSeeder::class);
+
+        // 9. Departments (level 6: under divisions or business units)
         $this->call(DepartmentSeeder::class);
 
-        // 7. Projects (need departments or divisions as parents)
+        // 10. Units (level 7: under departments, operational teams)
+        $this->call(UnitSeeder::class);
+
+        // --- CROSS-FUNCTIONAL TEAMS (floating, no parent) ---
+
+        // 11. Disciplines (areas of competency)
+        $this->call(DisciplineSeeder::class);
+
+        // 12. Groups (feature/topic clusters)
+        $this->call(GroupSeeder::class);
+
+        // 13. Squads (execution teams)
+        $this->call(SquadSeeder::class);
+
+        // 14. Projects (time-bound initiatives)
         $this->call(ProjectSeeder::class);
 
-        // 8. Team Move Approvals (need teams and users)
-        $this->call(TeamMoveApprovalSeeder::class);
+        // --- OTHER ---
 
-        // 9. Domains (optional, for tenancy - may be managed automatically)
-        // Uncomment if you need to seed domains manually
-        // $this->call(DomainSeeder::class);
+        // 15. Domains (creates domains for all enterprises)
+        $this->call(DomainSeeder::class);
+
+        // 16. Team Move Approvals (needs teams and users)
+        $this->call(TeamMoveApprovalSeeder::class);
     }
 }

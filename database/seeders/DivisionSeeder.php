@@ -15,21 +15,30 @@ final class DivisionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get all organisations
         $organisations = Organisation::all();
 
         if ($organisations->isEmpty()) {
             $this->command->warn('No organisations found. Please run OrganisationSeeder first.');
+            $this->command->info('(Note: Sole trader enterprises have no organisations by design.)');
 
             return;
         }
 
-        // Create divisions for each organisation
-        $organisations->each(static function (Organisation $organisation): void {
-            Division::factory()->count(2)->create([
-                'parent_id' => $organisation->id,
-                'tenant_id' => $organisation->tenant_id,
-            ]);
-        });
+        $totalDivisionsCreated = 0;
+
+        // Create 0-3 divisions per organisation
+        foreach ($organisations as $organisation) {
+            $count = random_int(0, 3);
+
+            for ($i = 0; $i < $count; $i++) {
+                Division::factory()->create([
+                    'parent_id' => $organisation->id,
+                    'tenant_id' => $organisation->tenant_id,
+                ]);
+                $totalDivisionsCreated++;
+            }
+        }
+
+        $this->command->info("Created {$totalDivisionsCreated} divisions across {$organisations->count()} organisations.");
     }
 }

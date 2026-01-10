@@ -2,22 +2,50 @@
 
 declare(strict_types=1);
 
-use App\Models\Department;
-use App\Models\Division;
 use App\Models\Enterprise;
-use App\Models\Organisation;
 use App\Models\Project;
 
-test('can create project under department', function (): void {
+test('can create project as floating team (no parent)', function (): void {
     $enterprise = Enterprise::factory()->create();
-    $organisation = Organisation::factory()->create(['parent_id' => $enterprise->id]);
-    $division = Division::factory()->create(['parent_id' => $organisation->id]);
-    $department = Department::factory()->create(['parent_id' => $division->id]);
 
+    // Projects are cross-functional and must be floating (no parent)
     $project = Project::factory()->create([
-        'parent_id' => $department->id,
+        'parent_id' => null,
         'tenant_id' => $enterprise->id,
     ]);
 
-    expect($project)->toBeInstanceOf(Project::class)->parent_id->toBe($department->id);
+    expect($project)
+        ->toBeInstanceOf(Project::class)
+        ->parent_id->toBeNull()
+        ->tenant_id->toBe($enterprise->id);
+});
+
+test('project has tenant association', function (): void {
+    $enterprise = Enterprise::factory()->create();
+
+    $project = Project::factory()->create([
+        'parent_id' => null,
+        'tenant_id' => $enterprise->id,
+    ]);
+
+    expect($project->tenant->id)->toBe($enterprise->id);
+});
+
+test('multiple projects can exist in same tenant', function (): void {
+    $enterprise = Enterprise::factory()->create();
+
+    $project1 = Project::factory()->create([
+        'parent_id' => null,
+        'tenant_id' => $enterprise->id,
+        'name' => ['en' => 'Project 1'],
+    ]);
+
+    $project2 = Project::factory()->create([
+        'parent_id' => null,
+        'tenant_id' => $enterprise->id,
+        'name' => ['en' => 'Project 2'],
+    ]);
+
+    expect($project1->id)->not->toBe($project2->id);
+    expect($project1->tenant_id)->toBe($project2->tenant_id);
 });

@@ -1,33 +1,9 @@
 variant = "loose"
 
 [[issues]]
-file = "app/Actions/Fortify/CreateNewUser.php"
-code = "incompatible-parameter-type"
-message = 'Parameter `$input` of `App\Actions\Fortify\CreateNewUser::create()` expects type `array<string, mixed>` but parent `Laravel\Fortify\Contracts\CreatesNewUsers::create()` expects type `array<array-key, mixed>`'
-count = 2
-
-[[issues]]
-file = "app/Actions/Fortify/CreateNewUser.php"
-code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `app\actions\fortify\createnewuser::create`. Saw type `mixed`.'
-count = 1
-
-[[issues]]
 file = "app/Actions/Fortify/ResetUserPassword.php"
-code = "incompatible-parameter-type"
-message = 'Parameter `$user` of `App\Actions\Fortify\ResetUserPassword::reset()` expects type `App\Models\User` but parent `Laravel\Fortify\Contracts\ResetsUserPasswords::reset()` expects type `Illuminate\Foundation\Auth\User`'
-count = 2
-
-[[issues]]
-file = "app/Actions/Fortify/ResetUserPassword.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `illuminate\support\facades\hash::make`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Actions/Teams/AssignExecutive.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `setPermissionsTeamId`: expected `Illuminate\Database\Eloquent\Model|int|null|string`, but found `mixed`.'
+code = "invalid-argument"
+message = '''Invalid argument type for argument #2 of `throw_unless`: expected `(closure(string('User must be an instance of App\Models\User.')): ('TExceptionValue.throw_unless() extends ('TException.throw_unless() extends Throwable)|class-string<'TException.throw_unless() extends Throwable>|string))`, but found `class-string('InvalidArgumentException')`.'''
 count = 1
 
 [[issues]]
@@ -175,63 +151,75 @@ message = 'Too many arguments provided for method `App\Models\User::update`.'
 count = 1
 
 [[issues]]
-file = "app/Console/Commands/GenerateUserUlids.php"
+file = "app/Console/Commands/GenerateUserUlidsCommand.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `illuminate\support\traits\enumeratesvalues::each`: expected `(callable(Illuminate\Database\Eloquent\Model, array-key): mixed)`, but found `(closure(App\Models\User): void)`.'
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/GenerateUserUlidsCommand.php"
 code = "mixed-argument"
 message = 'Invalid argument type for argument #1 of `symfony\component\console\style\symfonystyle::createprogressbar`: expected `int`, but found `mixed`.'
 count = 1
 
 [[issues]]
-file = "app/Console/Commands/GenerateUserUlids.php"
+file = "app/Console/Commands/GenerateUserUlidsCommand.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
 count = 2
 
 [[issues]]
-file = "app/Console/Commands/GenerateUserUlids.php"
+file = "app/Console/Commands/GenerateUserUlidsCommand.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
 count = 3
 
 [[issues]]
-file = "app/Console/Commands/GenerateUserUlids.php"
+file = "app/Console/Commands/GenerateUserUlidsCommand.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `wherenull` on class `Illuminate\Database\Eloquent\Builder`.'
 count = 1
 
 [[issues]]
-file = "app/Console/Commands/GenerateUserUlids.php"
+file = "app/Console/Commands/GenerateUserUlidsCommand.php"
 code = "non-documented-property"
-message = 'Ambiguous property access: $bio on class `Illuminate\Database\Eloquent\Model`.'
+message = 'Ambiguous property access: $bio on class `App\Models\User`.'
 count = 2
 
 [[issues]]
-file = "app/Console/Commands/GenerateUserUlids.php"
+file = "app/Console/Commands/GenerateUserUlidsCommand.php"
 code = "non-documented-property"
-message = 'Ambiguous property access: $ulid on class `Illuminate\Database\Eloquent\Model`.'
+message = 'Ambiguous property access: $ulid on class `App\Models\User`.'
 count = 1
 
 [[issues]]
-file = "app/Console/Commands/SetDefaultUserStates.php"
+file = "app/Console/Commands/SetDefaultUserStatesCommand.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `symfony\component\console\style\symfonystyle::createprogressbar`: expected `int`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/SetDefaultUserStatesCommand.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/SetDefaultUserStatesCommand.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `count` on class `Illuminate\Database\Eloquent\Builder`.'
 count = 1
 
 [[issues]]
-file = "app/Console/Commands/SetDefaultUserStates.php"
+file = "app/Console/Commands/SetDefaultUserStatesCommand.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `wherenull` on class `Illuminate\Database\Eloquent\Builder`.'
 count = 1
 
 [[issues]]
-file = "app/Console/Commands/SetDefaultUserStates.php"
+file = "app/Console/Commands/SetDefaultUserStatesCommand.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $state on class `App\Models\User`.'
-count = 1
-
-[[issues]]
-file = "app/Events/Teams/TeamCreated.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
 count = 1
 
 [[issues]]
@@ -261,12 +249,6 @@ count = 1
 [[issues]]
 file = "app/Filament/Tenant/Resources/Teams/Pages/EditTeam.php"
 code = "less-specific-argument"
-message = 'Argument type mismatch for argument #1 of `app\handlers\commands\teams\updateteamcommand::__construct`: expected `App\Models\Team`, but provided type `App\Models\Team|Illuminate\Database\Eloquent\Model` is less specific.'
-count = 1
-
-[[issues]]
-file = "app/Filament/Tenant/Resources/Teams/Pages/EditTeam.php"
-code = "less-specific-argument"
 message = 'Argument type mismatch for argument #2 of `app\handlers\commands\teams\updateteamcommand::__construct`: expected `array<string, mixed>`, but provided type `array<array-key, mixed>` is less specific.'
 count = 1
 
@@ -286,12 +268,6 @@ count = 1
 file = "app/Filament/Tenant/Resources/Teams/Pages/ViewTeam.php"
 code = "missing-template-parameter"
 message = 'Too few template arguments for `Filament\Resources\Pages\ViewRecord`: expected 1, but found 0.'
-count = 1
-
-[[issues]]
-file = "app/Filament/Tenant/Resources/Users/Pages/EditUser.php"
-code = "less-specific-argument"
-message = 'Argument type mismatch for argument #1 of `app\handlers\commands\users\updateuserprofilecommand::__construct`: expected `App\Models\User`, but provided type `App\Models\User|Illuminate\Database\Eloquent\Model` is less specific.'
 count = 1
 
 [[issues]]
@@ -321,20 +297,20 @@ count = 2
 [[issues]]
 file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
 code = "invalid-return-statement"
-message = "Function `2743875753923433798:1010` is declared to return 'void' but returns a value."
+message = 'Invalid return type for function `2743875753923433798:1061`: expected `App\Models\Team`, but found `null`.'
 count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
-code = "invalid-return-statement"
-message = "Function `2743875753923433798:1041` is declared to return 'void' but returns a value."
-count = 1
+code = "less-specific-nested-return-statement"
+message = '''Returned type `app\support\result<mixed>` is less specific than the declared return type `App\Support\Result<App\Models\Team>` for function `app\handlers\commands\teams\assignexecutivehandler::handle` due to nested 'mixed'.'''
+count = 2
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `setPermissionsTeamId`: expected `Illuminate\Database\Eloquent\Model|int|null|string`, but found `mixed`.'
-count = 1
+code = "method-access-on-null"
+message = "Attempting to call a method on `null`."
+count = 3
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
@@ -344,26 +320,32 @@ count = 2
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
+code = "mixed-return-statement"
+message = "Could not infer a precise return type for function `2743875753923433798:1030`. Saw type `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `role` on class `Illuminate\Database\Eloquent\Builder`.'
 count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
-code = "non-documented-property"
-message = 'Ambiguous property access: $id on class `App\Models\Team`.'
+code = "non-existent-property"
+message = 'Property `$executive` does not exist on class `App\Handlers\Commands\Teams\AssignExecutiveCommand`.'
 count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
-code = "non-documented-property"
-message = 'Ambiguous property access: $id on class `App\Models\User`.'
-count = 1
+code = "non-existent-property"
+message = 'Property `$team` does not exist on class `App\Handlers\Commands\Teams\AssignExecutiveCommand`.'
+count = 2
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/AssignExecutiveHandler.php"
-code = "semantics"
-message = "Arrow function cannot have a return type of `void`."
+code = "null-property-access"
+message = "Attempting to access a property on an expression that is always `null`."
 count = 2
 
 [[issues]]
@@ -381,7 +363,7 @@ count = 1
 [[issues]]
 file = "app/Handlers/Commands/Teams/CreateTeamHandler.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `14675200997722942140:1624`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `14675200997722942140:1629`. Saw type `mixed`."
 count = 1
 
 [[issues]]
@@ -404,14 +386,8 @@ count = 2
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/MoveTeamHandler.php"
-code = "invalid-return-statement"
-message = 'Invalid return type for function `app\handlers\commands\teams\moveteamhandler::moveteam`: expected `App\Models\Team`, but found `App\Models\Team&static|null`.'
-count = 1
-
-[[issues]]
-file = "app/Handlers/Commands/Teams/MoveTeamHandler.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `17566507739434642811:1827`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `17566507739434642811:1849`. Saw type `mixed`."
 count = 1
 
 [[issues]]
@@ -419,12 +395,6 @@ file = "app/Handlers/Commands/Teams/MoveTeamHandler.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `App\Models\Team`.'
 count = 2
-
-[[issues]]
-file = "app/Handlers/Commands/Teams/MoveTeamHandler.php"
-code = "nullable-return-statement"
-message = 'Function `app\handlers\commands\teams\moveteamhandler::moveteam` is declared to return `App\Models\Team` but possibly returns a nullable value (inferred as `App\Models\Team&static|null`).'
-count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
@@ -440,38 +410,50 @@ count = 2
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
-code = "less-specific-nested-return-statement"
-message = '''Returned type `App\Support\Result<mixed>` is less specific than the declared return type `App\Support\Result<bool, string>` for function `app\handlers\commands\teams\updateteamhandler::checkoptimisticlock` due to nested 'mixed'.'''
+code = "less-specific-argument"
+message = 'Argument type mismatch for argument #2 of `App\Handlers\Commands\Teams\UpdateTeamHandler::handlestandardfields`: expected `array<string, mixed>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
+code = "less-specific-argument"
+message = 'Argument type mismatch for argument #2 of `App\Handlers\Commands\Teams\UpdateTeamHandler::handletranslatablefields`: expected `array<string, mixed>`, but provided type `array<array-key, mixed>` is less specific.'
 count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
 code = "less-specific-nested-return-statement"
-message = '''Returned type `app\support\result<mixed>` is less specific than the declared return type `App\Support\Result<array<string, mixed>, string>` for function `app\handlers\commands\teams\updateteamhandler::handlemoveifneeded` due to nested 'mixed'.'''
+message = '''Returned type `App\Support\Result<mixed>` is less specific than the declared return type `App\Support\Result<bool>` for function `app\handlers\commands\teams\updateteamhandler::checkoptimisticlock` due to nested 'mixed'.'''
+count = 1
+
+[[issues]]
+file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
+code = "less-specific-nested-return-statement"
+message = '''Returned type `app\support\result<mixed>` is less specific than the declared return type `App\Support\Result<array<string, mixed>>` for function `app\handlers\commands\teams\updateteamhandler::handlemoveifneeded` due to nested 'mixed'.'''
 count = 2
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
 code = "less-specific-nested-return-statement"
-message = '''Returned type `app\support\result<mixed>` is less specific than the declared return type `App\Support\Result<array<string, mixed>, string>` for function `app\handlers\commands\teams\updateteamhandler::handletranslatablefields` due to nested 'mixed'.'''
+message = '''Returned type `app\support\result<mixed>` is less specific than the declared return type `App\Support\Result<array<string, mixed>>` for function `app\handlers\commands\teams\updateteamhandler::handletranslatablefields` due to nested 'mixed'.'''
 count = 2
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
 code = "less-specific-nested-return-statement"
-message = '''Returned type `app\support\result<mixed>` is less specific than the declared return type `App\Support\Result<bool, string>` for function `app\handlers\commands\teams\updateteamhandler::checkoptimisticlock` due to nested 'mixed'.'''
+message = '''Returned type `app\support\result<mixed>` is less specific than the declared return type `App\Support\Result<bool>` for function `app\handlers\commands\teams\updateteamhandler::checkoptimisticlock` due to nested 'mixed'.'''
 count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `App\Handlers\Commands\Teams\UpdateTeamHandler::handlestandardfields`: expected `array<array-key, mixed>`, but found `mixed`.'
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
 count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `App\Handlers\Commands\Teams\UpdateTeamHandler::handletranslatablefields`: expected `array<array-key, mixed>`, but found `mixed`.'
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
 count = 1
 
 [[issues]]
@@ -500,14 +482,8 @@ count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Users/RegisterUserHandler.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `illuminate\support\facades\hash::make`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Handlers/Commands/Users/RegisterUserHandler.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `13656289546341246656:1002`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `13656289546341246656:994`. Saw type `mixed`."
 count = 1
 
 [[issues]]
@@ -536,20 +512,14 @@ count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Users/UpdateUserProfileHandler.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `illuminate\support\facades\hash::make`: expected `string`, but found `nonnull`.'
-count = 1
-
-[[issues]]
-file = "app/Handlers/Commands/Users/UpdateUserProfileHandler.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `stevebauman\purify\facades\purify::clean`: expected `array<array-key, mixed>|string`, but found `nonnull`.'
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
 count = 1
 
 [[issues]]
 file = "app/Handlers/Commands/Users/UpdateUserProfileHandler.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `7764001730935271721:1055`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `7764001730935271721:1047`. Saw type `mixed`."
 count = 1
 
 [[issues]]
@@ -581,6 +551,24 @@ file = "app/Handlers/Queries/Teams/GetTeamHandler.php"
 code = "incompatible-parameter-type"
 message = 'Parameter `$query` of `App\Handlers\Queries\Teams\GetTeamHandler::ask()` expects type `App\Handlers\Queries\Teams\GetTeamQuery` but parent `App\Contracts\QueryHandler::ask()` expects type `object`'
 count = 2
+
+[[issues]]
+file = "app/Handlers/Queries/Teams/GetTeamHandler.php"
+code = "non-existent-property"
+message = 'Property `$id` does not exist on class `App\Handlers\Queries\Teams\GetTeamQuery`.'
+count = 1
+
+[[issues]]
+file = "app/Handlers/Queries/Teams/GetTeamHandler.php"
+code = "redundant-comparison"
+message = "Redundant `===` comparison: left-hand side is always identical to right-hand side."
+count = 1
+
+[[issues]]
+file = "app/Handlers/Queries/Teams/GetTeamHandler.php"
+code = "redundant-condition"
+message = "This condition (type `true`) will always evaluate to true."
+count = 1
 
 [[issues]]
 file = "app/Http/Controllers/Teams/BulkTeamController.php"
@@ -656,14 +644,8 @@ count = 2
 
 [[issues]]
 file = "app/Livewire/Settings/DeleteUserForm.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 1
-
-[[issues]]
-file = "app/Livewire/Settings/DeleteUserForm.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\User::delete` on an instance.'
 count = 1
 
 [[issues]]
@@ -680,14 +662,8 @@ count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/DeleteUserForm.php"
-code = "non-existent-method"
-message = 'Method `user` does not exist on type `Illuminate\Contracts\Auth\Factory`.'
-count = 1
-
-[[issues]]
-file = "app/Livewire/Settings/Password.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\User::delete`.'
 count = 1
 
 [[issues]]
@@ -704,27 +680,9 @@ count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/Profile.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `app\handlers\commands\users\updateuserprofilecommand::__construct`: expected `App\Models\User`, but found `mixed`.'
+code = "mixed-operand"
+message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
 count = 1
-
-[[issues]]
-file = "app/Livewire/Settings/Profile.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 2
-
-[[issues]]
-file = "app/Livewire/Settings/Profile.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 2
-
-[[issues]]
-file = "app/Livewire/Settings/Profile.php"
-code = "mixed-property-access"
-message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 3
 
 [[issues]]
 file = "app/Livewire/Settings/Profile.php"
@@ -746,81 +704,117 @@ count = 2
 
 [[issues]]
 file = "app/Livewire/Settings/Profile.php"
-code = "non-existent-method"
-message = 'Method `user` does not exist on type `Illuminate\Contracts\Auth\Factory`.'
-count = 4
-
-[[issues]]
-file = "app/Livewire/Settings/TwoFactor.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #1 of `decrypt`: expected `string`, but found `mixed`."
+code = "non-documented-property"
+message = 'Ambiguous property access: $email on class `App\Models\User`.'
 count = 1
 
 [[issues]]
+file = "app/Livewire/Settings/Profile.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\User`.'
+count = 1
+
+[[issues]]
+file = "app/Livewire/Settings/Profile.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $name on class `App\Models\User`.'
+count = 1
+
+[[issues]]
+file = "app/Livewire/Settings/Profile.php"
+code = "non-existent-method"
+message = 'Method `user` does not exist on type `Illuminate\Contracts\Auth\Factory`.'
+count = 3
+
+[[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `illuminate\support\facades\http::withcookies`: expected `string`, but found `mixed`.'
-count = 4
+code = "invalid-return-statement"
+message = '''Invalid return type for function `app\livewire\settings\twofactor::modalconfig`: expected `array{'buttonText': string, 'description': string, 'title': string}`, but found `array{'buttonText': array<array-key, mixed>|null|string, 'description': array<array-key, mixed>|null|string, 'title': array<array-key, mixed>|null|string}`.'''
+count = 2
+
+[[issues]]
+file = "app/Livewire/Settings/TwoFactor.php"
+code = "less-specific-return-statement"
+message = 'Returned type `Illuminate\Contracts\View\View` is less specific than the declared return type `Illuminate\View\View` for function `app\livewire\settings\twofactor::render`.'
+count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 3
+count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 8
+count = 2
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
 code = "mixed-operand"
-message = "Left operand in `&&` operation has `mixed` type."
+message = "Right operand in `&&` operation has `mixed` type."
 count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
 code = "mixed-property-access"
 message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 4
+count = 2
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
-code = "mixed-property-type-coercion"
-message = "A value with a less specific type `mixed` is being assigned to property `$$manualSetupKey` (null|string)."
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `app\livewire\settings\twofactor::manualsetupkey`. Saw type `mixed`.'
 count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
-code = "mixed-property-type-coercion"
-message = "A value with a less specific type `mixed` is being assigned to property `$$qrCodeSvg` (null|string)."
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `app\livewire\settings\twofactor::qrcodesvg`. Saw type `mixed`.'
 count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
-code = "mixed-property-type-coercion"
-message = "A value with a less specific type `mixed` is being assigned to property `$$twoFactorEnabled` (bool)."
-count = 4
-
-[[issues]]
-file = "app/Livewire/Settings/TwoFactor.php"
-code = "non-existent-method"
-message = 'Method `json` does not exist on type `GuzzleHttp\Promise\PromiseInterface`.'
+code = "no-value"
+message = "Argument #1 passed to function `is_null` has type `never`, meaning it cannot produce a value."
 count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
-code = "non-existent-method"
-message = 'Method `successful` does not exist on type `GuzzleHttp\Promise\PromiseInterface`.'
-count = 4
+code = "non-documented-property"
+message = 'Ambiguous property access: $manualSetupKey on class `App\Livewire\Settings\TwoFactor`.'
+count = 1
+
+[[issues]]
+file = "app/Livewire/Settings/TwoFactor.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $qrCodeSvg on class `App\Livewire\Settings\TwoFactor`.'
+count = 1
+
+[[issues]]
+file = "app/Livewire/Settings/TwoFactor.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $requiresConfirmation on class `App\Livewire\Settings\TwoFactor`.'
+count = 1
+
+[[issues]]
+file = "app/Livewire/Settings/TwoFactor.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $twoFactorEnabled on class `App\Livewire\Settings\TwoFactor`.'
+count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor.php"
 code = "non-existent-method"
 message = 'Method `user` does not exist on type `Illuminate\Contracts\Auth\Factory`.'
 count = 8
+
+[[issues]]
+file = "app/Livewire/Settings/TwoFactor/RecoveryCodes.php"
+code = "less-specific-return-statement"
+message = 'Returned type `Illuminate\Contracts\View\View` is less specific than the declared return type `Illuminate\View\View` for function `app\livewire\settings\twofactor\recoverycodes::render`.'
+count = 1
 
 [[issues]]
 file = "app/Livewire/Settings/TwoFactor/RecoveryCodes.php"
@@ -871,6 +865,24 @@ message = 'Method `user` does not exist on type `Illuminate\Contracts\Auth\Facto
 count = 2
 
 [[issues]]
+file = "app/Livewire/Teams/Index.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "app/Livewire/Teams/Index.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `app\livewire\teams\index::getteamsproperty`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Livewire/Teams/Index.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `incontext` on class `Illuminate\Database\Eloquent\Builder`.'
+count = 1
+
+[[issues]]
 file = "app/Livewire/Teams/MoveTeam.php"
 code = "less-specific-return-statement"
 message = 'Returned type `Illuminate\Database\Eloquent\Collection<array-key, mixed>&static` is less specific than the declared return type `Illuminate\Database\Eloquent\Collection<int, App\Models\Team>` for function `app\livewire\teams\moveteam::getparentsproperty`.'
@@ -892,12 +904,6 @@ count = 2
 file = "app/Livewire/Teams/MoveTeam.php"
 code = "non-existent-method"
 message = 'Method `user` does not exist on type `Illuminate\Contracts\Auth\Factory`.'
-count = 1
-
-[[issues]]
-file = "app/Livewire/Teams/MoveTeam.php"
-code = "redundant-cast"
-message = "Redundant cast to `(string)`: the expression already has this type."
 count = 1
 
 [[issues]]
@@ -1341,13 +1347,13 @@ count = 1
 [[issues]]
 file = "app/Models/Concerns/ManagesTeamRoles.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `13543058865606512736:4399`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `13543058865606512736:4842`. Saw type `mixed`."
 count = 1
 
 [[issues]]
 file = "app/Models/Concerns/ManagesTeamRoles.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `13543058865606512736:6436`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `13543058865606512736:6952`. Saw type `mixed`."
 count = 1
 
 [[issues]]
@@ -1402,7 +1408,7 @@ count = 2
 file = "app/Models/Concerns/ManagesUserContext.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 5
+count = 6
 
 [[issues]]
 file = "app/Models/Concerns/ManagesUserContext.php"
@@ -1514,6 +1520,12 @@ count = 1
 
 [[issues]]
 file = "app/Models/Role.php"
+code = "incompatible-property-type"
+message = 'Property `App\Models\Role::$fillable` has an incompatible type declaration from docblock.'
+count = 1
+
+[[issues]]
+file = "app/Models/Role.php"
 code = "missing-template-parameter"
 message = 'Too few template arguments for `Illuminate\Database\Eloquent\Factories\HasFactory`: expected 1, but found 0.'
 count = 1
@@ -1533,7 +1545,13 @@ count = 1
 [[issues]]
 file = "app/Models/Team.php"
 code = "invalid-return-statement"
-message = '''Invalid return type for function `app\models\team::casts`: expected `array{'bio': string('array'), 'lock_version': string('integer'), 'name': string('array'), 'slug': string('string'), 'state': mixed, 'status': mixed, 'type': mixed}`, but found `array{'bio': string('array'), 'lock_version': string('integer'), 'name': string('array'), 'slug': string('array'), 'state': class-string('App\States\Team\TeamState'), 'status': class-string('App\Enums\TeamStatus'), 'type': class-string('App\Enums\TeamType')}`.'''
+message = '''Invalid return type for function `app\models\team::casts`: expected `array{'bio': string('array'), 'lock_version': string('integer'), 'name': string('array'), 'slug': string('array'), 'state': mixed, 'status': mixed, 'type': mixed}`, but found `array{'bio': string('array'), 'lock_version': string('integer'), 'mode': class-string('App\Enums\TeamMode'), 'name': string('array'), 'slug': string('array'), 'state': class-string('App\States\Team\TeamState'), 'status': class-string('App\Enums\TeamStatus'), 'type': class-string('App\Enums\TeamType')}`.'''
+count = 1
+
+[[issues]]
+file = "app/Models/Team.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `app\models\team::getbiohtmlattribute`: expected `null|string`, but found `array<array-key, mixed>|null|string`.'
 count = 1
 
 [[issues]]
@@ -1552,7 +1570,7 @@ count = 1
 file = "app/Models/Team.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 1
+count = 2
 
 [[issues]]
 file = "app/Models/Team.php"
@@ -1564,6 +1582,12 @@ count = 1
 file = "app/Models/Team.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `withoutglobalscopes` on class `Illuminate\Database\Eloquent\Relations\BelongsTo`.'
+count = 1
+
+[[issues]]
+file = "app/Models/Team.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $bio on class `App\Models\Team`.'
 count = 1
 
 [[issues]]
@@ -1585,15 +1609,9 @@ message = 'Too few template arguments for `Illuminate\Database\Eloquent\Factorie
 count = 1
 
 [[issues]]
-file = "app/Models/TeamMoveApproval.php"
-code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `app\models\teammoveapproval::team`. Saw type `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Models/TeamMoveApproval.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `withoutglobalscopes` on class `Illuminate\Database\Eloquent\Relations\BelongsTo`.'
+file = "app/Models/User.php"
+code = "incompatible-property-type"
+message = 'Property `App\Models\User::$appends` has an incompatible type declaration from docblock.'
 count = 1
 
 [[issues]]
@@ -1610,14 +1628,38 @@ count = 1
 
 [[issues]]
 file = "app/Models/User.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `app\models\user::getbiohtmlattribute`: expected `null|string`, but found `array<array-key, mixed>|null|string`.'
+count = 1
+
+[[issues]]
+file = "app/Models/User.php"
 code = "invalid-template-parameter"
 message = 'Template argument for `Illuminate\Database\Eloquent\Factories\HasFactory` is not compatible with its constraint.'
 count = 1
 
 [[issues]]
 file = "app/Models/User.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Support\Html\TeamBioRenderer::render`: expected `null|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Models/User.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "app/Models/User.php"
 code = "mixed-property-access"
 message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "app/Models/User.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $bio on class `App\Models\User`.'
 count = 1
 
 [[issues]]
@@ -1653,7 +1695,7 @@ count = 2
 [[issues]]
 file = "app/Observers/TeamObserver.php"
 code = "invalid-argument"
-message = '''Invalid argument type for argument #2 of `throw_if`: expected `(closure(string('The team has been modified by another process.')): ('TExceptionValue.throw_if() extends ('TException.throw_if() extends Throwable)|class-string<'TException.throw_if() extends Throwable>|string))`, but found `class-string('App\Exceptions\OptimisticLockingException')`.'''
+message = '''Invalid argument type for argument #2 of `throw_if`: expected `(closure(('TParams.throw_if() extends mixed)): ('TExceptionValue.throw_if() extends ('TException.throw_if() extends Throwable)|class-string<'TException.throw_if() extends Throwable>|string))`, but found `class-string('App\Exceptions\OptimisticLockingException')`.'''
 count = 1
 
 [[issues]]
@@ -1684,7 +1726,7 @@ count = 3
 file = "app/Observers/TeamObserver.php"
 code = "mixed-property-type-coercion"
 message = "A value with a less specific type `mixed` is being assigned to property `$$tenant_id` (null|string)."
-count = 2
+count = 3
 
 [[issues]]
 file = "app/Observers/TeamObserver.php"
@@ -1700,20 +1742,20 @@ count = 2
 
 [[issues]]
 file = "app/Observers/TeamObserver.php"
-code = "redundant-comparison"
-message = "Redundant `!==` comparison: left-hand side is always not identical to right-hand side."
-count = 1
-
-[[issues]]
-file = "app/Observers/TeamObserver.php"
-code = "redundant-logical-operation"
-message = "Redundant `&&` operation: left operand is evaluated and right operand is always truthy."
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$currentVersion`."
 count = 1
 
 [[issues]]
 file = "app/Observers/TeamObserver.php"
 code = "redundant-null-coalesce"
 message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+count = 1
+
+[[issues]]
+file = "app/Observers/UserObserver.php"
+code = "invalid-argument"
+message = '''Invalid argument type for argument #2 of `throw_if`: expected `(closure(('TParams.throw_if() extends mixed)): ('TExceptionValue.throw_if() extends ('TException.throw_if() extends Throwable)|class-string<'TException.throw_if() extends Throwable>|string))`, but found `class-string('App\Exceptions\CannotDeleteKeyUserException')`.'''
 count = 1
 
 [[issues]]
@@ -1750,13 +1792,7 @@ count = 1
 file = "app/Providers/AppServiceProvider.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 11
-
-[[issues]]
-file = "app/Providers/AppServiceProvider.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`nonnull`)."
-count = 1
+count = 10
 
 [[issues]]
 file = "app/Providers/AppServiceProvider.php"
@@ -1784,15 +1820,15 @@ count = 1
 
 [[issues]]
 file = "app/Providers/AppServiceProvider.php"
-code = "possibly-null-operand"
-message = "Possibly null right operand used in string concatenation (type `null|string`)."
+code = "non-documented-method"
+message = 'Ambiguous method call to `where` on class `Illuminate\Database\Eloquent\Relations\BelongsToMany`.'
 count = 1
 
 [[issues]]
-file = "app/Providers/FolioServiceProvider.php"
-code = "ambiguous-object-method-access"
-message = "Cannot statically verify method call on a generic `object` type."
-count = 2
+file = "app/Providers/AppServiceProvider.php"
+code = "possibly-null-operand"
+message = "Possibly null right operand used in string concatenation (type `null|string`)."
+count = 1
 
 [[issues]]
 file = "app/Providers/TenancyServiceProvider.php"
@@ -2024,9 +2060,21 @@ count = 2
 
 [[issues]]
 file = "app/Services/TeamMove/TeamMoveApprovalService.php"
+code = "mixed-argument"
+message = '''Invalid argument type for argument #1 of `collect`: expected `Illuminate\Contracts\Support\Arrayable<('TKey.collect() extends array-key), ('TValue.collect() extends mixed)>|iterable<('TKey.collect() extends array-key), ('TValue.collect() extends mixed)>|null`, but found `nonnull`.'''
+count = 2
+
+[[issues]]
+file = "app/Services/TeamMove/TeamMoveApprovalService.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `11200947154785773951:1101`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `11200947154785773951:1161`. Saw type `mixed`."
 count = 1
+
+[[issues]]
+file = "app/Services/TeamMove/TeamMoveApprovalService.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $approvals on class `App\Models\TeamMoveApproval`.'
+count = 3
 
 [[issues]]
 file = "app/Services/TeamMove/TeamMoveApprovalService.php"
@@ -2222,20 +2270,20 @@ count = 1
 
 [[issues]]
 file = "app/Support/AsyncResult.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 1
-
-[[issues]]
-file = "app/Support/AsyncResult.php"
 code = "redundant-type-comparison"
 message = 'Redundant type assertion: `$task` of type `(callable(): App\Support\Result<mixed>)` is always not `(callable(...mixed): mixed)`.'
 count = 1
 
 [[issues]]
-file = "app/Support/Html/TeamBioRenderer.php"
+file = "app/Support/Console/Banner.php"
 code = "invalid-return-statement"
-message = 'Invalid return type for function `app\support\html\teambiorenderer::render`: expected `null|string`, but found `array<array-key, mixed>|string`.'
+message = '''Invalid return type for function `app\support\console\banner::parseargs`: expected `array{'color': string, 'message': string}`, but found `array{'color': null|string, 'message': string}`.'''
+count = 1
+
+[[issues]]
+file = "app/Support/Console/Banner.php"
+code = "possibly-invalid-argument"
+message = "Possible argument type mismatch for argument #1 of `array_pop`: expected `array<array-key, string>`, but possibly received `array<array-key, string>|object`."
 count = 1
 
 [[issues]]
@@ -2287,12 +2335,6 @@ message = "This member selector uses a non-literal string type (`string`); its s
 count = 1
 
 [[issues]]
-file = "app/Support/Result.php"
-code = "unused-template-parameter"
-message = 'Template parameter `TValue` is never used in class `App\Support\Result`.'
-count = 1
-
-[[issues]]
 file = "app/Support/Validation/TeamHierarchy/CycleValidator.php"
 code = "dynamic-static-method-call"
 message = 'Cannot call magic static method `App\Models\Team::newquery` on an instance.'
@@ -2329,6 +2371,24 @@ message = 'Ambiguous property access: $id on class `App\Models\Team`.'
 count = 1
 
 [[issues]]
+file = "app/Support/Validation/TeamHierarchy/DepthValidator.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "app/Support/Validation/TeamHierarchy/DepthValidator.php"
+code = "mixed-operand"
+message = "Right operand in `>=` comparison has `mixed` type."
+count = 2
+
+[[issues]]
+file = "app/Support/Validation/TeamHierarchy/DepthValidator.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $tenant on class `App\Models\Team`.'
+count = 1
+
+[[issues]]
 file = "app/Support/Validation/TeamHierarchy/ParentTypeValidator.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
@@ -2348,33 +2408,9 @@ count = 1
 
 [[issues]]
 file = "app/Support/Validation/TeamHierarchyValidator.php"
-code = "invalid-operand"
-message = "Left operand in `&&` operation is an `object`."
-count = 1
-
-[[issues]]
-file = "app/Support/Validation/TeamHierarchyValidator.php"
 code = "less-specific-nested-return-statement"
 message = '''Returned type `app\support\result<mixed>` is less specific than the declared return type `App\Support\Result<bool, string>` for function `app\support\validation\teamhierarchyvalidator::validate` due to nested 'mixed'.'''
 count = 6
-
-[[issues]]
-file = "app/Support/Validation/TeamHierarchyValidator.php"
-code = "match-arm-always-true"
-message = "This match arm is always true, making subsequent arms unreachable."
-count = 1
-
-[[issues]]
-file = "app/Support/Validation/TeamHierarchyValidator.php"
-code = "redundant-logical-operation"
-message = "Redundant `&&` operation: left operand is always truthy and right operand is evaluated."
-count = 1
-
-[[issues]]
-file = "app/Support/Validation/TeamHierarchyValidator.php"
-code = "unreachable-match-default-arm"
-message = "This default arm is unreachable."
-count = 1
 
 [[issues]]
 file = "app/Support/Validation/TeamName/ArrayNameQueryBuilder.php"
@@ -2521,6 +2557,12 @@ message = "Argument type mismatch for argument #2 of `implode`: expected `array<
 count = 1
 
 [[issues]]
+file = "database/factories/DisciplineFactory.php"
+code = "mixed-operand"
+message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
 file = "database/factories/DivisionFactory.php"
 code = "less-specific-nested-argument-type"
 message = "Argument type mismatch for argument #2 of `implode`: expected `array<array-key, Stringable|null|scalar>|null`, but provided type `array<array-key, mixed>|string` is less specific."
@@ -2530,6 +2572,12 @@ count = 1
 file = "database/factories/EnterpriseFactory.php"
 code = "less-specific-nested-argument-type"
 message = "Argument type mismatch for argument #2 of `implode`: expected `array<array-key, Stringable|null|scalar>|null`, but provided type `array<array-key, mixed>|string` is less specific."
+count = 1
+
+[[issues]]
+file = "database/factories/GroupFactory.php"
+code = "array-to-string-conversion"
+message = "Potential array in left operand of string concatenation."
 count = 1
 
 [[issues]]
@@ -2551,15 +2599,15 @@ message = "Argument type mismatch for argument #2 of `implode`: expected `array<
 count = 1
 
 [[issues]]
-file = "database/factories/TeamFactory.php"
-code = "less-specific-nested-argument-type"
-message = "Argument type mismatch for argument #2 of `implode`: expected `array<array-key, Stringable|null|scalar>|null`, but provided type `array<array-key, mixed>|string` is less specific."
+file = "database/factories/SquadFactory.php"
+code = "mixed-operand"
+message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
 count = 1
 
 [[issues]]
-file = "database/factories/TeamMoveApprovalFactory.php"
-code = "less-specific-return-statement"
-message = '''Returned type `array{'approvals': null, 'approved_at': null, 'from_parent_id': (closure(array<array-key, mixed>): mixed), 'reason': string, 'rejected_at': null, 'rejected_by_id': null, 'rejection_reason': null, 'requested_by_id': ('TFactory.illuminate\database\eloquent\factories\hasfactory extends Illuminate\Database\Eloquent\Factories\Factory<Illuminate\Database\Eloquent\Model>), 'required_approvers': null, 'status': string('pending'), 'team_id': ('TFactory.illuminate\database\eloquent\factories\hasfactory extends Illuminate\Database\Eloquent\Factories\Factory<Illuminate\Database\Eloquent\Model>), 'to_parent_id': (closure(array<array-key, mixed>): mixed)}` is less specific than the declared return type `array{'approvals': null, 'approved_at': null, 'from_parent_id': (closure(array<array-key, mixed>): mixed), 'reason': string, 'rejected_at': null, 'rejected_by_id': null, 'rejection_reason': null, 'requested_by_id': Database\Factories\UserFactory, 'required_approvers': null, 'status': string('pending'), 'team_id': Illuminate\Database\Eloquent\Factories\Factory<Illuminate\Database\Eloquent\Model>, 'to_parent_id': (closure(array<array-key, mixed>): mixed)}` for function `database\factories\teammoveapprovalfactory::definition`.'''
+file = "database/factories/TeamFactory.php"
+code = "less-specific-nested-argument-type"
+message = "Argument type mismatch for argument #2 of `implode`: expected `array<array-key, Stringable|null|scalar>|null`, but provided type `array<array-key, mixed>|string` is less specific."
 count = 1
 
 [[issues]]
@@ -2578,6 +2626,30 @@ count = 2
 file = "database/factories/UserFactory.php"
 code = "less-specific-nested-argument-type"
 message = "Argument type mismatch for argument #2 of `implode`: expected `array<array-key, Stringable|null|scalar>|null`, but provided type `array<array-key, mixed>|string` is less specific."
+count = 1
+
+[[issues]]
+file = "database/seeders/BusinessUnitSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Organisation`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/DepartmentSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Division`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/DisciplineSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/DivisionSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Organisation`.'
 count = 1
 
 [[issues]]
@@ -2605,16 +2677,178 @@ message = "Attempting to access a method on a non-object type (`mixed`)."
 count = 2
 
 [[issues]]
-file = "database/seeders/DomainSeeder.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `firstorcreate` on class `Stancl\Tenancy\Database\Models\Domain`.'
+file = "database/seeders/EnterpriseSeeder.php"
+code = "less-specific-argument"
+message = 'Argument type mismatch for argument #1 of `Database\Seeders\EnterpriseSeeder::createtenantroles`: expected `App\Models\Enterprise`, but provided type `Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>|Illuminate\Database\Eloquent\Model` is less specific.'
 count = 1
 
 [[issues]]
-file = "database/seeders/DomainSeeder.php"
+file = "database/seeders/EnterpriseSeeder.php"
+code = "less-specific-return-statement"
+message = 'Returned type `Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>|Illuminate\Database\Eloquent\Model` is less specific than the declared return type `App\Models\Enterprise` for function `database\seeders\enterpriseseeder::createenterprise`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `setPermissionsTeamId`: expected `Illuminate\Database\Eloquent\Model|int|null|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "mixed-array-index"
+message = "Invalid index type `mixed` used for array access on `array<array-key, string('large')|string('medium')|string('small')|string('sole_trader')>`."
+count = 1
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "mixed-array-index"
+message = "Invalid index type `mixed` used for array access on `array<int, string>`."
+count = 2
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `update` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
+count = 4
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $ulid on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/EnterpriseSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $ulid on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/GroupSeeder.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
 count = 1
+
+[[issues]]
+file = "database/seeders/LandlordSeeder.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "database/seeders/OrganisationSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/ProjectSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/RoleSeeder.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `setPermissionsTeamId`: expected `Illuminate\Database\Eloquent\Model|int|null|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/RoleSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/SectorSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/SquadSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/TeamMoveApprovalSeeder.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "database/seeders/TeamMoveApprovalSeeder.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 5
+
+[[issues]]
+file = "database/seeders/TeamMoveApprovalSeeder.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `wherenotnull` on class `Illuminate\Database\Eloquent\Builder`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/TeamMoveApprovalSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Team`.'
+count = 2
+
+[[issues]]
+file = "database/seeders/TeamMoveApprovalSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\User`.'
+count = 2
+
+[[issues]]
+file = "database/seeders/UnitSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Department`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/UserSeeder.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `setPermissionsTeamId`: expected `Illuminate\Database\Eloquent\Model|int|null|string`, but found `mixed`.'
+count = 2
+
+[[issues]]
+file = "database/seeders/UserSeeder.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assignrole` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/UserSeeder.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assignrole` on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/UserSeeder.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Models\Enterprise`.'
+count = 2
 
 [[issues]]
 file = "resources/views/components/teams/⚡move-team.blade.php"
@@ -2673,7 +2907,7 @@ count = 1
 [[issues]]
 file = "resources/views/livewire/teams/[ulid].blade.php"
 code = "less-specific-return-statement"
-message = 'Returned type `Illuminate\Database\Eloquent\Collection<array-key, mixed>&static` is less specific than the declared return type `Illuminate\Database\Eloquent\Collection<int, App\Models\Team>` for function `class@anonymous:878805918659155622-130:2766::getparentsproperty`.'
+message = 'Returned type `Illuminate\Database\Eloquent\Collection<array-key, mixed>&static` is less specific than the declared return type `Illuminate\Database\Eloquent\Collection<int, App\Models\Team>` for function `class@anonymous:878805918659155622-130:2775::getparentsproperty`.'
 count = 1
 
 [[issues]]
@@ -2805,7 +3039,7 @@ count = 1
 [[issues]]
 file = "resources/views/livewire/teams/ulid.blade.php"
 code = "less-specific-return-statement"
-message = 'Returned type `Illuminate\Database\Eloquent\Collection<array-key, mixed>&static` is less specific than the declared return type `Illuminate\Database\Eloquent\Collection<int, App\Models\Team>` for function `class@anonymous:4158786829593915769-120:2756::getparentsproperty`.'
+message = 'Returned type `Illuminate\Database\Eloquent\Collection<array-key, mixed>&static` is less specific than the declared return type `Illuminate\Database\Eloquent\Collection<int, App\Models\Team>` for function `class@anonymous:4158786829593915769-120:2729::getparentsproperty`.'
 count = 1
 
 [[issues]]
@@ -2831,12 +3065,6 @@ file = "resources/views/livewire/teams/ulid.blade.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `App\Models\Team`.'
 count = 2
-
-[[issues]]
-file = "resources/views/livewire/teams/ulid.blade.php"
-code = "redundant-cast"
-message = "Redundant cast to `(string)`: the expression already has this type."
-count = 1
 
 [[issues]]
 file = "resources/views/livewire/teams/ulid.blade.php"
@@ -2896,19 +3124,19 @@ count = 1
 file = "routes/web.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 5
+count = 4
 
 [[issues]]
 file = "routes/web.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `livewire` on class `Illuminate\Support\Facades\Route`.'
-count = 6
+count = 5
 
 [[issues]]
 file = "tests/Arch/ApplicationLayerDependenciesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 5
+count = 7
 
 [[issues]]
 file = "tests/Arch/ApplicationLayerDependenciesTest.php"
@@ -2926,7 +3154,7 @@ count = 1
 file = "tests/Arch/AuthorizationEventDependenciesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 5
+count = 6
 
 [[issues]]
 file = "tests/Arch/AuthorizationEventDependenciesTest.php"
@@ -2944,7 +3172,7 @@ count = 1
 file = "tests/Arch/ClassStructureTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 14
+count = 16
 
 [[issues]]
 file = "tests/Arch/ClassStructureTest.php"
@@ -2962,7 +3190,7 @@ count = 1
 file = "tests/Arch/CoreApplicationDependenciesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 5
+count = 6
 
 [[issues]]
 file = "tests/Arch/CoreApplicationDependenciesTest.php"
@@ -2980,7 +3208,7 @@ count = 1
 file = "tests/Arch/DomainLayerDependenciesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 5
+count = 7
 
 [[issues]]
 file = "tests/Arch/DomainLayerDependenciesTest.php"
@@ -2998,7 +3226,7 @@ count = 1
 file = "tests/Arch/HttpLayerDependenciesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 4
+count = 5
 
 [[issues]]
 file = "tests/Arch/HttpLayerDependenciesTest.php"
@@ -3016,7 +3244,7 @@ count = 1
 file = "tests/Arch/NamingConventionsTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 17
+count = 18
 
 [[issues]]
 file = "tests/Arch/NamingConventionsTest.php"
@@ -3034,7 +3262,7 @@ count = 1
 file = "tests/Arch/NegativeDependenciesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 4
+count = 5
 
 [[issues]]
 file = "tests/Arch/NegativeDependenciesTest.php"
@@ -3052,7 +3280,7 @@ count = 1
 file = "tests/Arch/StateManagementDependenciesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Arch/StateManagementDependenciesTest.php"
@@ -3070,7 +3298,7 @@ count = 1
 file = "tests/Arch/TestStructureTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 3
+count = 5
 
 [[issues]]
 file = "tests/Arch/TestStructureTest.php"
@@ -3088,7 +3316,7 @@ count = 1
 file = "tests/Arch/UiLayerDependenciesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 3
+count = 4
 
 [[issues]]
 file = "tests/Arch/UiLayerDependenciesTest.php"
@@ -3208,31 +3436,61 @@ count = 6
 file = "tests/Browser/ComponentsTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 15
+count = 13
+
+[[issues]]
+file = "tests/Browser/ComponentsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `accessibleorganisations` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Browser/ComponentsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `accessibleorganisations` on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
 
 [[issues]]
 file = "tests/Browser/ComponentsTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assertnoconsolelogs` on class `Pest\Browser\Api\AwaitableWebpage`.'
-count = 11
+count = 10
 
 [[issues]]
 file = "tests/Browser/ComponentsTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assertnoconsolelogs` on class `Pest\Browser\Api\PendingAwaitablePage`.'
-count = 11
+count = 10
 
 [[issues]]
 file = "tests/Browser/ComponentsTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assertsee` on class `Pest\Browser\Api\PendingAwaitablePage`.'
-count = 5
+count = 4
+
+[[issues]]
+file = "tests/Browser/ComponentsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `enterprises` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Browser/ComponentsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `enterprises` on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
+
+[[issues]]
+file = "tests/Browser/ComponentsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `first` on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
 
 [[issues]]
 file = "tests/Browser/ComponentsTest.php"
 code = "undefined-variable"
 message = "Undefined variable: `$this`."
-count = 12
+count = 11
 
 [[issues]]
 file = "tests/Browser/DarkModeTest.php"
@@ -3257,24 +3515,6 @@ file = "tests/Browser/DarkModeTest.php"
 code = "undefined-variable"
 message = "Undefined variable: `$this`."
 count = 5
-
-[[issues]]
-file = "tests/Browser/ExampleTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `assertnoconsolelogs` on class `Pest\Browser\Api\AwaitableWebpage`.'
-count = 1
-
-[[issues]]
-file = "tests/Browser/ExampleTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `assertnoconsolelogs` on class `Pest\Browser\Api\PendingAwaitablePage`.'
-count = 1
-
-[[issues]]
-file = "tests/Browser/ExampleTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `assertsee` on class `Pest\Browser\Api\PendingAwaitablePage`.'
-count = 1
 
 [[issues]]
 file = "tests/Browser/PagesTest.php"
@@ -3292,19 +3532,19 @@ count = 7
 file = "tests/Browser/PagesTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 50
+count = 53
 
 [[issues]]
 file = "tests/Browser/PagesTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assertnoconsolelogs` on class `Pest\Browser\Api\AwaitableWebpage`.'
-count = 17
+count = 16
 
 [[issues]]
 file = "tests/Browser/PagesTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assertnoconsolelogs` on class `Pest\Browser\Api\PendingAwaitablePage`.'
-count = 17
+count = 16
 
 [[issues]]
 file = "tests/Browser/PagesTest.php"
@@ -3316,13 +3556,25 @@ count = 2
 file = "tests/Browser/PagesTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assertsee` on class `Pest\Browser\Api\PendingAwaitablePage`.'
-count = 11
+count = 10
 
 [[issues]]
 file = "tests/Browser/PagesTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `click` on class `Pest\Browser\Api\PendingAwaitablePage`.'
 count = 4
+
+[[issues]]
+file = "tests/Browser/PagesTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `enterprises` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 6
+
+[[issues]]
+file = "tests/Browser/PagesTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `enterprises` on class `Illuminate\Database\Eloquent\Model`.'
+count = 6
 
 [[issues]]
 file = "tests/Browser/PagesTest.php"
@@ -3346,13 +3598,13 @@ count = 1
 file = "tests/Browser/PagesTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 1
+count = 2
 
 [[issues]]
 file = "tests/Browser/PagesTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
-count = 1
+count = 2
 
 [[issues]]
 file = "tests/Browser/PagesTest.php"
@@ -3382,7 +3634,7 @@ count = 7
 file = "tests/Browser/PagesTest.php"
 code = "undefined-variable"
 message = "Undefined variable: `$this`."
-count = 19
+count = 18
 
 [[issues]]
 file = "tests/Browser/ResponsiveTest.php"
@@ -3400,7 +3652,19 @@ count = 8
 file = "tests/Browser/ResponsiveTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 12
+count = 13
+
+[[issues]]
+file = "tests/Browser/ResponsiveTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `accessibleorganisations` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Browser/ResponsiveTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `accessibleorganisations` on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
 
 [[issues]]
 file = "tests/Browser/ResponsiveTest.php"
@@ -3417,8 +3681,32 @@ count = 9
 [[issues]]
 file = "tests/Browser/ResponsiveTest.php"
 code = "non-documented-method"
+message = 'Ambiguous method call to `enterprises` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Browser/ResponsiveTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `enterprises` on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
+
+[[issues]]
+file = "tests/Browser/ResponsiveTest.php"
+code = "non-documented-method"
 message = 'Ambiguous method call to `resize` on class `Pest\Browser\Api\PendingAwaitablePage`.'
 count = 8
+
+[[issues]]
+file = "tests/Browser/ResponsiveTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Browser/ResponsiveTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
 
 [[issues]]
 file = "tests/Browser/ResponsiveTest.php"
@@ -3892,7 +4180,7 @@ count = 33
 file = "tests/Feature/Context/ContextScopingTest.php"
 code = "mixed-property-access"
 message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 39
+count = 41
 
 [[issues]]
 file = "tests/Feature/Context/ContextScopingTest.php"
@@ -3928,7 +4216,7 @@ count = 10
 file = "tests/Feature/Context/ContextScopingTest.php"
 code = "undefined-variable"
 message = "Undefined variable: `$this`."
-count = 24
+count = 25
 
 [[issues]]
 file = "tests/Feature/Context/InvalidContextAutoCorrectionTest.php"
@@ -4063,24 +4351,6 @@ message = 'Ambiguous method call to `tobetrue` on class `Pest\Expectation`.'
 count = 1
 
 [[issues]]
-file = "tests/Feature/ExampleTest.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 1
-
-[[issues]]
-file = "tests/Feature/ExampleTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 2
-
-[[issues]]
-file = "tests/Feature/ExampleTest.php"
-code = "undefined-variable"
-message = "Undefined variable: `$this`."
-count = 1
-
-[[issues]]
 file = "tests/Feature/Http/Requests/StoreTeamRequestTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tobefalse` on class `Pest\Expectation`.'
@@ -4135,16 +4405,112 @@ message = 'Ambiguous method call to `tohavekey` on class `Pest\Expectation`.'
 count = 2
 
 [[issues]]
+file = "tests/Feature/Models/Concerns/HasTranslatableAttributesTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 2
+
+[[issues]]
+file = "tests/Feature/Models/Concerns/HasTranslatableAttributesTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Models/Concerns/HasTranslatableSlugTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 2
+
+[[issues]]
+file = "tests/Feature/Models/Concerns/HasTranslatableSlugTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Models/Concerns/HasUlidTest.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `mb_strlen`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Models/Concerns/HasUlidTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 2
+
+[[issues]]
+file = "tests/Feature/Models/Concerns/HasUlidTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Models/Concerns/HasUlidTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobenull` on class `Pest\Expectations\OppositeExpectation`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Models/Concerns/HasUlidTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $ulid on class `Tests\Unit\Models\Concerns\HasUlidTestModel`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/Models/UserTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 3
+
+[[issues]]
+file = "tests/Feature/Models/UserTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 10
+
+[[issues]]
+file = "tests/Feature/Models/UserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `gettranslation` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Models/UserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `gettranslation` on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Models/UserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/Models/UserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tocontain` on class `Pest\Expectation`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/Models/UserTest.php"
+code = "undefined-variable"
+message = "Undefined variable: `$this`."
+count = 1
+
+[[issues]]
 file = "tests/Feature/Performance/BioRenderingPerformanceTest.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Performance/BioRenderingPerformanceTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 3
+count = 6
 
 [[issues]]
 file = "tests/Feature/Performance/BioRenderingPerformanceTest.php"
@@ -4168,13 +4534,13 @@ count = 1
 file = "tests/Feature/Performance/BioRenderingPerformanceTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $bio_html on class `Illuminate\Database\Eloquent\Collection`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Performance/BioRenderingPerformanceTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $bio_html on class `Illuminate\Database\Eloquent\Model`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Performance/SyntaxHighlightingPerformanceTest.php"
@@ -4192,7 +4558,7 @@ count = 3
 file = "tests/Feature/Performance/SyntaxHighlightingPerformanceTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 3
+count = 6
 
 [[issues]]
 file = "tests/Feature/Performance/SyntaxHighlightingPerformanceTest.php"
@@ -4240,13 +4606,19 @@ count = 5
 file = "tests/Feature/SchemaArchitectureTest.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 16
+count = 18
 
 [[issues]]
 file = "tests/Feature/SchemaArchitectureTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 34
+count = 36
+
+[[issues]]
+file = "tests/Feature/SchemaArchitectureTest.php"
+code = "mixed-operand"
+message = "Left operand in `&&` operation has `mixed` type."
+count = 2
 
 [[issues]]
 file = "tests/Feature/SchemaArchitectureTest.php"
@@ -4420,7 +4792,7 @@ count = 2
 file = "tests/Feature/SchemaArchitectureTest.php"
 code = "undefined-variable"
 message = "Undefined variable: `$this`."
-count = 12
+count = 14
 
 [[issues]]
 file = "tests/Feature/Services/TeamHierarchyTraversalServiceTest.php"
@@ -4957,18 +5329,6 @@ message = "Undefined variable: `$this`."
 count = 6
 
 [[issues]]
-file = "tests/Feature/SfcTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 1
-
-[[issues]]
-file = "tests/Feature/SfcTest.php"
-code = "possibly-invalid-argument"
-message = 'Possible argument type mismatch for argument #1 of `Pest\Laravel\actingAs`: expected `Illuminate\Contracts\Auth\Authenticatable`, but possibly received `Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>|Illuminate\Database\Eloquent\Model`.'
-count = 1
-
-[[issues]]
 file = "tests/Feature/SuperAdminRoleTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assignrole` on class `Illuminate\Database\Eloquent\Collection`.'
@@ -5026,6 +5386,12 @@ count = 15
 file = "tests/Feature/SuperAdminRoleTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $is_key on class `App\Models\Role`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Support/Html/TeamBioRendererTest.php"
+code = "invalid-return-statement"
+message = "Invalid return type for function `3465110993842687973:1824`: expected `null|string`, but found `array<array-key, mixed>|null|string`."
 count = 1
 
 [[issues]]
@@ -5122,13 +5488,13 @@ count = 4
 file = "tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php"
 code = "less-specific-argument"
 message = 'Argument type mismatch for argument #1 of `App\Support\Validation\TeamHierarchy\DepthValidator::validate`: expected `App\Models\Team`, but provided type `Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>|Illuminate\Database\Eloquent\Model` is less specific.'
-count = 2
+count = 5
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
-count = 1
+count = 2
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php"
@@ -5140,31 +5506,31 @@ count = 1
 file = "tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tothrow` on class `Pest\Expectation`.'
-count = 1
+count = 2
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 3
+count = 6
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
-count = 3
+count = 6
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $parent_id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/DepthValidatorTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $parent_id on class `Illuminate\Database\Eloquent\Model`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/EnterpriseParentValidatorTest.php"
@@ -5248,49 +5614,73 @@ count = 2
 file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
 code = "less-specific-argument"
 message = 'Argument type mismatch for argument #1 of `App\Support\Validation\TeamHierarchy\ParentTypeValidator::validate`: expected `App\Models\Team`, but provided type `Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>|Illuminate\Database\Eloquent\Model` is less specific.'
-count = 3
+count = 10
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 3
+count = 7
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
-count = 3
+count = 14
+
+[[issues]]
+file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobenull` on class `Pest\Expectation`.'
+count = 8
+
+[[issues]]
+file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobetrue` on class `Pest\Expectation`.'
+count = 8
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 11
+count = 20
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
-count = 11
+count = 20
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $parent_id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 3
+count = 10
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $parent_id on class `Illuminate\Database\Eloquent\Model`.'
-count = 3
+count = 10
+
+[[issues]]
+file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $type on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $type on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php"
 code = "undefined-variable"
 message = "Undefined variable: `$this`."
-count = 3
+count = 6
 
 [[issues]]
 file = "tests/Feature/Support/Validation/TeamName/ArrayNameQueryBuilderTest.php"
@@ -5355,19 +5745,43 @@ count = 4
 [[issues]]
 file = "tests/Feature/Teams/BulkTeamOperationsTest.php"
 code = "invalid-argument"
-message = '''Invalid argument type for argument #1 of `Illuminate\Support\Collection::map`: expected `(callable(Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>|Illuminate\Database\Eloquent\Model, non-negative-int): array{'id': mixed, 'lock_version': non-negative-int, 'name': truthy-string, 'parent_id': mixed, 'type': string('department')|string('division')|string('enterprise')|string('organisation')|string('project')})`, but found `(closure(App\Models\Organisation, int): array{'id': mixed, 'lock_version': non-negative-int, 'name': truthy-string, 'parent_id': mixed, 'type': string('department')|string('division')|string('enterprise')|string('organisation')|string('project')})`.'''
+message = '''Invalid argument type for argument #1 of `Illuminate\Support\Collection::map`: expected `(callable(Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model>|Illuminate\Database\Eloquent\Model, non-negative-int): array{'id': mixed, 'lock_version': non-negative-int, 'name': truthy-string, 'parent_id': mixed, 'type': string('business_unit')|string('department')|string('discipline')|string('division')|string('enterprise')|string('group')|string('organisation')|string('project')|string('sector')|string('squad')|string('unit')})`, but found `(closure(App\Models\Organisation, int): array{'id': mixed, 'lock_version': non-negative-int, 'name': truthy-string, 'parent_id': mixed, 'type': string('business_unit')|string('department')|string('discipline')|string('division')|string('enterprise')|string('group')|string('organisation')|string('project')|string('sector')|string('squad')|string('unit')})`.'''
 count = 1
 
 [[issues]]
 file = "tests/Feature/Teams/BulkTeamOperationsTest.php"
 code = "invalid-return-statement"
-message = "Invalid return type for function `1546255272895472068:1020`: expected `array{'name': string('Team 1')|string('Team 2')|string('Team 3'), 'parent_id': mixed, 'type': string('organisation')}`, but found `array{'name': string, 'parent_id': mixed, 'type': string('department')|string('division')|string('enterprise')|string('organisation')|string('project')}`."
+message = "Invalid return type for function `1546255272895472068:1020`: expected `array{'name': string('Team 1')|string('Team 2')|string('Team 3'), 'parent_id': mixed, 'type': string('organisation')}`, but found `array{'name': string, 'parent_id': mixed, 'type': string('business_unit')|string('department')|string('discipline')|string('division')|string('enterprise')|string('group')|string('organisation')|string('project')|string('sector')|string('squad')|string('unit')}`."
 count = 1
 
 [[issues]]
 file = "tests/Feature/Teams/BulkTeamOperationsTest.php"
 code = "invalid-return-statement"
-message = "Invalid return type for function `1546255272895472068:5069`: expected `array{'name': string, 'parent_id': mixed, 'type': string('organisation')}`, but found `array{'name': non-empty-string, 'parent_id': mixed, 'type': string('department')|string('division')|string('enterprise')|string('organisation')|string('project')}`."
+message = "Invalid return type for function `1546255272895472068:2431`: expected `array{'id': mixed, 'lock_version': non-negative-int, 'name': string, 'parent_id': mixed, 'type': string('organisation')}`, but found `array{'id': mixed, 'lock_version': non-negative-int, 'name': truthy-string, 'parent_id': mixed, 'type': string('business_unit')|string('department')|string('discipline')|string('division')|string('enterprise')|string('group')|string('organisation')|string('project')|string('sector')|string('squad')|string('unit')}`."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/BulkTeamOperationsTest.php"
+code = "invalid-return-statement"
+message = "Invalid return type for function `1546255272895472068:3915`: expected `array{'name': mixed|string('Another Valid Team')|string('Valid Team'), 'parent_id': mixed, 'type': string('organisation')}`, but found `array{'name': mixed, 'parent_id': mixed, 'type': string('business_unit')|string('department')|string('discipline')|string('division')|string('enterprise')|string('group')|string('organisation')|string('project')|string('sector')|string('squad')|string('unit')}`."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/BulkTeamOperationsTest.php"
+code = "invalid-return-statement"
+message = "Invalid return type for function `1546255272895472068:5676`: expected `array{'name': string, 'parent_id': mixed, 'type': string('organisation')}`, but found `array{'name': non-empty-string, 'parent_id': mixed, 'type': string('business_unit')|string('department')|string('discipline')|string('division')|string('enterprise')|string('group')|string('organisation')|string('project')|string('sector')|string('squad')|string('unit')}`."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/BulkTeamOperationsTest.php"
+code = "invalid-return-statement"
+message = "Invalid return type for function `1546255272895472068:6873`: expected `array{'id'?: mixed, 'lock_version'?: mixed, 'name': string('New Team 1')|string('New Team 2')|string('Updated Existing Team'), 'parent_id': mixed, 'type': string('organisation')}`, but found `array{'id'?: mixed, 'lock_version'?: mixed, 'name': string('New Team 1')|string('New Team 2')|string('Updated Existing Team'), 'parent_id': mixed, 'type': string('business_unit')|string('department')|string('discipline')|string('division')|string('enterprise')|string('group')|string('organisation')|string('project')|string('sector')|string('squad')|string('unit')}`."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/BulkTeamOperationsTest.php"
+code = "invalid-return-statement"
+message = "Invalid return type for function `1546255272895472068:8473`: expected `array{'name': string('Team 1')|string('Team 2'), 'parent_id': int(99999), 'type': string('organisation')}`, but found `array{'name': string, 'parent_id': int(99999), 'type': string('business_unit')|string('department')|string('discipline')|string('division')|string('enterprise')|string('group')|string('organisation')|string('project')|string('sector')|string('squad')|string('unit')}`."
 count = 1
 
 [[issues]]
@@ -5545,48 +5959,6 @@ message = "Undefined variable: `$this`."
 count = 24
 
 [[issues]]
-file = "tests/Feature/Teams/CreateTeamComponentTest.php"
-code = "invalid-property-access"
-message = "Attempting to access a property on a non-object type (`never`)."
-count = 1
-
-[[issues]]
-file = "tests/Feature/Teams/CreateTeamComponentTest.php"
-code = "method-access-on-null"
-message = "Attempting to call a method on `null`."
-count = 1
-
-[[issues]]
-file = "tests/Feature/Teams/CreateTeamComponentTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 3
-
-[[issues]]
-file = "tests/Feature/Teams/CreateTeamComponentTest.php"
-code = "mixed-property-access"
-message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 5
-
-[[issues]]
-file = "tests/Feature/Teams/CreateTeamComponentTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobeinstanceof` on class `Pest\Expectation`.'
-count = 1
-
-[[issues]]
-file = "tests/Feature/Teams/CreateTeamComponentTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobetrue` on class `Pest\Expectation`.'
-count = 3
-
-[[issues]]
-file = "tests/Feature/Teams/CreateTeamComponentTest.php"
-code = "undefined-variable"
-message = "Undefined variable: `$this`."
-count = 6
-
-[[issues]]
 file = "tests/Feature/Teams/CreateTeamWithVerbsTest.php"
 code = "invalid-property-access"
 message = "Attempting to access a property on a non-object type (`never`)."
@@ -5719,48 +6091,6 @@ message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent
 count = 2
 
 [[issues]]
-file = "tests/Feature/Teams/EditTeamComponentTest.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Actions\Teams\UpdateTeam::handle`: expected `App\Models\Team`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "tests/Feature/Teams/EditTeamComponentTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 9
-
-[[issues]]
-file = "tests/Feature/Teams/EditTeamComponentTest.php"
-code = "mixed-property-access"
-message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 8
-
-[[issues]]
-file = "tests/Feature/Teams/EditTeamComponentTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
-count = 2
-
-[[issues]]
-file = "tests/Feature/Teams/EditTeamComponentTest.php"
-code = "non-documented-property"
-message = 'Ambiguous property access: $bio on class `App\Models\Team`.'
-count = 1
-
-[[issues]]
-file = "tests/Feature/Teams/EditTeamComponentTest.php"
-code = "non-documented-property"
-message = 'Ambiguous property access: $name on class `App\Models\Team`.'
-count = 1
-
-[[issues]]
-file = "tests/Feature/Teams/EditTeamComponentTest.php"
-code = "undefined-variable"
-message = "Undefined variable: `$this`."
-count = 8
-
-[[issues]]
 file = "tests/Feature/Teams/EnterpriseCreationTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
@@ -5800,7 +6130,7 @@ count = 1
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "mixed-argument"
 message = 'Invalid argument type for argument #1 of `setPermissionsTeamId`: expected `Illuminate\Database\Eloquent\Model|int|null|string`, but found `mixed`.'
-count = 3
+count = 5
 
 [[issues]]
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
@@ -5824,13 +6154,13 @@ count = 2
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assignexecutive` on class `Illuminate\Database\Eloquent\Collection`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assignexecutive` on class `Illuminate\Database\Eloquent\Model`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
@@ -5848,19 +6178,43 @@ count = 1
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `hasrole` on class `Illuminate\Database\Eloquent\Collection`.'
-count = 3
+count = 5
 
 [[issues]]
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `hasrole` on class `Illuminate\Database\Eloquent\Model`.'
-count = 3
+count = 5
+
+[[issues]]
+file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `refresh` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `replaceexecutive` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `replaceexecutive` on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobefalse` on class `Pest\Expectation`.'
+count = 1
 
 [[issues]]
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tobetrue` on class `Pest\Expectation`.'
-count = 3
+count = 5
 
 [[issues]]
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
@@ -5872,19 +6226,19 @@ count = 1
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 4
+count = 6
 
 [[issues]]
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
-count = 4
+count = 6
 
 [[issues]]
 file = "tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php"
 code = "undefined-variable"
 message = "Undefined variable: `$this`."
-count = 2
+count = 1
 
 [[issues]]
 file = "tests/Feature/Teams/HierarchicalSlugTest.php"
@@ -5937,20 +6291,38 @@ count = 3
 [[issues]]
 file = "tests/Feature/Teams/HierarchyValidationTest.php"
 code = "non-documented-method"
+message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/Teams/HierarchyValidationTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobeinstanceof` on class `Pest\Expectation`.'
+count = 5
+
+[[issues]]
+file = "tests/Feature/Teams/HierarchyValidationTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobenull` on class `Pest\Expectation`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/Teams/HierarchyValidationTest.php"
+code = "non-documented-method"
 message = 'Ambiguous method call to `tothrow` on class `Pest\Expectation`.'
-count = 4
+count = 5
 
 [[issues]]
 file = "tests/Feature/Teams/HierarchyValidationTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 9
+count = 16
 
 [[issues]]
 file = "tests/Feature/Teams/HierarchyValidationTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
-count = 9
+count = 16
 
 [[issues]]
 file = "tests/Feature/Teams/OptimisticLockingTest.php"
@@ -6032,6 +6404,24 @@ count = 1
 
 [[issues]]
 file = "tests/Feature/Teams/ProjectCreationTest.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/ProjectCreationTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/Teams/ProjectCreationTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `tobe` on class `Pest\Expectations\OppositeExpectation`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/ProjectCreationTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tobeinstanceof` on class `Pest\Expectation`.'
 count = 1
@@ -6040,13 +6430,37 @@ count = 1
 file = "tests/Feature/Teams/ProjectCreationTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 4
+count = 5
 
 [[issues]]
 file = "tests/Feature/Teams/ProjectCreationTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
-count = 4
+count = 5
+
+[[issues]]
+file = "tests/Feature/Teams/ProjectCreationTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $tenant on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/ProjectCreationTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $tenant on class `Illuminate\Database\Eloquent\Model`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/ProjectCreationTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $tenant_id on class `Illuminate\Database\Eloquent\Collection`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/Teams/ProjectCreationTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $tenant_id on class `Illuminate\Database\Eloquent\Model`.'
+count = 2
 
 [[issues]]
 file = "tests/Feature/Teams/StateTransitionsTest.php"
@@ -6321,32 +6735,38 @@ count = 8
 [[issues]]
 file = "tests/Feature/Teams/TeamMoveCyclePreventionTest.php"
 code = "non-documented-method"
+message = 'Ambiguous method call to `refresh` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/TeamMoveCyclePreventionTest.php"
+code = "non-documented-method"
 message = 'Ambiguous method call to `save` on class `Illuminate\Database\Eloquent\Collection`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Teams/TeamMoveCyclePreventionTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
-count = 9
+count = 12
 
 [[issues]]
 file = "tests/Feature/Teams/TeamMoveCyclePreventionTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Model`.'
-count = 9
+count = 12
 
 [[issues]]
 file = "tests/Feature/Teams/TeamMoveCyclePreventionTest.php"
 code = "non-documented-property"
 message = 'Ambiguous property access: $parent_id on class `Illuminate\Database\Eloquent\Model`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Teams/TeamMoveCyclePreventionTest.php"
 code = "non-existent-property"
 message = 'Property `$parent_id` does not exist on class `Illuminate\Database\Eloquent\Collection`.'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/Feature/Teams/TeamMoveTest.php"
@@ -7027,12 +7447,6 @@ message = "Undefined variable: `$this`."
 count = 1
 
 [[issues]]
-file = "tests/TestCase.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 2
-
-[[issues]]
 file = "tests/Unit/DummyTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tobetrue` on class `Pest\Expectation`.'
@@ -7099,70 +7513,10 @@ message = 'Ambiguous method call to `tobeempty` on class `Pest\Expectations\Oppo
 count = 1
 
 [[issues]]
-file = "tests/Unit/ExampleTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobetrue` on class `Pest\Expectation`.'
-count = 1
-
-[[issues]]
 file = "tests/Unit/Handlers/Commands/Teams/UpdateTeamHandlerTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tobetrue` on class `Pest\Expectation`.'
 count = 1
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasTranslatableAttributesTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 2
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasTranslatableAttributesTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
-count = 1
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasTranslatableSlugTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 2
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasTranslatableSlugTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
-count = 1
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasUlidTest.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #1 of `mb_strlen`: expected `string`, but found `mixed`."
-count = 1
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasUlidTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 2
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasUlidTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
-count = 1
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasUlidTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobenull` on class `Pest\Expectations\OppositeExpectation`.'
-count = 1
-
-[[issues]]
-file = "tests/Unit/Models/Concerns/HasUlidTest.php"
-code = "non-documented-property"
-message = 'Ambiguous property access: $ulid on class `Tests\Unit\Models\Concerns\HasUlidTestModel`.'
-count = 2
 
 [[issues]]
 file = "tests/Unit/Models/Concerns/HasUlidTestModel.php"
@@ -7229,48 +7583,6 @@ file = "tests/Unit/Models/TeamTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `tocontain` on class `Pest\Expectation`.'
 count = 2
-
-[[issues]]
-file = "tests/Unit/Models/UserTest.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 3
-
-[[issues]]
-file = "tests/Unit/Models/UserTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 10
-
-[[issues]]
-file = "tests/Unit/Models/UserTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `gettranslation` on class `Illuminate\Database\Eloquent\Collection`.'
-count = 1
-
-[[issues]]
-file = "tests/Unit/Models/UserTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `gettranslation` on class `Illuminate\Database\Eloquent\Model`.'
-count = 1
-
-[[issues]]
-file = "tests/Unit/Models/UserTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tobe` on class `Pest\Expectation`.'
-count = 3
-
-[[issues]]
-file = "tests/Unit/Models/UserTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `tocontain` on class `Pest\Expectation`.'
-count = 2
-
-[[issues]]
-file = "tests/Unit/Models/UserTest.php"
-code = "undefined-variable"
-message = "Undefined variable: `$this`."
-count = 1
 
 [[issues]]
 file = "tests/Unit/Support/ResultTest.php"

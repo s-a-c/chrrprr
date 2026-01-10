@@ -9,22 +9,46 @@ use App\Models\Team;
 use Illuminate\Validation\ValidationException;
 use Override;
 
+/**
+ * Validates parent-child relationships in team hierarchy.
+ *
+ * Rules:
+ * - Hierarchical teams: parent level < child level (level-based)
+ * - Cross-functional teams: no parent required (floating)
+ */
 final class ParentTypeValidator implements HierarchyValidatorInterface
 {
     #[Override]
     public function validate(Team $team): void
     {
-        // Only Enterprise can exist without a parent
-        $requiresParent = $team->type !== TeamType::ENTERPRISE;
+        // Cross-functional (floating) teams don't require hierarchical parents
+        if ($team->type->isFloating()) {
+            // Floating teams should NOT have a parent
+            if ($team->parent_id !== null) {
+                throw ValidationException::withMessages([
+                    'parent_id' => ['Cross-functional teams like '.$team->type->label().' cannot have a parent.'],
+                ]);
+            }
 
-        if ($requiresParent && $team->parent_id === null) {
-            throw ValidationException::withMessages([
-                'parent_id' => ['This team type requires a parent team.'],
-            ]);
+            return;
         }
 
+        // Enterprise is the only hierarchical type that can be root
+        if ($team->type === TeamType::ENTERPRISE) {
+            if ($team->parent_id !== null) {
+                throw ValidationException::withMessages([
+                    'parent_id' => ['Enterprise cannot have a parent.'],
+                ]);
+            }
+
+            return;
+        }
+
+        // All other hierarchical types require a parent
         if ($team->parent_id === null) {
-            return; // No parent to validate
+            throw ValidationException::withMessages([
+                'parent_id' => [$team->type->label().' requires a parent team.'],
+            ]);
         }
 
         $parent = $this->resolveParent($team);
@@ -35,31 +59,30 @@ final class ParentTypeValidator implements HierarchyValidatorInterface
             ]);
         }
 
-        if (! $this->isValidParentHierarchy($team->type, $parent->type)) {
+        // Parent must be hierarchical
+        if ($parent->type->isFloating()) {
+            throw ValidationException::withMessages([
+                'parent_id' => ['Cannot use a cross-functional team as parent.'],
+            ]);
+        }
+
+        // Level-based validation: child level must be > parent level
+        $childLevel = $team->type->level();
+        $parentLevel = $parent->type->level();
+
+        if ($childLevel === null || $parentLevel === null) {
+            throw ValidationException::withMessages([
+                'parent_id' => ['Invalid parent relationship.'],
+            ]);
+        }
+
+        if ($childLevel <= $parentLevel) {
             throw ValidationException::withMessages([
                 'parent_id' => [
-                    "{$team->type->value} must belong to a {$this->getExpectedParentType($team->type)->value}, but belongs to {$parent->type->value}.",
+                    "{$team->type->label()} (level {$childLevel}) cannot have {$parent->type->label()} (level {$parentLevel}) as parent.",
                 ],
             ]);
         }
-    }
-
-    private function isValidParentHierarchy(TeamType $childType, TeamType $parentType): bool
-    {
-        $expectedParent = $this->getExpectedParentType($childType);
-
-        return $expectedParent === $parentType;
-    }
-
-    private function getExpectedParentType(TeamType $childType): ?TeamType
-    {
-        return match ($childType) {
-            TeamType::ORGANISATION => TeamType::ENTERPRISE,
-            TeamType::DIVISION => TeamType::ORGANISATION,
-            TeamType::DEPARTMENT => TeamType::DIVISION,
-            TeamType::PROJECT => TeamType::DEPARTMENT,
-            default => null,
-        };
     }
 
     private function resolveParent(Team $team): ?Team
@@ -70,7 +93,6 @@ final class ParentTypeValidator implements HierarchyValidatorInterface
         }
 
         // Otherwise, query for the parent
-        // Use Team::query() instead of $team->newQuery() to ensure we get the correct model
         return Team::query()
             ->withoutGlobalScopes()
             ->where('id', $team->parent_id)

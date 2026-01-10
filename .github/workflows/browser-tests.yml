@@ -89,7 +89,8 @@ jobs:
         run: cp .env.example .env
 
       - name: Generate Application Key
-        run: php artisan key:generate
+        run: |
+          php artisan key:generate
 
       - name: Setup Test Environment
         run: |
@@ -103,10 +104,14 @@ jobs:
           export DB_SEARCH_SCHEMA=public
           php artisan migrate:fresh --env=testing --force
 
-
-
       - name: Build Assets
         run: bun run build
+
+      - name: Run Linters
+        run: composer run lint
+
+      - name: Run Static Analyzers
+        run: composer run analyze
 
       - name: Setup Test Database for Behat
         run: |

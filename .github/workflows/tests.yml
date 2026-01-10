@@ -106,6 +106,12 @@ jobs:
       - name: Build Assets
         run: bun run build
 
+      - name: Run Linters
+        run: composer run lint
+
+      - name: Run Static Analyzers
+        run: composer run analyze
+
       - name: Setup Test Database
         run: |
           export DB_SCHEMA=public

@@ -20,7 +20,7 @@ final class CreateNewUser implements CreatesNewUsers
     /**
      * Validate and create a newly registered user.
      *
-     * @param  array<string, mixed>  $input
+     * @param  array<array-key, mixed>  $input
      */
     #[Override]
     public function create(array $input): User

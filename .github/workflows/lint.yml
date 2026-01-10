@@ -62,3 +62,6 @@ jobs:
 
       - name: Run Linters
         run: composer run lint
+
+      - name: Run Static Analyzers
+        run: composer run analyze

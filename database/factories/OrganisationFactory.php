@@ -26,7 +26,7 @@ final class OrganisationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ['en' => fake()->company()],
+            'name' => ['en' => fake()->unique()->company()],
             'state' => Active::class,
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0

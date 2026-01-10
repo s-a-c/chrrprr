@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Domain;
 use App\Models\Enterprise;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 final class DomainSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      *
-     * Note: Domain is part of the tenancy package and may be managed automatically.
-     * This seeder creates basic domains for enterprises if needed.
+     * Creates domains for all enterprises. Note: Landlord domain (chrrprr.test)
+     * is already created by LandlordSeeder.
      */
     public function run(): void
     {
-        // Get all enterprises
-        $enterprises = Enterprise::all();
+        // Get all enterprises except landlord (id=0, already has domain from LandlordSeeder)
+        $enterprises = Enterprise::query()->where('id', '>', 0)->get();
 
         if ($enterprises->isEmpty()) {
             $this->command->warn('No enterprises found. Please run EnterpriseSeeder first.');
@@ -27,27 +27,28 @@ final class DomainSeeder extends Seeder
             return;
         }
 
-        // Create domains for each enterprise
-        // Note: Adjust this based on your tenancy configuration
-        // Domains typically need to link to Tenant model, not directly to Enterprise
-        $enterprises->each(static function (Enterprise $enterprise): void {
-            // Only create domain if one doesn't exist for this enterprise
-            // Adjust the domain format based on your tenancy setup
+        $domainsCreated = 0;
+
+        foreach ($enterprises as $enterprise) {
             $domainName = str($enterprise->getTranslation('name', 'en'))
                 ->slug()
                 ->append('.test')
                 ->toString();
 
-            Domain::query()->firstOrCreate(
-                [
-                    'domain' => $domainName,
-                ],
-                [
-                    // Note: tenant_id might need to be the UUID/ID from the Tenant model
-                    // Adjust based on your tenancy configuration
-                    'tenant_id' => (string) $enterprise->id,
-                ]
-            );
-        });
+            // Use direct DB insert to avoid Domain model's relationship loading issues
+            // tenant_id references tenants.id which is the ULID
+            $inserted = DB::table('domains')->insertOrIgnore([
+                'domain' => $domainName,
+                'tenant_id' => $enterprise->ulid,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            if ($inserted) {
+                $domainsCreated++;
+            }
+        }
+
+        $this->command->info("Created {$domainsCreated} domains for enterprises.");
     }
 }

@@ -7,8 +7,8 @@ use App\Models\Department;
 use App\Models\Division;
 use App\Models\Enterprise;
 use App\Models\Organisation;
-use App\Models\Project;
 use App\Models\Team;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -49,9 +49,13 @@ test('team queries include all descendants of current context', function (): voi
     $this->actingAs($this->user);
 
     // Create hierarchy under Org A
+    // Use Unit instead of Project since Projects are now floating (no parent)
     $divisionA = Division::factory()->create(['parent_id' => $this->orgA->id]);
     $departmentA = Department::factory()->create(['parent_id' => $divisionA->id]);
-    $projectA = Project::factory()->create(['parent_id' => $departmentA->id]);
+    $unitA = Unit::factory()->create([
+        'parent_id' => $departmentA->id,
+        'tenant_id' => $this->enterprise->id,
+    ]);
 
     // Create hierarchy under Org B
     $divisionB = Division::factory()->create(['parent_id' => $this->orgB->id]);
@@ -66,7 +70,7 @@ test('team queries include all descendants of current context', function (): voi
         ->toContain($this->orgA->id)
         ->toContain($divisionA->id)
         ->toContain($departmentA->id)
-        ->toContain($projectA->id)
+        ->toContain($unitA->id)
         ->not->toContain($this->orgB->id)
         ->not->toContain($divisionB->id)
         ->not->toContain($departmentB->id);
