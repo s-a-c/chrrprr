@@ -7,7 +7,7 @@ use App\Models\Organisation;
 use App\Models\Team;
 use App\Models\User;
 use Behat\Behat\Context\Context;
-use Exception;
+
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -33,7 +33,7 @@ class TenantContext implements Context
             ->first();
 
         if (! $this->currentTenant) {
-            throw new Exception("Tenant '{$tenantName}' not found");
+            throw new \Exception("Tenant '{$tenantName}' not found");
         }
 
         tenancy()->initialize($this->currentTenant);
@@ -58,7 +58,7 @@ class TenantContext implements Context
     public function iSwitchToOrganization(string $orgName): void
     {
         if (! $this->currentUser) {
-            throw new Exception('No current user set. Use "Given I am logged in as ..." first');
+            throw new \Exception('No current user set. Use "Given I am logged in as ..." first');
         }
 
         $org = Organisation::where('name->en', $orgName)
@@ -66,12 +66,12 @@ class TenantContext implements Context
             ->first();
 
         if (! $org) {
-            throw new Exception("Organization '{$orgName}' not found");
+            throw new \Exception("Organization '{$orgName}' not found");
         }
 
         $result = $this->currentUser->switchContext($org);
         if (! $result) {
-            throw new Exception("Could not switch to organization '{$orgName}'. User may not have access.");
+            throw new \Exception("Could not switch to organization '{$orgName}'. User may not have access.");
         }
     }
 
@@ -84,7 +84,7 @@ class TenantContext implements Context
     {
         $user = User::where('email', $email)->first();
         if (! $user) {
-            throw new Exception("User with email '{$email}' not found");
+            throw new \Exception("User with email '{$email}' not found");
         }
 
         $org = Organisation::where('name->en', $orgName)
@@ -92,7 +92,7 @@ class TenantContext implements Context
             ->first();
 
         if (! $org) {
-            throw new Exception("Organization '{$orgName}' not found");
+            throw new \Exception("Organization '{$orgName}' not found");
         }
 
         DB::table('user_organisation_access')->insert([
@@ -116,14 +116,14 @@ class TenantContext implements Context
             ->first();
 
         if (! $tenant) {
-            throw new Exception("Tenant '{$tenantName}' not found");
+            throw new \Exception("Tenant '{$tenantName}' not found");
         }
 
         // Verify that Team queries are scoped
         $teams = Team::query()->get();
         foreach ($teams as $team) {
             if ($team->tenant_id !== $tenant->id) {
-                throw new Exception("Team {$team->id} has tenant_id {$team->tenant_id}, expected {$tenant->id}");
+                throw new \Exception("Team {$team->id} has tenant_id {$team->tenant_id}, expected {$tenant->id}");
             }
         }
     }
@@ -140,11 +140,11 @@ class TenantContext implements Context
             ->first();
 
         if (! $otherTenant) {
-            throw new Exception("Tenant '{$tenantName}' not found");
+            throw new \Exception("Tenant '{$tenantName}' not found");
         }
 
         if (! $this->currentTenant) {
-            throw new Exception('No current tenant set');
+            throw new \Exception('No current tenant set');
         }
 
         // Verify teams from other tenant are not accessible
@@ -157,7 +157,7 @@ class TenantContext implements Context
 
         foreach ($otherTenantTeams as $otherTeam) {
             if ($accessibleTeams->contains('id', $otherTeam->id)) {
-                throw new Exception("Team {$otherTeam->id} from tenant '{$tenantName}' is accessible but should not be");
+                throw new \Exception("Team {$otherTeam->id} from tenant '{$tenantName}' is accessible but should not be");
             }
         }
     }
@@ -186,7 +186,7 @@ class TenantContext implements Context
     public function iCreateATeamInCurrentTenant(string $name): void
     {
         if (! $this->currentTenant) {
-            throw new Exception('No current tenant set');
+            throw new \Exception('No current tenant set');
         }
 
         Team::factory()->create([
@@ -203,7 +203,7 @@ class TenantContext implements Context
     public function iCreateAUserInCurrentTenant(string $email): void
     {
         if (! $this->currentTenant) {
-            throw new Exception('No current tenant set');
+            throw new \Exception('No current tenant set');
         }
 
         User::factory()->create([
@@ -220,7 +220,7 @@ class TenantContext implements Context
     public function iCreateSensitiveDataInCurrentTenant(): void
     {
         if (! $this->currentTenant) {
-            throw new Exception('No current tenant set');
+            throw new \Exception('No current tenant set');
         }
 
         // Create a team as sensitive data
@@ -239,13 +239,13 @@ class TenantContext implements Context
     {
         $tenant = Enterprise::where('name->en', $tenantName)->first();
         if (! $tenant) {
-            throw new Exception("Tenant '{$tenantName}' not found");
+            throw new \Exception("Tenant '{$tenantName}' not found");
         }
 
         $teams = Team::query()->get();
         foreach ($teams as $team) {
             if ($team->tenant_id !== $tenant->id) {
-                throw new Exception("Team '{$team->name}' does not belong to tenant '{$tenantName}'");
+                throw new \Exception("Team '{$team->name}' does not belong to tenant '{$tenantName}'");
             }
         }
     }
@@ -259,13 +259,13 @@ class TenantContext implements Context
     {
         $tenant = Enterprise::where('name->en', $tenantName)->first();
         if (! $tenant) {
-            throw new Exception("Tenant '{$tenantName}' not found");
+            throw new \Exception("Tenant '{$tenantName}' not found");
         }
 
         $users = User::query()->get();
         foreach ($users as $user) {
             if ($user->tenant_id !== $tenant->id) {
-                throw new Exception("User '{$user->email}' does not belong to tenant '{$tenantName}'");
+                throw new \Exception("User '{$user->email}' does not belong to tenant '{$tenantName}'");
             }
         }
     }
@@ -280,7 +280,7 @@ class TenantContext implements Context
         // This is validated by the BelongsToTenant trait's global scope
         // In actual tests, we verify that queries are automatically scoped
         if (! $this->currentTenant) {
-            throw new Exception('No current tenant set');
+            throw new \Exception('No current tenant set');
         }
     }
 
@@ -328,7 +328,7 @@ class TenantContext implements Context
             ->first();
 
         if ($team) {
-            throw new Exception("Team '{$name}' is visible but should not be");
+            throw new \Exception("Team '{$name}' is visible but should not be");
         }
     }
 
@@ -342,7 +342,7 @@ class TenantContext implements Context
         $user = User::where('email', $email)->first();
 
         if ($user) {
-            throw new Exception("User '{$email}' is visible but should not be");
+            throw new \Exception("User '{$email}' is visible but should not be");
         }
     }
 
@@ -354,14 +354,14 @@ class TenantContext implements Context
     public function queriesShouldNotReturnCrossTenantData(): void
     {
         if (! $this->currentTenant) {
-            throw new Exception('No current tenant set');
+            throw new \Exception('No current tenant set');
         }
 
         // Verify teams are scoped to current tenant
         $teams = Team::query()->get();
         foreach ($teams as $team) {
             if ($team->tenant_id !== $this->currentTenant->id) {
-                throw new Exception("Team '{$team->name}' belongs to tenant {$team->tenant_id}, but current tenant is {$this->currentTenant->id}");
+                throw new \Exception("Team '{$team->name}' belongs to tenant {$team->tenant_id}, but current tenant is {$this->currentTenant->id}");
             }
         }
 
@@ -369,7 +369,7 @@ class TenantContext implements Context
         $users = User::query()->get();
         foreach ($users as $user) {
             if ($user->tenant_id !== $this->currentTenant->id) {
-                throw new Exception("User '{$user->email}' belongs to tenant {$user->tenant_id}, but current tenant is {$this->currentTenant->id}");
+                throw new \Exception("User '{$user->email}' belongs to tenant {$user->tenant_id}, but current tenant is {$this->currentTenant->id}");
             }
         }
     }

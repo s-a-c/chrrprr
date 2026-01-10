@@ -6,7 +6,7 @@ use App\Contracts\CommandHandler;
 use App\Support\Result;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Exception;
+
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Assert;
 use Thunk\Verbs\Event as VerbsEvent;
@@ -31,24 +31,24 @@ class CqrsContext implements Context
     {
         $commandClass = "App\\Handlers\\Commands\\{$commandName}";
         if (! class_exists($commandClass)) {
-            throw new Exception("Command class '{$commandClass}' not found");
+            throw new \Exception("Command class '{$commandClass}' not found");
         }
 
         $dataArray = json_decode($data->getRaw(), true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception('Invalid JSON in command data: '.json_last_error_msg());
+            throw new \Exception('Invalid JSON in command data: '.json_last_error_msg());
         }
 
         $command = new $commandClass($dataArray);
 
         $handlerClass = str_replace('Command', 'Handler', $commandClass);
         if (! class_exists($handlerClass)) {
-            throw new Exception("Handler class '{$handlerClass}' not found");
+            throw new \Exception("Handler class '{$handlerClass}' not found");
         }
 
         $handler = app($handlerClass);
         if (! ($handler instanceof CommandHandler)) {
-            throw new Exception("Handler '{$handlerClass}' does not implement CommandHandler");
+            throw new \Exception("Handler '{$handlerClass}' does not implement CommandHandler");
         }
 
         // Capture events
@@ -140,7 +140,7 @@ class CqrsContext implements Context
     {
         $eventClass = "App\\Events\\{$eventName}";
         if (! class_exists($eventClass)) {
-            throw new Exception("Event class '{$eventClass}' not found");
+            throw new \Exception("Event class '{$eventClass}' not found");
         }
 
         $found = false;
@@ -238,7 +238,7 @@ class CqrsContext implements Context
     public function iMapTheResultTo(string $transformation): void
     {
         if (! $this->lastResult || $this->lastResult->isFailure) {
-            throw new Exception('Cannot map a failed result');
+            throw new \Exception('Cannot map a failed result');
         }
 
         $callback = match ($transformation) {
@@ -258,19 +258,19 @@ class CqrsContext implements Context
     {
         $queryClass = "App\\Handlers\\Queries\\{$queryName}";
         if (! class_exists($queryClass)) {
-            throw new Exception("Query class '{$queryClass}' not found");
+            throw new \Exception("Query class '{$queryClass}' not found");
         }
 
         $dataArray = json_decode($data->getRaw(), true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception('Invalid JSON in query data: '.json_last_error_msg());
+            throw new \Exception('Invalid JSON in query data: '.json_last_error_msg());
         }
 
         $query = new $queryClass($dataArray);
 
         $handlerClass = str_replace('Query', 'Handler', $queryClass);
         if (! class_exists($handlerClass)) {
-            throw new Exception("Handler class '{$handlerClass}' not found");
+            throw new \Exception("Handler class '{$handlerClass}' not found");
         }
 
         $handler = app($handlerClass);
@@ -311,7 +311,7 @@ class CqrsContext implements Context
 
         $team = $this->lastResult->value;
         if (! ($team instanceof App\Models\Team)) {
-            throw new Exception('Result value is not a Team');
+            throw new \Exception('Result value is not a Team');
         }
 
         $teamName = is_array($team->name) ? ($team->name['en'] ?? '') : $team->name;
