@@ -149,6 +149,9 @@ jobs:
 
           # Run tests - Pest Browser manages its own server internally
           export APP_URL=http://127.0.0.1:8000
+          # Start Server
+          php artisan serve --env=testing --port=8000 --no-reload > /dev/null 2>&1 &
+          sleep 5
           composer run test:browser
 
       - name: Run Behat Browser Tests
@@ -156,6 +159,9 @@ jobs:
           export DB_SCHEMA=public
           export DB_SEARCH_SCHEMA=public
           export APP_URL=http://127.0.0.1:8000
+          # Start Server for Behat (if not persisting)
+          php artisan serve --env=testing --port=8000 --no-reload > /dev/null 2>&1 &
+          sleep 5
           composer behat:browser
         continue-on-error: true
 

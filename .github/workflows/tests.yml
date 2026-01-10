@@ -113,7 +113,12 @@ jobs:
           php artisan migrate:fresh --env=testing --force
 
       - name: Run Tests
-        run: composer run test:all
+        env:
+          APP_URL: http://127.0.0.1:8000
+        run: |
+          php artisan serve --env=testing --port=8000 --no-reload > /dev/null 2>&1 &
+          sleep 5
+          composer run test:all
 
       - name: Run Pest Tests
         run: composer run test:core
