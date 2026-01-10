@@ -91,10 +91,12 @@ jobs:
 
       - name: Setup Test Environment
         run: |
-          rm -f .env .env.testing
+          rm -f .env.testing
           cp .env.example .env.testing
           # Override DB_PORT to match CI service port mapping (54321:5432)
           sed -i 's|^DB_PORT=.*|DB_PORT=54321|' .env.testing
+          # Also override in .env for non-testing artisan commands
+          sed -i 's|^DB_PORT=.*|DB_PORT=54321|' .env
           php artisan key:generate --env=testing
 
       - name: Setup Test Database
