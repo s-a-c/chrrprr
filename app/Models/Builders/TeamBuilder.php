@@ -32,14 +32,15 @@ class TeamBuilder extends Builder
         }
 
         $contextId = (int) $user->current_context_id;
+        $table = $this->getModel()->getTable();
 
-        return $this->whereIn('id', static function (\Illuminate\Database\Query\Builder $query) use ($contextId): void {
+        return $this->whereIn('id', static function (\Illuminate\Database\Query\Builder $query) use ($contextId, $table): void {
             // Recursive Common Table Expression (CTE)
             $query->select('id')->from(DB::raw("(
                     WITH RECURSIVE descendants AS (
-                        SELECT id, parent_id FROM teams WHERE id = {$contextId}
+                        SELECT id, parent_id FROM {$table} WHERE id = {$contextId}
                         UNION ALL
-                        SELECT t.id, t.parent_id FROM teams t
+                        SELECT t.id, t.parent_id FROM {$table} t
                         JOIN descendants d ON t.parent_id = d.id
                     )
                     SELECT id FROM descendants

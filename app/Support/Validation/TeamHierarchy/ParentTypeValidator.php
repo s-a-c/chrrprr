@@ -35,26 +35,31 @@ final class ParentTypeValidator implements HierarchyValidatorInterface
             ]);
         }
 
-        // Parent must be higher in the hierarchy than the child
-        // Hierarchy order (highest to lowest): Enterprise > Organisation > Division > Department > Project
-        $hierarchyRanks = [
-            TeamType::ENTERPRISE->value => 1,
-            TeamType::ORGANISATION->value => 2,
-            TeamType::DIVISION->value => 3,
-            TeamType::DEPARTMENT->value => 4,
-            TeamType::PROJECT->value => 5,
-        ];
-
-        $parentRank = $hierarchyRanks[$parent->type->value] ?? 999;
-        $childRank = $hierarchyRanks[$team->type->value] ?? 0;
-
-        if ($parentRank >= $childRank) {
+        if (! $this->isValidParentHierarchy($team->type, $parent->type)) {
             throw ValidationException::withMessages([
                 'parent_id' => [
-                    "{$team->type->value} must belong to a higher-level team type, but {$parent->type->value} is not higher than {$team->type->value}.",
+                    "{$team->type->value} must belong to a {$this->getExpectedParentType($team->type)->value}, but belongs to {$parent->type->value}.",
                 ],
             ]);
         }
+    }
+
+    private function isValidParentHierarchy(TeamType $childType, TeamType $parentType): bool
+    {
+        $expectedParent = $this->getExpectedParentType($childType);
+
+        return $expectedParent === $parentType;
+    }
+
+    private function getExpectedParentType(TeamType $childType): ?TeamType
+    {
+        return match ($childType) {
+            TeamType::ORGANISATION => TeamType::ENTERPRISE,
+            TeamType::DIVISION => TeamType::ORGANISATION,
+            TeamType::DEPARTMENT => TeamType::DIVISION,
+            TeamType::PROJECT => TeamType::DEPARTMENT,
+            default => null,
+        };
     }
 
     private function resolveParent(Team $team): ?Team

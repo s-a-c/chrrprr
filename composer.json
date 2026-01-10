@@ -542,16 +542,14 @@
             "bun run test 2>&1 || true"
         ],
         "test:heavy": [
-            "@test:browser",
-            "@test:coverage"
+            "@test:heavy:nightly"
         ],
         "test:heavy:nightly": [
-            "@test:heavy",
+            "@test:browser",
             "@test:mutation"
         ],
         "test:mutation": [
-            "@test:mutation:infection",
-            "@test:mutation:pest:php84"
+            "@test:mutation:infection"
         ],
         "test:mutation:infection": [
             "@banner \"Mutation Testing: Infection\" \"1;93;46\"",

@@ -36,9 +36,13 @@ test('core models resolve to the application schema', function (): void {
     $teamMoveApproval = new TeamMoveApproval();
     $schema = Config::get('database.connections.pgsql.schema');
 
-    expect($team->getTable())->toBe("{$schema}.teams");
-    expect($user->getTable())->toBe("{$schema}.users");
-    expect($teamMoveApproval->getTable())->toBe("{$schema}.team_move_approvals");
+    // HasCustomSchema trait specifically omits the prefix if schema is 'public'
+    // to conform with standard PostgreSQL behavior where public is in search_path
+    $prefix = ($schema && $schema !== 'public') ? "{$schema}." : '';
+
+    expect($team->getTable())->toBe("{$prefix}teams");
+    expect($user->getTable())->toBe("{$prefix}users");
+    expect($teamMoveApproval->getTable())->toBe("{$prefix}team_move_approvals");
 })->group('arch', 'schema');
 
 test('role model resolves to the application schema', function (): void {
@@ -49,7 +53,9 @@ test('role model resolves to the application schema', function (): void {
     $role = new Role();
     $schema = Config::get('database.connections.pgsql.schema');
 
-    expect($role->getTable())->toBe("{$schema}.roles");
+    $prefix = ($schema && $schema !== 'public') ? "{$schema}." : '';
+
+    expect($role->getTable())->toBe("{$prefix}roles");
 })->group('arch', 'schema');
 
 test('domain model is excluded from schema prefixing', function (): void {

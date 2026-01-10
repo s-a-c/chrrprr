@@ -31,7 +31,7 @@ test('bio markdown rendering completes in less than 100ms for 95 percent of requ
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     MARKDOWN;
 
-    Enterprise::factory()->create([
+    $team = Enterprise::factory()->create([
         'bio' => $bioContent,
     ]);
 
@@ -40,7 +40,12 @@ test('bio markdown rendering completes in less than 100ms for 95 percent of requ
     $times = [];
 
     for ($i = 0; $i < $iterations; $i++) {
+        // Clear instance cache/reload if needed? No, purely measuring getter execution.
+        // But if getter caches internally (e.g. static cache), results differ.
+        // Assuming getter does work.
+
         $start = microtime(true);
+        $result = $team->bio_html; // Trigger rendering
         $end = microtime(true);
 
         $times[] = ($end - $start) * 1000; // Convert to milliseconds

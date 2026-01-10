@@ -25,7 +25,9 @@ test('two factor challenge can be rendered', function (): void {
         'confirmPassword' => true,
     ]);
 
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'password' => 'Password123!',
+    ]);
 
     $password = 'Password123!';
     $this->from(route('login'))

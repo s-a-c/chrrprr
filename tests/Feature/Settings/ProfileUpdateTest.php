@@ -47,7 +47,9 @@ test('email verification status is unchanged when email address is unchanged', f
 });
 
 test('user can delete their account', function (): void {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'password' => 'Password123!',
+    ]);
 
     $this->actingAs($user);
 

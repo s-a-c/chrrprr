@@ -40,14 +40,14 @@ final readonly class TeamObserver
             $team->tenant_id = $originalTenantId;
         }
 
-        // Validate unique name if name is being changed
-        if ($team->isDirty('name')) {
-            $this->validateUniqueName($team);
-        }
-
         // Update tenant_id if parent_id is being changed
         if ($team->isDirty('parent_id')) {
             $this->updateTenantId($team);
+        }
+
+        // Validate unique name if name is being changed
+        if ($team->isDirty('name')) {
+            $this->validateUniqueName($team);
         }
     }
 

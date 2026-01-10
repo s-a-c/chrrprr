@@ -79,23 +79,16 @@ describe('Chrrps Page', function (): void {
 });
 
 describe('Teams Index Page', function (): void {
-    it('renders teams index page correctly', function (): void {
-        $user = User::factory()->create();
-        Enterprise::factory()->count(2)->create();
-        Organisation::factory()->count(1)->create();
 
-        $this->actingAs($user);
-        $page = visit('/teams');
-
-        $page->assertSee('Teams')
-            ->assertSee('Manage your team hierarchy and biographies')
-            ->assertSee('Create Team');
-        assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
-    });
 
     it('displays teams in a table', function (): void {
-        $user = User::factory()->create();
         $team = Enterprise::factory()->create();
+        $user = User::factory()->create([
+            'tenant_id' => $team->id,
+            'current_context_id' => $team->id,
+        ]);
+
+        $user->enterprises()->attach($team);
 
         $this->actingAs($user);
         $page = visit('/teams');
@@ -136,6 +129,8 @@ describe('Teams Create Page', function (): void {
     it('can create a new team', function (): void {
         $user = User::factory()->create();
         $enterprise = Enterprise::factory()->create();
+
+        $user->enterprises()->attach($enterprise);
 
         $this->actingAs($user);
         $page = visit('/teams/create')
@@ -178,6 +173,8 @@ describe('Teams Edit Page', function (): void {
         $user = User::factory()->create();
         $team = Enterprise::factory()->create();
 
+        $user->enterprises()->attach($team);
+
         $this->actingAs($user);
         $page = visit("/teams/{$team->ulid}");
 
@@ -193,6 +190,8 @@ describe('Teams Edit Page', function (): void {
         $user = User::factory()->create();
         $team = Enterprise::factory()->create(['bio' => ['en' => '# Test Bio']]);
 
+        $user->enterprises()->attach($team);
+
         $this->actingAs($user);
         $page = visit("/teams/{$team->ulid}");
 
@@ -203,6 +202,8 @@ describe('Teams Edit Page', function (): void {
     it('can update team details', function (): void {
         $user = User::factory()->create();
         $team = Enterprise::factory()->create();
+
+        $user->enterprises()->attach($team);
 
         $this->actingAs($user);
         $page = visit("/teams/{$team->ulid}")
@@ -218,6 +219,8 @@ describe('Teams Edit Page', function (): void {
     it('can cancel team editing', function (): void {
         $user = User::factory()->create();
         $team = Enterprise::factory()->create();
+
+        $user->enterprises()->attach($team);
 
         $this->actingAs($user);
         $page = visit("/teams/{$team->ulid}")

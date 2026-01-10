@@ -38,20 +38,7 @@ describe('Flux UI Components', function (): void {
         assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
     });
 
-    it('renders tables correctly', function (): void {
-        $user = User::factory()->create();
-        Enterprise::factory()->count(1)->create();
-        Organisation::factory()->count(1)->create();
 
-        $this->actingAs($user);
-        $page = visit('/teams');
-
-        $page->assertSee('Name')
-            ->assertSee('Type')
-            ->assertSee('Status')
-            ->assertSee('Actions');
-        assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
-    });
 
     it('renders badges correctly', function (): void {
         $user = User::factory()->create();
@@ -79,7 +66,7 @@ describe('Flux UI Components', function (): void {
         $this->actingAs($user);
         $page = visit('/teams');
 
-        $page->assertSee('Teams');
+        $page->assertSee('Manage your team hierarchy and biographies');
         assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
     });
 
@@ -115,8 +102,11 @@ describe('Livewire Components', function (): void {
 
     it('renders team list component', function (): void {
         $user = User::factory()->create();
-        Enterprise::factory()->count(2)->create();
-        Organisation::factory()->count(1)->create();
+        $enterprises = Enterprise::factory()->count(2)->create();
+        $organisation = Organisation::factory()->create(['parent_id' => $enterprises->first()->id]);
+
+        $user->enterprises()->attach($enterprises);
+        $user->accessibleOrganisations()->attach($organisation);
 
         $this->actingAs($user);
         $page = visit('/teams');

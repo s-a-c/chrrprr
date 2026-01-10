@@ -42,7 +42,9 @@ describe('Password Settings', function (): void {
     });
 
     it('can update password', function (): void {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'password' => 'Password123!',
+        ]);
 
         $this->actingAs($user);
         $page = visit('/settings/password')

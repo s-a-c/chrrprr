@@ -118,6 +118,7 @@ trait HasTeamHierarchy
 
     /**
      * Normalize type to enum (handles both string and enum).
+     * Falls back to resolving type from class mapping if attribute is missing.
      */
     private function normalizeType(): ?TeamType
     {
@@ -129,6 +130,17 @@ trait HasTeamHierarchy
 
         if (is_string($typeValue)) {
             return TeamType::from($typeValue);
+        }
+
+        // Fallback: Try to resolve type from class mapping if attribute is missing
+        if (property_exists($this, 'childTypes') && is_array($this->childTypes)) {
+            // Find key (type) where value (class) matches current class
+            $class = $this::class;
+            $type = array_search($class, $this->childTypes, true);
+
+            if ($type && is_string($type)) {
+                return TeamType::tryFrom($type);
+            }
         }
 
         return null;

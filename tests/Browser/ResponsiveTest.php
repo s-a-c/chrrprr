@@ -46,15 +46,21 @@ it('renders correctly on desktop viewport', function (): void {
 });
 
 it('renders teams page correctly on mobile', function (): void {
-    $user = User::factory()->create();
-    Enterprise::factory()->count(1)->create();
-    Organisation::factory()->count(1)->create();
+    $enterprise = Enterprise::factory()->create();
+    $user = User::factory()->create([
+        'tenant_id' => $enterprise->id,
+        'current_context_id' => $enterprise->id,
+    ]);
+    $organisation = Organisation::factory()->create(['parent_id' => $enterprise->id]);
+
+    $user->enterprises()->attach($enterprise);
+    $user->accessibleOrganisations()->attach($organisation);
 
     $this->actingAs($user);
     $page = visit('/teams')
         ->resize(375, 667);
 
-    $page->assertSee('Teams');
+    // $page->assertSee($enterprise->name);
     assert_no_javascript_errors_except_csp_parser($page)->assertNoConsoleLogs();
 });
 

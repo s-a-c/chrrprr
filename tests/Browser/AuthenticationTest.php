@@ -31,7 +31,9 @@ it('can render the register page', function (): void {
 });
 
 it('can login with valid credentials', function (): void {
-    $user = User::factory()->withoutTwoFactor()->create();
+    $user = User::factory()->withoutTwoFactor()->create([
+        'password' => 'Password123!',
+    ]);
 
     $page = visit('/login')
         ->fill('email', $user->email)
@@ -111,7 +113,9 @@ it('can logout when authenticated', function (): void {
 });
 
 it('redirects to dashboard after login', function (): void {
-    $user = User::factory()->withoutTwoFactor()->create();
+    $user = User::factory()->withoutTwoFactor()->create([
+        'password' => 'Password123!',
+    ]);
 
     $page = visit('/login')
         ->fill('email', $user->email)
