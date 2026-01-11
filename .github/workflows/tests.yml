@@ -53,7 +53,7 @@ jobs:
         with:
           php-version: 8.5
           tools: composer:v2
-          coverage: xdebug
+          coverage: pcov
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -126,8 +126,6 @@ jobs:
           sleep 5
           composer run test:all
 
-      - name: Run Pest Tests
-        run: composer run test:core
 
       - name: Run Behat Unit Tests
         run: composer behat:unit
