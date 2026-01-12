@@ -31,7 +31,7 @@ final class OrganisationFactory extends Factory
             'status' => TeamStatus::ONLINE,
             'bio' => ($paragraphCount = random_int(0, 5)) > 0
                 ? collect(range(1, $paragraphCount))
-                    ->map(static fn (): string => implode(' ', fake()->sentences(random_int(3, 7))))
+                    ->map(fn (): string => implode(' ', fake()->sentences(random_int(3, 7))))
                     ->implode("\n\n")
                 : '',
         ];
