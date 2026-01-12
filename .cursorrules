@@ -1,0 +1,11 @@
+# Project Rules
+
+## Laravel Herd PHP
+
+- **Mandatory Usage**: Always use the Laravel Herd PHP binary located at `/Users/s-a-c/Library/Application Support/Herd/bin/php` (or the current version).
+- **Execution**: When running PHP commands from this agent, use the absolute path to the Herd binary.
+- **Escaping**: Because the Herd path contains a space ("Application Support"), always use `escapeshellarg()` when constructing command lines in PHP or wrap the path in double quotes in shell scripts.
+
+## Root Cause Awareness
+
+- Some vendor packages (like `php-parallel-lint`) may fail due to improper escaping of the PHP executable path. If you encounter "Unable to execute" errors with the Herd path, check for unescaped command construction in the underlying package.

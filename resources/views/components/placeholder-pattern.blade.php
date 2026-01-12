@@ -1,6 +1,4 @@
-@props([
-    'id' => uniqid(),
-])
+@props(['id' => uniqid()])
 
 <svg {{ $attributes }} fill="none">
     <defs>

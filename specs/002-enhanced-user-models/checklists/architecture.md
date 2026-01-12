@@ -48,16 +48,16 @@
 
 - [x] CHK027 - Are requirements defined for normal operation architecture (tenant identification, context scoping)? [Coverage, Primary Flow, Spec §FR-001, FR-006]
 - [x] CHK028 - Are requirements defined for failure scenarios and recovery architecture (optimistic locking conflicts, invalid context)? [Coverage, Exception Flow, Spec §FR-024, Edge Cases]
-- [ ] CHK029 - Are requirements defined for high-load/scaling scenarios (10,000 teams per enterprise, horizontal scaling)? [Coverage, Edge Case, Spec §SC-002, SC-006]
-- [ ] CHK030 - Are requirements defined for maintenance and update scenarios (backward compatibility, gradual migration)? [Coverage, Gap, Spec §FR-027, FR-028]
-- [ ] CHK031 - Are requirements defined for migration and data transformation scenarios (ULID generation, state initialization)? [Coverage, Spec §FR-026]
+- [x] CHK029 - Are requirements defined for high-load/scaling scenarios (10,000 teams per enterprise, horizontal scaling)? [Coverage, Edge Case, Spec §SC-002, SC-006, ✅ Fulfilled - Spec §SC-002, SC-006, T118 in tasks.md]
+- [x] CHK030 - Are requirements defined for maintenance and update scenarios (backward compatibility, gradual migration)? [Coverage, Gap, Spec §FR-027, FR-028, ✅ Fulfilled - T102, T103, T104 in tasks.md]
+- [x] CHK031 - Are requirements defined for migration and data transformation scenarios (ULID generation, state initialization)? [Coverage, Spec §FR-026, ✅ Fulfilled - T103, T104 in tasks.md]
 
 ## Edge Case Coverage
 
-- [ ] CHK032 - Are requirements defined for handling component failures gracefully (tenant identification failure, context restoration)? [Edge Case, Gap]
+- [x] CHK032 - Are requirements defined for handling component failures gracefully (tenant identification failure, context restoration)? [Edge Case, Gap, ✅ Fulfilled - T077, T085 in tasks.md]
 - [ ] CHK033 - Are requirements defined for partial system degradation (rate limiting, observability failures)? [Edge Case, Gap]
-- [ ] CHK034 - Are requirements defined for backward compatibility during architecture changes (integer ID routes during ULID transition)? [Edge Case, Spec §FR-027]
-- [ ] CHK035 - Are requirements defined for handling data inconsistencies across components (concurrent modifications, context invalidation)? [Edge Case, Spec §FR-024, Edge Cases]
+- [x] CHK034 - Are requirements defined for backward compatibility during architecture changes (integer ID routes during ULID transition)? [Edge Case, Spec §FR-027, ✅ Fulfilled - T102 in tasks.md]
+- [x] CHK035 - Are requirements defined for handling data inconsistencies across components (concurrent modifications, context invalidation)? [Edge Case, Spec §FR-024, Edge Cases, ✅ Fulfilled - T071, T072.8 in tasks.md]
 
 ## Non-Functional Requirements
 

@@ -25,3 +25,29 @@
 - test plans
 - tools
 - ui and ux
+
+---
+
+## Key / Protected Roles
+
+- Admin
+- Customer
+- Deputy
+- Executive
+- Guest
+- Host
+- Manager
+- Member
+- Owner
+- Partner
+- Subscriber
+- User
+- Vendor
+- Visitor
+
+Consider enterprise configurable additions to this list
+Consider use of an ENUM to enforce
+Consider adding `Admin` to the list
+Consider: the constraint should apply when there is only a single model, the last, with the role
+
+---

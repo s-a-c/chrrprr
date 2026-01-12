@@ -8,17 +8,17 @@ ARGS=()
 
 for arg in "$@"; do
     case "$arg" in
-        --json) 
-            JSON_MODE=true 
+        --json)
+            JSON_MODE=true
             ;;
-        --help|-h) 
-            echo "Usage: $0 [--json]"
-            echo "  --json    Output results in JSON format"
-            echo "  --help    Show this help message"
-            exit 0 
+        --help|-h)
+            printf "Usage: %s [--json]\n" "$0"
+            printf "  --json    Output results in JSON format\n"
+            printf "  --help    Show this help message\n"
+            exit 0
             ;;
-        *) 
-            ARGS+=("$arg") 
+        *)
+            ARGS+=("$arg")
             ;;
     esac
 done
@@ -40,9 +40,9 @@ mkdir -p "$FEATURE_DIR"
 TEMPLATE="$REPO_ROOT/.specify/templates/plan-template.md"
 if [[ -f "$TEMPLATE" ]]; then
     cp "$TEMPLATE" "$IMPL_PLAN"
-    echo "Copied plan template to $IMPL_PLAN"
+    printf "Copied plan template to %s\n" "$IMPL_PLAN"
 else
-    echo "Warning: Plan template not found at $TEMPLATE"
+    printf "Warning: Plan template not found at %s\n" "$TEMPLATE"
     # Create a basic plan file if template doesn't exist
     touch "$IMPL_PLAN"
 fi
@@ -52,10 +52,10 @@ if $JSON_MODE; then
     printf '{"FEATURE_SPEC":"%s","IMPL_PLAN":"%s","SPECS_DIR":"%s","BRANCH":"%s","HAS_GIT":"%s"}\n' \
         "$FEATURE_SPEC" "$IMPL_PLAN" "$FEATURE_DIR" "$CURRENT_BRANCH" "$HAS_GIT"
 else
-    echo "FEATURE_SPEC: $FEATURE_SPEC"
-    echo "IMPL_PLAN: $IMPL_PLAN" 
-    echo "SPECS_DIR: $FEATURE_DIR"
-    echo "BRANCH: $CURRENT_BRANCH"
-    echo "HAS_GIT: $HAS_GIT"
+    printf "FEATURE_SPEC: %s\n" "$FEATURE_SPEC"
+    printf "IMPL_PLAN: %s\n" "$IMPL_PLAN"
+    printf "SPECS_DIR: %s\n" "$FEATURE_DIR"
+    printf "BRANCH: %s\n" "$CURRENT_BRANCH"
+    printf "HAS_GIT: %s\n" "$HAS_GIT"
 fi
 

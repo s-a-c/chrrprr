@@ -1,0 +1,26 @@
+quality	Install Dependencies	﻿2026-01-08T14:38:51.4893265Z ##[group]Run composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+quality	Install Dependencies	2026-01-08T14:38:51.4894062Z [36;1mcomposer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist[0m
+quality	Install Dependencies	2026-01-08T14:38:51.4894501Z [36;1mbun install --frozen-lockfile[0m
+quality	Install Dependencies	2026-01-08T14:38:51.4913529Z shell: /usr/bin/bash -e {0}
+quality	Install Dependencies	2026-01-08T14:38:51.4913774Z env:
+quality	Install Dependencies	2026-01-08T14:38:51.4913967Z   COMPOSER_PROCESS_TIMEOUT: 0
+quality	Install Dependencies	2026-01-08T14:38:51.4914217Z   COMPOSER_NO_INTERACTION: 1
+quality	Install Dependencies	2026-01-08T14:38:51.4914443Z   COMPOSER_NO_AUDIT: 1
+quality	Install Dependencies	2026-01-08T14:38:51.4914637Z ##[endgroup]
+quality	Install Dependencies	2026-01-08T14:39:05.4515047Z 
+quality	Install Dependencies	2026-01-08T14:39:05.4536533Z In Git.php line 604:
+quality	Install Dependencies	2026-01-08T14:39:05.4537025Z                                                                                
+quality	Install Dependencies	2026-01-08T14:39:05.4538576Z   Failed to execute git clone --mirror -- ***git  
+quality	Install Dependencies	2026-01-08T14:39:05.4539328Z   hub.com/spatie/laravel-comments.git /home/runner/.cache/composer/vcs/git-gi  
+quality	Install Dependencies	2026-01-08T14:39:05.4540204Z   thub.com-spatie-laravel-comments.git/                                        
+quality	Install Dependencies	2026-01-08T14:39:05.4540732Z                                                                                
+quality	Install Dependencies	2026-01-08T14:39:05.4541118Z   Cloning into bare repository '/home/runner/.cache/composer/vcs/git-github.c  
+quality	Install Dependencies	2026-01-08T14:39:05.4541687Z   om-spatie-laravel-comments.git'...                                           
+quality	Install Dependencies	2026-01-08T14:39:05.4542140Z   remote: Write access to repository not granted.                              
+quality	Install Dependencies	2026-01-08T14:39:05.4542610Z   fatal: unable to access 'https://github.com/spatie/laravel-comments.git/':   
+quality	Install Dependencies	2026-01-08T14:39:05.4543054Z   The requested URL returned error: 403                                        
+quality	Install Dependencies	2026-01-08T14:39:05.4543433Z                                                                                
+quality	Install Dependencies	2026-01-08T14:39:05.4543641Z 
+quality	Install Dependencies	2026-01-08T14:39:05.4545119Z install [--prefer-source] [--prefer-dist] [--prefer-install PREFER-INSTALL] [--dry-run] [--download-only] [--dev] [--no-suggest] [--no-dev] [--no-security-blocking] [--no-autoloader] [--no-progress] [--no-install] [--audit] [--audit-format AUDIT-FORMAT] [-v|vv|vvv|--verbose] [-o|--optimize-autoloader] [-a|--classmap-authoritative] [--apcu-autoloader] [--apcu-autoloader-prefix APCU-AUTOLOADER-PREFIX] [--ignore-platform-req IGNORE-PLATFORM-REQ] [--ignore-platform-reqs] [--] [<packages>...]
+quality	Install Dependencies	2026-01-08T14:39:05.4546670Z 
+quality	Install Dependencies	2026-01-08T14:39:05.4859401Z ##[error]Process completed with exit code 1.

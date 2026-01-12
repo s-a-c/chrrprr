@@ -5,12 +5,12 @@
 
 ## Summary
 
-Implement enhanced User and Team models with ULID primary keys, translatable attributes, Enterprise-based multi-tenancy, hierarchical team structure (Enterprise→Organisation→Division→Department→Project), user context switching, state machines, comprehensive validation, rate limiting, GDPR/CCPA/SOC 2 compliance, full observability stack, bulk operations, team move/reparenting capabilities, real-time presence status tracking and history, follow functionality for users and teams, online chat capabilities using WireChat foundation, and biography (bio) support in markdown format. The system will support 100 enterprises, 10,000 teams per enterprise, and 1,000 users per enterprise with sub-500ms list queries and sub-200ms single entity operations, tenant-configurable hierarchy depth limits (soft limit default 5, hard limit 10), per-enterprise rate limiting (configurable quotas, default 1000 requests/minute, 10000 requests/hour), presence status updates within 2 seconds, chat message delivery within 1 second, support for 100 concurrent chat conversations per enterprise, bio markdown rendering within 100ms, and syntax highlighting within 500ms. Data retention policies: presence history (tenant-configurable, default 90 days), audit logs (tenant-configurable, default 7 years for SOC 2), and chat history (tenant-configurable, default 1 year).
+Implement enhanced User and Team models with ULID primary keys, translatable attributes, Enterprise-based multi-tenancy, hierarchical team structure (Enterprise→Organisation→Division→Department→Project), user context switching, state machines, comprehensive validation, rate limiting, GDPR/CCPA/SOC 2 compliance, full observability stack, bulk operations, team move/reparenting capabilities, real-time presence status tracking and history, follow functionality for users and teams, online chat capabilities using custom Livewire 4 Islands implementation with Laravel Reverb Presence Channels, and biography (bio) support in markdown format. The system will support 100 enterprises, 10,000 teams per enterprise, and 1,000 users per enterprise with sub-500ms list queries and sub-200ms single entity operations, tenant-configurable hierarchy depth limits (soft limit default 5, hard limit 10), per-enterprise rate limiting (configurable quotas, default 1000 requests/minute, 10000 requests/hour), presence status updates within 2 seconds, chat message delivery within 1 second, support for 100 concurrent chat conversations per enterprise, bio markdown rendering within 100ms, and syntax highlighting within 500ms. Data retention policies: presence history (tenant-configurable, default 90 days), audit logs (tenant-configurable, default 7 years for SOC 2), and chat history (tenant-configurable, default 1 year). **Architecture Note**: WireChat package is incompatible with Livewire 4, so chat is implemented as custom Livewire 4 Islands components. Optional CQRS refactor paths are documented for Teams and User modules (see research/ ADRs).
 
 ## Technical Context
 
 **Language/Version**: PHP 8.5.1
-**Primary Dependencies**: Laravel 12, Livewire 4, Flux UI (Free), Laravel Folio, Laravel Fortify, stancl/tenancy, Parental (STI), Spatie packages (translatable, permissions, media, activity log, markdown), Filament plugins, wirechat/wirechat (chat foundation), Laravel Echo/Pusher (WebSocket), stevebauman/purify (XSS sanitization), highlight.js (client-side syntax highlighting), @catppuccin/tailwindcss, @catppuccin/highlightjs, @tailwindcss/typography
+**Primary Dependencies**: Laravel 12, Livewire 4, Flux UI (Free), Laravel Folio, Laravel Fortify, stancl/tenancy, Parental (STI), Spatie packages (translatable, permissions, media, activity log, markdown), Filament plugins, Laravel Reverb (WebSocket server, Presence Channels), Laravel Echo (WebSocket client), stevebauman/purify (XSS sanitization), highlight.js (client-side syntax highlighting), @catppuccin/tailwindcss, @catppuccin/highlightjs, @tailwindcss/typography. **Note**: WireChat package is incompatible with Livewire 4, so chat is custom-built using Livewire 4 Islands.
 **Storage**: PostgreSQL 18 (production), SQLite (development/testing)
 **Testing**: Pest 4, PHPUnit 12
 **Target Platform**: Linux server (Laravel Herd for local development)
@@ -41,7 +41,7 @@ Implement enhanced User and Team models with ULID primary keys, translatable att
 
 ### V. Component Reusability
 
-✅ **PASS**: Flux UI components will be used when available. Existing components will be checked before creating new ones. WireChat package provides reusable chat foundation.
+✅ **PASS**: Flux UI components will be used when available. Existing components will be checked before creating new ones. Chat is custom-built using Livewire 4 Islands for optimal performance (WireChat package is incompatible with Livewire 4).
 
 ### VI. Documentation and Clarity
 
@@ -79,7 +79,9 @@ app/
 │   ├── Project.php
 │   ├── Domain.php
 │   ├── Chat/
-│   │   └── Conversation.php (extends WireChat Conversation)
+│   │   ├── Conversation.php (custom implementation)
+│   │   ├── Participant.php (custom implementation)
+│   │   └── Message.php (custom implementation with reactions, replies, edits)
 │   ├── Presence/
 │   │   └── PresenceHistory.php
 │   └── Traits/
@@ -115,10 +117,17 @@ app/
 │   │   ├── FollowList.php
 │   │   └── NotificationPreferences.php
 │   └── Chat/
-│       ├── ChatList.php (extends WireChat Chats)
-│       ├── ChatWindow.php (extends WireChat Chat)
-│       └── ChatWidget.php
-├── Actions/ (Fortify actions)
+│       ├── ChatRoom.php (Livewire 4 Island component)
+│       ├── ChatList.php (Livewire 4 component)
+│       └── ChatWidget.php (Livewire 4 Island component)
+├── Actions/ (Fortify actions and optional CQRS Actions)
+│   ├── Fortify/
+│   └── Teams/ (optional: CreateTeam, MoveTeam, UpdateTeam, AssignExecutive)
+│   └── Users/ (optional: RegisterUser, BanUser, UpdateUserProfile, TransitionUserState)
+├── Models/
+│   └── Builders/ (optional CQRS: TeamBuilder, UserBuilder)
+├── Support/
+│   └── Validation/ (optional CQRS: TeamHierarchyValidator)
 └── Providers/
     └── AppServiceProvider.php
 
@@ -134,6 +143,9 @@ database/
 │   ├── 2025_XX_XX_add_bio_to_users.php
 │   ├── 2025_XX_XX_add_bio_to_teams.php
 │   ├── 2025_XX_XX_create_follow_notification_preferences_table.php
+│   ├── 2025_XX_XX_create_conversations_table.php (custom chat schema)
+│   ├── 2025_XX_XX_create_participants_table.php (custom chat schema)
+│   ├── 2025_XX_XX_create_messages_table.php (custom chat schema with reactions, replies, edits)
 │   └── [additional migrations]
 ├── factories/
 │   ├── UserFactory.php
@@ -177,7 +189,37 @@ tests/
 └── Browser/ (Pest 4 browser tests)
 ```
 
-**Structure Decision**: Single Laravel 12 web application following Laravel's streamlined structure. Models use Single Table Inheritance (STI) via Parental package. Frontend uses Livewire 4 with Flux UI components. Routing uses Laravel Folio for file-based routing. Multi-tenancy handled via stancl/tenancy package with subdomain-based tenant identification. Chat functionality built on WireChat foundation using class extension pattern (extends WireChat models/components rather than modifying vendor files). Presence tracking implemented via database-backed status with real-time updates via WebSockets (Laravel Echo/Pusher). Follow relationships implemented via pivot tables with automatic cleanup on access loss and configurable notification preferences. Bio functionality implemented with markdown support, XSS sanitization, client-side syntax highlighting, and unified Catppuccin Mocha theming. WebSocket infrastructure (Laravel Echo/Pusher) provides real-time bidirectional communication for presence status, chat messages, and follow notifications.
+**Structure Decision**: Single Laravel 12 web application following Laravel's streamlined structure. Models use Single Table Inheritance (STI) via Parental package. Frontend uses Livewire 4 with Flux UI components. Routing uses Laravel Folio for file-based routing. Multi-tenancy handled via stancl/tenancy package with subdomain-based tenant identification. Chat functionality built as custom Livewire 4 Islands components (WireChat package is incompatible with Livewire 4) using Laravel Reverb Presence Channels for real-time updates. Chat schema supports modern features: reactions (JSON), replies (foreign key), and edits (timestamp). Presence tracking implemented via database-backed status with real-time updates via WebSockets (Laravel Reverb Presence Channels). Follow relationships implemented via pivot tables with automatic cleanup on access loss and configurable notification preferences. Bio functionality implemented with markdown support, XSS sanitization, client-side syntax highlighting, and unified Catppuccin Mocha theming. WebSocket infrastructure (Laravel Reverb) provides real-time bidirectional communication for presence status, chat messages, and follow notifications. **Optional CQRS Refactor**: Architecture Decision Records (ADRs) document optional CQRS refactor paths for Teams and User modules to improve separation of concerns in Filament v5 contexts (see research/ ADRs). These refactors extract complex queries to Builders, validation to Services, and write operations to Action classes.
+
+## Architecture Decisions
+
+### Chat Implementation: Custom Livewire 4 Islands
+
+**Decision**: Build custom chat implementation using Livewire 4 Islands rather than WireChat package.
+
+**Rationale**: WireChat package is incompatible with Livewire 4 due to significant architectural changes (view-first system, deprecated hooks). Building custom solution provides:
+- Better performance via Livewire 4 Islands (only chat area re-renders, not entire page)
+- Native Laravel Reverb integration (no external WebSocket service costs)
+- Full control over features (presence, following logic, reactions, replies, edits)
+- Modern schema optimized for current requirements
+
+**Implementation**: Livewire 4 Island components (`wire:island`) with Laravel Reverb Presence Channels. Custom database schema (conversations, participants, messages) with JSON reactions column, reply foreign keys, and edit timestamps. See `research/wirechat.md` for detailed architectural blueprint.
+
+### Optional CQRS Refactor for Teams and Users
+
+**Decision**: Document optional CQRS (Command Query Responsibility Segregation) refactor paths for Teams and User modules.
+
+**Rationale**: As complexity grows, Active Record models become "God Models" with mixed concerns (validation, queries, side effects). CQRS provides:
+- Separation of reads (Builders) and writes (Actions)
+- Explicit transaction boundaries
+- Better Filament v5 integration via `->using()` callbacks
+- Improved testability and maintainability
+
+**Implementation Status**: Optional future work. ADRs document the approach:
+- `research/adr-cqrs-refactor-team.md`: TeamBuilder, TeamHierarchyValidator, CreateTeam/MoveTeam/UpdateTeam/AssignExecutive Actions
+- `research/adr-cqrs-refactor-user.md`: UserBuilder, RegisterUser/BanUser/UpdateUserProfile/TransitionUserState Actions
+
+Current implementation uses Active Record pattern. CQRS refactor can be performed incrementally if complexity warrants it.
 
 ## Complexity Tracking
 

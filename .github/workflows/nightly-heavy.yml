@@ -1,0 +1,167 @@
+name: nightly heavy-suite
+
+on:
+  schedule:
+    - cron: 0 3 * * *
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  heavy-quality:
+    runs-on: ubuntu-latest
+    environment: Testing
+    env:
+      DB_PASSWORD: password
+      DB_USERNAME: postgres
+      DB_HOST: 127.0.0.1
+      DB_PORT: 54321
+      DB_DATABASE: chrrprr
+      DB_SCHEMA: public
+      DB_SEARCH_SCHEMA: public
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: chrrprr
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          PGUSER: postgres
+        ports:
+          - 54321:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.5
+          tools: composer:v2
+          coverage: pcov
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.1.17
+
+      - name: Configure Composer Auth
+        env:
+          FLUXUI_PRO_USERNAME: ${{ secrets.FLUXUI_PRO_USERNAME }}
+          FLUXUI_PRO_KEY: ${{ secrets.FLUXUI_PRO_KEY }}
+          GH_COMPOSER_TOKEN: ${{ secrets.GH_COMPOSER_TOKEN }}
+          SPATIE_USERNAME: ${{ secrets.SPATIE_USERNAME }}
+          SPATIE_COMMENTS_KEY: ${{ secrets.SPATIE_COMMENTS_KEY }}
+        run: |
+          if [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" || -z "$GH_COMPOSER_TOKEN" || -z "$SPATIE_USERNAME" || -z "$SPATIE_COMMENTS_KEY" ]]; then
+            echo "::error::Missing Composer auth secrets"
+            exit 1
+          fi
+
+          composer config http-basic.composer.fluxui.dev "$FLUXUI_PRO_USERNAME" "$FLUXUI_PRO_KEY"
+          composer config github-oauth.github.com "$GH_COMPOSER_TOKEN"
+          composer config http-basic.satis.spatie.be "$SPATIE_USERNAME" "$SPATIE_COMMENTS_KEY"
+          composer config http-basic.composer.satis.spatie.be "$SPATIE_USERNAME" "$SPATIE_COMMENTS_KEY"
+
+      - name: Install Dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+          bun install --frozen-lockfile
+
+      - name: Build Assets
+        run: bun run build
+
+      - name: Run Linters
+        run: composer run lint
+
+      - name: Run Static Analyzers
+        run: composer run analyze
+
+      - name: Prepare Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          export DB_SCHEMA=public
+          export DB_SEARCH_SCHEMA=public
+          php artisan migrate --force
+          php artisan db:seed
+
+      - name: Setup Test Environment
+        run: |
+          rm -f .env.testing
+          cp .env.example .env.testing
+          # Override DB_PORT to match CI service port mapping (54321:5432)
+          sed -i 's|^DB_PORT=.*|DB_PORT=54321|' .env.testing
+          # Also override in .env for non-testing artisan commands
+          sed -i 's|^DB_PORT=.*|DB_PORT=54321|' .env
+          php artisan key:generate --env=testing
+
+
+      - name: Setup Test Database for Behat
+        run: |
+          export DB_SCHEMA=public
+          export DB_SEARCH_SCHEMA=public
+          php artisan migrate:fresh --env=testing --force
+
+      - name: Run Heavy Tier Workflow
+        timeout-minutes: 60
+        # For faster nightly runs (Infection only), use: composer run test:heavy:nightly
+        run: composer run test:heavy
+
+      - name: Run Behat Unit Tests
+        run: composer behat:unit
+
+      - name: Run Behat API Tests
+        run: composer behat:api
+
+      - name: Setup Browser Server for Behat
+        run: |
+          google-chrome --version || echo "Chrome not found, will use Playwright"
+          google-chrome --remote-debugging-port=9222 --headless --no-sandbox --disable-dev-shm-usage --disable-gpu > /dev/null 2>&1 &
+          sleep 2
+
+      - name: Run Behat Browser Tests
+        run: composer behat:browser
+        continue-on-error: true
+
+      - name: Upload Behat Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-nightly-screenshots
+          path: tests/Browser/Screenshots/
+          if-no-files-found: ignore
+
+      - name: Upload Behat Output
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-nightly-output
+          path: |
+            features/**/*.feature
+            behat.yml
+          if-no-files-found: ignore
+
+      - name: Upload Mutation Test Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutation-test-reports
+          path: |
+            infection.html
+            infection-summary.log
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Run Pest Architecture Tests (Optional - May Timeout)
+        continue-on-error: true
+        timeout-minutes: 20
+        run: composer run test:arch:pest

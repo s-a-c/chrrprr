@@ -1,0 +1,235 @@
+variant = "loose"
+
+[[issues]]
+file = "app/Actions/Teams/MoveTeam.php"
+code = "halstead"
+message = "Method has a high halstead difficulty"
+count = 1
+
+[[issues]]
+file = "app/Models/Concerns/ManagesTeamRoles.php"
+code = "prefer-first-class-callable"
+message = "Use first-class callable syntax `...` instead of a arrow function."
+count = 3
+
+[[issues]]
+file = "resources/views/flux/navlist/group.blade.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
+
+[[issues]]
+file = "resources/views/flux/navlist/group.blade.php"
+code = "no-else-clause"
+message = "Avoid `elseif` clauses."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Teams/OptimisticLockingTest.php"
+code = "assertion-style"
+message = "Inconsistent assertions style."
+count = 4
+
+[[issues]]
+file = "tests/Feature/Teams/TeamMoveTest.php"
+code = "assertion-style"
+message = "Inconsistent assertions style."
+count = 4
+
+# UserFactory: static fn causes PHP 8.5 binding error with Laravel Factory::state()
+[[issues]]
+file = "database/factories/UserFactory.php"
+code = "prefer-static-closure"
+message = "This arrow function does not use `$this` and should be declared static."
+count = 2
+
+# Complexity warnings - require major refactoring to address
+[[issues]]
+file = "app/Livewire/Settings/TwoFactor.php"
+code = "too-many-methods"
+message = "Class has too many methods."
+count = 1
+
+[[issues]]
+file = "app/Livewire/Settings/TwoFactor.php"
+code = "no-empty"
+message = "Use of the `empty` construct."
+count = 1
+
+[[issues]]
+file = "app/Providers/AppServiceProvider.php"
+code = "too-many-methods"
+message = "Class has too many methods."
+count = 1
+
+[[issues]]
+file = "app/Support/Result.php"
+code = "cyclomatic-complexity"
+message = "Class has high complexity."
+count = 1
+
+[[issues]]
+file = "app/Observers/TeamObserver.php"
+code = "cyclomatic-complexity"
+message = "Class has high complexity."
+count = 1
+
+[[issues]]
+file = "database/seeders/OrganisationSeeder.php"
+code = "cyclomatic-complexity"
+message = "Class has high complexity."
+count = 1
+
+[[issues]]
+file = "database/seeders/UserSeeder.php"
+code = "cyclomatic-complexity"
+message = "Class has high complexity."
+count = 1
+
+[[issues]]
+file = "app/Models/Concerns/HasTranslatableSlug.php"
+code = "cyclomatic-complexity"
+message = "Trait has high complexity."
+count = 1
+
+[[issues]]
+file = "app/Models/Concerns/HasTranslatableSlug.php"
+code = "kan-defect"
+message = "Trait has a high kan defect score (1.8200000000000003)."
+count = 1
+
+[[issues]]
+file = "app/Models/Concerns/HasTranslatableSlug.php"
+code = "cyclomatic-complexity"
+message = "Closure has high complexity."
+count = 1
+
+[[issues]]
+file = "app/Models/Concerns/ManagesTeamRoles.php"
+code = "too-many-methods"
+message = "Trait has too many methods."
+count = 1
+
+[[issues]]
+file = "app/Handlers/Commands/Teams/CreateTeamHandler.php"
+code = "cyclomatic-complexity"
+message = "Class has high complexity."
+count = 1
+
+[[issues]]
+file = "app/Models/User.php"
+code = "too-many-methods"
+message = "Class has too many methods."
+count = 1
+
+# Stylistic no-else-clause and nested ternary - low priority
+[[issues]]
+file = "app/Support/Validation/TeamName/StringNameQueryBuilder.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 2
+
+[[issues]]
+file = "app/Models/Enterprise.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
+
+[[issues]]
+file = "app/Livewire/Settings/Password.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
+
+[[issues]]
+file = "app/Handlers/Commands/Teams/UpdateTeamHandler.php"
+code = "no-nested-ternary"
+message = "Nested ternary expressions are confusing due to PHP's operator associativity rules."
+count = 1
+
+[[issues]]
+file = "app/Livewire/Settings/Profile.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
+
+[[issues]]
+file = "app/Support/Validation/TeamName/ArrayNameQueryBuilder.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
+
+[[issues]]
+file = "app/Models/Concerns/HasTranslatableSlug.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 2
+
+[[issues]]
+file = "app/Handlers/BaseHandler.php"
+code = "no-boolean-flag-parameter"
+message = "Avoid boolean flag parameters."
+count = 1
+
+[[issues]]
+file = "app/Models/Team.php"
+code = "no-else-clause"
+message = "Avoid `elseif` clauses."
+count = 1
+
+[[issues]]
+file = "app/Models/Team.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
+
+[[issues]]
+file = "app/Models/User.php"
+code = "no-else-clause"
+message = "Avoid `elseif` clauses."
+count = 1
+
+[[issues]]
+file = "app/Models/User.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
+
+[[issues]]
+file = "app/Actions/Teams/CreateTeam.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
+
+# Test file stylistic issues
+[[issues]]
+file = "tests/Feature/Teams/TeamMoveCyclePreventionTest.php"
+code = "assertion-style"
+message = "Inconsistent assertions style."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Support/ResultTest.php"
+code = "prefer-first-class-callable"
+message = "Use first-class callable syntax `...` instead of a arrow function."
+count = 2
+
+# Shorthand ternary in blade files
+[[issues]]
+file = "resources/views/livewire/teams/[ulid].blade.php"
+code = "no-shorthand-ternary"
+message = "Use of the shorthand ternary operator."
+count = 1
+
+[[issues]]
+file = "resources/views/livewire/teams/ulid.blade.php"
+code = "no-shorthand-ternary"
+message = "Use of the shorthand ternary operator."
+count = 1
+
+# Empty/redundant file
+[[issues]]
+file = "app/Http/Middleware/InitializeTenancyBySubdomainConditional.php"
+code = "no-redundant-file"
+message = "Redundant file with no executable code or declarations."
+count = 1

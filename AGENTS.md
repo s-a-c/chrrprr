@@ -1,3 +1,105 @@
+<details>
+<summary>Expand for Table of Contents</summary>
+
+## Table of Contents
+
+- [1. Laravel Boost Guidelines](#1-laravel-boost-guidelines)
+  - [1.1. Foundational Context](#11-foundational-context)
+  - [1.2. Conventions](#12-conventions)
+  - [1.3. Verification Scripts](#13-verification-scripts)
+  - [1.4. Application Structure \& Architecture](#14-application-structure--architecture)
+  - [1.5. Frontend Bundling](#15-frontend-bundling)
+  - [1.6. Replies](#16-replies)
+  - [1.7. Documentation Files](#17-documentation-files)
+  - [1.8. Laravel Boost](#18-laravel-boost)
+  - [1.9. Artisan](#19-artisan)
+  - [1.10. URLs](#110-urls)
+  - [1.11. Tinker / Debugging](#111-tinker--debugging)
+  - [1.12. Reading Browser Logs With the `browser-logs` Tool](#112-reading-browser-logs-with-the-browser-logs-tool)
+  - [1.13. Searching Documentation (Critically Important)](#113-searching-documentation-critically-important)
+    - [1.13.1. Available Search Syntax](#1131-available-search-syntax)
+  - [1.14. PHP](#114-php)
+    - [1.14.1. Constructors](#1141-constructors)
+    - [1.14.2. Type Declarations](#1142-type-declarations)
+  - [1.15. Comments](#115-comments)
+  - [1.16. PHPDoc Blocks](#116-phpdoc-blocks)
+  - [1.17. Enums](#117-enums)
+  - [1.18. Laravel Herd](#118-laravel-herd)
+  - [1.19. Laravel Folio](#119-laravel-folio)
+    - [1.19.1. New Pages \& Routes](#1191-new-pages--routes)
+    - [1.19.2. Support \& Documentation](#1192-support--documentation)
+  - [1.20. Do Things the Laravel Way](#120-do-things-the-laravel-way)
+    - [1.20.1. Database](#1201-database)
+    - [1.20.2. Model Creation](#1202-model-creation)
+    - [1.20.3. APIs \& Eloquent Resources](#1203-apis--eloquent-resources)
+    - [1.20.4. Controllers \& Validation](#1204-controllers--validation)
+    - [1.20.5. Queues](#1205-queues)
+    - [1.20.6. Authentication \& Authorization](#1206-authentication--authorization)
+    - [1.20.7. URL Generation](#1207-url-generation)
+    - [1.20.8. Configuration](#1208-configuration)
+    - [1.20.9. Testing](#1209-testing)
+    - [1.20.10. Vite Error](#12010-vite-error)
+  - [1.21. Laravel 12](#121-laravel-12)
+    - [1.21.1. Laravel 12 Structure](#1211-laravel-12-structure)
+    - [1.21.2. Database](#1212-database)
+    - [1.21.3. Models](#1213-models)
+  - [1.22. Flux UI Pro](#122-flux-ui-pro)
+    - [1.22.1. Available Components](#1221-available-components)
+  - [1.23. Livewire Core](#123-livewire-core)
+  - [1.24. Livewire Best Practices](#124-livewire-best-practices)
+  - [1.25. Testing Livewire](#125-testing-livewire)
+  - [1.26. Laravel Pint Code Formatter](#126-laravel-pint-code-formatter)
+  - [1.27. Pest](#127-pest)
+    - [1.27.1. Testing](#1271-testing)
+    - [1.27.2. Pest Tests](#1272-pest-tests)
+    - [1.27.3. Running Tests](#1273-running-tests)
+    - [1.27.4. Pest Assertions](#1274-pest-assertions)
+    - [1.27.5. Mocking](#1275-mocking)
+    - [1.27.6. Datasets](#1276-datasets)
+  - [1.28. Pest 4](#128-pest-4)
+    - [1.28.1. Browser Testing](#1281-browser-testing)
+    - [1.28.2. Example Tests](#1282-example-tests)
+  - [1.29. Tailwind Core](#129-tailwind-core)
+    - [1.29.1. Spacing](#1291-spacing)
+    - [1.29.2. Dark Mode](#1292-dark-mode)
+  - [1.30. Tailwind 4](#130-tailwind-4)
+  - [1.31. Filament](#131-filament)
+    - [1.31.1. Artisan](#1311-artisan)
+    - [1.31.2. Filament's Core Features](#1312-filaments-core-features)
+    - [1.31.3. Relationships](#1313-relationships)
+  - [1.32. Testing](#132-testing)
+    - [1.32.1. Example Tests](#1321-example-tests)
+    - [1.32.2. Important Version 4 Changes](#1322-important-version-4-changes)
+    - [1.32.3. Organize Component Classes Structure](#1323-organize-component-classes-structure)
+  - [1.33. Laravel Fortify](#133-laravel-fortify)
+    - [1.33.1. Configuration \& Setup](#1331-configuration--setup)
+    - [1.33.2. Customization](#1332-customization)
+  - [1.34. Available Features](#134-available-features)
+- [2. Workflow Instruction](#2-workflow-instruction)
+  - [2.1. user-centric](#21-user-centric)
+  - [2.2. Daily Flow](#22-daily-flow)
+  - [2.3. Playbook Guideline](#23-playbook-guideline)
+  - [2.4. CLI Usage Notes](#24-cli-usage-notes)
+- [3. ByteRover CLI Command Reference](#3-byterover-cli-command-reference)
+  - [3.1. Memory Commands](#31-memory-commands)
+    - [3.1.1. `brv add`](#311-brv-add)
+    - [3.1.2. `brv retrieve`](#312-brv-retrieve)
+    - [3.1.3. `brv push`](#313-brv-push)
+    - [3.1.4. `brv complete`](#314-brv-complete)
+    - [3.1.5. `brv status`](#315-brv-status)
+  - [3.2. Best Practices](#32-best-practices)
+    - [3.2.1. Efficient Workflow](#321-efficient-workflow)
+    - [3.2.2. Memory Management](#322-memory-management)
+- [Global Agent Rules](#global-agent-rules)
+  - [Shell Environment](#shell-environment)
+    - [Rationale](#rationale)
+
+---
+
+</details>
+
+---
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
@@ -9,11 +111,15 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
 - php - 8.5.1
+- filament/filament (FILAMENT) - v5
 - laravel/folio (FOLIO) - v1
 - laravel/fortify (FORTIFY) - v1
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
+- laravel/reverb (REVERB) - v1
+- laravel/scout (SCOUT) - v10
 - livewire/flux (FLUXUI_FREE) - v2
+- livewire/flux-pro (FLUXUI_PRO) - v2
 - livewire/livewire (LIVEWIRE) - v4
 - larastan/larastan (LARASTAN) - v3
 - laravel/mcp (MCP) - v0
@@ -22,11 +128,11 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - pestphp/pest (PEST) - v4
 - phpunit/phpunit (PHPUNIT) - v12
 - rector/rector (RECTOR) - v2
-- prettier (PRETTIER) - v
+- laravel-echo (ECHO) - v
 - tailwindcss (TAILWINDCSS) - v
 
 ## Conventions
-- You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, naming.
+- You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, and naming.
 - Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
 - Check for existing components to reuse before writing a new one.
 
@@ -34,7 +140,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - Do not create verification scripts or tinker when tests cover that functionality and prove it works. Unit and feature tests are more important.
 
 ## Application Structure & Architecture
-- Stick to existing directory structure - don't create new base folders without approval.
+- Stick to existing directory structure; don't create new base folders without approval.
 - Do not change the application's dependencies without approval.
 
 ## Frontend Bundling
@@ -46,17 +152,16 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Documentation Files
 - You must only create documentation files if explicitly requested by the user.
 
-
 === boost rules ===
 
 ## Laravel Boost
 - Laravel Boost is an MCP server that comes with powerful tools designed specifically for this application. Use them.
 
 ## Artisan
-- Use the `list-artisan-commands` tool when you need to call an Artisan command to double check the available parameters.
+- Use the `list-artisan-commands` tool when you need to call an Artisan command to double-check the available parameters.
 
 ## URLs
-- Whenever you share a project URL with the user you should use the `get-absolute-url` tool to ensure you're using the correct scheme, domain / IP, and port.
+- Whenever you share a project URL with the user, you should use the `get-absolute-url` tool to ensure you're using the correct scheme, domain/IP, and port.
 
 ## Tinker / Debugging
 - You should use the `tinker` tool when you need to execute PHP to debug code or query Eloquent models directly.
@@ -67,33 +172,33 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - Only recent browser logs will be useful - ignore old logs.
 
 ## Searching Documentation (Critically Important)
-- Boost comes with a powerful `search-docs` tool you should use before any other approaches. This tool automatically passes a list of installed packages and their versions to the remote Boost API, so it returns only version-specific documentation specific for the user's circumstance. You should pass an array of packages to filter on if you know you need docs for particular packages.
-- The 'search-docs' tool is perfect for all Laravel related packages, including Laravel, Inertia, Livewire, Filament, Tailwind, Pest, Nova, Nightwatch, etc.
-- You must use this tool to search for Laravel-ecosystem documentation before falling back to other approaches.
+- Boost comes with a powerful `search-docs` tool you should use before any other approaches when dealing with Laravel or Laravel ecosystem packages. This tool automatically passes a list of installed packages and their versions to the remote Boost API, so it returns only version-specific documentation for the user's circumstance. You should pass an array of packages to filter on if you know you need docs for particular packages.
+- The `search-docs` tool is perfect for all Laravel-related packages, including Laravel, Inertia, Livewire, Filament, Tailwind, Pest, Nova, Nightwatch, etc.
+- You must use this tool to search for Laravel ecosystem documentation before falling back to other approaches.
 - Search the documentation before making code changes to ensure we are taking the correct approach.
-- Use multiple, broad, simple, topic based queries to start. For example: `['rate limiting', 'routing rate limiting', 'routing']`.
-- Do not add package names to queries - package information is already shared. For example, use `test resource table`, not `filament 4 test resource table`.
+- Use multiple, broad, simple, topic-based queries to start. For example: `['rate limiting', 'routing rate limiting', 'routing']`.
+- Do not add package names to queries; package information is already shared. For example, use `test resource table`, not `filament 4 test resource table`.
 
 ### Available Search Syntax
 - You can and should pass multiple queries at once. The most relevant results will be returned first.
 
-1. Simple Word Searches with auto-stemming - query=authentication - finds 'authenticate' and 'auth'
-2. Multiple Words (AND Logic) - query=rate limit - finds knowledge containing both "rate" AND "limit"
-3. Quoted Phrases (Exact Position) - query="infinite scroll" - Words must be adjacent and in that order
-4. Mixed Queries - query=middleware "rate limit" - "middleware" AND exact phrase "rate limit"
-5. Multiple Queries - queries=["authentication", "middleware"] - ANY of these terms
-
+1. Simple Word Searches with auto-stemming - query=authentication - finds 'authenticate' and 'auth'.
+2. Multiple Words (AND Logic) - query=rate limit - finds knowledge containing both "rate" AND "limit".
+3. Quoted Phrases (Exact Position) - query="infinite scroll" - words must be adjacent and in that order.
+4. Mixed Queries - query=middleware "rate limit" - "middleware" AND exact phrase "rate limit".
+5. Multiple Queries - queries=["authentication", "middleware"] - ANY of these terms.
 
 === php rules ===
 
 ## PHP
 
+- Always use strict typing at the head of a `.php` file: `declare(strict_types=1);`.
 - Always use curly braces for control structures, even if it has one line.
 
 ### Constructors
 - Use PHP 8 constructor property promotion in `__construct()`.
     - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
-- Do not allow empty `__construct()` methods with zero parameters.
+- Do not allow empty `__construct()` methods with zero parameters unless the constructor is private.
 
 ### Type Declarations
 - Always use explicit return type declarations for methods and functions.
@@ -107,7 +212,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 </code-snippet>
 
 ## Comments
-- Prefer PHPDoc blocks over comments. Never use comments within the code itself unless there is something _very_ complex going on.
+- Prefer PHPDoc blocks over inline comments. Never use comments within the code itself unless there is something very complex going on.
 
 ## PHPDoc Blocks
 - Add useful array shape type definitions for arrays when appropriate.
@@ -115,32 +220,29 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
 
-
 === herd rules ===
 
 ## Laravel Herd
 
-- The application is served by Laravel Herd and will be available at: https?://[kebab-case-project-dir].test. Use the `get-absolute-url` tool to generate URLs for the user to ensure valid URLs.
-- You must not run any commands to make the site available via HTTP(s). It is _always_ available through Laravel Herd.
-
+- The application is served by Laravel Herd and will be available at: `https?://[kebab-case-project-dir].test`. Use the `get-absolute-url` tool to generate URLs for the user to ensure valid URLs.
+- You must not run any commands to make the site available via HTTP(S). It is always available through Laravel Herd.
 
 === tests rules ===
 
 ## Test Enforcement
 
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
-- Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test` with a specific filename or filter.
-
+- Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
 
 === folio/core rules ===
 
 ## Laravel Folio
 
-- Laravel Folio is a file based router. With Laravel Folio, a new route is created for every Blade file within the configured Folio directory. For example, pages are usually in in `resources/views/pages/` and the file structure determines routes:
+- Laravel Folio is a file-based router. With Laravel Folio, a new route is created for every Blade file within the configured Folio directory. For example, pages are usually in `resources/views/pages/` and the file structure determines routes:
     - `pages/index.blade.php` → `/`
     - `pages/profile/index.blade.php` → `/profile`
     - `pages/auth/login.blade.php` → `/auth/login`
-- You may list available Folio routes using `php artisan folio:list`  or using Boost's `list-routes` tool.
+- You may list available Folio routes using `php artisan folio:list` or using the `list-routes` tool.
 
 ### New Pages & Routes
 - Always create new `folio` pages and routes using `php artisan folio:page [name]` following existing naming conventions.
@@ -155,18 +257,15 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 - Add a 'name' to each new Folio page at the very top of the file so it has a named route available for other parts of the codebase to use.
 
-
-<code-snippet name="Adding named route to Folio page" lang="php">
+<code-snippet name="Adding Named Route to Folio Page" lang="php">
 use function Laravel\Folio\name;
 
 name('products.index');
 </code-snippet>
 
-
 ### Support & Documentation
 - Folio supports: middleware, serving pages from multiple paths, subdomain routing, named routes, nested routes, index routes, route parameters, and route model binding.
-- If available, use Boost's `search-docs` tool to use Folio to its full potential and help the user effectively.
-
+- If available, use the `search-docs` tool to use Folio to its full potential and help the user effectively.
 
 <code-snippet name="Folio Middleware Example" lang="php">
 use function Laravel\Folio\{name, middleware};
@@ -175,7 +274,6 @@ name('admin.products');
 middleware(['auth', 'verified', 'can:manage-products']);
 ?>
 </code-snippet>
-
 
 === laravel/core rules ===
 
@@ -187,7 +285,7 @@ middleware(['auth', 'verified', 'can:manage-products']);
 
 ### Database
 - Always use proper Eloquent relationship methods with return type hints. Prefer relationship methods over raw queries or manual joins.
-- Use Eloquent models and relationships before suggesting raw database queries
+- Use Eloquent models and relationships before suggesting raw database queries.
 - Avoid `DB::`; prefer `Model::query()`. Generate code that leverages Laravel's ORM capabilities rather than bypassing them.
 - Generate code that prevents N+1 query problems by using eager loading.
 - Use Laravel's query builder for very complex database operations.
@@ -222,60 +320,58 @@ middleware(['auth', 'verified', 'can:manage-products']);
 ### Vite Error
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `bun run build` or ask the user to run `bun run dev` or `composer run dev`.
 
-
 === laravel/v12 rules ===
 
 ## Laravel 12
 
-- Use the `search-docs` tool to get version specific documentation.
+- Use the `search-docs` tool to get version-specific documentation.
 - Since Laravel 11, Laravel has a new streamlined file structure which this project uses.
 
 ### Laravel 12 Structure
-- No middleware files in `app/Http/Middleware/`.
+- In Laravel 12, middleware are no longer registered in `app/Http/Kernel.php`.
+- Middleware are configured declaratively in `bootstrap/app.php` using `Application::configure()->withMiddleware()`.
 - `bootstrap/app.php` is the file to register middleware, exceptions, and routing files.
 - `bootstrap/providers.php` contains application specific service providers.
-- **No app\Console\Kernel.php** - use `bootstrap/app.php` or `routes/console.php` for console configuration.
-- **Commands auto-register** - files in `app/Console/Commands/` are automatically available and do not require manual registration.
+- The `app\Console\Kernel.php` file no longer exists; use `bootstrap/app.php` or `routes/console.php` for console configuration.
+- Console commands in `app/Console/Commands/` are automatically available and do not require manual registration.
 
 ### Database
 - When modifying a column, the migration must include all of the attributes that were previously defined on the column. Otherwise, they will be dropped and lost.
-- Laravel 11 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
+- Laravel 12 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
 
 ### Models
 - Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
 
+=== fluxui-pro/core rules ===
 
-=== fluxui-free/core rules ===
+## Flux UI Pro
 
-## Flux UI Free
-
-- This project is using the free edition of Flux UI. It has full access to the free components and variants, but does not have access to the Pro components.
-- Flux UI is a component library for Livewire. Flux is a robust, hand-crafted, UI component library for your Livewire applications. It's built using Tailwind CSS and provides a set of components that are easy to use and customize.
+- This project is using the Pro version of Flux UI. It has full access to the free components and variants, as well as full access to the Pro components and variants.
+- Flux UI is a component library for Livewire. Flux is a robust, hand-crafted UI component library for your Livewire applications. It's built using Tailwind CSS and provides a set of components that are easy to use and customize.
 - You should use Flux UI components when available.
 - Fallback to standard Blade components if Flux is unavailable.
-- If available, use Laravel Boost's `search-docs` tool to get the exact documentation and code snippets available for this project.
+- If available, use the `search-docs` tool to get the exact documentation and code snippets available for this project.
 - Flux UI components look like this:
 
-<code-snippet name="Flux UI Component Usage Example" lang="blade">
+<code-snippet name="Flux UI Component Example" lang="blade">
     <flux:button variant="primary"/>
 </code-snippet>
-
 
 ### Available Components
 This is correct as of Boost installation, but there may be additional components within the codebase.
 
 <available-flux-components>
-avatar, badge, brand, breadcrumbs, button, callout, checkbox, dropdown, field, heading, icon, input, modal, navbar, otp-input, profile, radio, select, separator, skeleton, switch, text, textarea, tooltip
+accordion, autocomplete, avatar, badge, brand, breadcrumbs, button, calendar, callout, card, chart, checkbox, command, composer, context, date-picker, dropdown, editor, field, file-upload, heading, icon, input, kanban, modal, navbar, otp-input, pagination, pillbox, popover, profile, radio, select, separator, skeleton, slider, switch, table, tabs, text, textarea, time-picker, toast, tooltip
 </available-flux-components>
-
 
 === livewire/core rules ===
 
-## Livewire Core
-- Use the `search-docs` tool to find exact version specific documentation for how to write Livewire & Livewire tests.
-- Use the `php artisan make:livewire [Posts\CreatePost]` artisan command to create new components
+## Livewire
+
+- Use the `search-docs` tool to find exact version-specific documentation for how to write Livewire and Livewire tests.
+- Use the `php artisan make:livewire [Posts\CreatePost]` Artisan command to create new components.
 - State should live on the server, with the UI reflecting it.
-- All Livewire requests hit the Laravel backend, they're like regular HTTP requests. Always validate form data, and run authorization checks in Livewire actions.
+- All Livewire requests hit the Laravel backend; they're like regular HTTP requests. Always validate form data and run authorization checks in Livewire actions.
 
 ## Livewire Best Practices
 - Livewire components require a single root element.
@@ -292,15 +388,14 @@ avatar, badge, brand, breadcrumbs, button, callout, checkbox, dropdown, field, h
 
 - Prefer lifecycle hooks like `mount()`, `updatedFoo()` for initialization and reactive side effects:
 
-<code-snippet name="Lifecycle hook examples" lang="php">
+<code-snippet name="Lifecycle Hook Examples" lang="php">
     public function mount(User $user) { $this->user = $user; }
     public function updatedSearch() { $this->resetPage(); }
 </code-snippet>
 
-
 ## Testing Livewire
 
-<code-snippet name="Example Livewire component test" lang="php">
+<code-snippet name="Example Livewire Component Test" lang="php">
     Livewire::test(Counter::class)
         ->assertSet('count', 0)
         ->call('increment')
@@ -309,12 +404,10 @@ avatar, badge, brand, breadcrumbs, button, callout, checkbox, dropdown, field, h
         ->assertStatus(200);
 </code-snippet>
 
-
-    <code-snippet name="Testing a Livewire component exists within a page" lang="php">
-        $this->get('/posts/create')
-        ->assertSeeLivewire(CreatePost::class);
-    </code-snippet>
-
+<code-snippet name="Testing Livewire Component Exists on Page" lang="php">
+    $this->get('/posts/create')
+    ->assertSeeLivewire(CreatePost::class);
+</code-snippet>
 
 === pint/core rules ===
 
@@ -322,7 +415,6 @@ avatar, badge, brand, breadcrumbs, button, callout, checkbox, dropdown, field, h
 
 - You must run `vendor/bin/pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/pint --test`, simply run `vendor/bin/pint` to fix any formatting issues.
-
 
 === pest/core rules ===
 
@@ -344,9 +436,9 @@ it('is true', function () {
 
 ### Running Tests
 - Run the minimal number of tests using an appropriate filter before finalizing code edits.
-- To run all tests: `php artisan test`.
-- To run all tests in a file: `php artisan test tests/Feature/ExampleTest.php`.
-- To filter on a particular test name: `php artisan test --filter=testName` (recommended after making a change to a related file).
+- To run all tests: `php artisan test --compact`.
+- To run all tests in a file: `php artisan test --compact tests/Feature/ExampleTest.php`.
+- To filter on a particular test name: `php artisan test --compact --filter=testName` (recommended after making a change to a related file).
 - When the tests relating to your changes are passing, ask the user if they would like to run the entire test suite to ensure everything is still passing.
 
 ### Pest Assertions
@@ -365,7 +457,7 @@ it('returns all', function () {
 - You can also create partial mocks using the same import or self method.
 
 ### Datasets
-- Use datasets in Pest to simplify tests which have a lot of duplicated data. This is often the case when testing validation rules, so consider going with this solution when writing tests for validation rules.
+- Use datasets in Pest to simplify tests that have a lot of duplicated data. This is often the case when testing validation rules, so consider this solution when writing tests for validation rules.
 
 <code-snippet name="Pest Dataset Example" lang="php">
 it('has emails', function (string $email) {
@@ -376,18 +468,17 @@ it('has emails', function (string $email) {
 ]);
 </code-snippet>
 
-
 === pest/v4 rules ===
 
 ## Pest 4
 
-- Pest v4 is a huge upgrade to Pest and offers: browser testing, smoke testing, visual regression testing, test sharding, and faster type coverage.
+- Pest 4 is a huge upgrade to Pest and offers: browser testing, smoke testing, visual regression testing, test sharding, and faster type coverage.
 - Browser testing is incredibly powerful and useful for this project.
 - Browser tests should live in `tests/Browser/`.
 - Use the `search-docs` tool for detailed guidance on utilizing these features.
 
 ### Browser Testing
-- You can use Laravel features like `Event::fake()`, `assertAuthenticated()`, and model factories within Pest v4 browser tests, as well as `RefreshDatabase` (when needed) to ensure a clean state for each test.
+- You can use Laravel features like `Event::fake()`, `assertAuthenticated()`, and model factories within Pest 4 browser tests, as well as `RefreshDatabase` (when needed) to ensure a clean state for each test.
 - Interact with the page (click, type, scroll, select, submit, drag-and-drop, touch gestures, etc.) when appropriate to complete the test.
 - If requested, test on multiple browsers (Chrome, Firefox, Safari).
 - If requested, test on different devices and viewports (like iPhone 14 Pro, tablets, or custom breakpoints).
@@ -421,35 +512,398 @@ $pages = visit(['/', '/about', '/contact']);
 $pages->assertNoJavascriptErrors()->assertNoConsoleLogs();
 </code-snippet>
 
-
 === tailwindcss/core rules ===
 
-## Tailwind Core
+## Tailwind CSS
 
-- Use Tailwind CSS classes to style HTML, check and use existing tailwind conventions within the project before writing your own.
-- Offer to extract repeated patterns into components that match the project's conventions (i.e. Blade, JSX, Vue, etc..)
-- Think through class placement, order, priority, and defaults - remove redundant classes, add classes to parent or child carefully to limit repetition, group elements logically
+- Use Tailwind CSS classes to style HTML; check and use existing Tailwind conventions within the project before writing your own.
+- Offer to extract repeated patterns into components that match the project's conventions (i.e. Blade, JSX, Vue, etc.).
+- Think through class placement, order, priority, and defaults. Remove redundant classes, add classes to parent or child carefully to limit repetition, and group elements logically.
 - You can use the `search-docs` tool to get exact examples from the official documentation when needed.
 
 ### Spacing
-- When listing items, use gap utilities for spacing, don't use margins.
+- When listing items, use gap utilities for spacing; don't use margins.
 
-    <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
-        <div class="flex gap-8">
-            <div>Superior</div>
-            <div>Michigan</div>
-            <div>Erie</div>
-        </div>
-    </code-snippet>
-
+<code-snippet name="Valid Flex Gap Spacing Example" lang="html">
+    <div class="flex gap-8">
+        <div>Superior</div>
+        <div>Michigan</div>
+        <div>Erie</div>
+    </div>
+</code-snippet>
 
 ### Dark Mode
 - If existing pages and components support dark mode, new pages and components must support dark mode in a similar way, typically using `dark:`.
 
-
 === tailwindcss/v rules ===
 
-## Tailwind 3
+## Tailwind CSS 3
 
-- Always use Tailwind CSS v3 - verify you're using only classes supported by this version.
+- Always use Tailwind CSS v3; verify you're using only classes supported by this version.
+
+=== filament/filament rules ===
+
+## Filament
+- Filament is used by this application, check how and where to follow existing application conventions.
+- Filament is a Server-Driven UI (SDUI) framework for Laravel. It allows developers to define user interfaces in PHP using structured configuration objects. It is built on top of Livewire, Alpine.js, and Tailwind CSS.
+- You can use the `search-docs` tool to get information from the official Filament documentation when needed. This is very useful for Artisan command arguments, specific code examples, testing functionality, relationship management, and ensuring you're following idiomatic practices.
+- Utilize static `make()` methods for consistent component initialization.
+
+### Artisan
+- You must use the Filament specific Artisan commands to create new files or components for Filament. You can find these with the `list-artisan-commands` tool, or with `php artisan` and the `--help` option.
+- Inspect the required options, always pass `--no-interaction`, and valid arguments for other options when applicable.
+
+### Filament's Core Features
+- Actions: Handle doing something within the application, often with a button or link. Actions encapsulate the UI, the interactive modal window, and the logic that should be executed when the modal window is submitted. They can be used anywhere in the UI and are commonly used to perform one-time actions like deleting a record, sending an email, or updating data in the database based on modal form input.
+- Forms: Dynamic forms rendered within other features, such as resources, action modals, table filters, and more.
+- Infolists: Read-only lists of data.
+- Notifications: Flash notifications displayed to users within the application.
+- Panels: The top-level container in Filament that can include all other features like pages, resources, forms, tables, notifications, actions, infolists, and widgets.
+- Resources: Static classes that are used to build CRUD interfaces for Eloquent models. Typically live in `app/Filament/Resources`.
+- Schemas: Represent components that define the structure and behavior of the UI, such as forms, tables, or lists.
+- Tables: Interactive tables with filtering, sorting, pagination, and more.
+- Widgets: Small component included within dashboards, often used for displaying data in charts, tables, or as a stat.
+
+### Relationships
+- Determine if you can use the `relationship()` method on form components when you need `options` for a select, checkbox, repeater, or when building a `Fieldset`:
+
+<code-snippet name="Relationship example for Form Select" lang="php">
+Forms\Components\Select::make('user_id')
+    ->label('Author')
+    ->relationship('author')
+    ->required(),
+</code-snippet>
+
+## Testing
+- It's important to test Filament functionality for user satisfaction.
+- Ensure that you are authenticated to access the application within the test.
+- Filament uses Livewire, so start assertions with `livewire()` or `Livewire::test()`.
+
+### Example Tests
+
+<code-snippet name="Filament Table Test" lang="php">
+    livewire(ListUsers::class)
+        ->assertCanSeeTableRecords($users)
+        ->searchTable($users->first()->name)
+        ->assertCanSeeTableRecords($users->take(1))
+        ->assertCanNotSeeTableRecords($users->skip(1))
+        ->searchTable($users->last()->email)
+        ->assertCanSeeTableRecords($users->take(-1))
+        ->assertCanNotSeeTableRecords($users->take($users->count() - 1));
+</code-snippet>
+
+<code-snippet name="Filament Create Resource Test" lang="php">
+    livewire(CreateUser::class)
+        ->fillForm([
+            'name' => 'Howdy',
+            'email' => 'howdy@example.com',
+        ])
+        ->call('create')
+        ->assertNotified()
+        ->assertRedirect();
+
+    assertDatabaseHas(User::class, [
+        'name' => 'Howdy',
+        'email' => 'howdy@example.com',
+    ]);
+</code-snippet>
+
+<code-snippet name="Testing Multiple Panels (setup())" lang="php">
+    use Filament\Facades\Filament;
+
+    Filament::setCurrentPanel('app');
+</code-snippet>
+
+<code-snippet name="Calling an Action in a Test" lang="php">
+    livewire(EditInvoice::class, [
+        'invoice' => $invoice,
+    ])->callAction('send');
+
+    expect($invoice->refresh())->isSent()->toBeTrue();
+</code-snippet>
+
+### Important Version 4 Changes
+- File visibility is now `private` by default.
+- The `deferFilters` method from Filament v3 is now the default behavior in Filament v4, so users must click a button before the filters are applied to the table. To disable this behavior, you can use the `deferFilters(false)` method.
+- The `Grid`, `Section`, and `Fieldset` layout components no longer span all columns by default.
+- The `all` pagination page method is not available for tables by default.
+- All action classes extend `Filament\Actions\Action`. No action classes exist in `Filament\Tables\Actions`.
+- The `Form` & `Infolist` layout components have been moved to `Filament\Schemas\Components`, for example `Grid`, `Section`, `Fieldset`, `Tabs`, `Wizard`, etc.
+- A new `Repeater` component for Forms has been added.
+- Icons now use the `Filament\Support\Icons\Heroicon` Enum by default. Other options are available and documented.
+
+### Organize Component Classes Structure
+- Schema components: `Schemas/Components/`
+- Table columns: `Tables/Columns/`
+- Table filters: `Tables/Filters/`
+- Actions: `Actions/`
+
+=== laravel/fortify rules ===
+
+## Laravel Fortify
+
+Fortify is a headless authentication backend that provides authentication routes and controllers for Laravel applications.
+
+**Before implementing any authentication features, use the `search-docs` tool to get the latest docs for that specific feature.**
+
+### Configuration & Setup
+- Check `config/fortify.php` to see what's enabled. Use `search-docs` for detailed information on specific features.
+- Enable features by adding them to the `'features' => []` array: `Features::registration()`, `Features::resetPasswords()`, etc.
+- To see the all Fortify registered routes, use the `list-routes` tool with the `only_vendor: true` and `action: "Fortify"` parameters.
+- Fortify includes view routes by default (login, register). Set `'views' => false` in the configuration file to disable them if you're handling views yourself.
+
+### Customization
+- Views can be customized in `FortifyServiceProvider`'s `boot()` method using `Fortify::loginView()`, `Fortify::registerView()`, etc.
+- Customize authentication logic with `Fortify::authenticateUsing()` for custom user retrieval / validation.
+- Actions in `app/Actions/Fortify/` handle business logic (user creation, password reset, etc.). They're fully customizable, so you can modify them to change feature behavior.
+
+## Available Features
+- `Features::registration()` for user registration.
+- `Features::emailVerification()` to verify new user emails.
+- `Features::twoFactorAuthentication()` for 2FA with QR codes and recovery codes.
+  - Add options: `['confirmPassword' => true, 'confirm' => true]` to require password confirmation and OTP confirmation before enabling 2FA.
+- `Features::updateProfileInformation()` to let users update their profile.
+- `Features::updatePasswords()` to let users change their passwords.
+- `Features::resetPasswords()` for password reset via email.
 </laravel-boost-guidelines>
+
+---
+
+# 2. Workflow Instruction
+
+You are a coding agent focused on one codebase. Use the brv CLI to manage working context.
+Core Rules:
+
+- Start from memory. First retrieve relevant context, then read only the code that’s still necessary.
+- Keep a local playbook. playbook.json is your local memory store—update it with what you learn.
+
+## 2.1. user-centric
+
+Before running any `brv` command, ask the user to choose:
+
+1. **Accept** - Review the command, then run if approved
+2. **Auto-run** - Execute immediately (remember this preference for the session)
+3. **No** - Cancel the command and continue without alternative
+4. **Custom** - Skip the command and provide different instruction
+
+Once the user chooses "Auto-run", apply that preference to all subsequent `brv` commands in this conversation without asking again.
+
+## 2.2. Daily Flow
+
+1. Always attempt to retrieve relevant context from ByteRover first by running `brv retrieve`.
+
+2. Do the work with minimal code reads
+
+3. Record new or refined knowledge in the playbook
+
+    - Add only specific, actionable, contextual items; avoid secrets. Redact when in doubt.
+
+4. Sync policy (manual by default)
+
+    - Do not auto-push.
+    - When the playbook has meaningful updates, prompt the user to run the command
+    - If the user has explicitly allowed auto-push, proceed non-interactively by running `brv push -y`.
+
+## 2.3. Playbook Guideline
+
+- Be specific (“Use React Query for data fetching in web modules”).
+- Be actionable (clear instruction a future agent/dev can apply).
+- Be contextual (mention module/service, constraints, links to source).
+- Include source (file + lines or commit) when possible.
+
+## 2.4. CLI Usage Notes
+
+- Use --help on any command to discover flags. Provide exact arguments for the scenario.
+
+---
+
+# 3. ByteRover CLI Command Reference
+
+## 3.1. Memory Commands
+
+### 3.1.1. `brv add`
+
+**Description:** Add or update a bullet in the playbook (bypasses ACE workflow for direct agent usage)
+
+**Flags:**
+
+- `-s, --section <string>`: Section name for the bullet (required)
+- `-c, --content <string>`: Content of the bullet (required)
+- `-b, --bullet-id <string>`: Bullet ID to update (optional, creates new if omitted)
+
+**Examples:**
+
+```bash
+brv add --section "Common Errors" --content "Authentication fails when token expires"
+brv add --section "Common Errors" --bullet-id "common-00001" --content "Updated: Auth fails when token expires"
+brv add -s "Best Practices" -c "Always validate user input before processing"
+
+```
+
+**Suggested Sections:** Common Errors, Best Practices, Strategies, Lessons Learned, Project Structure and Dependencies, Testing, Code Style and Quality, Styling and Design
+
+**Behavior:**
+
+- Warns if using non-standard section name
+- Creates new bullet with auto-generated ID if `--bullet-id` not provided
+- Updates existing bullet if `--bullet-id` matches existing bullet
+- Displays bullet ID, section, content, and tags after operation
+
+**Requirements:** Playbook must exist (run `brv init` first)
+
+---
+
+### 3.1.2. `brv retrieve`
+
+**Description:** Retrieve memories from ByteRover Memora service and save to local ACE playbook
+
+**Flags:**
+
+- `-q, --query <string>`: Search query string (required)
+- `-n, --node-keys <string>`: Comma-separated list of node keys (file paths) to filter results
+
+**Examples:**
+
+```bash
+brv retrieve --query "authentication best practices"
+brv retrieve -q "error handling" -n "src/auth/login.ts,src/auth/oauth.ts"
+brv retrieve -q "database connection issues"
+
+```
+
+**Behavior:**
+
+- **Clears existing playbook first** (destructive operation)
+- Retrieves memories and related memories from Memora service
+- Combines both result sets into playbook
+- Maps memory fields: `bulletId` → `id`, `tags` → `metadata.tags`, `nodeKeys` → `metadata.relatedFiles`
+- Displays results with score, content preview (200 chars), and related file paths
+- Fail-safe: warns on save error but still displays results
+
+**Output:** Shows count of memories and related memories, displays each with score and content
+
+**Requirements:** Must be authenticated and project initialized
+
+---
+
+### 3.1.3. `brv push`
+
+**Description:** Push playbook to ByteRover memory storage and clean up local ACE files
+
+**Flags:**
+
+- `-b, --branch <string>`: ByteRover branch name (default: "main", NOT git branch)
+- `-y, --yes`: Skip confirmation prompt
+
+**Examples:**
+
+```bash
+brv push
+brv push --branch develop
+
+```
+
+---
+
+### 3.1.4. `brv complete`
+
+**Description:** Complete ACE workflow: save executor output, generate reflection, and update playbook in one command
+
+**Arguments:**
+
+- `hint`: Short hint for naming output files (e.g., "user-auth", "bug-fix")
+- `reasoning`: Detailed reasoning and approach for completing the task
+- `finalAnswer`: The final answer/solution to the task
+
+**Flags:**
+
+- `-t, --tool-usage <string>`: Comma-separated list of tool calls with arguments (format: "ToolName:argument", required)
+- `-f, --feedback <string>`: Environment feedback about task execution (e.g., "Tests passed", "Build failed", required)
+- `-b, --bullet-ids <string>`: Comma-separated list of playbook bullet IDs referenced (optional)
+- `-u, --update-bullet <string>`: Bullet ID to update with new knowledge (if not provided, adds new bullet)
+
+**Examples:**
+
+```bash
+brv complete "user-auth" "Implemented OAuth2 flow" "Auth works" --tool-usage "Read:src/auth.ts,Edit:src/auth.ts,Bash:npm test" --feedback "All tests passed"
+brv complete "validation-fix" "Analyzed validator" "Fixed bug" --tool-usage "Grep:pattern:\"validate\",Read:src/validator.ts" --bullet-ids "bullet-123" --feedback "Tests passed"
+brv complete "auth-update" "Improved error handling" "Better errors" --tool-usage "Edit:src/auth.ts" --feedback "Tests passed" --update-bullet "bullet-5"
+
+```
+
+**Behavior:**
+
+- **Phase 1 (Executor):** Saves executor output with hint, reasoning, answer, tool usage, and bullet IDs
+- **Phase 2 (Reflector):** Auto-generates reflection based on feedback and applies tags to playbook
+- **Phase 3 (Curator):** Creates delta operation (ADD or UPDATE) and applies to playbook
+- Adds new bullet to "Lessons Learned" section with tag `['auto-generated']`
+- If `--update-bullet` provided, updates existing bullet instead of adding new one
+- Extracts file paths from tool usage and adds to bullet metadata as `relatedFiles`
+
+**Output:** Shows summary with file paths, tags applied count, and delta operations breakdown
+
+---
+
+### 3.1.5. `brv status`
+
+**Description**: Show CLI status and project information. Display local ACE context (ACE playbook) managed by ByteRover CLI.
+
+**Arguments:**
+
+- `DIRECTORY`:Project directory (defaults to current directory).
+
+**Flags:**
+
+- `-f, --format=<option>`: [default: table] Output format. <options: table|json>
+
+**Examples:**
+
+```bash
+brv status
+brv status --format json
+
+```
+
+## 3.2. Best Practices
+
+### 3.2.1. Efficient Workflow
+
+1. **Retrieve wisely:** Use `brv retrieve` with specific queries and `--node-keys` to filter
+2. **Read only what's needed:** Check playbook with `brv status` to see statistics before reading full content
+3. **Update precisely:** Use `brv add` to add/update specific bullets or `brv complete` for complete workflow
+4. **Push when appropriate:** Prompt user to run `brv push` after completing significant work
+
+### 3.2.2. Memory Management
+
+**Retrieve pattern:**
+
+- Use `brv add` to directly add/update bullets
+- `brv retrieve` **clears existing playbook** - use carefully
+- Retrieved memories use actual Memora tags (not "auto-generated")
+- Both memories and related memories are saved to playbook
+
+---
+Generated by ByteRover CLI for Gemini CLI
+
+---
+
+# Global Agent Rules
+
+## Shell Environment
+
+To replicate the user's customized environment and ensure correct tool versions (specifically PHP 8.5.1 from Laravel Herd), all shell commands must be executed within an interactive login shell with a \`TERM\` variable set.
+
+**Command Template:**
+
+```zsh
+TERM=xterm-256color zsh -i -l -c "<command>"
+
+```
+
+### Rationale
+
+- Standard non-interactive shells do not load \`.zshrc\` or the complex path configurations in \`~/.config/zsh/\`.
+- This ensures the \`PATH\` correctly prioritizes Herd's binaries over Homebrew or system installs.
+- Providing \`TERM=xterm-256color\` prevents issues with plugins or scripts that expect a terminal (like some ZSH prompt setups).
+
+---

@@ -1,72 +1,117 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Response;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\ConfirmPasswordViewResponse;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Laravel\Fortify\Contracts\LoginViewResponse;
+use Laravel\Fortify\Contracts\RegisterViewResponse;
+use Laravel\Fortify\Contracts\RequestPasswordResetLinkViewResponse;
+use Laravel\Fortify\Contracts\ResetPasswordViewResponse;
+use Laravel\Fortify\Contracts\ResetsUserPasswords;
+use Laravel\Fortify\Contracts\TwoFactorLoginResponse;
+use Laravel\Fortify\Contracts\VerifyEmailViewResponse;
+use Override;
 
-class FortifyServiceProvider extends ServiceProvider
+final class FortifyServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
-        //
-    }
+        $this->app->singleton(CreatesNewUsers::class, CreateNewUser::class);
+        $this->app->singleton(ResetsUserPasswords::class, ResetUserPassword::class);
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        $this->configureActions();
-        $this->configureViews();
-        $this->configureRateLimiting();
-    }
-
-    /**
-     * Configure Fortify actions.
-     */
-    private function configureActions(): void
-    {
-        Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        Fortify::createUsersUsing(CreateNewUser::class);
-    }
-
-    /**
-     * Configure Fortify views.
-     */
-    private function configureViews(): void
-    {
-        Fortify::loginView(fn () => view('livewire.auth.login'));
-        Fortify::verifyEmailView(fn () => view('livewire.auth.verify-email'));
-        Fortify::twoFactorChallengeView(fn () => view('livewire.auth.two-factor-challenge'));
-        Fortify::confirmPasswordView(fn () => view('livewire.auth.confirm-password'));
-        Fortify::registerView(fn () => view('livewire.auth.register'));
-        Fortify::resetPasswordView(fn () => view('livewire.auth.reset-password'));
-        Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
-    }
-
-    /**
-     * Configure rate limiting.
-     */
-    private function configureRateLimiting(): void
-    {
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        $this->app->singleton(LoginViewResponse::class, static fn (): object => new class implements LoginViewResponse
+        {
+            #[Override]
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
+            {
+                return response()->view('livewire.auth.login');
+            }
         });
 
-        RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+        $this->app->singleton(RegisterViewResponse::class, static fn (): object => new class implements RegisterViewResponse
+        {
+            #[Override]
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
+            {
+                return response()->view('livewire.auth.register');
+            }
+        });
 
-            return Limit::perMinute(5)->by($throttleKey);
+        $this->app->singleton(RequestPasswordResetLinkViewResponse::class, static fn (): object => new class implements RequestPasswordResetLinkViewResponse
+        {
+            #[Override]
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
+            {
+                return response()->view('livewire.auth.forgot-password');
+            }
+        });
+
+        $this->app->singleton(ResetPasswordViewResponse::class, static fn (): object => new class implements ResetPasswordViewResponse
+        {
+            #[Override]
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
+            {
+                return response()->view('livewire.auth.reset-password', ['request' => $request]);
+            }
+        });
+
+        $this->app->singleton(VerifyEmailViewResponse::class, static fn (): object => new class implements VerifyEmailViewResponse
+        {
+            #[Override]
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
+            {
+                return response()->view('livewire.auth.verify-email');
+            }
+        });
+
+        $this->app->singleton(ConfirmPasswordViewResponse::class, static fn (): object => new class implements ConfirmPasswordViewResponse
+        {
+            #[Override]
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): Response
+            {
+                return response()->view('livewire.auth.confirm-password');
+            }
+        });
+
+        $this->app->singleton(TwoFactorLoginResponse::class, static fn (): object => new class implements TwoFactorLoginResponse
+        {
+            #[Override]
+            /**
+             * @param  Request  $request
+             */
+            public function toResponse($request): RedirectResponse
+            {
+                return to_route('two-factor.login');
+            }
         });
     }
 }

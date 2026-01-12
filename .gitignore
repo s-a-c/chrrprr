@@ -1,83 +1,212 @@
-# ============================================================================
-# Laravel Framework
-# ============================================================================
-/.phpunit.cache
-.phpunit.result.cache
-/storage/*.key
-/storage/pail
-/tmp
-/vendor
-.env
-.env.backup
-.env.production
-.envrc
-/auth.json
-.secrets
 
-# ============================================================================
-# Node.js / JavaScript / Frontend
-# ============================================================================
-/node_modules
-/public/build
-/public/hot
-npm-debug.log
-yarn-error.log
-bun.lockb
-
-# ============================================================================
-# IDE / Editor Directories
-# ============================================================================
-/.fleet
-/.idea
-/.nova
-/.vscode
-/.zed
-.phpactor.json
-
-# ============================================================================
-# Development Tools & Configuration
-# ============================================================================
-# Trunk.io: .trunk/trunk.yaml is tracked, but .trunk/.gitignore handles
-# what's ignored within .trunk (plugins, actions, tools, etc.)
-# Note: .trunk is excluded from linters/test runners but config files are tracked
-
-# ============================================================================
-# AI Agent Rules (excluded from version control)
-# ============================================================================
-.ai
+__pycache__/
 !.ai/AGENT.md
+!.ai/AGENTS
+!.ai/AGENTS.md
+!.ai/AGENTS/**
 !.ai/AI_INSTRUCTIONS.md
 !.ai/AI-GUIDELINES
 !.ai/AI-GUIDELINES.md
 !.ai/scripts/**
-.clinerules/byterover-rules.md
-.kilocode/rules/byterover-rules.md
-.roo/rules/byterover-rules.md
-.windsurf/rules/byterover-rules.md
-.cursor/rules/byterover-rules.mdc
-.kiro/steering/byterover-rules.md
-.qoder/rules/byterover-rules.md
+!.env.example
+._*
+.\#*
+.ai
+.angular/cache
+.AppleDouble
 .augment/rules/byterover-rules.md
+.bash_history
+.cache/
+.clinerules/byterover-rules.md
+.config/.semgrep/settings.yml
+.config/aitk/
+.config/atlassian-cli/
+.config/augment/
+.config/cabal/
+.config/caddy/
+.config/chezmoi
+.config/clara/
+.config/clara/ollama/id_ed25519
+.config/claude/
+.config/claude/claude.json
+.config/claude/claude.json.backup
+.config/cline/
+.config/codeium/
+.config/codex/
+.config/configstore/
+.config/containers/
+.config/copilot/
+.config/crush/
+.config/cursor/
+.config/docker/
+.config/gcloud/
+.config/gemini/
+.config/gh/
+.config/github-copilot/
+.config/goose/
+.config/goose/config.yaml*
+.config/heroku/
+.config/idea/
+.config/junie/
+.config/kilocode/
+.config/lmstudio/
+.config/ollama/
+.config/ollamassist/
+.config/opencode/
+.config/raycast/config.json*
+.config/refact/
+.config/roo/
+.config/rovodev/
+.config/serena/
+.config/supermaven/
+.config/vs-kubernetes/
+.config/vscode-insiders/
+.config/vscode/
+.config/zed/
+.cursor/
+.cursor/rules/byterover-rules.mdc
+.DS_Store
+.env
+.env.backup
+.env.production
+.env.testing
+.env*
+.env/
+.envrc
+.fleet/
+.history
+.idea/
+.kilocode/rules/byterover-rules.md
+.kiro/steering/byterover-rules.md
+.local/
+.local/share/chezmoi
+.netrwhist
+.nova/
+.npm/
+.nyc_output/
+.pest-cache
+.pest.cache
+.phpactor.json
+.phpunit.cache
+.phpunit.result.cache
+.psysh/
+.qoder/rules/byterover-rules.md
+.roo/rules/byterover-rules.md
+.sass-cache/
+.secrets
+.Trash
+.Trashes
+.trunk/
+.vscode/
+.windsurf/rules/byterover-rules.md
+.yarn/
+.zcompdump*
+.zed/
+.zsh_history
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]*.un~
+*.a
+*.bak
+*.bundle
+*.code-workspace
+*.elc
+*.env
+*.iml
+*.key
+*.log
+*.o
+*.orig
+*.pem
+*.pyc
+*.so
+*.sock
+*.swn
+*.swo
+*.swp
+*.tmp
+**/.DS_Store
 
+**/byterover-rules.md
+**/vim/undodir/*
+*~
+/auth.json
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/tests/temp
+/vendor
+\#*\#
+# --- Application Specific Secrets ---
+# --- Chezmoi Internal ---
+# --- Cloud & Containers ---
+# --- Compiled / Binary Artifacts ---
+# --- Editor Backups ---
+# --- Emacs ---
+# --- Environment Files ---
+# --- Fleet, Zed, Nova ---
+# --- JetBrains (IntelliJ, PyCharm, etc) ---
+# --- Keys, Certificates, & Auth ---
+# --- Large Personal Data Directories ($HOME) ---
+# --- Legacy/Stow ---
+# --- Logs & Sockets ---
+# --- Node.js / JavaScript ---
+# --- OS-Specific Junk ---
+# --- PHP / Laravel ---
+# --- Python ---
+# --- Shell History & Sessions ---
+# --- Temp Directories ---
+# --- Trunk.io ---
+# --- Vim / Neovim ---
+# --- VS Code / Cursor ---
 # ============================================================================
-# Legacy / Homestead
-# ============================================================================
+# 1. SYSTEM & GLOBAL IGNORES
+# 2. SECURITY & SECRETS (CRITICAL)
+# 3. DOTFILE MANAGEMENT
+# 4. EDITORS & IDE CONFIGURATION
+# 5. AI AGENTS & ASSISTANTS (CACHE/CONFIG)
+# 6. LANGUAGES & FRAMEWORKS
+# 7. DEVELOPMENT TOOLS & CLOUD CLIS
+# 8. AI DOCUMENTATION RULES (EXCEPTIONS)
+# 9. MISCELLANEOUS
+# from common AI tools found in your setup.
+# Ignore the .ai folder generally, but allow documentation files
+# Ignoring these folders prevents committing heavy cache or local state
+# Laravel Storage & Cache
+# Specific rule overrides
+Applications/
+build/
+coverage/
+Desktop/
+dist/
+Documents/
+dotfiles*
+Downloads/
+emacs/.local/straight/
 Homestead.json
 Homestead.yaml
+Library/
+Movies/
+Music/
+node_modules/
+npm-debug.log*
 
-# ============================================================================
-# Project-Specific Patterns
-# ============================================================================
-# Ignore files/folders with ONLY numeric names (no letters or other characters)
-# Matches: 123, 456/, 789.txt, etc.
-# Does NOT match: 001-enhanced-user-models, 123abc, etc.
-**/[0-9]
-**/[0-9][0-9]
-**/[0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
-**/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
+Pictures/
+Public/
+saved_macos_defaults.plist
+Session.vim
+temp/
+test-coverage-pcov.log
+test-coverage-xdebug.log
+test-output.log
+Thumbs.db
+tmp-run.php
+tmp/
+vendor/
+venv/
+yarn-debug.log*
+yarn-error.log*
+!database/migrations/*.php
+!bun.lockb

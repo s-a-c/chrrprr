@@ -1,14 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Settings;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Password as PasswordRule;
-use Illuminate\Validation\ValidationException;
+use App\Actions\Fortify\PasswordValidationRules;
+use App\Handlers\Commands\Users\UpdateUserProfileCommand;
+use App\Handlers\Commands\Users\UpdateUserProfileHandler;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class Password extends Component
+final class Password extends Component
 {
+    use PasswordValidationRules;
+
     public string $current_password = '';
 
     public string $password = '';
@@ -16,27 +22,39 @@ class Password extends Component
     public string $password_confirmation = '';
 
     /**
-     * Update the password for the currently authenticated user.
+     * Update the user's password.
      */
     public function updatePassword(): void
     {
-        try {
-            $validated = $this->validate([
-                'current_password' => ['required', 'string', 'current_password'],
-                'password' => ['required', 'string', PasswordRule::defaults(), 'confirmed'],
-            ]);
-        } catch (ValidationException $e) {
-            $this->reset('current_password', 'password', 'password_confirmation');
+        /** @var User $user */
+        $user = auth()->user();
 
-            throw $e;
-        }
-
-        Auth::user()->update([
-            'password' => $validated['password'],
+        $this->validate([
+            'current_password' => ['required', 'string', 'current_password'],
+            'password' => $this->passwordRules(),
         ]);
 
-        $this->reset('current_password', 'password', 'password_confirmation');
+        $handler = resolve(UpdateUserProfileHandler::class);
+        $command = new UpdateUserProfileCommand($user, [
+            'password' => $this->password,
+        ]);
 
-        $this->dispatch('password-updated');
+        $result = $handler->handle($command);
+
+        if ($result->isSuccess) {
+            $this->reset(['current_password', 'password', 'password_confirmation']);
+            $this->dispatch('password-updated');
+            session()->flash('status', 'Password updated successfully');
+        } else {
+            $this->addError('password', $result->error);
+        }
+    }
+
+    /**
+     * Render the component.
+     */
+    public function render(): View
+    {
+        return view('livewire.settings.password');
     }
 }

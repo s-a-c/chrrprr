@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Factories;
+
+use App\Enums\TeamStatus;
+use App\Models\Division;
+use App\States\Team\Active;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
+
+/**
+ * @extends Factory<Division>
+ */
+final class DivisionFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return (App\Enums\TeamStatus::ONLINE|string|string[])[]
+     *
+     * @psalm-return array{name: array{en: string}, state: Active::class, status: App\Enums\TeamStatus::ONLINE, bio: string}
+     */
+    #[Override]
+    public function definition(): array
+    {
+        return [
+            'name' => ['en' => fake()->word().' Division '.fake()->numerify('####-####')],
+            'state' => Active::class,
+            'status' => TeamStatus::ONLINE,
+            'bio' => ($paragraphCount = random_int(0, 5)) > 0
+                ? collect(range(1, $paragraphCount))
+                    ->map(fn (): string => implode(' ', fake()->sentences(random_int(3, 7))))
+                    ->implode("\n\n")
+                : '',
+        ];
+    }
+}

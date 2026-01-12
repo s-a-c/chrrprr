@@ -1,0 +1,189 @@
+name: browser-tests
+
+on:
+  push:
+    branches:
+      - pest-ci
+      - develop
+      - main
+  pull_request:
+    branches:
+      - pest-ci
+      - develop
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      DB_PASSWORD: password
+      DB_USERNAME: postgres
+      DB_HOST: 127.0.0.1
+      DB_PORT: 54321
+      DB_DATABASE: chrrprr
+      DB_SCHEMA: public
+      DB_SEARCH_SCHEMA: public
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: chrrprr
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          PGUSER: postgres
+        ports:
+          - 54321:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.5
+          tools: composer:v2
+          coverage: pcov
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.1.17
+
+      - name: Configure Composer Auth
+        env:
+          FLUXUI_PRO_USERNAME: ${{ secrets.FLUXUI_PRO_USERNAME }}
+          FLUXUI_PRO_KEY: ${{ secrets.FLUXUI_PRO_KEY }}
+          GH_COMPOSER_TOKEN: ${{ secrets.GH_COMPOSER_TOKEN }}
+          SPATIE_USERNAME: ${{ secrets.SPATIE_USERNAME }}
+          SPATIE_COMMENTS_KEY: ${{ secrets.SPATIE_COMMENTS_KEY }}
+        run: |
+          if [[ -z "$FLUXUI_PRO_USERNAME" || -z "$FLUXUI_PRO_KEY" || -z "$GH_COMPOSER_TOKEN" || -z "$SPATIE_USERNAME" || -z "$SPATIE_COMMENTS_KEY" ]]; then
+            echo "::error::Missing Composer auth secrets"
+            exit 1
+          fi
+
+          composer config http-basic.composer.fluxui.dev "$FLUXUI_PRO_USERNAME" "$FLUXUI_PRO_KEY"
+          composer config github-oauth.github.com "$GH_COMPOSER_TOKEN"
+          composer config http-basic.satis.spatie.be "$SPATIE_USERNAME" "$SPATIE_COMMENTS_KEY"
+          composer config http-basic.composer.satis.spatie.be "$SPATIE_USERNAME" "$SPATIE_COMMENTS_KEY"
+
+      - name: Install Playwright Browsers
+        run: bunx playwright install --with-deps
+
+      - name: Install Dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+          bun install --frozen-lockfile
+
+      - name: Copy Environment File
+        run: cp .env.example .env
+
+      - name: Generate Application Key
+        run: |
+          php artisan key:generate
+
+      - name: Setup Test Environment
+        run: |
+          rm -f .env .env.testing
+          cp .env.example .env.testing
+          php artisan key:generate --env=testing
+
+      - name: Setup Test Database
+        run: |
+          export DB_SCHEMA=public
+          export DB_SEARCH_SCHEMA=public
+          php artisan migrate:fresh --env=testing --force
+
+      - name: Build Assets
+        run: bun run build
+
+      - name: Run Linters
+        run: composer run lint
+
+      - name: Run Static Analyzers
+        run: composer run analyze
+
+      - name: Setup Test Database for Behat
+        run: |
+          export DB_SCHEMA=public
+          export DB_SEARCH_SCHEMA=public
+          php artisan migrate:fresh --env=testing --force
+
+      - name: Setup Browser Server for Behat
+        run: |
+          google-chrome --version || echo "Chrome not found, will use Playwright"
+          google-chrome --remote-debugging-port=9222 --headless --no-sandbox --disable-dev-shm-usage --disable-gpu > /dev/null 2>&1 &
+          sleep 2
+
+      - name: Tests
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 54321
+          DB_DATABASE: chrrprr
+          DB_USERNAME: postgres
+          DB_PASSWORD: password
+        run: |
+          export DB_SCHEMA=public
+          export DB_SEARCH_SCHEMA=public
+
+          # Replace APP_URL in .env.testing (sed -i on Linux)
+          sed -i 's|^APP_URL=.*|APP_URL=http://127.0.0.1:8000|' .env.testing
+
+          # Also set DB_PORT to match CI service
+          sed -i 's|^DB_PORT=.*|DB_PORT=54321|' .env.testing
+          sed -i 's|^DB_SCHEMA=.*|DB_SCHEMA=public|' .env.testing
+          sed -i 's|^DB_SEARCH_SCHEMA=.*|DB_SEARCH_SCHEMA=public|' .env.testing
+
+          # Clear any potential host-generated cache files
+          rm -f bootstrap/cache/*.php
+          rm -f public/hot
+          php artisan config:clear
+          php artisan route:clear
+          php artisan view:clear
+
+          # Run tests - Pest Browser manages its own server internally
+          export APP_URL=http://127.0.0.1:8000
+          # Start Server
+          php artisan serve --env=testing --port=8000 --no-reload > /dev/null 2>&1 &
+          sleep 5
+          composer run test:browser
+
+      - name: Run Behat Browser Tests
+        run: |
+          export DB_SCHEMA=public
+          export DB_SEARCH_SCHEMA=public
+          export APP_URL=http://127.0.0.1:8000
+          # Start Server for Behat (if not persisting)
+          php artisan serve --env=testing --port=8000 --no-reload > /dev/null 2>&1 &
+          sleep 5
+          composer behat:browser
+        continue-on-error: true
+
+      - name: Upload Behat Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-browser-screenshots
+          path: tests/Browser/Screenshots/
+          if-no-files-found: ignore
+
+      - name: Upload Behat Output
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-browser-output
+          path: |
+            features/**/*.feature
+            behat.yml
+          if-no-files-found: ignore

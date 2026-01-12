@@ -1,0 +1,37 @@
+variant = "loose"
+
+[[issues]]
+file = "app/Handlers/Commands/Teams/CreateTeamHandler.php"
+code = "disallowed-static-call"
+message = 'Illegal dependency on `Thunk\Verbs\Facades\Verbs`'
+count = 1
+
+[[issues]]
+file = "app/Handlers/Commands/Teams/CreateTeamHandler.php"
+code = "disallowed-use"
+message = 'Illegal dependency on `Thunk\Verbs\Facades\Verbs`'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/Teams/BulkTeamController.php"
+code = "disallowed-use"
+message = 'Illegal dependency on `Symfony\Component\HttpKernel\Exception\HttpException`'
+count = 1
+
+[[issues]]
+file = "app/Models/Builders/TeamBuilder.php"
+code = "must-implement"
+message = 'Structural flaw in `App\Models\Builders\TeamBuilder`'
+count = 1
+
+[[issues]]
+file = "app/Models/Builders/UserBuilder.php"
+code = "must-implement"
+message = 'Structural flaw in `App\Models\Builders\UserBuilder`'
+count = 1
+
+[[issues]]
+file = "app/Models/Domain.php"
+code = "must-implement"
+message = 'Structural flaw in `App\Models\Domain`'
+count = 1

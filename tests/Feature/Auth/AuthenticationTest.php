@@ -1,43 +1,49 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Features;
 
-test('login screen can be rendered', function () {
+test('login screen can be rendered', function (): void {
     $response = $this->get(route('login'));
 
     $response->assertStatus(200);
 });
 
-test('users can authenticate using the login screen', function () {
-    $user = User::factory()->withoutTwoFactor()->create();
-
-    $response = $this->post(route('login.store'), [
-        'email' => $user->email,
-        'password' => 'password',
+test('users can authenticate using the login screen', function (): void {
+    $user = User::factory()->withoutTwoFactor()->create([
+        'password' => Hash::make('Password123!'),
     ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(route('dashboard', absolute: false));
+    $response = $this->from(route('login'))
+        ->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'Password123!',
+        ]);
+
+    $response->assertSessionHasNoErrors()->assertRedirect(route('dashboard', absolute: false));
 
     $this->assertAuthenticated();
 });
 
-test('users can not authenticate with invalid password', function () {
+test('users can not authenticate with invalid password', function (): void {
     $user = User::factory()->create();
 
-    $response = $this->post(route('login.store'), [
-        'email' => $user->email,
-        'password' => 'wrong-password',
-    ]);
+    $password = 'wrong-password';
+    $response = $this->from(route('login'))
+        ->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => $password,
+        ]);
 
     $response->assertSessionHasErrorsIn('email');
 
     $this->assertGuest();
 });
 
-test('users with two factor enabled are redirected to two factor challenge', function () {
+test('users with two factor enabled are redirected to two factor challenge', function (): void {
     if (! Features::canManageTwoFactorAuthentication()) {
         $this->markTestSkipped('Two-factor authentication is not enabled.');
     }
@@ -46,21 +52,26 @@ test('users with two factor enabled are redirected to two factor challenge', fun
         'confirmPassword' => true,
     ]);
 
-    $user = User::factory()->create();
-
-    $response = $this->post(route('login.store'), [
-        'email' => $user->email,
-        'password' => 'password',
+    $user = User::factory()->create([
+        'password' => Hash::make('Password123!'),
     ]);
+
+    $response = $this->from(route('login'))
+        ->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'Password123!',
+        ]);
 
     $response->assertRedirect(route('two-factor.login'));
     $this->assertGuest();
 });
 
-test('users can logout', function () {
+test('users can logout', function (): void {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post(route('logout'));
+    $response = $this->actingAs($user)
+        ->from(route('dashboard'))
+        ->post(route('logout'));
 
     $response->assertRedirect(route('home'));
     $this->assertGuest();

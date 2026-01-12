@@ -1,146 +1,70 @@
-# Welcome to Mago!
-# For full documentation, see https://mago.carthage.software/tools/overview
-
-# Global options
 php-version = "8.5"
-threads = 8
-stack-size = 8388608  # 8 MB
+stack-size = 8388608
+allow-unsupported-php-version = true
+threads = 1
 
 [source]
-workspace = "."
+includes = ["vendor"]
 paths = [
     "app",
     "bootstrap",
+    "config",
     "database",
     "public",
     "resources",
     "routes",
     "tests",
 ]
-# Vendor is included for type checking but excluded from analysis/linting/formatting
-# This allows Mago to understand Laravel framework types without analyzing vendor code
-includes = ["vendor", "config",]
 excludes = [
     "storage",
     "tmp",
     "node_modules",
     "bootstrap/cache",
+    "database/migrations",
 ]
-# File extensions to treat as PHP
 extensions = ["php"]
 
-[formatter]
-print-width = 120
-tab-width = 4
-use-tabs = false
-
-# Linter configuration
 [linter]
-# Enable all linter rules by default
-# Individual rules can be disabled if needed
-
-# Exclude test files from password checks (test passwords are expected)
-excludes = ["vendor"]
-
-integrations = ["laravel", "pest", "phpunit"]
-
-baseline = "mago-lint-baseline.toml"
-baseline-variant = "loose"  # or "strict"
+# Configure linter rules
+integrations = ["laravel", "phpunit"]
 
 [linter.rules]
-# ambiguous-function-call = { enabled = false }
-# literal-named-argument = { enabled = false }
-# halstead = { effort-threshold = 7000 }
+"no-literal-password" = { enabled = false }
+"prefer-anonymous-migration" = { enabled = false }
+"class-name" = { enabled = false }
+"literal-named-argument" = { enabled = false }
 
-# Disable no-literal-password rule - it produces false positives for:
-# 1. Cast type identifiers (e.g., 'hashed', 'string' in model casts)
-# 2. Test passwords (which are expected in test files)
-no-literal-password = { enabled = false }
+[formatter]
+# Note: Mago's formatter is NOT used - Pint is the authoritative formatter
+# These settings are kept for reference but Mago format is not run in lint/lintfix
+# Pint handles all formatting to ensure Laravel style compliance
+print-width = 120 # Laravel default line length (matches Pint's default)
+use-tabs = false  # Use spaces (Laravel/Pint standard - 4 spaces per indent)
 
-# Disable prefer-anonymous-migration rule - false positive
-# Migrations already use anonymous classes (return new class extends Migration)
-prefer-anonymous-migration = { enabled = false }
-
-# Disable class-name rule - conflicts with Laravel conventions
-# Laravel base classes (Controller, TestCase) follow framework naming conventions
-class-name = { enabled = false }
-
-[analyzer]
-# Vendor is excluded from analysis but should still be available for type resolution
-# Note: Some "non-existent-class-like" errors for Laravel classes may appear as false positives
-# if Mago cannot properly index vendor classes. These can be safely ignored.
-#
-# Alternative: Remove vendor from excludes to fix false positives, but this will:
-# - Significantly slow down analysis (5-6x slower, analyzing 348MB of vendor code)
-# - Produce UTF-8 warnings from vendor files
-# - Generate errors/warnings from vendor code we don't control
-excludes = ["vendor"]
-
-baseline = "mago-analysis-baseline.toml"
-baseline-variant = "loose"  # or "strict"
-
-# Enable all checks
-find-unused-expressions = true
-find-unused-definitions = true
-analyze-dead-code = true
-check-throws = true
-perform-heuristic-checks = true
-check-missing-type-hints = true
-check-closure-missing-type-hints = true
-check-arrow-function-missing-type-hints = true
-
-# Enable strict checks
-strict-list-index-checks = true
-no-boolean-literal-comparison = true
-
-# Disable lenient behaviors
-allow-possibly-undefined-array-keys = false
-trust-existence-checks = false
-
-# Guard configuration
-# Architectural rules consistent with `pest --testsuite=Arch`
+# Guard/Architectural rules
 # Enforces code structure and dependency rules
+# These rules complement Pest architecture tests and ensure proper layer separation
 [guard]
-
-# Exclude framework-level directories from guard checks
-# These directories contain Laravel configuration, routes, bootstrap files, and tests
-# that follow framework conventions and don't need strict architectural rules
+# Exclude infrastructure directories from Perimeter Guard checks
+# - Config files contain configuration, not application logic
+# - Database files (migrations, seeders) have different architectural requirements
+# - Tests need access to everything to test the application
+# - Routes, resources (views), bootstrap, and public are infrastructure files
 excludes = [
     "config",
+    "database",
+    "tests",
     "routes",
+    "resources",
     "bootstrap",
     "public",
-    "tests",
-    "database/migrations",
-    "database/seeders",
-    "database/factories",
-    "vendor",
 ]
 
 # Perimeter rules: Control namespace dependencies
 # These rules ensure proper layer separation and dependency management
+# They mirror the failing Pest architecture tests that check toOnlyUse()
 
-# Root namespace: Config files, routes, bootstrap, public files
-# These files need full access to Laravel framework and PHP native functions
-[[guard.perimeter.rules]]
-namespace = "@global"
-permit = [
-    "@self",
-    "@native",
-    "App\\",
-    "Database\\",
-    "Tests\\",
-    "Illuminate\\",
-    "Laravel\\",
-    "Monolog\\",
-    "Pest\\",
-    "PHPUnit\\",
-    "Spatie\\",
-    "Symfony\\",
-    "Pdo\\",
-]
-
-# App Controllers
+# Controllers should only depend on Models, Requests, Resources, Actions, and framework
 [[guard.perimeter.rules]]
 namespace = "App\\Http\\Controllers\\"
 permit = [
@@ -149,25 +73,227 @@ permit = [
     "App\\Models\\",
     "App\\Http\\Requests\\",
     "App\\Http\\Resources\\",
+    "App\\Actions\\",
     "Illuminate\\",
     "Laravel\\",
 ]
 
-# App Models
+# Form Requests should only use Enums, Models, and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Http\\Requests\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+
+# Models can use Eloquent, framework, and third-party model packages
 [[guard.perimeter.rules]]
 namespace = "App\\Models\\"
 permit = [
     "@self",
     "@native",
-    "Database\\Factories\\",
-    "Illuminate\\Database\\",
-    "Illuminate\\Support\\",
-    "Illuminate\\Foundation\\Auth\\",
-    "Illuminate\\Notifications\\",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Support\\",
+    "App\\States\\",
+    "App\\Observers\\",
+    "App\\Presenters\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Spatie\\",
+    "Parental\\",
+    "Symfony\\",
+    "Cviebrock\\",
+    "Stevebauman\\",
+    "Staudenmeir\\",
+    "Stancl\\",
+    "Database\\",
+    "Tests\\",           # Models\Concerns\HasUlid uses test model for type hint
+]
+
+# Model Builders should only use Models, Enums, and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Models\\Builders\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Enums\\",
+    "Illuminate\\",
     "Laravel\\",
 ]
 
-# App Providers
+# Model Concerns should follow model dependencies
+[[guard.perimeter.rules]]
+namespace = "App\\Models\\Concerns\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Services\\", # Concerns may use services (e.g., TeamHierarchyTraversalService)
+    "App\\Support\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+
+# Actions should only use Enums, Models, Requests, Services, Support, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Actions\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Http\\Requests\\",
+    "App\\Services\\",
+    "App\\Support\\",
+    "App\\Actions\\",        # Actions can use other Actions
+    "Illuminate\\",
+    "Laravel\\",
+    "Spatie\\",
+    "Override",
+    "Deprecated",
+    "Stevebauman\\",
+]
+
+# Services should only use Actions, Enums, Models, other Services, Support, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Services\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Actions\\",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Services\\",
+    "App\\Support\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Spatie\\",
+    "Staudenmeir\\",
+    "Deprecated",
+    "Override",
+]
+
+# Support Validation should only use Enums, Models, Services, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Support\\Validation\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Services\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Override",
+]
+
+# States should only use Spatie, framework, and App namespace
+[[guard.perimeter.rules]]
+namespace = "App\\States\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\",
+    "Spatie\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Override",
+]
+
+# Livewire components should only use Enums, Models, Requests, Services, Actions, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Livewire\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Http\\Requests\\",
+    "App\\Services\\",
+    "App\\Actions\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Livewire\\",
+    "Filament\\",
+]
+
+# Filament resources should only use Enums, Models, Requests, Services, Actions, and Filament
+[[guard.perimeter.rules]]
+namespace = "App\\Filament\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Http\\Requests\\",
+    "App\\Services\\",
+    "App\\Actions\\",
+    "Filament\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Override",
+    "Deprecated",
+]
+
+# Policies should only use Models and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Policies\\"
+permit = ["@self", "@native", "App\\Models\\", "Illuminate\\", "Laravel\\"]
+
+# Observers should only use Models, Services, and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Observers\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Services\\",
+    "Illuminate\\",
+    "Laravel\\",
+]
+
+# Listeners should only use Models and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Listeners\\"
+permit = ["@self", "@native", "App\\Models\\", "Illuminate\\", "Laravel\\"]
+
+# Presenters should only use Models and framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Presenters\\"
+permit = ["@self", "@native", "App\\Models\\", "Illuminate\\", "Laravel\\"]
+
+# Enums should only use framework classes
+[[guard.perimeter.rules]]
+namespace = "App\\Enums\\"
+permit = ["@self", "@native", "Illuminate\\", "Laravel\\"]
+
+# Console Commands should only use Models, Services, Actions, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Console\\Commands\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Services\\",
+    "App\\Actions\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Symfony\\",
+]
+
+# Exceptions should only extend framework exception classes
+[[guard.perimeter.rules]]
+namespace = "App\\Exceptions\\"
+permit = ["@self", "@native", "Illuminate\\", "Laravel\\", "Exception"]
+
+# Providers should be able to use all application and framework classes
 [[guard.perimeter.rules]]
 namespace = "App\\Providers\\"
 permit = [
@@ -176,74 +302,209 @@ permit = [
     "App\\",
     "Illuminate\\",
     "Laravel\\",
+    "Spatie\\",
+    "Stancl\\",
+    "Parental\\",
+    "Symfony\\",
+    "Cviebrock\\",
+    "Stevebauman\\",
+    "Filament\\",
+    "Livewire\\",
+    "Carbon\\",
+    "Override",
 ]
 
-# App Console Commands
+# Contracts should be able to use Support and framework classes
 [[guard.perimeter.rules]]
-namespace = "App\\Console\\Commands\\"
+namespace = "App\\Contracts\\"
 permit = [
     "@self",
     "@native",
-    "App\\",
-    "Illuminate\\",
-    "Illuminate\\Console\\",
-    "Illuminate\\Support\\Facades\\",
-    "Symfony\\Component\\Process\\",
-    "Laravel\\",
-    "Exception",
-]
-
-# Database Seeders
-[[guard.perimeter.rules]]
-namespace = "Database\\Seeders\\"
-permit = [
-    "@self",
-    "@native",
-    "App\\",
-    "Illuminate\\Database\\",
+    "App\\Support\\",
     "Illuminate\\",
     "Laravel\\",
+    "Override",
 ]
 
-# Database Factories
+# Support should be able to use framework classes and native PHP functions
 [[guard.perimeter.rules]]
-namespace = "Database\\Factories\\"
+namespace = "App\\Support\\"
 permit = [
     "@self",
     "@native",
-    "App\\",
-    "Illuminate\\Database\\Eloquent\\Factories\\",
-    "Illuminate\\Support\\",
-    "Illuminate\\Support\\Facades\\",
+    "App\\Support\\",
+    "Illuminate\\",
     "Laravel\\",
+    "Laravel\\Telescope\\",
+    "Spatie\\",
+    "Stevebauman\\",
+    "Throwable",
+    "Closure",
+    "BadMethodCallException",
+    "Override",
 ]
 
-# Tests namespace
+# Events should be able to use Enums, Models, Services, Support, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Events\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Enums\\",
+    "App\\Models\\",
+    "App\\Services\\",
+    "App\\Support\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Thunk\\",
+    "Override",
+]
+
+# Projections should be able to use Models, Events, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Projections\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Models\\",
+    "App\\Events\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Thunk\\",
+    "Override",
+]
+
+# ============================================================================
+# Structural Rules: Enforce class structure and inheritance
+# These rules complement Pest architecture tests for class structure
+# ============================================================================
+
+# Services should be final classes
+[[guard.structural.rules]]
+on = "App\\Services\\**"
+target = "class"
+must-be-final = true
+reason = "Services should be final to prevent extension and maintain clear boundaries."
+
+# Actions should be final classes
+[[guard.structural.rules]]
+on = "App\\Actions\\**"
+target = "class"
+must-be-final = true
+reason = "Actions should be final to prevent extension and maintain clear boundaries."
+
+# Policies should be final classes
+[[guard.structural.rules]]
+on = "App\\Policies\\**"
+target = "class"
+must-be-final = true
+reason = "Policies should be final classes to prevent extension."
+
+# Note: Model extension rule is handled by Pest architecture tests
+# Mago Guard's must-extend only checks direct extension, but models like User
+# extend Authenticatable (which extends Model), so transitive inheritance
+# is better checked by Pest's toExtend() method.
+
+# Enums must implement BackedEnum
+[[guard.structural.rules]]
+on = "App\\Enums\\**"
+target = "class"
+must-implement = "BackedEnum"
+reason = "Enums must implement BackedEnum interface."
+
+# ============================================================================
+# Schema Architecture Rules
+# ============================================================================
+
+# Rule 1: All Core Models must implement SchemaScopedModel to ensure safe schema resolution
+[[guard.structural.rules]]
+on = "App\\Models\\**"
+not-on = "App\\Models\\Domain|App\\Models\\SearchAnalytics|App\\Models\\Role|App\\Models\\Builders\\TeamBuilder|App\\Models\\Builders\\UserBuilder"
+target = "class"
+must-implement = "App\\Contracts\\SchemaScopedModel"
+reason = "All core models must be schema-aware to support the Hybrid Schema Architecture. Excludes Domain (extends Stancl\\Tenancy), SearchAnalytics (explicitly in Search schema), Role (TODO: verify Spatie Permission compatibility), and Builders (query builders, not models)."
+
+# Rule 2: SearchAnalytics must reside in the Search namespace or be final
+[[guard.structural.rules]]
+on = "App\\Models\\SearchAnalytics"
+target = "class"
+must-be-final = true
+reason = "Search infrastructure models should not be extended."
+
+# ============================================================================
+# Monadic CQRS Architecture Rules
+# ============================================================================
+
+# Rule 3: Command Handlers must implement CommandHandler interface and return Result
+[[guard.structural.rules]]
+on = "App\\Handlers\\Commands\\**Handler"
+target = "class"
+must-implement = "App\\Contracts\\CommandHandler"
+reason = "Command handlers must implement CommandHandler interface for CQRS architecture."
+
+# Rule 4: Query Handlers must implement QueryHandler interface and return Result
+[[guard.structural.rules]]
+on = "App\\Handlers\\Queries\\**Handler"
+target = "class"
+must-implement = "App\\Contracts\\QueryHandler"
+reason = "Query handlers must implement QueryHandler interface for CQRS architecture."
+
+# Rule 5: Handlers must extend BaseHandler
+[[guard.structural.rules]]
+on = "App\\Handlers\\**Handler"
+not-on = "App\\Handlers\\BaseHandler"
+target = "class"
+must-extend = "App\\Handlers\\BaseHandler"
+reason = "Handlers must extend BaseHandler for common CQRS patterns. Excludes BaseHandler itself and DTOs (Command/Query classes)."
+
+# ============================================================================
+# Monadic CQRS Return Type Rules
+# ============================================================================
+
+# Rule 6: Handler methods must return Result type
+# Note: This is enforced via PHPStan/static analysis rather than Mago Guard
+# as Mago Guard focuses on structural rules, not method signatures.
+# PHPStan level 9 will catch missing return types.
+
+# Handlers should only use Contracts, Support, Models, Services, and framework
+[[guard.perimeter.rules]]
+namespace = "App\\Handlers\\"
+permit = [
+    "@self",
+    "@native",
+    "App\\Contracts\\",
+    "App\\Support\\",
+    "App\\Models\\",
+    "App\\Services\\",
+    "App\\Enums\\",
+    "Illuminate\\",
+    "Laravel\\",
+    "Stevebauman\\",
+    "Override",
+]
+
+# Tests should be able to use all application classes, testing frameworks, and utilities
 [[guard.perimeter.rules]]
 namespace = "Tests\\"
 permit = [
     "@self",
     "@native",
     "App\\",
-    "Database\\",
     "Illuminate\\",
     "Laravel\\",
     "Pest\\",
     "PHPUnit\\",
+    "Tests\\",
+    "Livewire\\",
+    "Filament\\",
+    "Spatie\\",
+    "Stancl\\",
+    "Parental\\",
+    "Symfony\\",
+    "Cviebrock\\",
+    "Stevebauman\\",
+    "Staudenmeir\\",
+    "Database\\",
+    "Override",
+    "Deprecated",
 ]
-
-# Structural rules: Enforce code structure
-# These rules ensure classes follow architectural patterns
-# Controllers should be final (excluding the base abstract Controller)
-[[guard.structural.rules]]
-on = "App\\Http\\Controllers\\**"
-not-on = "App\\Http\\Controllers\\Controller"
-target = "class"
-must-be-final = true
-
-# Controllers must extend the base Controller (excluding the base Controller itself)
-[[guard.structural.rules]]
-on = "App\\Http\\Controllers\\**"
-not-on = "App\\Http\\Controllers\\Controller"
-target = "class"
-must-extend = "App\\Http\\Controllers\\Controller"

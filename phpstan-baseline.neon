@@ -1,0 +1,5158 @@
+parameters:
+	ignoreErrors:
+		-
+			rawMessage: 'Parameter #1 $input (array<string, mixed>) of method App\Actions\Fortify\CreateNewUser::create() should be contravariant with parameter $input (array) of method Laravel\Fortify\Contracts\CreatesNewUsers::create()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Actions/Fortify/CreateNewUser.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::role().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Actions/Teams/AssignExecutive.php
+
+		-
+			rawMessage: Cannot cast mixed to int.
+			identifier: cast.int
+			count: 2
+			path: app/Actions/Teams/UpdateTeam.php
+
+		-
+			rawMessage: 'Method App\Actions\Teams\UpdateTeam::checkOptimisticLock() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Actions/Teams/UpdateTeam.php
+
+		-
+			rawMessage: 'Method App\Actions\Teams\UpdateTeam::handleMoveIfNeeded() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Actions/Teams/UpdateTeam.php
+
+		-
+			rawMessage: 'Method App\Actions\Teams\UpdateTeam::handleStandardFields() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Actions/Teams/UpdateTeam.php
+
+		-
+			rawMessage: 'Method App\Actions\Teams\UpdateTeam::handleTranslatableFields() has parameter $data with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Actions/Teams/UpdateTeam.php
+
+		-
+			rawMessage: 'Parameter #1 $attributes of method Illuminate\Database\Eloquent\Model::update() expects array<string, mixed>, array given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/Teams/UpdateTeam.php
+
+		-
+			rawMessage: 'Parameter #2 $newParentId of method App\Actions\Teams\MoveTeam::handle() expects int|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/Teams/UpdateTeam.php
+
+		-
+			rawMessage: 'Method App\Actions\Users\RegisterUser::handle() should return App\Models\User but returns App\Models\User|null.'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Users/RegisterUser.php
+
+		-
+			rawMessage: 'Parameter #1 $value of static method Illuminate\Support\Facades\Hash::make() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/Users/RegisterUser.php
+
+		-
+			rawMessage: 'Method App\Actions\Users\UpdateUserProfile::handle() should return App\Models\User but returns App\Models\User|null.'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Users/UpdateUserProfile.php
+
+		-
+			rawMessage: 'Parameter #1 $input of static method Stevebauman\Purify\Facades\Purify::clean() expects array|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/Users/UpdateUserProfile.php
+
+		-
+			rawMessage: 'Parameter #1 $value of static method Illuminate\Support\Facades\Hash::make() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/Users/UpdateUserProfile.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::count().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Console/Commands/GenerateUserUlidsCommand.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::whereNull().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Console/Commands/GenerateUserUlidsCommand.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::whereNull().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Console/Commands/SetDefaultUserStatesCommand.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<App\Models\User>::count().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Console/Commands/SetDefaultUserStatesCommand.php
+
+		-
+			rawMessage: PHPDoc tag @var with type Illuminate\Database\Eloquent\Builder<App\Models\User> is not subtype of type App\Models\Builders\UserBuilder<App\Models\User>.
+			identifier: varTag.type
+			count: 1
+			path: app/Console/Commands/SetDefaultUserStatesCommand.php
+
+		-
+			rawMessage: 'Property App\Models\User::$state (string|null) does not accept App\Enums\UserState.'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Console/Commands/SetDefaultUserStatesCommand.php
+
+		-
+			rawMessage: 'Method App\Contracts\CommandHandler::handle() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Contracts/CommandHandler.php
+
+		-
+			rawMessage: 'Method App\Contracts\QueryHandler::ask() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Contracts/QueryHandler.php
+
+		-
+			rawMessage: 'Method App\Filament\Actions\ResultAction::handleResult() has parameter $result with generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Filament/Actions/ResultAction.php
+
+		-
+			rawMessage: 'Method App\Filament\Actions\ResultAction::unwrapResult() has parameter $result with generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Filament/Actions/ResultAction.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, mixed given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Filament/Actions/ResultAction.php
+
+		-
+			rawMessage: 'Parameter $onSuccess of method App\Support\Result<mixed>::match() expects Closure(mixed, array<string>): mixed, Closure(App\Models\Team, array): App\Models\Team given.'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Tenant/Resources/Teams/Pages/CreateTeam.php
+
+		-
+			rawMessage: Cannot access property $lock_version on Illuminate\Database\Eloquent\Model|int|string.
+			identifier: property.nonObject
+			count: 1
+			path: app/Filament/Tenant/Resources/Teams/Pages/EditTeam.php
+
+		-
+			rawMessage: 'Method App\Filament\Tenant\Resources\Teams\TeamResource::getRecordRouteBindingEloquentQuery() return type with generic class Illuminate\Database\Eloquent\Builder does not specify its types: TModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Filament/Tenant/Resources/Teams/TeamResource.php
+
+		-
+			rawMessage: 'Method App\Handlers\BaseHandler::ensureFound() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/BaseHandler.php
+
+		-
+			rawMessage: 'Method App\Handlers\BaseHandler::guard() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/BaseHandler.php
+
+		-
+			rawMessage: Access to an undefined property App\Handlers\Commands\Teams\AssignExecutiveCommand::$executive.
+			identifier: property.notFound
+			count: 4
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: Access to an undefined property App\Handlers\Commands\Teams\AssignExecutiveCommand::$team.
+			identifier: property.notFound
+			count: 3
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: Anonymous function should return App\Models\Team but returns mixed.
+			identifier: return.type
+			count: 1
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 2
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: 'Cannot call method assignRole() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: 'Cannot call method hasRole() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: 'Cannot call method validateExecutiveDeputyConstraints() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::role().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: 'Parameter #1 $command (App\Handlers\Commands\Teams\AssignExecutiveCommand) of method App\Handlers\Commands\Teams\AssignExecutiveHandler::handle() should be contravariant with parameter $command (object) of method App\Contracts\CommandHandler::handle()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: 'Parameter #1 $id of function setPermissionsTeamId expects Illuminate\Database\Eloquent\Model|int|string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Handlers/Commands/Teams/AssignExecutiveHandler.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Handlers/Commands/Teams/CreateTeamHandler.php
+
+		-
+			rawMessage: 'Method App\Handlers\Commands\Teams\CreateTeamHandler::handle() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/Commands/Teams/CreateTeamHandler.php
+
+		-
+			rawMessage: 'Parameter #1 $command (App\Handlers\Commands\Teams\CreateTeamCommand) of method App\Handlers\Commands\Teams\CreateTeamHandler::handle() should be contravariant with parameter $command (object) of method App\Contracts\CommandHandler::handle()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Handlers/Commands/Teams/CreateTeamHandler.php
+
+		-
+			rawMessage: 'Method App\Handlers\Commands\Teams\MoveTeamHandler::handle() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/Commands/Teams/MoveTeamHandler.php
+
+		-
+			rawMessage: 'Parameter #1 $command (App\Handlers\Commands\Teams\MoveTeamCommand) of method App\Handlers\Commands\Teams\MoveTeamHandler::handle() should be contravariant with parameter $command (object) of method App\Contracts\CommandHandler::handle()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Handlers/Commands/Teams/MoveTeamHandler.php
+
+		-
+			rawMessage: Cannot cast mixed to int.
+			identifier: cast.int
+			count: 1
+			path: app/Handlers/Commands/Teams/UpdateTeamHandler.php
+
+		-
+			rawMessage: 'Method App\Handlers\Commands\Teams\UpdateTeamHandler::handle() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/Commands/Teams/UpdateTeamHandler.php
+
+		-
+			rawMessage: 'Parameter #1 $command (App\Handlers\Commands\Teams\UpdateTeamCommand) of method App\Handlers\Commands\Teams\UpdateTeamHandler::handle() should be contravariant with parameter $command (object) of method App\Contracts\CommandHandler::handle()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Handlers/Commands/Teams/UpdateTeamHandler.php
+
+		-
+			rawMessage: 'Parameter #2 $data of method App\Handlers\Commands\Teams\UpdateTeamHandler::handleStandardFields() expects array<string, mixed>, array<mixed, mixed> given.'
+			identifier: argument.type
+			count: 1
+			path: app/Handlers/Commands/Teams/UpdateTeamHandler.php
+
+		-
+			rawMessage: 'Parameter #2 $data of method App\Handlers\Commands\Teams\UpdateTeamHandler::handleTranslatableFields() expects array<string, mixed>, array<mixed, mixed> given.'
+			identifier: argument.type
+			count: 1
+			path: app/Handlers/Commands/Teams/UpdateTeamHandler.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Handlers/Commands/Users/RegisterUserHandler.php
+
+		-
+			rawMessage: 'Method App\Handlers\Commands\Users\RegisterUserHandler::handle() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/Commands/Users/RegisterUserHandler.php
+
+		-
+			rawMessage: 'Method App\Handlers\Commands\Users\RegisterUserHandler::setBioIfProvided() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/Commands/Users/RegisterUserHandler.php
+
+		-
+			rawMessage: 'Parameter #1 $command (App\Handlers\Commands\Users\RegisterUserCommand) of method App\Handlers\Commands\Users\RegisterUserHandler::handle() should be contravariant with parameter $command (object) of method App\Contracts\CommandHandler::handle()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Handlers/Commands/Users/RegisterUserHandler.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 2
+			path: app/Handlers/Commands/Users/UpdateUserProfileHandler.php
+
+		-
+			rawMessage: 'Method App\Handlers\Commands\Users\UpdateUserProfileHandler::handle() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/Commands/Users/UpdateUserProfileHandler.php
+
+		-
+			rawMessage: 'Parameter #1 $command (App\Handlers\Commands\Users\UpdateUserProfileCommand) of method App\Handlers\Commands\Users\UpdateUserProfileHandler::handle() should be contravariant with parameter $command (object) of method App\Contracts\CommandHandler::handle()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Handlers/Commands/Users/UpdateUserProfileHandler.php
+
+		-
+			rawMessage: Access to an undefined property App\Handlers\Queries\Teams\GetTeamQuery::$id.
+			identifier: property.notFound
+			count: 1
+			path: app/Handlers/Queries/Teams/GetTeamHandler.php
+
+		-
+			rawMessage: 'Method App\Handlers\Queries\Teams\GetTeamHandler::ask() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Handlers/Queries/Teams/GetTeamHandler.php
+
+		-
+			rawMessage: 'Parameter #1 $query (App\Handlers\Queries\Teams\GetTeamQuery) of method App\Handlers\Queries\Teams\GetTeamHandler::ask() should be contravariant with parameter $query (object) of method App\Contracts\QueryHandler::ask()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Handlers/Queries/Teams/GetTeamHandler.php
+
+		-
+			rawMessage: 'Part $query->id (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Handlers/Queries/Teams/GetTeamHandler.php
+
+		-
+			rawMessage: 'Method App\Http\Controllers\Teams\BulkTeamController::processTeam() should return array<string, mixed> but returns mixed.'
+			identifier: return.type
+			count: 2
+			path: app/Http/Controllers/Teams/BulkTeamController.php
+
+		-
+			rawMessage: 'Parameter $onSuccess of method App\Support\Result<mixed>::match() expects Closure(mixed, array<string>): mixed, Closure(App\Models\Team): array{index: int, success: true, team_id: int, team_ulid: string, action: ''create''} given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Teams/BulkTeamController.php
+
+		-
+			rawMessage: 'Parameter $onSuccess of method App\Support\Result<mixed>::match() expects Closure(mixed, array<string>): mixed, Closure(App\Models\Team): array{index: int, success: true, team_id: int, team_ulid: string, action: ''update''} given.'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Teams/BulkTeamController.php
+
+		-
+			rawMessage: 'Method App\Http\Requests\BulkTeamRequest::getTeams() should return array<int, array<string, mixed>> but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/BulkTeamRequest.php
+
+		-
+			rawMessage: 'Part $softLimit (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Http/Requests/UpdateUserRequest.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Session\Store::invalidate().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Livewire/Settings/DeleteUserForm.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Session\Store::regenerateToken().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Livewire/Settings/DeleteUserForm.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Contracts\Auth\Guard::user().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Livewire/Settings/Password.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Contracts\Auth\Guard::user().'
+			identifier: staticMethod.dynamicCall
+			count: 3
+			path: app/Livewire/Settings/Profile.php
+
+		-
+			rawMessage: Access to an undefined property App\Livewire\Settings\TwoFactor::$manualSetupKey.
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: Access to an undefined property App\Livewire\Settings\TwoFactor::$qrCodeSvg.
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: Access to an undefined property App\Livewire\Settings\TwoFactor::$requiresConfirmation.
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: Access to an undefined property App\Livewire\Settings\TwoFactor::$twoFactorEnabled.
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: Cannot access property $two_factor_confirmed_at on App\Models\User|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: Cannot access property $two_factor_secret on App\Models\User|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: 'Cannot call method twoFactorQrCodeSvg() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: 'Cannot call method twoFactorQrCodeUrl() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: 'Construct empty() is not allowed. Use more strict comparison.'
+			identifier: empty.notAllowed
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Contracts\Auth\Guard::user().'
+			identifier: staticMethod.dynamicCall
+			count: 8
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, string|null given on the right side.'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: app/Livewire/Settings/TwoFactor.php
+
+		-
+			rawMessage: Cannot access property $two_factor_recovery_codes on App\Models\User|null.
+			identifier: property.nonObject
+			count: 2
+			path: app/Livewire/Settings/TwoFactor/RecoveryCodes.php
+
+		-
+			rawMessage: 'Cannot call method hasEnabledTwoFactorAuthentication() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Settings/TwoFactor/RecoveryCodes.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Livewire/Settings/TwoFactor/RecoveryCodes.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Contracts\Auth\Guard::user().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Livewire/Settings/TwoFactor/RecoveryCodes.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, string|null given on the right side.'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: app/Livewire/Settings/TwoFactor/RecoveryCodes.php
+
+		-
+			rawMessage: Property App\Livewire\Settings\TwoFactor\RecoveryCodes::$recoveryCodes type has no value type specified in iterable type array.
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Settings/TwoFactor/RecoveryCodes.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Contracts\Auth\Guard::user().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: Instanceof between null and App\Models\TeamMoveApproval will always evaluate to false.
+			identifier: instanceof.alwaysFalse
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: 'Method App\Livewire\Teams\MoveTeam::getResultError() has parameter $result with generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: 'Method App\Livewire\Teams\MoveTeam::handleResult() has parameter $result with generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: 'Method App\Livewire\Teams\MoveTeam::isResultSuccess() has parameter $result with generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: 'Method App\Livewire\Teams\MoveTeam::unwrapResult() has parameter $result with generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, mixed given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: 'Parameter #1 $callback of method App\Support\Result<App\Models\Team|App\Models\TeamMoveApproval>::flatMap() expects Closure(mixed): App\Support\Result, Closure(App\Models\Team|App\Models\TeamMoveApproval): App\Support\Result given.'
+			identifier: argument.type
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: 'Parameter #3 $requestedBy of method App\Services\TeamMove\TeamMoveRequestService::requestMove() expects App\Models\User, App\Models\User|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: 'Strict comparison using !== between string and null will always evaluate to true.'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Teams/MoveTeam.php
+
+		-
+			rawMessage: Access to an undefined property App\Livewire\Teams\TeamList::$teams.
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Teams/TeamList.php
+
+		-
+			rawMessage: 'Method App\Livewire\Teams\TeamList::getTeamsProperty() return type with generic interface Illuminate\Contracts\Pagination\LengthAwarePaginator does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Livewire/Teams/TeamList.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<TModelClass of App\Models\Team>::whereIn().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Models/Builders/TeamBuilder.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Contracts\Auth\Guard::user().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Models/Builders/TeamBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\TeamBuilder::inContext() should return static(App\Models\Builders\TeamBuilder<TModelClass of App\Models\Team>) but returns $this(App\Models\Builders\TeamBuilder<TModelClass of App\Models\Team>).'
+			identifier: return.type
+			count: 1
+			path: app/Models/Builders/TeamBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\TeamBuilder::inContext() should return static(App\Models\Builders\TeamBuilder<TModelClass of App\Models\Team>) but returns App\Models\Builders\TeamBuilder<TModelClass of App\Models\Team>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Builders/TeamBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\TeamBuilder::withoutContextScope() should return static(App\Models\Builders\TeamBuilder<TModelClass of App\Models\Team>) but returns $this(App\Models\Builders\TeamBuilder<TModelClass of App\Models\Team>).'
+			identifier: return.type
+			count: 1
+			path: app/Models/Builders/TeamBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\UserBuilder::active() return type with generic class App\Models\Builders\UserBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Builders/UserBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\UserBuilder::inactive() return type with generic class App\Models\Builders\UserBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Builders/UserBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\UserBuilder::offline() return type with generic class App\Models\Builders\UserBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Builders/UserBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\UserBuilder::onboarded() return type with generic class App\Models\Builders\UserBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Builders/UserBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\UserBuilder::online() return type with generic class App\Models\Builders\UserBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Builders/UserBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\UserBuilder::pending() return type with generic class App\Models\Builders\UserBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Builders/UserBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\UserBuilder::withRole() should return static(App\Models\Builders\UserBuilder<TModelClass of App\Models\User>) but returns $this(App\Models\Builders\UserBuilder<TModelClass of App\Models\User>).'
+			identifier: return.type
+			count: 1
+			path: app/Models/Builders/UserBuilder.php
+
+		-
+			rawMessage: 'Method App\Models\Builders\UserBuilder::withStatus() return type with generic class App\Models\Builders\UserBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Builders/UserBuilder.php
+
+		-
+			rawMessage: 'Class App\Models\Domain uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Domain.php
+
+		-
+			rawMessage: Cannot access property $domain on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/Enterprise.php
+
+		-
+			rawMessage: 'Cannot call method first() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Enterprise.php
+
+		-
+			rawMessage: 'Method App\Models\Enterprise::getSubdomainAttribute() should return string|null but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Enterprise.php
+
+		-
+			rawMessage: 'Method App\Models\Enterprise::newCollection() should return iterable<App\Models\Enterprise>&Stancl\Tenancy\Database\TenantCollection but returns Stancl\Tenancy\Database\TenantCollection.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Enterprise.php
+
+		-
+			rawMessage: 'Parameter #1 $callback (callable(App\Models\Enterprise): mixed) of method App\Models\Enterprise::run() should be contravariant with parameter $callback (callable(): mixed) of method Stancl\Tenancy\Contracts\Tenant::run()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Models/Enterprise.php
+
+		-
+			rawMessage: 'Parameter #1 $models (array<App\Models\Enterprise>) of method App\Models\Enterprise::newCollection() should be contravariant with parameter $models (array<Illuminate\Database\Eloquent\Model>) of method Illuminate\Database\Eloquent\Model::newCollection()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Models/Enterprise.php
+
+		-
+			rawMessage: 'Return type (iterable<App\Models\Enterprise>&Stancl\Tenancy\Database\TenantCollection) of method App\Models\Enterprise::newCollection() should be compatible with return type (Illuminate\Database\Eloquent\Collection<(int|string), static(Illuminate\Database\Eloquent\Model)>) of method Illuminate\Database\Eloquent\Model::newCollection()'
+			identifier: method.childReturnType
+			count: 1
+			path: app/Models/Enterprise.php
+
+		-
+			rawMessage: 'Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''.'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 2
+			path: app/Models/Role.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Models/Role.php
+
+		-
+			rawMessage: 'Class App\Models\Role uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Role.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, mixed given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Models/Role.php
+
+		-
+			rawMessage: PHPDoc tag @var with type mixed is not subtype of type bool|string.
+			identifier: varTag.type
+			count: 2
+			path: app/Models/Role.php
+
+		-
+			rawMessage: 'PHPDoc type array{''name'', ''guard_name'', ''is_key'', ''team_id''} of property App\Models\Role::$fillable is not the same as PHPDoc type list<string> of overridden property Illuminate\Database\Eloquent\Model::$fillable.'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/Role.php
+
+		-
+			rawMessage: 'Parameter #3 $subject of function str_replace expects array<string>|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Role.php
+
+		-
+			rawMessage: 'Part $connection (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Models/Role.php
+
+		-
+			rawMessage: 'Part $schema (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Models/Role.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$ulid.
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Argument of an invalid type mixed supplied for foreach, only iterables are supported.'
+			identifier: foreach.nonIterable
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Call to an undefined static method Illuminate\Database\Eloquent\Model::shouldGenerateSlug().'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Call to function is_array() with array will always evaluate to true.'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Call to function property_exists() with $this(App\Models\Team) and ''childTypes'' will always evaluate to true.'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Call to function property_exists() with $this(App\Models\Team) and ''translatable'' will always evaluate to true.'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''.'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: Cannot access property $translatable on class-string|object.
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: Cannot access property $translatable on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Cannot call method getAttribute() on class-string|object.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Cannot call method getSlugOptions() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Cannot call method getTranslations() on class-string|object.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Cannot call method isProtectable() on class-string|object.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Cannot call method makeTranslatableSlugUnique() on class-string|object.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Cannot call method setTranslation() on class-string|object.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Class App\Models\Team uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::orderByRaw().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::whereRaw().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::role().'
+			identifier: staticMethod.dynamicCall
+			count: 6
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<App\Models\Team>::withoutGlobalScopes().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Generic type Illuminate\Database\Eloquent\Relations\HasMany<App\Models\Team> in PHPDoc tag @return does not specify all template types of class Illuminate\Database\Eloquent\Relations\HasMany: TRelatedModel, TDeclaringModel'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::children() should return Illuminate\Database\Eloquent\Relations\HasMany<App\Models\Team> but returns Illuminate\Database\Eloquent\Relations\HasMany<App\Models\Team, $this(App\Models\Team)>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::deputies() should return Illuminate\Database\Eloquent\Collection but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::executive() should return App\Models\User|null but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::fullTextSearch() has parameter $query with generic class App\Models\Builders\TeamBuilder but does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::fuzzySearch() has parameter $query with generic class App\Models\Builders\TeamBuilder but does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::getBioHtmlAttribute() should return string|null but returns array|string|null.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::getValidators() return type with generic class Illuminate\Support\Collection does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::hasExecutive() should return bool but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::newEloquentBuilder() return type with generic class App\Models\Builders\TeamBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::parent() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Team, App\Models\Team> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Team, $this(App\Models\Team)>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::shouldGenerateSlug() should return bool but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Method App\Models\Team::tenant() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Enterprise, App\Models\Team> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Enterprise, $this(App\Models\Team)>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: Negated boolean expression is always false.
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, int<0, max>|null given on the right side.'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, mixed given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, string|false given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, string|null given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Only booleans are allowed in an if condition, App\Models\Team|null given.'
+			identifier: if.condNotBoolean
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: PHPDoc tag @var with type mixed is not subtype of type bool|string.
+			identifier: varTag.type
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Parameter #1 $bio of method App\Support\Html\TeamBioRenderer::render() expects string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Parameter #1 $object of method ReflectionProperty::getValue() expects object|null, mixed given.'
+			identifier: argument.type
+			count: 3
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Parameter #1 $objectOrClass of class ReflectionClass constructor expects class-string<T of object>|T of object, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Parameter #1 $object_or_class of function method_exists expects object|string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Parameter #1 $object_or_class of function property_exists expects object|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Parameter #1 $title of static method Illuminate\Support\Str::slug() expects string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Parameter #2 $haystack of function in_array expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Parameter #3 $subject of function str_replace expects array<string>|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Part $connection (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Part $schema (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Return type (array<string>) of method App\Models\Team::casts() should be covariant with return type (array<string, string>) of method Illuminate\Database\Eloquent\Model::casts()'
+			identifier: method.childReturnType
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			rawMessage: 'Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''.'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 2
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: Class App\Models\TeamMoveApproval has PHPDoc tag @property for property $required_approvers with no value type specified in iterable type array.
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: 'Class App\Models\TeamMoveApproval uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, mixed given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: PHPDoc tag @var with type mixed is not subtype of type bool|string.
+			identifier: varTag.type
+			count: 2
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: 'PHPDoc type array<int, string> of property App\Models\TeamMoveApproval::$fillable is not the same as PHPDoc type list<string> of overridden property Illuminate\Database\Eloquent\Model::$fillable.'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: 'Parameter #3 $subject of function str_replace expects array<string>|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: 'Part $connection (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: 'Part $schema (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Models/TeamMoveApproval.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$ulid.
+			identifier: property.notFound
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Argument of an invalid type mixed supplied for foreach, only iterables are supported.'
+			identifier: foreach.nonIterable
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Call to an undefined static method Illuminate\Foundation\Auth\User::shouldGenerateSlug().'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Call to function property_exists() with $this(App\Models\User) and ''translatable'' will always evaluate to true.'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''.'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: Cannot access property $translatable on class-string|object.
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: Cannot access property $translatable on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: Cannot access property $value on string|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Cannot call method getAttribute() on class-string|object.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Cannot call method getSlugOptions() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Cannot call method getTranslations() on class-string|object.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Cannot call method isProtectable() on class-string|object.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Cannot call method makeTranslatableSlugUnique() on class-string|object.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Cannot call method setTranslation() on class-string|object.'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Organisation>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Organisation>::orderBy().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::orderByRaw().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::whereNotNull().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::whereRaw().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<App\Models\Organisation>::where().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Generic type Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Enterprise> in PHPDoc tag @return does not specify all template types of class Illuminate\Database\Eloquent\Relations\BelongsTo: TRelatedModel, TDeclaringModel'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Generic type Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Organisation> in PHPDoc tag @return does not specify all template types of class Illuminate\Database\Eloquent\Relations\BelongsTo: TRelatedModel, TDeclaringModel'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::accessibleOrganisations() should return Illuminate\Database\Eloquent\Relations\BelongsToMany<App\Models\Organisation, Illuminate\Database\Eloquent\Relations\Pivot, ''pivot''> but returns Illuminate\Database\Eloquent\Relations\BelongsToMany<App\Models\Organisation, $this(App\Models\User), Illuminate\Database\Eloquent\Relations\Pivot, ''pivot''>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::currentContext() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Organisation> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Organisation, $this(App\Models\User)>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::enterprises() should return Illuminate\Database\Eloquent\Relations\BelongsToMany<App\Models\Enterprise, Illuminate\Database\Eloquent\Relations\Pivot, ''pivot''> but returns Illuminate\Database\Eloquent\Relations\BelongsToMany<App\Models\Enterprise, $this(App\Models\User), Illuminate\Database\Eloquent\Relations\Pivot, ''pivot''>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::fullTextSearch() has parameter $query with generic class App\Models\Builders\UserBuilder but does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::fuzzySearch() has parameter $query with generic class App\Models\Builders\UserBuilder but does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::getBioHtmlAttribute() should return string|null but returns array|string|null.'
+			identifier: return.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::newEloquentBuilder() return type with generic class App\Models\Builders\UserBuilder does not specify its types: TModelClass'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::shouldGenerateSlug() should return bool but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Method App\Models\User::tenant() should return Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Enterprise> but returns Illuminate\Database\Eloquent\Relations\BelongsTo<App\Models\Enterprise, $this(App\Models\User)>.'
+			identifier: return.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: Negated boolean expression is always false.
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, mixed given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Only booleans are allowed in an if condition, App\Models\User|null given.'
+			identifier: if.condNotBoolean
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: PHPDoc tag @use has invalid type App\Models\UserFactory.
+			identifier: class.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: PHPDoc tag @var with type mixed is not subtype of type bool|string.
+			identifier: varTag.type
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Parameter #1 $bio of method App\Support\Html\TeamBioRenderer::render() expects string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Parameter #1 $object of method ReflectionProperty::getValue() expects object|null, mixed given.'
+			identifier: argument.type
+			count: 3
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Parameter #1 $objectOrClass of class ReflectionClass constructor expects class-string<T of object>|T of object, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Parameter #1 $object_or_class of function method_exists expects object|string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Parameter #1 $object_or_class of function property_exists expects object|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Parameter #1 $title of static method Illuminate\Support\Str::slug() expects string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Parameter #2 $haystack of function in_array expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Parameter #3 $subject of function str_replace expects array<string>|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Part $connection (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Part $schema (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Return type (array<string>) of method App\Models\User::casts() should be covariant with return type (array<string, string>) of method Illuminate\Database\Eloquent\Model::casts()'
+			identifier: method.childReturnType
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: Type App\Models\UserFactory in generic type Illuminate\Database\Eloquent\Factories\HasFactory<App\Models\UserFactory> in PHPDoc tag @use is not subtype of template type TFactory of Illuminate\Database\Eloquent\Factories\Factory of trait Illuminate\Database\Eloquent\Factories\HasFactory.
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Type string in generic type Illuminate\Database\Eloquent\Relations\BelongsToMany<App\Models\Enterprise, Illuminate\Database\Eloquent\Relations\Pivot, string> in PHPDoc tag @return is not subtype of template type TPivotModel of Illuminate\Database\Eloquent\Relations\Pivot = Illuminate\Database\Eloquent\Relations\Pivot of class Illuminate\Database\Eloquent\Relations\BelongsToMany.'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: 'Type string in generic type Illuminate\Database\Eloquent\Relations\BelongsToMany<App\Models\Organisation, Illuminate\Database\Eloquent\Relations\Pivot, string> in PHPDoc tag @return is not subtype of template type TPivotModel of Illuminate\Database\Eloquent\Relations\Pivot = Illuminate\Database\Eloquent\Relations\Pivot of class Illuminate\Database\Eloquent\Relations\BelongsToMany.'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: Cannot cast mixed to int.
+			identifier: cast.int
+			count: 3
+			path: app/Observers/TeamObserver.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::whereNull().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Observers/TeamObserver.php
+
+		-
+			rawMessage: 'Only booleans are allowed in an if condition, App\Models\Team|null given.'
+			identifier: if.condNotBoolean
+			count: 1
+			path: app/Observers/TeamObserver.php
+
+		-
+			rawMessage: 'Property App\Models\Team::$lock_version (int<0, max>) does not accept int.'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Observers/TeamObserver.php
+
+		-
+			rawMessage: 'Property App\Models\Team::$tenant_id (string|null) does not accept int.'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Observers/TeamObserver.php
+
+		-
+			rawMessage: 'Property App\Models\Team::$tenant_id (string|null) does not accept int|string|null.'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Observers/TeamObserver.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, App\Models\User|null given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Policies/TeamPolicy.php
+
+		-
+			rawMessage: 'Class App\Projections\Teams\TeamProjection uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: app/Projections/Teams/TeamProjection.php
+
+		-
+			rawMessage: PHPDoc tag @var does not specify variable name.
+			identifier: varTag.noVariable
+			count: 1
+			path: app/Projections/Teams/TeamProjection.php
+
+		-
+			rawMessage: Binary operation "." between mixed and string|null results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Providers/AppServiceProvider.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Providers/AppServiceProvider.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>::where().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Providers/AppServiceProvider.php
+
+		-
+			rawMessage: 'Method Laravel\Fortify\Contracts\TwoFactorLoginResponse@anonymous/app/Providers/FortifyServiceProvider.php:105::toResponse() has invalid return type App\Providers\RedirectResponse.'
+			identifier: class.notFound
+			count: 1
+			path: app/Providers/FortifyServiceProvider.php
+
+		-
+			rawMessage: 'Method Laravel\Fortify\Contracts\TwoFactorLoginResponse@anonymous/app/Providers/FortifyServiceProvider.php:105::toResponse() should return App\Providers\RedirectResponse but returns Illuminate\Http\RedirectResponse.'
+			identifier: return.type
+			count: 1
+			path: app/Providers/FortifyServiceProvider.php
+
+		-
+			rawMessage: 'Return type (App\Providers\RedirectResponse) of method Laravel\Fortify\Contracts\TwoFactorLoginResponse@anonymous/app/Providers/FortifyServiceProvider.php:105::toResponse() should be covariant with return type (Symfony\Component\HttpFoundation\Response) of method Illuminate\Contracts\Support\Responsable::toResponse()'
+			identifier: method.childReturnType
+			count: 2
+			path: app/Providers/FortifyServiceProvider.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<App\Models\Team>::withoutGlobalScopes().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamHierarchyTraversalService::buildAncestryCollection() return type with generic class Illuminate\Support\Collection does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamHierarchyTraversalService::getAncestry() return type with generic class Illuminate\Support\Collection does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamHierarchyTraversalService::getDescendants() has invalid return type App\Services\TRelatedModel.'
+			identifier: class.notFound
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamHierarchyTraversalService::getDescendants() should return Illuminate\Database\Eloquent\Collection<int, App\Services\TRelatedModel>|Illuminate\Support\Collection<never, never> but returns Illuminate\Database\Eloquent\Collection<int, App\Models\Team>.'
+			identifier: return.type
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamHierarchyTraversalService::getDescendants() should return Illuminate\Database\Eloquent\Collection<int, App\Services\TRelatedModel>|Illuminate\Support\Collection<never, never> but returns Illuminate\Support\Collection<(int|string), mixed>.'
+			identifier: return.type
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Parameter #1 $items of method Illuminate\Database\Eloquent\Collection<int,App\Models\Team>::merge() expects iterable<(int|string), App\Models\Team>, Illuminate\Database\Eloquent\Collection<int, App\Services\TRelatedModel> given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Parameter #1 $parentId of method App\Services\TeamHierarchyTraversalService::buildAncestryCollection() expects int|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Parameter #1 $parentId of method App\Services\TeamHierarchyTraversalService::buildAncestryCollection() expects int|null, string|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Type App\Services\TRelatedModel in generic type Illuminate\Database\Eloquent\Collection<int, App\Services\TRelatedModel> in PHPDoc tag @return is not subtype of template type TModel of Illuminate\Database\Eloquent\Model of class Illuminate\Database\Eloquent\Collection.'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Services/TeamHierarchyTraversalService.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::role().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Services/TeamMove/CrossOrganisationApproverResolver.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\CrossOrganisationApproverResolver::getOrganisationAdmins() should return array<int> but returns array<mixed>.'
+			identifier: return.type
+			count: 1
+			path: app/Services/TeamMove/CrossOrganisationApproverResolver.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\CrossOrganisationApproverResolver::resolve() should return array<int, never> but returns array<int, mixed>.'
+			identifier: return.type
+			count: 1
+			path: app/Services/TeamMove/CrossOrganisationApproverResolver.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, App\Models\Team|null given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Services/TeamMove/CrossOrganisationApproverResolver.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<App\Models\Team>::withoutGlobalScopes().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Services/TeamMove/DescendantCountRule.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::role().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Services/TeamMove/SameOrganisationApproverResolver.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\SameOrganisationApproverResolver::getOrganisationAdmins() should return array<int> but returns array<mixed>.'
+			identifier: return.type
+			count: 1
+			path: app/Services/TeamMove/SameOrganisationApproverResolver.php
+
+		-
+			rawMessage: 'Generic type App\Support\Result<bool, string> in PHPDoc tag @return specifies 2 template types, but class App\Support\Result supports only 1: TValue'
+			identifier: generics.moreTypes
+			count: 2
+			path: app/Services/TeamMove/TeamMoveApprovalService.php
+
+		-
+			rawMessage: 'Parameter #1 $message of class RuntimeException constructor expects string, string|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TeamMove/TeamMoveApprovalService.php
+
+		-
+			rawMessage: 'Property App\Models\TeamMoveApproval::$approved_at (Illuminate\Support\Carbon|null) does not accept Carbon\CarbonImmutable.'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/TeamMove/TeamMoveApprovalService.php
+
+		-
+			rawMessage: 'Generic type App\Support\Result<App\Models\Team|App\Models\TeamMoveApproval, string> in PHPDoc tag @return specifies 2 template types, but class App\Support\Result supports only 1: TValue'
+			identifier: generics.moreTypes
+			count: 1
+			path: app/Services/TeamMove/TeamMoveRequestService.php
+
+		-
+			rawMessage: 'Parameter #1 $callback of method App\Support\Result<mixed>::flatMap() expects Closure(mixed): App\Support\Result, Closure(App\Models\Team): App\Support\Result given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TeamMove/TeamMoveRequestService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMoveService::requestMove() should return App\Models\Team|App\Models\TeamMoveApproval but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/TeamMoveService.php
+
+		-
+			rawMessage: 'Parameter $onSuccess of method App\Support\Result<App\Models\Team|App\Models\TeamMoveApproval>::match() expects Closure(mixed, array<string>): mixed, Closure(App\Models\Team|App\Models\TeamMoveApproval): (App\Models\Team|App\Models\TeamMoveApproval) given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TeamMoveService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamNameNormalizationService::extractStringPairs() should return array<string, string> but returns array<mixed>.'
+			identifier: return.type
+			count: 1
+			path: app/Services/TeamNameNormalizationService.php
+
+		-
+			rawMessage: 'Parameter #1 $callback of method Illuminate\Support\Collection<int,mixed>::map() expects callable(mixed, int): (array<string, string>|string), Closure(string): (array<string, string>|string) given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TeamNameNormalizationService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamOrganisationFinderService::buildAncestryUntilOrganisation() return type with generic class Illuminate\Support\Collection does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/TeamOrganisationFinderService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamOrganisationFinderService::findOrganisation() should return App\Models\Team|null but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Services/TeamOrganisationFinderService.php
+
+		-
+			rawMessage: 'Method App\Services\TeamOrganisationFinderService::getAncestry() return type with generic class Illuminate\Support\Collection does not specify its types: TKey, TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/TeamOrganisationFinderService.php
+
+		-
+			rawMessage: 'Parameter #1 $callback of method Illuminate\Support\Collection<(int|string),mixed>::first() expects (callable(mixed, int|string): bool)|null, Closure(App\Models\Team): bool given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/TeamOrganisationFinderService.php
+
+		-
+			rawMessage: Access to an undefined property object::$role_id.
+			identifier: property.notFound
+			count: 1
+			path: app/Services/UserProtectionService.php
+
+		-
+			rawMessage: Access to an undefined property object::$team_id.
+			identifier: property.notFound
+			count: 1
+			path: app/Services/UserProtectionService.php
+
+		-
+			rawMessage: 'Parameter #1 $column of method Illuminate\Database\Query\Builder::where() expects array<int|string, mixed>|Closure|Illuminate\Contracts\Database\Query\Expression|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/UserProtectionService.php
+
+		-
+			rawMessage: 'Parameter #1 $table of method Illuminate\Database\Connection::table() expects Closure|Illuminate\Contracts\Database\Query\Expression|Illuminate\Database\Query\Builder|string|UnitEnum, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: app/Services/UserProtectionService.php
+
+		-
+			rawMessage: 'Parameter #1 $table of method Illuminate\Database\Query\Builder::join() expects Illuminate\Contracts\Database\Query\Expression|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/UserProtectionService.php
+
+		-
+			rawMessage: 'Part $pivotTable (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 4
+			path: app/Services/UserProtectionService.php
+
+		-
+			rawMessage: 'Part $rolesTable (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 3
+			path: app/Services/UserProtectionService.php
+
+		-
+			rawMessage: 'Part $teamKey (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Services/UserProtectionService.php
+
+		-
+			rawMessage: 'Class App\Support\AsyncResult extends generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/AsyncResult.php
+
+		-
+			rawMessage: 'Method App\Support\AsyncResult::all() has parameter $tasks with generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/AsyncResult.php
+
+		-
+			rawMessage: 'Method App\Support\AsyncResult::all() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/AsyncResult.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, int|false given on the right side.'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: app/Support/Console/Banner.php
+
+		-
+			rawMessage: 'Method App\Support\Html\TeamBioRenderer::render() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Support/Html/TeamBioRenderer.php
+
+		-
+			rawMessage: 'Call to static method make() on an unknown class Laravel\Telescope\IncomingEntry.'
+			identifier: class.notFound
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Method App\Support\Result::__call() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Method App\Support\Result::failure() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Method App\Support\Result::flatMap() has parameter $callback with generic class App\Support\Result but does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Method App\Support\Result::flatMap() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Method App\Support\Result::logInternal() should return static(App\Support\Result<TValue>) but returns $this(App\Support\Result<TValue>).'
+			identifier: return.type
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Method App\Support\Result::map() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Method App\Support\Result::success() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Method App\Support\Result::try() return type with generic class App\Support\Result does not specify its types: TValue'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Parameter #1 $value of function collect expects Illuminate\Contracts\Support\Arrayable<(int|string), mixed>|iterable<(int|string), mixed>|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Parameter #1 of closure expects string, string|null given.'
+			identifier: argument.type
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: Unable to resolve the template type TKey in call to function collect
+			identifier: argument.templateType
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: Unable to resolve the template type TValue in call to function collect
+			identifier: argument.templateType
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Variable method call on Illuminate\Support\Collection<(int|string), mixed>.'
+			identifier: method.dynamicName
+			count: 1
+			path: app/Support/Result.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::whereNull().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Support/Validation/TeamHierarchy/CycleValidator.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, App\Models\Team|null given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Support/Validation/TeamHierarchy/CycleValidator.php
+
+		-
+			rawMessage: 'Part $hardLimit (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Support/Validation/TeamHierarchy/DepthValidator.php
+
+		-
+			rawMessage: 'Part $softLimit (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Support/Validation/TeamHierarchy/DepthValidator.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::whereNull().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Support/Validation/TeamHierarchy/ParentTypeValidator.php
+
+		-
+			rawMessage: 'Generic type App\Support\Result<bool, string> in PHPDoc tag @return specifies 2 template types, but class App\Support\Result supports only 1: TValue'
+			identifier: generics.moreTypes
+			count: 1
+			path: app/Support/Validation/TeamHierarchyValidator.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, App\Enums\TeamType::DEPARTMENT|App\Enums\TeamType::DIVISION|App\Enums\TeamType::ENTERPRISE|App\Enums\TeamType::ORGANISATION|null given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: app/Support/Validation/TeamHierarchyValidator.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Database\ConnectionInterface::getDriverName().'
+			identifier: method.notFound
+			count: 1
+			path: app/Support/Validation/TeamName/ArrayNameQueryBuilder.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>::getConnection().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Support/Validation/TeamName/ArrayNameQueryBuilder.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>::orWhereRaw().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Support/Validation/TeamName/ArrayNameQueryBuilder.php
+
+		-
+			rawMessage: 'Method App\Support\Validation\TeamName\ArrayNameQueryBuilder::applyConstraints() has parameter $query with generic class Illuminate\Database\Eloquent\Builder but does not specify its types: TModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Validation/TeamName/ArrayNameQueryBuilder.php
+
+		-
+			rawMessage: 'Method App\Support\Validation\TeamName\NameQueryBuilderInterface::applyConstraints() has parameter $query with generic class Illuminate\Database\Eloquent\Builder but does not specify its types: TModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Validation/TeamName/NameQueryBuilderInterface.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Database\ConnectionInterface::getDriverName().'
+			identifier: method.notFound
+			count: 1
+			path: app/Support/Validation/TeamName/StringNameQueryBuilder.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>::getConnection().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Support/Validation/TeamName/StringNameQueryBuilder.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>::orWhereJsonContains().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Support/Validation/TeamName/StringNameQueryBuilder.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>::orWhereRaw().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: app/Support/Validation/TeamName/StringNameQueryBuilder.php
+
+		-
+			rawMessage: 'Method App\Support\Validation\TeamName\StringNameQueryBuilder::applyConstraints() has parameter $query with generic class Illuminate\Database\Eloquent\Builder but does not specify its types: TModel'
+			identifier: missingType.generics
+			count: 1
+			path: app/Support/Validation/TeamName/StringNameQueryBuilder.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::whereNull().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Support/Validation/TeamNameValidator.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<App\Models\Team>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: app/Support/Validation/TeamNameValidator.php
+
+		-
+			rawMessage: 'Generic type App\Support\Result<bool, string> in PHPDoc tag @return specifies 2 template types, but class App\Support\Result supports only 1: TValue'
+			identifier: generics.moreTypes
+			count: 1
+			path: app/Support/Validation/TeamNameValidator.php
+
+		-
+			rawMessage: 'Method App\Support\Validation\TeamNameValidator::getQueryBuilder() has parameter $name with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Support/Validation/TeamNameValidator.php
+
+		-
+			rawMessage: Class Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful not found.
+			identifier: class.notFound
+			count: 1
+			path: bootstrap/app.php
+
+		-
+			rawMessage: 'Parameter #2 $logs of static method App\Support\Result<mixed>::failure() expects array<string>, array<string, int|string> given.'
+			identifier: argument.type
+			count: 1
+			path: bootstrap/app.php
+
+		-
+			rawMessage: 'Method Database\Factories\DepartmentFactory::definition() return type has no value type specified in iterable type array<mixed>.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: database/factories/DepartmentFactory.php
+
+		-
+			rawMessage: PHPDoc tag @return contains unresolvable type.
+			identifier: return.unresolvableType
+			count: 1
+			path: database/factories/DepartmentFactory.php
+
+		-
+			rawMessage: 'Parameter #2 $array of function implode expects array, array|string given.'
+			identifier: argument.type
+			count: 1
+			path: database/factories/DepartmentFactory.php
+
+		-
+			rawMessage: 'Return type (array<mixed>) of method Database\Factories\DepartmentFactory::definition() should be covariant with return type (array<string, mixed>) of method Illuminate\Database\Eloquent\Factories\Factory<App\Models\Department>::definition()'
+			identifier: method.childReturnType
+			count: 1
+			path: database/factories/DepartmentFactory.php
+
+		-
+			rawMessage: Binary operation "." between mixed and ' ' results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: database/factories/DisciplineFactory.php
+
+		-
+			rawMessage: 'Method Database\Factories\DivisionFactory::definition() return type has no value type specified in iterable type array<mixed>.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: database/factories/DivisionFactory.php
+
+		-
+			rawMessage: PHPDoc tag @return contains unresolvable type.
+			identifier: return.unresolvableType
+			count: 1
+			path: database/factories/DivisionFactory.php
+
+		-
+			rawMessage: 'Parameter #2 $array of function implode expects array, array|string given.'
+			identifier: argument.type
+			count: 1
+			path: database/factories/DivisionFactory.php
+
+		-
+			rawMessage: 'Return type (array<mixed>) of method Database\Factories\DivisionFactory::definition() should be covariant with return type (array<string, mixed>) of method Illuminate\Database\Eloquent\Factories\Factory<App\Models\Division>::definition()'
+			identifier: method.childReturnType
+			count: 1
+			path: database/factories/DivisionFactory.php
+
+		-
+			rawMessage: 'Method Database\Factories\EnterpriseFactory::definition() return type has no value type specified in iterable type array<mixed>.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: database/factories/EnterpriseFactory.php
+
+		-
+			rawMessage: PHPDoc tag @return contains unresolvable type.
+			identifier: return.unresolvableType
+			count: 1
+			path: database/factories/EnterpriseFactory.php
+
+		-
+			rawMessage: 'Parameter #2 $array of function implode expects array, array|string given.'
+			identifier: argument.type
+			count: 1
+			path: database/factories/EnterpriseFactory.php
+
+		-
+			rawMessage: 'Return type (array<mixed>) of method Database\Factories\EnterpriseFactory::definition() should be covariant with return type (array<string, mixed>) of method Illuminate\Database\Eloquent\Factories\Factory<App\Models\Enterprise>::definition()'
+			identifier: method.childReturnType
+			count: 1
+			path: database/factories/EnterpriseFactory.php
+
+		-
+			rawMessage: Binary operation "." between array|string and ' Group ' results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: database/factories/GroupFactory.php
+
+		-
+			rawMessage: Binary operation "." between mixed and string results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: database/factories/GroupFactory.php
+
+		-
+			rawMessage: 'Method Database\Factories\OrganisationFactory::definition() return type has no value type specified in iterable type array<mixed>.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: database/factories/OrganisationFactory.php
+
+		-
+			rawMessage: PHPDoc tag @return contains unresolvable type.
+			identifier: return.unresolvableType
+			count: 1
+			path: database/factories/OrganisationFactory.php
+
+		-
+			rawMessage: 'Parameter #2 $array of function implode expects array, array|string given.'
+			identifier: argument.type
+			count: 1
+			path: database/factories/OrganisationFactory.php
+
+		-
+			rawMessage: 'Return type (array<mixed>) of method Database\Factories\OrganisationFactory::definition() should be covariant with return type (array<string, mixed>) of method Illuminate\Database\Eloquent\Factories\Factory<App\Models\Organisation>::definition()'
+			identifier: method.childReturnType
+			count: 1
+			path: database/factories/OrganisationFactory.php
+
+		-
+			rawMessage: Binary operation "." between array|string and ' Project ' results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: database/factories/ProjectFactory.php
+
+		-
+			rawMessage: Binary operation "." between mixed and string results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: database/factories/ProjectFactory.php
+
+		-
+			rawMessage: 'Method Database\Factories\ProjectFactory::definition() return type has no value type specified in iterable type array<mixed>.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: database/factories/ProjectFactory.php
+
+		-
+			rawMessage: PHPDoc tag @return contains unresolvable type.
+			identifier: return.unresolvableType
+			count: 1
+			path: database/factories/ProjectFactory.php
+
+		-
+			rawMessage: 'Parameter #2 $array of function implode expects array, array|string given.'
+			identifier: argument.type
+			count: 1
+			path: database/factories/ProjectFactory.php
+
+		-
+			rawMessage: 'Return type (array<mixed>) of method Database\Factories\ProjectFactory::definition() should be covariant with return type (array<string, mixed>) of method Illuminate\Database\Eloquent\Factories\Factory<App\Models\Project>::definition()'
+			identifier: method.childReturnType
+			count: 1
+			path: database/factories/ProjectFactory.php
+
+		-
+			rawMessage: Binary operation "." between mixed and ' Squad ' results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: database/factories/SquadFactory.php
+
+		-
+			rawMessage: 'Method Database\Factories\TeamFactory::definition() return type has no value type specified in iterable type array<mixed>.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: database/factories/TeamFactory.php
+
+		-
+			rawMessage: PHPDoc tag @return contains unresolvable type.
+			identifier: return.unresolvableType
+			count: 1
+			path: database/factories/TeamFactory.php
+
+		-
+			rawMessage: 'Parameter #2 $array of function implode expects array, array|string given.'
+			identifier: argument.type
+			count: 1
+			path: database/factories/TeamFactory.php
+
+		-
+			rawMessage: 'Return type (array<mixed>) of method Database\Factories\TeamFactory::definition() should be covariant with return type (array<string, mixed>) of method Illuminate\Database\Eloquent\Factories\Factory<App\Models\Team>::definition()'
+			identifier: method.childReturnType
+			count: 1
+			path: database/factories/TeamFactory.php
+
+		-
+			rawMessage: 'Method Database\Factories\UserFactory::definition() return type has no value type specified in iterable type array<mixed>.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: database/factories/UserFactory.php
+
+		-
+			rawMessage: PHPDoc tag @return contains unresolvable type.
+			identifier: return.unresolvableType
+			count: 1
+			path: database/factories/UserFactory.php
+
+		-
+			rawMessage: 'Parameter #2 $array of function implode expects array, array|string given.'
+			identifier: argument.type
+			count: 1
+			path: database/factories/UserFactory.php
+
+		-
+			rawMessage: 'Return type (array<mixed>) of method Database\Factories\UserFactory::definition() should be covariant with return type (array<string, mixed>) of method Illuminate\Database\Eloquent\Factories\Factory<App\Models\User>::definition()'
+			identifier: method.childReturnType
+			count: 1
+			path: database/factories/UserFactory.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$id.
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/DisciplineSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of static method Database\Seeders\EnterpriseSeeder::getClassification() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/DisciplineSeeder.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$ulid.
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/DomainSeeder.php
+
+		-
+			rawMessage: 'Call to an undefined method Illuminate\Database\Eloquent\Model::getTranslation().'
+			identifier: method.notFound
+			count: 1
+			path: database/seeders/DomainSeeder.php
+
+		-
+			rawMessage: 'Only booleans are allowed in an if condition, int<0, max> given.'
+			identifier: if.condNotBoolean
+			count: 1
+			path: database/seeders/DomainSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $string of function str expects string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/DomainSeeder.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$id.
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/GroupSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of static method Database\Seeders\EnterpriseSeeder::getClassification() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/GroupSeeder.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: database/seeders/LandlordSeeder.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$id.
+			identifier: property.notFound
+			count: 2
+			path: database/seeders/OrganisationSeeder.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: database/seeders/OrganisationSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of method Database\Seeders\OrganisationSeeder::inferClassificationByName() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/OrganisationSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of static method Database\Seeders\EnterpriseSeeder::getClassification() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/OrganisationSeeder.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$id.
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/ProjectSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of method Database\Seeders\RoleSeeder::ensureTenantRoles() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/RoleSeeder.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$id.
+			identifier: property.notFound
+			count: 2
+			path: database/seeders/SectorSeeder.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: database/seeders/SectorSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of method Database\Seeders\SectorSeeder::inferClassificationByName() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/SectorSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of static method Database\Seeders\EnterpriseSeeder::getClassification() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/SectorSeeder.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$id.
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/SquadSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of static method Database\Seeders\EnterpriseSeeder::getClassification() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/SquadSeeder.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::whereNotNull().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: database/seeders/TeamMoveApprovalSeeder.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: database/seeders/UserSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of method Database\Seeders\UserSeeder::createTestUser() expects App\Models\Enterprise|null, Illuminate\Database\Eloquent\Model&Stancl\Tenancy\Contracts\Tenant given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/UserSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of method Database\Seeders\UserSeeder::createUsersForEnterprise() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/UserSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of method Database\Seeders\UserSeeder::inferClassification() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/UserSeeder.php
+
+		-
+			rawMessage: 'Parameter #1 $enterprise of static method Database\Seeders\EnterpriseSeeder::getClassification() expects App\Models\Enterprise, Illuminate\Database\Eloquent\Model given.'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/UserSeeder.php
+
+		-
+			rawMessage: 'Part $enterprise->getTranslation(''name'', ''en'') (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: database/seeders/UserSeeder.php
+
+		-
+			rawMessage: Variable $expandable might not be defined.
+			identifier: variable.undefined
+			count: 1
+			path: resources/views/flux/navlist/group.blade.php
+
+		-
+			rawMessage: Variable $heading might not be defined.
+			identifier: variable.undefined
+			count: 2
+			path: resources/views/flux/navlist/group.blade.php
+
+		-
+			rawMessage: Short ternary operator is not allowed. Use null coalesce operator if applicable or consider using long ternary.
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: 'resources/views/livewire/teams/[ulid].blade.php'
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Contracts\Auth\Guard::user().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: resources/views/livewire/teams/switch-context.blade.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, App\Models\Organisation|null given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: resources/views/livewire/teams/switch-context.blade.php
+
+		-
+			rawMessage: Short ternary operator is not allowed. Use null coalesce operator if applicable or consider using long ternary.
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: resources/views/livewire/teams/ulid.blade.php
+
+		-
+			rawMessage: Binary operation "." between 'This is your multi…' and mixed results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: routes/tenant.php
+
+		-
+			rawMessage: 'Cannot call method name() on array<string>|Illuminate\Routing\Route.'
+			identifier: method.nonObject
+			count: 1
+			path: routes/web.php
+
+		-
+			rawMessage: 'Cannot call method name() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: routes/web.php
+
+		-
+			rawMessage: 'Parameter #1 $middleware of method Illuminate\Routing\Route::middleware() expects array<string>|string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: routes/web.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Arch/ApplicationLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/ApplicationLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Arch/ApplicationLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/ApplicationLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method toOnlyUse() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Arch/ApplicationLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 4
+			path: tests/Arch/AuthorizationEventDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/AuthorizationEventDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/AuthorizationEventDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/AuthorizationEventDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method toOnlyUse() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Arch/AuthorizationEventDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 6
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method classes() on mixed.'
+			identifier: method.nonObject
+			count: 6
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method toBeClasses() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method toBeFinal() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method toExtend() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method toImplement() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/ClassStructureTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 4
+			path: tests/Arch/CoreApplicationDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/CoreApplicationDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/CoreApplicationDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/CoreApplicationDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method toOnlyUse() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Arch/CoreApplicationDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Arch/DomainLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/DomainLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Arch/DomainLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/DomainLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method toOnlyUse() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Arch/DomainLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Arch/HttpLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/HttpLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Arch/HttpLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/HttpLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method toOnlyUse() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Arch/HttpLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 7
+			path: tests/Arch/NamingConventionsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/NamingConventionsTest.php
+
+		-
+			rawMessage: 'Cannot call method classes() on mixed.'
+			identifier: method.nonObject
+			count: 7
+			path: tests/Arch/NamingConventionsTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Arch/NamingConventionsTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/NamingConventionsTest.php
+
+		-
+			rawMessage: 'Cannot call method toHaveSuffix() on mixed.'
+			identifier: method.nonObject
+			count: 7
+			path: tests/Arch/NamingConventionsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 6
+			path: tests/Arch/NegativeDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/NegativeDependenciesTest.php
+
+		-
+			rawMessage: Cannot access property $not on mixed.
+			identifier: property.nonObject
+			count: 6
+			path: tests/Arch/NegativeDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Arch/NegativeDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/NegativeDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method toUse() on mixed.'
+			identifier: method.nonObject
+			count: 6
+			path: tests/Arch/NegativeDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/StateManagementDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/StateManagementDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/StateManagementDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/StateManagementDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method toOnlyUse() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/StateManagementDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Arch/TestStructureTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/TestStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Arch/TestStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/TestStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method toExtend() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/TestStructureTest.php
+
+		-
+			rawMessage: 'Cannot call method toUse() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/TestStructureTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::expect().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Arch/UiLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall::preset().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Arch/UiLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method ignoring() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/UiLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method laravel() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Arch/UiLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Cannot call method toOnlyUse() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Arch/UiLayerDependenciesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Browser/AuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertAuthenticated().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Browser/AuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertGuest().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Browser/AuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertNoConsoleLogs() on mixed.'
+			identifier: method.nonObject
+			count: 8
+			path: tests/Browser/AuthenticationTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Browser/AuthenticationTest.php
+
+		-
+			rawMessage: Function assert_no_javascript_errors_except_csp_parser not found.
+			identifier: function.notFound
+			count: 11
+			path: tests/Browser/AuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 10
+			path: tests/Browser/ComponentsTest.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\Enterprise|null.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Browser/ComponentsTest.php
+
+		-
+			rawMessage: 'Cannot call method assertNoConsoleLogs() on mixed.'
+			identifier: method.nonObject
+			count: 10
+			path: tests/Browser/ComponentsTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::markTestSkipped().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Browser/ComponentsTest.php
+
+		-
+			rawMessage: Function assert_no_javascript_errors_except_csp_parser not found.
+			identifier: function.notFound
+			count: 10
+			path: tests/Browser/ComponentsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 5
+			path: tests/Browser/DarkModeTest.php
+
+		-
+			rawMessage: 'Cannot call method assertNoConsoleLogs() on mixed.'
+			identifier: method.nonObject
+			count: 5
+			path: tests/Browser/DarkModeTest.php
+
+		-
+			rawMessage: Function assert_no_javascript_errors_except_csp_parser not found.
+			identifier: function.notFound
+			count: 5
+			path: tests/Browser/DarkModeTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 17
+			path: tests/Browser/PagesTest.php
+
+		-
+			rawMessage: 'Cannot call method assertNoConsoleLogs() on mixed.'
+			identifier: method.nonObject
+			count: 16
+			path: tests/Browser/PagesTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::markTestSkipped().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Browser/PagesTest.php
+
+		-
+			rawMessage: Function assert_no_javascript_errors_except_csp_parser not found.
+			identifier: function.notFound
+			count: 19
+			path: tests/Browser/PagesTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 9
+			path: tests/Browser/ResponsiveTest.php
+
+		-
+			rawMessage: 'Cannot call method assertNoConsoleLogs() on mixed.'
+			identifier: method.nonObject
+			count: 9
+			path: tests/Browser/ResponsiveTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::markTestSkipped().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Browser/ResponsiveTest.php
+
+		-
+			rawMessage: Function assert_no_javascript_errors_except_csp_parser not found.
+			identifier: function.notFound
+			count: 9
+			path: tests/Browser/ResponsiveTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 10
+			path: tests/Browser/SettingsTest.php
+
+		-
+			rawMessage: 'Cannot call method assertNoConsoleLogs() on mixed.'
+			identifier: method.nonObject
+			count: 9
+			path: tests/Browser/SettingsTest.php
+
+		-
+			rawMessage: Function assert_no_javascript_errors_except_csp_parser not found.
+			identifier: function.notFound
+			count: 10
+			path: tests/Browser/SettingsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 12
+			path: tests/Browser/SmokeTest.php
+
+		-
+			rawMessage: 'Cannot call method assertNoConsoleLogs() on mixed.'
+			identifier: method.nonObject
+			count: 15
+			path: tests/Browser/SmokeTest.php
+
+		-
+			rawMessage: Function assert_no_javascript_errors_except_csp_parser not found.
+			identifier: function.notFound
+			count: 15
+			path: tests/Browser/SmokeTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertAuthenticated().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertGuest().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::from().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::get().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertRedirect() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertSessionHasErrorsIn() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertSessionHasNoErrors() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertStatus() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method from() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method post() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::markTestSkipped().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Auth/AuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertRedirect() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertStatus() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			rawMessage: 'Cannot call method get() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			rawMessage: 'Cannot call method hasVerifiedEmail() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/PasswordConfirmationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertStatus() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/PasswordConfirmationTest.php
+
+		-
+			rawMessage: 'Cannot call method get() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/PasswordConfirmationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::from().'
+			identifier: method.notFound
+			count: 4
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::get().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: Cannot access property $token on mixed.
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: 'Cannot call method assertRedirect() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: 'Cannot call method assertSessionHasNoErrors() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: 'Cannot call method assertStatus() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: 'Cannot call method post() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertAuthenticated().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/RegistrationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::from().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/RegistrationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::get().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/RegistrationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertRedirect() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/RegistrationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertSessionHasNoErrors() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/RegistrationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertStatus() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/RegistrationTest.php
+
+		-
+			rawMessage: 'Cannot call method post() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/RegistrationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::from().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/TwoFactorChallengeTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::get().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Auth/TwoFactorChallengeTest.php
+
+		-
+			rawMessage: 'Cannot call method assertRedirect() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Auth/TwoFactorChallengeTest.php
+
+		-
+			rawMessage: 'Cannot call method post() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Auth/TwoFactorChallengeTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::markTestSkipped().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: tests/Feature/Auth/TwoFactorChallengeTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 4
+			path: tests/Feature/ChrrpsTest.php
+
+		-
+			rawMessage: 'Parameter #1 $user of function Pest\Laravel\actingAs expects Illuminate\Contracts\Auth\Authenticatable, mixed given.'
+			identifier: argument.type
+			count: 3
+			path: tests/Feature/ChrrpsTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 4
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgA.
+			identifier: property.notFound
+			count: 12
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgB.
+			identifier: property.notFound
+			count: 8
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 13
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: 'Access to an undefined property Pest\Mixins\Expectation<Illuminate\Support\Collection<(int|string), mixed>|null>::$not.'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: Access to an undefined property Pest\Mixins\Expectation<mixed>::$not.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 4
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 17
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: Cannot access property $not on mixed.
+			identifier: property.nonObject
+			count: 3
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: Cannot access property $tenant_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: 'Cannot call method assignRole() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: 'Cannot call method switchContext() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: 'Cannot call method toContain() on mixed.'
+			identifier: method.nonObject
+			count: 6
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: 'Parameter #1 $id of function setPermissionsTeamId expects Illuminate\Database\Eloquent\Model|int|string|null, mixed given.'
+			identifier: argument.type
+			count: 3
+			path: tests/Feature/Context/ContextBypassTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgA.
+			identifier: property.notFound
+			count: 9
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgB.
+			identifier: property.notFound
+			count: 7
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 23
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 8
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: Cannot access property $current_context_id on mixed.
+			identifier: property.nonObject
+			count: 9
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 9
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: 'Cannot call method fresh() on mixed.'
+			identifier: method.nonObject
+			count: 13
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: 'Cannot call method switchContext() on mixed.'
+			identifier: method.nonObject
+			count: 5
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Auth\SessionGuard::logout().'
+			identifier: staticMethod.dynamicCall
+			count: 5
+			path: tests/Feature/Context/ContextPersistenceTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgA.
+			identifier: property.notFound
+			count: 5
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgB.
+			identifier: property.notFound
+			count: 7
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 23
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: Cannot access property $current_context_id on mixed.
+			identifier: property.nonObject
+			count: 6
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 8
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: 'Cannot call method fresh() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: 'Cannot call method refresh() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: 'Cannot call method switchContext() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: 'Cannot call method update() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Auth\SessionGuard::logout().'
+			identifier: staticMethod.dynamicCall
+			count: 4
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: 'Parameter #2 $user of class Illuminate\Auth\Events\Login constructor expects Illuminate\Contracts\Auth\Authenticatable, mixed given.'
+			identifier: argument.type
+			count: 4
+			path: tests/Feature/Context/ContextRestorationTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 3
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgA.
+			identifier: property.notFound
+			count: 12
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgB.
+			identifier: property.notFound
+			count: 8
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 13
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: 'Access to an undefined property Pest\Mixins\Expectation<Illuminate\Support\Collection<(int|string), mixed>|null>::$not.'
+			identifier: property.notFound
+			count: 5
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 5
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 16
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: Cannot access property $not on mixed.
+			identifier: property.nonObject
+			count: 4
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: 'Cannot call method switchContext() on mixed.'
+			identifier: method.nonObject
+			count: 5
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: 'Cannot call method toContain() on mixed.'
+			identifier: method.nonObject
+			count: 9
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: 'Cannot call method update() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Context/ContextScopingTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgA.
+			identifier: property.notFound
+			count: 6
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgB.
+			identifier: property.notFound
+			count: 4
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgC.
+			identifier: property.notFound
+			count: 9
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 29
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 5
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: Cannot access property $current_context_id on mixed.
+			identifier: property.nonObject
+			count: 8
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 16
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: 'Cannot call method delete() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: 'Cannot call method fresh() on mixed.'
+			identifier: method.nonObject
+			count: 7
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: 'Cannot call method refresh() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: 'Cannot call method switchContext() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: 'Cannot call method validateContext() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Auth\SessionGuard::logout().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: 'Parameter #2 $user of class Illuminate\Auth\Events\Login constructor expects Illuminate\Contracts\Auth\Authenticatable, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Context/InvalidContextAutoCorrectionTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgA.
+			identifier: property.notFound
+			count: 5
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgB.
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 20
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 5
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: Cannot access property $current_context_id on mixed.
+			identifier: property.nonObject
+			count: 5
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 6
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: 'Cannot call method fresh() on mixed.'
+			identifier: method.nonObject
+			count: 5
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: 'Cannot call method switchContext() on mixed.'
+			identifier: method.nonObject
+			count: 5
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: 'Cannot call method validateContext() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Context/InvalidContextTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/DashboardTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::get().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Feature/DashboardTest.php
+
+		-
+			rawMessage: 'Cannot call method assertRedirect() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/DashboardTest.php
+
+		-
+			rawMessage: 'Cannot call method assertStatus() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/DashboardTest.php
+
+		-
+			rawMessage: Access to an undefined property Tests\Unit\Models\Concerns\HasUlidTestModel::$ulid.
+			identifier: property.notFound
+			count: 3
+			path: tests/Feature/Models/Concerns/HasUlidTest.php
+
+		-
+			rawMessage: 'Parameter #1 $string of function mb_strlen expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Models/Concerns/HasUlidTest.php
+
+		-
+			rawMessage: Unable to resolve the template type TValue in call to function expect
+			identifier: argument.templateType
+			count: 2
+			path: tests/Feature/Models/Concerns/HasUlidTest.php
+
+		-
+			rawMessage: 'Call to function property_exists() with App\Models\User and ''translatable'' will always evaluate to true.'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/Models/UserTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::fail().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Models/UserTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall|Pest\Support\HigherOrderTapProxy::group().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Feature/Performance/BioRenderingPerformanceTest.php
+
+		-
+			rawMessage: 'Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''.'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 6
+			path: tests/Feature/Performance/BioRenderingPerformanceTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall|Pest\Support\HigherOrderTapProxy::group().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Feature/Performance/SyntaxHighlightingPerformanceTest.php
+
+		-
+			rawMessage: 'Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''.'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 6
+			path: tests/Feature/Performance/SyntaxHighlightingPerformanceTest.php
+
+		-
+			rawMessage: 'Parameter #1 $haystack of function mb_substr_count expects string, string|null given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Performance/SyntaxHighlightingPerformanceTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Pest\PendingCalls\TestCall|Pest\Support\HigherOrderTapProxy::group().'
+			identifier: method.notFound
+			count: 12
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\Role|null.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\Team|null.
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\User|null.
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: Cannot access property $is_generated on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: Cannot access property $search_path on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: Cannot access property $search_vector on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::fullTextSearch().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::fuzzySearch().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::fullTextSearch().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::fuzzySearch().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<App\Models\Role>::count().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::markTestSkipped().'
+			identifier: staticMethod.dynamicCall
+			count: 14
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Method Spatie\Permission\Contracts\Role::hasPermissionTo() invoked with 1 parameter, 2 required.'
+			identifier: arguments.count
+			count: 1
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Only booleans are allowed in &&, mixed given on the left side.'
+			identifier: booleanAnd.leftNotBoolean
+			count: 2
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: 'Part $schema (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 3
+			path: tests/Feature/SchemaArchitectureTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Services/TeamHierarchyTraversalServiceTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:118::requiresApproval() has parameter $enterprise with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:118::requiresApproval() has parameter $newParent with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:118::requiresApproval() has parameter $team with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:21::requiresApproval() has parameter $enterprise with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:21::requiresApproval() has parameter $newParent with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:21::requiresApproval() has parameter $team with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:48::requiresApproval() has parameter $enterprise with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:48::requiresApproval() has parameter $newParent with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:48::requiresApproval() has parameter $team with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:75::requiresApproval() has parameter $enterprise with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:75::requiresApproval() has parameter $newParent with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:75::requiresApproval() has parameter $team with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:90::requiresApproval() has parameter $enterprise with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:90::requiresApproval() has parameter $newParent with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: 'Method App\Services\TeamMove\ApprovalRuleInterface@anonymous/tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php:90::requiresApproval() has parameter $team with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: Removing parent param type is forbidden
+			identifier: typePerfect.noParamTypeRemoval
+			count: 5
+			path: tests/Feature/Services/TeamMove/ApprovalDecisionEngineTest.php
+
+		-
+			rawMessage: Access to protected property App\Models\Enterprise::$attributes.
+			identifier: property.protected
+			count: 4
+			path: tests/Feature/Services/TeamNameNormalizationServiceTest.php
+
+		-
+			rawMessage: Access to an undefined property App\Models\Role::$is_key.
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Services/UserProtectionServiceTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Feature/Settings/PasswordUpdateTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 5
+			path: tests/Feature/Settings/ProfileUpdateTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::get().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Settings/ProfileUpdateTest.php
+
+		-
+			rawMessage: 'Cannot call method assertOk() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Settings/ProfileUpdateTest.php
+
+		-
+			rawMessage: 'Cannot call method assertRedirect() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Settings/ProfileUpdateTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Contracts\Auth\Guard::check().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Settings/ProfileUpdateTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 4
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertDatabaseHas().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertForbidden() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertOk() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertRedirect() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method assertSee() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method get() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: 'Cannot call method withSession() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::markTestSkipped().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Settings/TwoFactorAuthenticationTest.php
+
+		-
+			rawMessage: Access to an undefined property App\Models\Role::$is_key.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/SuperAdminRoleTest.php
+
+		-
+			rawMessage: Unable to resolve the template type TValue in call to function expect
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/SuperAdminRoleTest.php
+
+		-
+			rawMessage: Anonymous function should return string|null but returns array|string|null.
+			identifier: return.type
+			count: 1
+			path: tests/Feature/Support/Html/TeamBioRendererTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Mockery\ExpectationInterface|Mockery\HigherOrderMessage::andThrow().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Feature/Support/Html/TeamBioRendererTest.php
+
+		-
+			rawMessage: 'Parameter #1 $markdownRenderer of class App\Support\Html\TeamBioRenderer constructor expects Spatie\LaravelMarkdown\MarkdownRenderer, Mockery\MockInterface given.'
+			identifier: argument.type
+			count: 2
+			path: tests/Feature/Support/Html/TeamBioRendererTest.php
+
+		-
+			rawMessage: 'Call to protected method expectException() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 2
+			path: tests/Feature/Support/Validation/TeamHierarchy/CycleValidatorTest.php
+
+		-
+			rawMessage: 'Call to protected method expectExceptionMessage() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 2
+			path: tests/Feature/Support/Validation/TeamHierarchy/CycleValidatorTest.php
+
+		-
+			rawMessage: 'Property App\Models\Team::$parent_id (string|null) does not accept int.'
+			identifier: assign.propertyType
+			count: 2
+			path: tests/Feature/Support/Validation/TeamHierarchy/CycleValidatorTest.php
+
+		-
+			rawMessage: 'Call to protected method expectException() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 1
+			path: tests/Feature/Support/Validation/TeamHierarchy/EnterpriseParentValidatorTest.php
+
+		-
+			rawMessage: 'Call to protected method expectExceptionMessage() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 1
+			path: tests/Feature/Support/Validation/TeamHierarchy/EnterpriseParentValidatorTest.php
+
+		-
+			rawMessage: 'Parameter #1 $team of method App\Support\Validation\TeamHierarchy\EnterpriseParentValidator::validate() expects App\Models\Team, App\Models\Enterprise|null given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Support/Validation/TeamHierarchy/EnterpriseParentValidatorTest.php
+
+		-
+			rawMessage: 'Property App\Models\Team::$parent_id (string|null) does not accept int.'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/Feature/Support/Validation/TeamHierarchy/EnterpriseParentValidatorTest.php
+
+		-
+			rawMessage: 'Call to protected method expectException() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 4
+			path: tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php
+
+		-
+			rawMessage: 'Call to protected method expectExceptionMessage() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 2
+			path: tests/Feature/Support/Validation/TeamHierarchy/ParentTypeValidatorTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Organisation>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 3
+			path: tests/Feature/Support/Validation/TeamName/ArrayNameQueryBuilderTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Organisation>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 4
+			path: tests/Feature/Support/Validation/TeamName/StringNameQueryBuilderTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 20
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::postJson().'
+			identifier: method.notFound
+			count: 6
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 17
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: 'Cannot call method assertJson() on mixed.'
+			identifier: method.nonObject
+			count: 5
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: 'Cannot call method assertJsonStructure() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: 'Cannot call method assertStatus() on mixed.'
+			identifier: method.nonObject
+			count: 6
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: 'Cannot call method refresh() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: 'Cannot call method update() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Organisation>::count().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Teams/BulkTeamOperationsTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgA.
+			identifier: property.notFound
+			count: 11
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$orgB.
+			identifier: property.notFound
+			count: 4
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 18
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Access to an undefined property Pest\Mixins\Expectation<Illuminate\Support\Collection<(int|string), mixed>|null>::$not.'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 6
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: Cannot access property $current_context_id on mixed.
+			identifier: property.nonObject
+			count: 3
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 10
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Cannot call method assignRole() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Cannot call method fresh() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Cannot call method switchContext() on mixed.'
+			identifier: method.nonObject
+			count: 5
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Cannot call method toContain() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Cannot call method validateContext() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\TeamBuilder<App\Models\Team>::count().'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Auth\SessionGuard::logout().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: 'Parameter #1 $id of function setPermissionsTeamId expects Illuminate\Database\Eloquent\Model|int|string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Teams/ContextSwitchingTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$enterprise.
+			identifier: property.notFound
+			count: 6
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$handler.
+			identifier: property.notFound
+			count: 6
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$user.
+			identifier: property.notFound
+			count: 6
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Access to an undefined property Pest\Mixins\Expectation<Thunk\Verbs\Event|null>::$type.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Access to an undefined property Pest\Mixins\Expectation<mixed>::$type.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::actingAs().'
+			identifier: method.notFound
+			count: 5
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertDatabaseHas().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertDatabaseMissing().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Cannot access property $error on mixed.
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 5
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Cannot access property $isFailure on mixed.
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Cannot access property $isSuccess on mixed.
+			identifier: property.nonObject
+			count: 3
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Cannot access property $logs on mixed.
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Cannot access property $parent_id on mixed.
+			identifier: property.nonObject
+			count: 3
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Cannot access property $type on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Cannot access property $value on mixed.
+			identifier: property.nonObject
+			count: 5
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: 'Cannot call method event() on Thunk\Verbs\Models\VerbEvent|null.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: 'Cannot call method handle() on mixed.'
+			identifier: method.nonObject
+			count: 5
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: 'Cannot call method logInternal() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: 'Cannot call method toBe() on mixed.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Feature/Teams/CreateTeamWithVerbsTest.php
+
+		-
+			rawMessage: Access to an undefined property Pest\Mixins\Expectation<App\Models\Department|null>::$parent_id.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/DepartmentCreationTest.php
+
+		-
+			rawMessage: 'Cannot call method toBe() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/DepartmentCreationTest.php
+
+		-
+			rawMessage: Access to an undefined property Pest\Mixins\Expectation<App\Models\Division|null>::$parent_id.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/DivisionCreationTest.php
+
+		-
+			rawMessage: 'Cannot call method toBe() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/DivisionCreationTest.php
+
+		-
+			rawMessage: Access to an undefined property Pest\Mixins\Expectation<App\Models\Enterprise|null>::$name.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/EnterpriseCreationTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::assertDatabaseHas().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/Teams/EnterpriseCreationTest.php
+
+		-
+			rawMessage: Cannot access property $parent_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/EnterpriseCreationTest.php
+
+		-
+			rawMessage: Cannot access property $type on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/EnterpriseCreationTest.php
+
+		-
+			rawMessage: Cannot access property $value on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/EnterpriseCreationTest.php
+
+		-
+			rawMessage: 'Cannot call method toBe() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Teams/EnterpriseCreationTest.php
+
+		-
+			rawMessage: 'Cannot call method toBeNull() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/EnterpriseCreationTest.php
+
+		-
+			rawMessage: 'Call to protected method expectException() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 1
+			path: tests/Feature/Teams/ExecutiveDeputyConstraintsTest.php
+
+		-
+			rawMessage: Cannot access property $lock_version on App\Models\Team|null.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/OptimisticLockingTest.php
+
+		-
+			rawMessage: 'Cannot call method fresh() on App\Models\Team|null.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Teams/OptimisticLockingTest.php
+
+		-
+			rawMessage: 'Cannot call method getTranslation() on App\Models\Team|null.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/OptimisticLockingTest.php
+
+		-
+			rawMessage: 'Cannot call method save() on App\Models\Team|null.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Teams/OptimisticLockingTest.php
+
+		-
+			rawMessage: 'Cannot call method setTranslation() on App\Models\Team|null.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Teams/OptimisticLockingTest.php
+
+		-
+			rawMessage: Access to an undefined property Pest\Mixins\Expectation<App\Models\Organisation|null>::$parent_id.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/OrganisationCreationTest.php
+
+		-
+			rawMessage: Cannot access property $tenant_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/OrganisationCreationTest.php
+
+		-
+			rawMessage: 'Cannot call method toBe() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Teams/OrganisationCreationTest.php
+
+		-
+			rawMessage: Access to an undefined property Pest\Mixins\Expectation<App\Models\Project|null>::$parent_id.
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/Teams/ProjectCreationTest.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\Enterprise|null.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/ProjectCreationTest.php
+
+		-
+			rawMessage: Cannot access property $tenant_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/ProjectCreationTest.php
+
+		-
+			rawMessage: 'Cannot call method toBe() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/ProjectCreationTest.php
+
+		-
+			rawMessage: 'Cannot call method toBeNull() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/ProjectCreationTest.php
+
+		-
+			rawMessage: Access to an undefined property PHPUnit\Framework\TestCase::$service.
+			identifier: property.notFound
+			count: 12
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: '''
+				Access to constant on deprecated class App\Services\TeamMoveService:
+				Use TeamMoveRequestService and TeamMoveApprovalService instead
+			'''
+			identifier: classConstant.deprecatedClass
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $approved_at on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $from_parent_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $parent_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $reason on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $rejected_at on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $rejected_by_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $rejection_reason on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $requested_by_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $status on mixed.
+			identifier: property.nonObject
+			count: 5
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $team_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: Cannot access property $to_parent_id on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: 'Cannot call method approve() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: 'Cannot call method refresh() on mixed.'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: 'Cannot call method reject() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: 'Cannot call method requestMove() on mixed.'
+			identifier: method.nonObject
+			count: 7
+			path: tests/Feature/Teams/TeamMoveApprovalTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method PHPUnit\Framework\Assert::assertSame().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Teams/TeamMoveCyclePreventionTest.php
+
+		-
+			rawMessage: 'Property App\Models\Team::$parent_id (string|null) does not accept int.'
+			identifier: assign.propertyType
+			count: 3
+			path: tests/Feature/Teams/TeamMoveCyclePreventionTest.php
+
+		-
+			rawMessage: 'Property App\Models\Team::$parent_id (string|null) does not accept int.'
+			identifier: assign.propertyType
+			count: 2
+			path: tests/Feature/Teams/TeamMoveTest.php
+
+		-
+			rawMessage: 'Call to protected method expectException() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 1
+			path: tests/Feature/Teams/UniqueNameValidationTest.php
+
+		-
+			rawMessage: Access to an undefined property App\Models\Role::$is_key.
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/Teams/UserDeletionConstraintTest.php
+
+		-
+			rawMessage: 'Call to protected method expectException() of class PHPUnit\Framework\TestCase.'
+			identifier: method.protected
+			count: 2
+			path: tests/Feature/Teams/UserDeletionConstraintTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<App\Models\Role>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Teams/UserDeletionConstraintTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::get().'
+			identifier: method.notFound
+			count: 2
+			path: tests/Feature/Users/BackwardCompatibilityTest.php
+
+		-
+			rawMessage: 'Cannot call method assertSuccessful() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Users/BackwardCompatibilityTest.php
+
+		-
+			rawMessage: 'Cannot call method content() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Users/BackwardCompatibilityTest.php
+
+		-
+			rawMessage: 'Parameter #1 $string of function mb_strlen expects string, string|null given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Users/BackwardCompatibilityTest.php
+
+		-
+			rawMessage: 'Call to an undefined method PHPUnit\Framework\TestCase::get().'
+			identifier: method.notFound
+			count: 3
+			path: tests/Feature/Users/UlidRouteBindingTest.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\User|null.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Users/UlidRouteBindingTest.php
+
+		-
+			rawMessage: 'Cannot call method assertNotFound() on mixed.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/Users/UlidRouteBindingTest.php
+
+		-
+			rawMessage: 'Cannot call method assertSee() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Users/UlidRouteBindingTest.php
+
+		-
+			rawMessage: 'Cannot call method assertSuccessful() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/Users/UlidRouteBindingTest.php
+
+		-
+			rawMessage: 'Dynamic call to static method App\Models\Builders\UserBuilder<App\Models\User>::byUlid().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Feature/Users/UlidRouteBindingTest.php
+
+		-
+			rawMessage: 'Parameter #1 $ulid of method App\Models\Builders\UserBuilder<App\Models\User>::byUlid() expects string, string|null given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Users/UlidRouteBindingTest.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\Enterprise|null.
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/Users/UserEnterpriseRelationshipsTest.php
+
+		-
+			rawMessage: Cannot access property $type on App\Models\Enterprise|null.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/Users/UserEnterpriseRelationshipsTest.php
+
+		-
+			rawMessage: 'Property App\Models\User::$state (string|null) does not accept App\Enums\UserState::ACTIVE.'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/Feature/Users/UserStateTransitionsTest.php
+
+		-
+			rawMessage: 'Property App\Models\User::$state (string|null) does not accept App\Enums\UserState::INACTIVE.'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/Feature/Users/UserStateTransitionsTest.php
+
+		-
+			rawMessage: 'Property App\Models\User::$status (string|null) does not accept App\Enums\UserStatus::AWAY.'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/Feature/Users/UserStatusTest.php
+
+		-
+			rawMessage: 'Property App\Models\User::$status (string|null) does not accept App\Enums\UserStatus::BUSY.'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/Feature/Users/UserStatusTest.php
+
+		-
+			rawMessage: 'Property App\Models\User::$status (string|null) does not accept App\Enums\UserStatus::OFFLINE.'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/Feature/Users/UserStatusTest.php
+
+		-
+			rawMessage: 'Property App\Models\User::$status (string|null) does not accept App\Enums\UserStatus::ONLINE.'
+			identifier: assign.propertyType
+			count: 2
+			path: tests/Feature/Users/UserStatusTest.php
+
+		-
+			rawMessage: Access to an undefined property Illuminate\Database\Eloquent\Model::$ulid.
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Models/Concerns/HasUlidTestModel.php
+
+		-
+			rawMessage: 'Class Tests\Unit\Models\Concerns\HasUlidTestModel uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/Models/Concerns/HasUlidTestModel.php
+
+		-
+			rawMessage: 'Only booleans are allowed in an if condition, Tests\Unit\Models\Concerns\HasUlidTestModel|null given.'
+			identifier: if.condNotBoolean
+			count: 1
+			path: tests/Unit/Models/Concerns/HasUlidTestModel.php
+
+		-
+			rawMessage: 'Argument of an invalid type mixed supplied for foreach, only iterables are supported.'
+			identifier: foreach.nonIterable
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: Attribute class Tests\Unit\Models\Concerns\Override does not exist.
+			identifier: attribute.notFound
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Call to an undefined static method Illuminate\Database\Eloquent\Model::shouldGenerateSlug().'
+			identifier: staticMethod.notFound
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Call to function property_exists() with $this(Tests\Unit\Models\Concerns\TranslatableSlugTestModel) and ''translatable'' will always evaluate to true.'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: Cannot access property $translatable on class-string|object.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: Cannot access property $translatable on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Cannot call method getAttribute() on class-string|object.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Cannot call method getSlugOptions() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Cannot call method getTranslations() on class-string|object.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Cannot call method makeTranslatableSlugUnique() on class-string|object.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Cannot call method setTranslation() on class-string|object.'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Class Tests\Unit\Models\Concerns\TranslatableSlugTestModel uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Dynamic call to static method Illuminate\Database\Eloquent\Builder<Tests\Unit\Models\Concerns\TranslatableSlugTestModel>::exists().'
+			identifier: staticMethod.dynamicCall
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Method Tests\Unit\Models\Concerns\TranslatableSlugTestModel::shouldGenerateSlug() should return bool but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: Negated boolean expression is always false.
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Parameter #1 $object of method ReflectionProperty::getValue() expects object|null, mixed given.'
+			identifier: argument.type
+			count: 3
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Parameter #1 $objectOrClass of class ReflectionClass constructor expects class-string<T of object>|T of object, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Parameter #1 $object_or_class of function method_exists expects object|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Parameter #1 $object_or_class of function property_exists expects object|string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Parameter #1 $title of static method Illuminate\Support\Str::slug() expects string, mixed given.'
+			identifier: argument.type
+			count: 2
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Parameter #2 $haystack of function in_array expects array, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableSlugTestModel.php
+
+		-
+			rawMessage: 'Class Tests\Unit\Models\Concerns\TranslatableTestModel uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Unit/Models/Concerns/TranslatableTestModel.php
+
+		-
+			rawMessage: 'Call to function is_subclass_of() with ''App\\Models\\Domain'' and ''Stancl\\Tenancy\\Database\\Models\\Domain'' will always evaluate to true.'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Models/DomainTest.php
+
+		-
+			rawMessage: 'Access to an undefined property Illuminate\Support\Collection<int, mixed>::$error.'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Access to an undefined property Illuminate\Support\Collection<int, mixed>::$isFailure.'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Access to an undefined property Illuminate\Support\Collection<int, mixed>::$isSuccess.'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Access to an undefined property Illuminate\Support\Collection<int, mixed>::$logs.'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Access to an undefined property Illuminate\Support\Collection<int, mixed>::$value.'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Binary operation "*" between mixed and 2 results in an error.
+			identifier: binaryOp.invalid
+			count: 3
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Binary operation "+" between mixed and 1 results in an error.
+			identifier: binaryOp.invalid
+			count: 2
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Binary operation "+" between mixed and 10 results in an error.
+			identifier: binaryOp.invalid
+			count: 2
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Binary operation "+" between mixed and 3 results in an error.
+			identifier: binaryOp.invalid
+			count: 2
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Binary operation "+" between mixed and 5 results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Call to an undefined method App\Support\Result::unknownMethod().'
+			identifier: method.notFound
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Cannot access offset 'task1' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Cannot access offset 'task2' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Cannot access offset 'task3' on mixed.
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Cannot call method toArray() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Parameter #1 $tasks of static method App\Support\AsyncResult::all() expects array<string, callable(): App\Support\Result>, array{task1: Closure(): ''not a Result''} given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Parameter #1 $tasks of static method App\Support\AsyncResult::all() expects array<string, callable(): App\Support\Result>, array{task1: Closure(): App\Support\Result, task2: ''not callable''} given.'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Part $value (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Unable to resolve the template type TAndValue in call to method Pest\Expectation<Illuminate\Support\Collection<int, mixed>|null>::and()'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: 'Unable to resolve the template type TAndValue in call to method Pest\Expectation<mixed>::and()'
+			identifier: argument.templateType
+			count: 3
+			path: tests/Unit/Support/ResultTest.php
+
+		-
+			rawMessage: Unable to resolve the template type TValue in call to function expect
+			identifier: argument.templateType
+			count: 1
+			path: tests/Unit/Support/ResultTest.php

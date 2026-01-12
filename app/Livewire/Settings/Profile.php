@@ -1,74 +1,83 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Settings;
 
+use App\Handlers\Commands\Users\UpdateUserProfileCommand;
+use App\Handlers\Commands\Users\UpdateUserProfileHandler;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class Profile extends Component
+final class Profile extends Component
 {
     public string $name = '';
 
     public string $email = '';
 
     /**
-     * Mount the component.
+     * Initialize the component.
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
+        /** @var User $user */
+        $user = auth()->user();
+        $this->name = $user->name;
+        $this->email = $user->email;
     }
 
     /**
-     * Update the profile information for the currently authenticated user.
+     * Update the user's profile information.
      */
     public function updateProfileInformation(): void
     {
-        $user = Auth::user();
+        /** @var User $user */
+        $user = auth()->user();
 
-        $validated = $this->validate([
+        $this->validate([
             'name' => ['required', 'string', 'max:255'],
-
-            'email' => [
-                'required',
-                'string',
-                'lowercase',
-                'email',
-                'max:255',
-                Rule::unique(User::class)->ignore($user->id),
-            ],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
         ]);
 
-        $user->fill($validated);
+        $handler = resolve(UpdateUserProfileHandler::class);
+        $command = new UpdateUserProfileCommand($user, [
+            'name' => $this->name,
+            'email' => $this->email,
+        ]);
 
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
+        $result = $handler->handle($command);
+
+        if ($result->isSuccess) {
+            $this->dispatch('profile-updated');
+            session()->flash('status', 'Profile updated successfully');
+        } else {
+            $this->addError('email', $result->error);
         }
-
-        $user->save();
-
-        $this->dispatch('profile-updated', name: $user->name);
     }
 
     /**
-     * Send an email verification notification to the current user.
+     * Resend the email verification notification.
      */
     public function resendVerificationNotification(): void
     {
-        $user = Auth::user();
+        /** @var User $user */
+        $user = auth()->user();
 
         if ($user->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('dashboard', absolute: false));
-
             return;
         }
 
         $user->sendEmailVerificationNotification();
 
-        Session::flash('status', 'verification-link-sent');
+        session()->flash('status', 'verification-link-sent');
+    }
+
+    /**
+     * Render the component.
+     */
+    public function render(): View
+    {
+        return view('livewire.settings.profile');
     }
 }
